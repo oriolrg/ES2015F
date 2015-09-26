@@ -2,7 +2,9 @@
 using System.Collections;
 
 public class MinimapCamera : MonoBehaviour {
-	
+
+	public LayerMask minimapLayerMask = -1;
+
 	private Camera mainCamera;
 	private Camera cam;
 
@@ -23,9 +25,10 @@ public class MinimapCamera : MonoBehaviour {
 //			updateViewport(aspect);
 //		}
 
-		if (Input.GetMouseButtonDown (0)){
-			// Mouse clicked. Clicked on minimap?
+		// Move mainCamera if minimapCamera is clicked
+		if (Input.GetMouseButton (0)){ // is left-button held down? (includes click)
 
+			// Mouse on minimap?
 			Vector3 mouse = Input.mousePosition; // get mouse position
 			// Normalize mouse coordinates
 			mouse.x /= Screen.width;
@@ -36,15 +39,22 @@ public class MinimapCamera : MonoBehaviour {
 
 				// Compute offset of camera; its position - where it's looking at
 				Vector3 mainCameraOffset;
-				Ray ray = new Ray (mainCamera.transform.position, mainCamera.transform.forward); // where is camera looking at
+				Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
 				RaycastHit hit;
-				if (Physics.Raycast (ray, out hit)) {
+
+				if (Physics.Raycast (
+						ray, out hit,
+						Mathf.Infinity, // max distance
+						minimapLayerMask.value
+					)
+				) {
 					mainCameraOffset = mainCamera.transform.position - hit.point;
 
 					// Get position of where we clicked on the minimap
 					ray = cam.ScreenPointToRay (Input.mousePosition);
-					
-					if (Physics.Raycast (ray, out hit)) {
+
+					if (Physics.Raycast (ray, out hit, Mathf.Infinity, // max distance
+	                     minimapLayerMask.value)) {
 						Debug.DrawLine (ray.origin, hit.point);
 
 						// Change camera position, adding offset
