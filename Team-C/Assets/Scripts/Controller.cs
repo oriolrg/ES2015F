@@ -4,6 +4,9 @@ using System.Collections.Generic;
 public class Controller : MonoBehaviour {
 	[SerializeField]
 	private List<GameObject> selectedUnits;
+
+	private bool isSelecting;
+	private Vector3 mPos;
 	
 	// Use this for initialization
 	void Start () {
@@ -14,6 +17,8 @@ public class Controller : MonoBehaviour {
 	void Update () {
 		if (Input.GetMouseButtonDown(0))
 		{
+			isSelecting = true;
+			mPos = Input.mousePosition;
 			RaycastHit hitInfo = new RaycastHit();
 			bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
 			if (hit)
@@ -41,5 +46,29 @@ public class Controller : MonoBehaviour {
 				Debug.Log("No hit");
 			}
 		}
+
+		if( Input.GetMouseButtonUp( 0 ) )
+		{		
+			isSelecting = false;
+			var camera = Camera.main;
+			var viewportBounds = RectDrawer.GetViewportBounds( camera, mPos, Input.mousePosition );
+			if (!Input.GetKey(KeyCode.LeftControl)) selectedUnits.Clear();
+			foreach( var aux in FindObjectsOfType<GameObject>() )
+			{
+				if (viewportBounds.Contains(camera.WorldToViewportPoint(aux.transform.position )) & aux.tag=="Ally" & !selectedUnits.Contains(aux))
+					selectedUnits.Add(aux);
+			}
+		}
 	}
+
+	void OnGUI()
+	{
+		if( isSelecting )
+		{
+			var rect = RectDrawer.GetScreenRect(mPos, Input.mousePosition );
+			RectDrawer.DrawScreenRect( rect, new Color( 0.6f, 0.9f, 0.6f, 0.25f ) );
+		}
+	}
+
+
 }
