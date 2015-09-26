@@ -4,7 +4,7 @@ using System.Collections;
 public class CameraController : MonoBehaviour {
 
     private float marginDelta = 10; // Pixels. The width border at the edge in which the movement work
-    private float speed = 3; // Scale. Speed of the movement
+    public float speed = 3; // Scale. Speed of the movement
 
     private Vector3 mRightDirection = Vector3.right; // Direction the camera should move when on the right edge
     private Vector3 mLeftDirection = Vector3.left;
