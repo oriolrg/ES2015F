@@ -49,10 +49,12 @@ public class CameraController : MonoBehaviour {
 
 
     //Move the camera to the given position 
-    void goTo(float x, float z){
+    public void goTo(float x, float z){
 
         Vector3 newPosition = new Vector3(x, transform.position.y, z);
         transform.position = newPosition;
 
     }
+
+	public void goTo(Vector3 position){ goTo (position.x, position.z); }
 }
