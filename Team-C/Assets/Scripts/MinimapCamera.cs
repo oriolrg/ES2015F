@@ -23,24 +23,33 @@ public class MinimapCamera : MonoBehaviour {
 //			updateViewport(aspect);
 //		}
 
-		if (Input.GetMouseButtonDown (0)) {
-			// Clicked on minimap. Change position of mainCamera.
+		if (Input.GetMouseButtonDown (0)){
+			// Mouse clicked. Clicked on minimap?
 
-			// Compute offset of camera; its position - where it's looking at
-			Vector3 mainCameraOffset;
-			Ray ray = new Ray (mainCamera.transform.position, mainCamera.transform.forward); // where is camera looking at
-			RaycastHit hit;
-			if (Physics.Raycast (ray, out hit)) {
-				mainCameraOffset = mainCamera.transform.position - hit.point;
+			Vector3 mouse = Input.mousePosition; // get mouse position
+			// Normalize mouse coordinates
+			mouse.x /= Screen.width;
+			mouse.y /= Screen.height;
 
-				// Get position of where we clicked on the minimap
-				ray = cam.ScreenPointToRay (Input.mousePosition);
-				
+			if (cam.rect.Contains(mouse)){
+				// Clicked on minimap. Change position of mainCamera.
+
+				// Compute offset of camera; its position - where it's looking at
+				Vector3 mainCameraOffset;
+				Ray ray = new Ray (mainCamera.transform.position, mainCamera.transform.forward); // where is camera looking at
+				RaycastHit hit;
 				if (Physics.Raycast (ray, out hit)) {
-					Debug.DrawLine (ray.origin, hit.point);
+					mainCameraOffset = mainCamera.transform.position - hit.point;
 
-					// Change camera position, adding offset
-					mainCamera.transform.position = hit.point + mainCameraOffset;
+					// Get position of where we clicked on the minimap
+					ray = cam.ScreenPointToRay (Input.mousePosition);
+					
+					if (Physics.Raycast (ray, out hit)) {
+						Debug.DrawLine (ray.origin, hit.point);
+
+						// Change camera position, adding offset
+						mainCamera.transform.position = hit.point + mainCameraOffset;
+					}
 				}
 			}
 		}
