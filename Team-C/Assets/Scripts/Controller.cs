@@ -50,13 +50,15 @@ public class Controller : MonoBehaviour {
 		if( Input.GetMouseButtonUp( 0 ) )
 		{		
 			isSelecting = false;
-			var camera = Camera.main;
-			var viewportBounds = RectDrawer.GetViewportBounds( camera, mPos, Input.mousePosition );
-			if (!Input.GetKey(KeyCode.LeftControl)) selectedUnits.Clear();
-			foreach( var aux in FindObjectsOfType<GameObject>() )
-			{
-				if (viewportBounds.Contains(camera.WorldToViewportPoint(aux.transform.position )) & aux.tag=="Ally" & !selectedUnits.Contains(aux))
-					selectedUnits.Add(aux);
+			if ((mPos - Input.mousePosition).magnitude>5){
+				var camera = Camera.main;
+				var viewportBounds = RectDrawer.GetViewportBounds( camera, mPos, Input.mousePosition );
+				if (!Input.GetKey(KeyCode.LeftControl)) selectedUnits.Clear();
+				foreach( var aux in FindObjectsOfType<GameObject>() )
+				{
+					if (viewportBounds.Contains(camera.WorldToViewportPoint(aux.transform.position )) & aux.tag=="Ally" & !selectedUnits.Contains(aux))
+						selectedUnits.Add(aux);
+				}
 			}
 		}
 	}
