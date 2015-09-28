@@ -2,30 +2,28 @@
 using System.Collections.Generic;
 
 
-
-public class Unit : MonoBehaviour 
+public class Unit : Selectable 
 {
-    [SerializeField] private IngameHUD hud;
-
     void Start()
     {
-        hud.setActions( new List<Action>() { CreateUnit, DestroyBuilding, Upgrade });
-        hud.refresh();
+        actions = new List<Action>() { DestroyUnit, Upgrade };
+        stats = new Dictionary<string, float>()
+        {
+            { "health" , 100 },
+            { "attack" , 5 },
+            { "deffense", 2 }
+
+        };
     }
 
-    void CreateUnit()
+    void DestroyUnit()
     {
-        print("create");
-    }
-
-    void DestroyBuilding()
-    {
-        print("destroy");
+        GetComponent<Renderer>().material.color = Color.red;
     }
 
     void Upgrade()
     {
-        print("upgrade");
+        GetComponent<Renderer>().material.color = Color.green;
     }
 
 
