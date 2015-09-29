@@ -23,17 +23,23 @@ public class Controller : MonoBehaviour {
 			bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
 			if (hit)
 			{
+
 				GameObject selectedGO = hitInfo.transform.gameObject;
 				if (hitInfo.transform.gameObject.tag == "Ally")
 				{                   
 					if (Input.GetKey(KeyCode.LeftControl))
 					{
 						if (!selectedUnits.Contains(selectedGO)) selectedUnits.Add(selectedGO);
+						selectedGO.transform.Find("Selected").gameObject.SetActive(true);
 					}
 					else
 					{
+						foreach (var unit in selectedUnits) {
+							unit.transform.Find("Selected").gameObject.SetActive(false);
+						}
 						selectedUnits.Clear();
 						selectedUnits.Add(selectedGO);
+						selectedGO.transform.Find("Selected").gameObject.SetActive(true);
 					}
 				}
 				else
@@ -53,11 +59,19 @@ public class Controller : MonoBehaviour {
 			if ((mPos - Input.mousePosition).magnitude>5){
 				var camera = Camera.main;
 				var viewportBounds = RectDrawer.GetViewportBounds( camera, mPos, Input.mousePosition );
+				//Deselecting
+				foreach (var unit in selectedUnits) {
+					unit.transform.Find("Selected").gameObject.SetActive(false);
+				}
 				if (!Input.GetKey(KeyCode.LeftControl)) selectedUnits.Clear();
-				foreach( var aux in FindObjectsOfType<GameObject>() )
+
+				//Selecting
+				foreach( var unit in FindObjectsOfType<GameObject>() )
 				{
-					if (viewportBounds.Contains(camera.WorldToViewportPoint(aux.transform.position )) & aux.tag=="Ally" & !selectedUnits.Contains(aux))
-						selectedUnits.Add(aux);
+					if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position )) & unit.tag=="Ally" & !selectedUnits.Contains(unit)) {
+						selectedUnits.Add(unit);
+						unit.transform.Find("Selected").gameObject.SetActive(true);
+					}
 				}
 			}
 		}
