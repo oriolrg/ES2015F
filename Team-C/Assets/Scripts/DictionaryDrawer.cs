@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
 
+[CustomPropertyDrawer(typeof(StatDictionary))]
 public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
 {
     private SerializableDictionary<TK, TV> _Dictionary;
@@ -173,4 +174,4 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
 }
 
 [CustomPropertyDrawer(typeof(StatDictionary))]
-public class StatD : DictionaryDrawer<string, int> { }
+public class MyDictionaryDrawer1 : DictionaryDrawer<string, float> { }

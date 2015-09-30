@@ -24,4 +24,4 @@ sysinfo.txt
 ProjectVersion.txt
 Team-C/ProjectSettings/ProjectVersion.txt
 *.DS_Store
-*.meta
+# *.meta

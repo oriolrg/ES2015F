@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using UnityEditor;
 
 [Serializable]
 public class StatDictionary : SerializableDictionary<string, float> { }
