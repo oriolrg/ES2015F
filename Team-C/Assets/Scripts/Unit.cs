@@ -25,17 +25,4 @@ public class Unit : Selectable
     {
         GetComponent<Renderer>().material.color = Color.green;
     }
-
-	public void Select(){
-		GameObject sel = transform.FindChild ("Selected").gameObject;
-		if (sel != null) 
-			sel.SetActive(true);
-	}
-
-	public void Deselect(){
-		GameObject sel = transform.FindChild ("Selected").gameObject;
-		if (sel != null)
-			sel.SetActive(false);
-	}
-
 }

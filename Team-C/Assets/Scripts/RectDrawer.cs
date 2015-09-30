@@ -12,6 +12,7 @@ public class RectDrawer : MonoBehaviour {
 
 	}
 
+	//Returns the rect.
 	public static Rect GetScreenRect( Vector3 screenPosition1, Vector3 screenPosition2 )
 	{
 		screenPosition1.y = Screen.height - screenPosition1.y;
@@ -23,6 +24,7 @@ public class RectDrawer : MonoBehaviour {
 		return Rect.MinMaxRect( topLeft.x, topLeft.y, bottomRight.x, bottomRight.y );
 	}
 
+	//This returns the boudns to detect units inside the rect.
 	public static Bounds GetViewportBounds( Camera camera, Vector3 screenPosition1, Vector3 screenPosition2 )
 	{
 		var v1 = camera.ScreenToViewportPoint( screenPosition1 );
@@ -37,6 +39,7 @@ public class RectDrawer : MonoBehaviour {
 		return bounds;
 	}
 
+	//Draws the rect in the GUI.
 	public static void DrawScreenRect( Rect rect, Color color )
 	{
 		GUI.color = color;

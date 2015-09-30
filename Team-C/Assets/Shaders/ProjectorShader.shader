@@ -39,7 +39,7 @@
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
-				// Apply alpha mask
+				// Cookie
 				fixed4 texCookie = tex2Dproj (_ShadowTex, UNITY_PROJ_COORD(i.uvShadow));
 				fixed4 outColor = _Color * texCookie.a;
 				// Attenuation

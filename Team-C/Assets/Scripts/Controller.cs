@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Controller : MonoBehaviour {
 	[SerializeField]
@@ -7,6 +8,8 @@ public class Controller : MonoBehaviour {
 
 	private bool isSelecting;
 	private Vector3 mPos;
+
+	public Text winText;
 	
 	// Use this for initialization
 	void Start () {
@@ -15,10 +18,18 @@ public class Controller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//Win Condition
+		var wonder = GameObject.FindGameObjectWithTag("Wonder");
+		if (wonder != null)
+			winCondition ();
+
+		//Left Click Manager
 		if (Input.GetMouseButtonDown(0))
 		{
 			isSelecting = true;
 			mPos = Input.mousePosition;
+
+			//Click detection
 			RaycastHit hitInfo = new RaycastHit();
 			bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
 			if (hit)
@@ -30,11 +41,13 @@ public class Controller : MonoBehaviour {
 					if (Input.GetKey(KeyCode.LeftControl))
 					{
 						if (!selectedUnits.Contains(selectedGO)) selectedUnits.Add(selectedGO);
+						//Selection circle active
 						selectedGO.transform.Find("Selected").gameObject.SetActive(true);
 					}
 					else
 					{
 						foreach (var unit in selectedUnits) {
+							//Selection circle inactive
 							unit.transform.Find("Selected").gameObject.SetActive(false);
 						}
 						selectedUnits.Clear();
@@ -53,12 +66,16 @@ public class Controller : MonoBehaviour {
 			}
 		}
 
+		//End of click
 		if( Input.GetMouseButtonUp( 0 ) )
 		{		
 			isSelecting = false;
+			//We impose a size of 5 to detect a box.
+			//Box Selection
 			if ((mPos - Input.mousePosition).magnitude>5){
 				var camera = Camera.main;
 				var viewportBounds = RectDrawer.GetViewportBounds( camera, mPos, Input.mousePosition );
+
 				//Deselecting
 				foreach (var unit in selectedUnits) {
 					unit.transform.Find("Selected").gameObject.SetActive(false);
@@ -68,6 +85,7 @@ public class Controller : MonoBehaviour {
 				//Selecting
 				foreach( var unit in FindObjectsOfType<GameObject>() )
 				{
+					//Units inside the rect get selected.
 					if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position )) & unit.tag=="Ally" & !selectedUnits.Contains(unit)) {
 						selectedUnits.Add(unit);
 						unit.transform.Find("Selected").gameObject.SetActive(true);
@@ -79,6 +97,7 @@ public class Controller : MonoBehaviour {
 
 	void OnGUI()
 	{
+		//Drawing of the box while selecting.
 		if( isSelecting )
 		{
 			var rect = RectDrawer.GetScreenRect(mPos, Input.mousePosition );
@@ -86,5 +105,12 @@ public class Controller : MonoBehaviour {
 		}
 	}
 
-
+	//Ends the game.
+	private void winCondition()
+	{
+		if( winText != null )
+		{
+			winText.gameObject.SetActive(true);
+		}
+	}
 }
