@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+
+public enum MenuType { MainMenu, PauseMenu }
 
 public class MenuController : MonoBehaviour {
 
+    [SerializeField] private MenuType menuType;
     public Canvas quitMenu;
     public Button startText;
     public Button exitText;
@@ -11,11 +13,17 @@ public class MenuController : MonoBehaviour {
     void Start()
 
     {
-        quitMenu = quitMenu.GetComponent<Canvas>();
-        startText = startText.GetComponent<Button>();
-        exitText = exitText.GetComponent<Button>();
         quitMenu.enabled = false;
 
+    }
+
+    void Update()
+    {
+        if( menuType == MenuType.PauseMenu && Input.GetKeyDown(KeyCode.Escape) )
+        {
+            GetComponent<Canvas>().enabled = true;
+            Time.timeScale = 0;
+        }
     }
 
     public void ExitPress() //this function will be used on our Exit button
@@ -39,14 +47,34 @@ public class MenuController : MonoBehaviour {
     public void StartLevel() //this function will be used on our Play button
 
     {
-        Application.LoadLevel(1); //this will load our first level from our build settings
+        quitMenu.enabled = false;
+        GetComponent<Canvas>().enabled = false;
+        switch( menuType )
+        {
+            case MenuType.MainMenu:
+                Application.LoadLevel(1); //this will load our first level from our build settings
+                break;
+
+            case MenuType.PauseMenu:
+                Time.timeScale = 1;
+                break;
+        }
+        
 
     }
 
     public void ExitGame() //This function will be used on our "Yes" button in our Quit menu
 
     {
-        Application.Quit(); //this will quit our game. Note this will only work after building the game
+        switch( menuType )
+        {
+            case MenuType.MainMenu:
+                Application.Quit(); //this will quit our game. Note this will only work after building the game
+                break;
+            case MenuType.PauseMenu:
+                Application.LoadLevel(0);
+                break;
+        }
 
     }
 }
