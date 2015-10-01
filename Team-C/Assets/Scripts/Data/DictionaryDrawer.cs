@@ -173,4 +173,4 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
 }
 
 [CustomPropertyDrawer(typeof(StatDictionary))]
-public class MyDictionaryDrawer1 : DictionaryDrawer<string, float> { }
+public class StatDictionaryDrawer : DictionaryDrawer<StatType, float> { }

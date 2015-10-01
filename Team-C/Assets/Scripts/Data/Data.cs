@@ -4,10 +4,10 @@ using UnityEngine.Events;
 using System;
 using System.Collections.Generic;
 
-
+public enum StatType { Health, Attack, Defense, Speed, Range }
 // Concrete types of generic classes to be able to serialize them within Unity.
 [Serializable]
-public class StatDictionary : SerializableDictionary<string, float> { }
+public class StatDictionary : SerializableDictionary<StatType, float> { }
 
 
 [Serializable]

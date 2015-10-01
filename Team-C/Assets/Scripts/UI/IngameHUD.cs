@@ -43,12 +43,12 @@ public class IngameHUD : MonoBehaviour
         }
 
         // Set stats
-        foreach( KeyValuePair<string, float> entry in data.stats )
+        foreach( KeyValuePair<StatType, float> entry in data.stats )
         {
             GameObject statGO = Instantiate(statPrefab) as GameObject;
             statGO.transform.SetParent(statPanel);
 
-            statGO.GetComponent<Text>().text = string.Format( "- {0} : {1} ", entry.Key, entry.Value);
+            statGO.GetComponent<Text>().text = string.Format( "- {0} : {1} ", entry.Key.ToString(), entry.Value);
         }
     }
 }
