@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Events;
 
 using System.Collections.Generic;
 
@@ -8,6 +7,8 @@ public delegate void Action();
 
 public class IngameHUD : MonoBehaviour
 {
+    [SerializeField] private UISettings uiSettings;
+
     [SerializeField] private Transform actionPanel;
 
     [SerializeField] private Transform statPanel;
@@ -18,7 +19,7 @@ public class IngameHUD : MonoBehaviour
 
     [SerializeField] private Image previewPanel;
 
-    public void refresh( Data data, List<Action> actions )
+    public void refresh( UnitData data, List<Action> actions )
     {
         // Destroy actual widgets
         foreach (Transform child in actionPanel)
@@ -48,7 +49,9 @@ public class IngameHUD : MonoBehaviour
             GameObject statGO = Instantiate(statPrefab) as GameObject;
             statGO.transform.SetParent(statPanel);
 
-            statGO.GetComponent<Text>().text = string.Format( "- {0} : {1} ", entry.Key.ToString(), entry.Value);
+            statGO.GetComponentInChildren<Text>().text = entry.Value.ToString();
+            
+            statGO.GetComponentInChildren<Image>().sprite = uiSettings.statSprites[entry.Key];
         }
     }
 }

@@ -172,5 +172,8 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
     }
 }
 
-[CustomPropertyDrawer(typeof(StatDictionary))]
-public class StatDictionaryDrawer : DictionaryDrawer<StatType, float> { }
+[CustomPropertyDrawer(typeof(StatValueDictionary))]
+public class StatValueDictionaryDrawer : DictionaryDrawer<StatType, float> { }
+
+[CustomPropertyDrawer(typeof(StatSpriteDictionary))]
+public class StatSpriteDictionaryDrawer : DictionaryDrawer<StatType, Sprite> { }
