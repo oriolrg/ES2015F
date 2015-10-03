@@ -57,7 +57,8 @@ public class CameraController : MonoBehaviour {
 
         Vector3 newPosition = new Vector3(x, transform.position.y, z);
 
-        StartCoroutine(SmoothMovement(newPosition));
+        // StartCoroutine(SmoothMovement(newPosition));
+		transform.position = newPosition;
     }
 
     IEnumerator SmoothMovement(Vector3 newPosition)
