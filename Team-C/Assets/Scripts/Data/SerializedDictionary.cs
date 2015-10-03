@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEditor;
 
 [Serializable, DebuggerDisplay("Count = {Count}")]
 public class SerializableDictionary<TKey, TValue> : IDictionary<TKey, TValue>
@@ -229,6 +230,7 @@ public class SerializableDictionary<TKey, TValue> : IDictionary<TKey, TValue>
         }
         return false;
     }
+    
 
     private void Insert(TKey key, TValue value, bool add)
     {

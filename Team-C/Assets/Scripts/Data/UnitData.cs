@@ -2,7 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Collections;
+[Serializable]
 public enum StatType { Health, Attack, Defense, Speed, Range }
 // Concrete types of generic classes to be able to serialize them within Unity.
 [Serializable]
