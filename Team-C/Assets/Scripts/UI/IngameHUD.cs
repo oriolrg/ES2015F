@@ -7,6 +7,8 @@ public delegate void Action();
 
 public class IngameHUD : MonoBehaviour
 {
+    [SerializeField] private Text winText;
+
     [SerializeField] private UISettings uiSettings;
 
     [SerializeField] private Transform actionPanel;
@@ -53,5 +55,10 @@ public class IngameHUD : MonoBehaviour
             
             statGO.GetComponentInChildren<Image>().sprite = uiSettings.statSprites[entry.Key];
         }
+    }
+
+    public void ShowWinMessage()
+    {
+        winText.gameObject.SetActive(true);
     }
 }

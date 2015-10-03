@@ -4,7 +4,7 @@ using System.Collections;
 public class MinimapCamera : MonoBehaviour {
 
 	private Camera minimapCamera;
-	[SerializeField] private Camera mainCamera;
+	[SerializeField] private Camera mainCamera = Camera.main;
 	[SerializeField] private Color colorMinimapRect = new Color(
 		255f, 240f, 245f, 25f
 	);

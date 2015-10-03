@@ -2,22 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class Controller : MonoBehaviour {
+public class GameController : MonoBehaviour {
 	[SerializeField]
 	private List<GameObject> selectedUnits;
+
+    public IngameHUD hud;
 
 	private bool isSelecting;
 	private Vector3 mPos;
 
-	public Text winText;
-	
-	// Use this for initialization
-	void Start () {
-		selectedUnits = new List<GameObject> ();;
+    // Static singleton property
+    public static GameController Instance { get; private set; }
+
+    void Awake()
+    {
+        // First we check if there are any other instances conflicting
+        if (Instance != null && Instance != this)
+        {
+            // If that is the case, we destroy other instances
+            Destroy(gameObject);
+        }
+
+        // Here we save our singleton instance
+        Instance = this;
+
+        // Furthermore we make sure that we don't destroy between scenes (this is optional)
+        DontDestroyOnLoad(gameObject);
+    }
+
+    // Use this for initialization
+    void Start ()
+    {
+		selectedUnits = new List<GameObject> ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		//Win Condition
 		var wonder = GameObject.FindGameObjectWithTag("Wonder");
 		if (wonder != null)
@@ -51,6 +72,7 @@ public class Controller : MonoBehaviour {
 							unit.transform.Find("Selected").gameObject.SetActive(false);
 						}
 						selectedUnits.Clear();
+                        selectedGO.GetComponent<Focusable>().onFocus();
 						selectedUnits.Add(selectedGO);
 						selectedGO.transform.Find("Selected").gameObject.SetActive(true);
 					}
@@ -108,9 +130,6 @@ public class Controller : MonoBehaviour {
 	//Ends the game.
 	private void winCondition()
 	{
-		if( winText != null )
-		{
-			winText.gameObject.SetActive(true);
-		}
-	}
+        hud.ShowWinMessage();
+    }
 }

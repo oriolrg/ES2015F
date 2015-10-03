@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Villager : ShowHUDOnClick 
+public class Villager : Focusable
 {
     [SerializeField]
     private GameObject buildingPrefab;
@@ -9,6 +9,7 @@ public class Villager : ShowHUDOnClick
     void Start()
     {
         actions = new List<Action>() { CreateBuilding, DestroyUnit };
+        ini();
     }
     public void DestroyUnit()
     {

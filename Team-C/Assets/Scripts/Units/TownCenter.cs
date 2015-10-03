@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class TownCenter : ShowHUDOnClick 
+public class TownCenter : Focusable 
 {
     [SerializeField]
     private GameObject villagerPrefab;
@@ -9,7 +9,9 @@ public class TownCenter : ShowHUDOnClick
     void Start()
     {
         actions = new List<Action>() { CreateUnit, DestroyBuilding, Upgrade };
+        ini();
     }
+
     public void CreateUnit()
     {
         Instantiate(villagerPrefab, transform.position + transform.forward * 3, Quaternion.identity);
