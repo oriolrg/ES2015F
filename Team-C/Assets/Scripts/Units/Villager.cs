@@ -14,6 +14,7 @@ public class Villager : Focusable
     public void DestroyUnit()
     {
         Destroy(gameObject, 2);
+        GameController.Instance.ClearSelection();
     }
 
     public void CreateBuilding()

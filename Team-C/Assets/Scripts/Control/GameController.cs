@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour {
         Instance = this;
 
         // Furthermore we make sure that we don't destroy between scenes (this is optional)
-        DontDestroyOnLoad(gameObject);
+        // not now!!! DontDestroyOnLoad(gameObject);
     }
 
     // Use this for initialization
@@ -131,5 +131,11 @@ public class GameController : MonoBehaviour {
 	private void winCondition()
 	{
         hud.ShowWinMessage();
+    }
+
+    // Called when selected units are destroyed
+    public void ClearSelection()
+    {
+        selectedUnits.Clear();
     }
 }

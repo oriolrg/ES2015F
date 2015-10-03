@@ -20,6 +20,8 @@ public class TownCenter : Focusable
     void DestroyBuilding()
     {
         Destroy(gameObject, 3);
+
+        GameController.Instance.ClearSelection();
     }
 
     void Upgrade()

@@ -7,7 +7,7 @@ public delegate void Action();
 
 public class IngameHUD : MonoBehaviour
 {
-    [SerializeField] private Text winText;
+    [SerializeField] private GameObject winText;
 
     [SerializeField] private UISettings uiSettings;
 
@@ -59,6 +59,6 @@ public class IngameHUD : MonoBehaviour
 
     public void ShowWinMessage()
     {
-        winText.gameObject.SetActive(true);
+        winText.SetActive(true);
     }
 }
