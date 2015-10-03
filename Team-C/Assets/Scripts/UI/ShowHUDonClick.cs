@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public abstract class ShowHUDOnClick : MonoBehaviour
 {
-    [SerializeField] protected Data data;
+    [SerializeField] protected UnitData data;
 
     [SerializeField] protected IngameHUD hud;
 
