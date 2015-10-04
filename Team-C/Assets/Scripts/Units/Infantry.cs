@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Villager : Focusable
+public class Infantry : Focusable
 {
     [SerializeField]
     private GameObject buildingPrefab;
@@ -10,6 +10,7 @@ public class Villager : Focusable
     {
         actions = new List<Action>() { CreateBuilding, DestroyUnit };
         ini();
+        Debug.Log("Start Vill");
         //GameController.Instance.addAllyUnit(gameObject);
     }
 
@@ -17,7 +18,7 @@ public class Villager : Focusable
     {
         GameController.Instance.removeAllyUnit(gameObject);
         Destroy(gameObject, 2);
-        GameController.Instance.Invoke("ClearSelection",2);
+        GameController.Instance.Invoke("ClearSelection", 2);
     }
 
     public void CreateBuilding()

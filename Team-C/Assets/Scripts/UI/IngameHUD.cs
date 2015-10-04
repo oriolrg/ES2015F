@@ -2,12 +2,15 @@
 using UnityEngine.UI;
 
 using System.Collections.Generic;
+using System;
 
 public delegate void Action();
 
 public class IngameHUD : MonoBehaviour
 {
     [SerializeField] private GameObject winText;
+
+    [SerializeField] private GameObject loseText;
 
     [SerializeField] private UISettings uiSettings;
 
@@ -70,5 +73,10 @@ public class IngameHUD : MonoBehaviour
     public void ShowWinMessage()
     {
         winText.SetActive(true);
+    }
+
+    internal void ShowLoseMessage()
+    {
+        loseText.SetActive(true);
     }
 }

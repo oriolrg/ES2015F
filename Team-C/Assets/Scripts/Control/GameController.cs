@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour {
 	[SerializeField]
 	private List<GameObject> selectedUnits;
+    private List<GameObject> allAllyUnits;
 
     public IngameHUD hud;
 
@@ -34,7 +35,10 @@ public class GameController : MonoBehaviour {
     void Start ()
     {
 		selectedUnits = new List<GameObject> ();
-	}
+
+        allAllyUnits = new List<GameObject>();
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addAllyUnit(go);
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -127,10 +131,33 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	//Ends the game.
-	private void winCondition()
+    public void addAllyUnit(GameObject u)
+    {
+        allAllyUnits.Add(u);
+        Debug.Log("Unit added, total units: " + allAllyUnits.Count);
+    }
+
+    public void removeAllyUnit(GameObject u)
+    {
+        allAllyUnits.Remove(u);
+        Debug.Log("Unit removed, total units: " + allAllyUnits.Count);
+        GameController.Instance.checkLose();
+    }
+
+    public void checkLose()
+    {
+        if (allAllyUnits.Count == 0) loseCondition();
+    }
+
+    //Ends the game.
+    private void winCondition()
 	{
         hud.ShowWinMessage();
+    }
+
+    private void loseCondition()
+    {
+        hud.ShowLoseMessage();
     }
 
     // Called when selected units are destroyed

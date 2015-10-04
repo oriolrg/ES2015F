@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class TownCenter : Focusable 
+public class Farm : Focusable
 {
     [SerializeField]
     private GameObject villagerPrefab;
-    
+
     void Start()
     {
         actions = new List<Action>() { CreateUnit, DestroyBuilding, Upgrade };
         ini();
-        //GameController.Instance.addAllyUnit(gameObject);
     }
 
     public void CreateUnit()
@@ -20,9 +19,9 @@ public class TownCenter : Focusable
 
     void DestroyBuilding()
     {
-        GameController.Instance.removeAllyUnit(gameObject);
         Destroy(gameObject, 3);
-        GameController.Instance.Invoke("ClearSelection",3);
+
+        GameController.Instance.Invoke("ClearSelection", 3);
     }
 
     void Upgrade()
