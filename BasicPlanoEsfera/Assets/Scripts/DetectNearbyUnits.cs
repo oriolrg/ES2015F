@@ -9,12 +9,16 @@ public class DetectNearbyUnits : MonoBehaviour {
 	public int nearbyAlliedUnits;
 	public int nearbyEnemyUnits;
 	public Text countText;
+	public float maxDistance;
+	public float radius;
 
 	// Use this for initialization
 	void Start () {
 
 		nearbyAlliedUnits = 1;
 		nearbyEnemyUnits = 0; 
+		maxDistance = 5;
+		radius = 2;
 		countText.text = "Allied units: " + nearbyAlliedUnits 
 			+ "\nEnemy units: " + nearbyEnemyUnits;
 	
@@ -22,6 +26,21 @@ public class DetectNearbyUnits : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		nearbyAlliedUnits = 1;
+		nearbyEnemyUnits = 0;
+
+		Collider[] hitColliders = Physics.OverlapSphere(transform.position,radius);
+		foreach(Collider c in hitColliders){
+			if(c.tag == "ally_Unit"){
+				nearbyAlliedUnits += 1;
+			}
+			if(c.tag == "enemy_Unit"){
+				nearbyEnemyUnits += 1;
+			}
+		}
+
+
 		countText.text = "Allied units: " + nearbyAlliedUnits 
 			+ "\nEnemy units: " + nearbyEnemyUnits;
 		if (nearbyEnemyUnits == 0) {
@@ -32,25 +51,6 @@ public class DetectNearbyUnits : MonoBehaviour {
 		}
 		if (nearbyEnemyUnits <= nearbyAlliedUnits && nearbyEnemyUnits > 0) {
 			countText.text = countText.text + "\nAction: More allies than enemies. ¡Kill Them!";
-		}
-	}
-
-	void OnTriggerEnter(Collider other){
-
-		if (other.gameObject.tag == "Player_Unit") {
-			nearbyEnemyUnits += 1;
-		}
-
-		if(other.gameObject.tag == "CPU_Unit") {
-			nearbyAlliedUnits += 1;
-		}
-	}
-
-	void OnTriggerExit(Collider other){
-		if (other.gameObject.tag == "Player_Unit") {
-			nearbyEnemyUnits -= 1;
-		} else if (other.gameObject.tag == "CPU_Unit") {
-			nearbyAlliedUnits -= 1;
 		}
 	}
 }
