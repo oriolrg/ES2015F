@@ -21,7 +21,17 @@ public class IngameHUD : MonoBehaviour
 
     [SerializeField] private Image previewPanel;
 
-    public void refresh( UnitData data, List<Action> actions )
+    public void Clear()
+    {
+        foreach (Transform child in actionPanel)
+            Destroy(child.gameObject);
+
+        foreach (Transform child in statPanel)
+            Destroy(child.gameObject);
+
+        previewPanel.sprite = null;
+    }
+    public void Refresh( UnitData data, List<Action> actions )
     {
         // Destroy actual widgets
         foreach (Transform child in actionPanel)

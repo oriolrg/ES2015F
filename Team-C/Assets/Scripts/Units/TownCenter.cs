@@ -21,7 +21,7 @@ public class TownCenter : Focusable
     {
         Destroy(gameObject, 3);
 
-        GameController.Instance.ClearSelection();
+        GameController.Instance.Invoke("ClearSelection",3);
     }
 
     void Upgrade()

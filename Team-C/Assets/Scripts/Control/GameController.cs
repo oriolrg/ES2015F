@@ -137,5 +137,6 @@ public class GameController : MonoBehaviour {
     public void ClearSelection()
     {
         selectedUnits.Clear();
+        hud.Clear();
     }
 }

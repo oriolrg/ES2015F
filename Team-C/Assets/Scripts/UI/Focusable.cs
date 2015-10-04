@@ -21,6 +21,6 @@ public abstract class Focusable : MonoBehaviour
 
     public void onFocus()
     {
-        hud.refresh(data, actions);
+        hud.Refresh(data, actions);
     }
 }
