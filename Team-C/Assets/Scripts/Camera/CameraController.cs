@@ -7,13 +7,13 @@ public class CameraController : MonoBehaviour {
     public float speed = 3; // Scale. Speed of the movement
 
     private Vector3 mRightDirection = Vector3.right; // Direction the camera should move when on the right edge
-    private Vector3 mLeftDirection = Vector3.left;
-    private Vector3 mUpDirection = Vector3.forward;
-    private Vector3 mDownDirection = Vector3.back;
+    private Vector3 mLeftDirection = Vector3.left; // Direction the camera should move when on the left edge
+    private Vector3 mUpDirection = Vector3.forward; // Direction the camera should move when on the up edge
+    private Vector3 mDownDirection = Vector3.back; // Direction the camera should move when on the down edge
 
 
-    public float smoothTime = 0.005f; //Controls the velocity of the movement
-    public float deltaMovement = 0.1f; //Error margin for the movement final position
+    //public float smoothTime = 0.005f; //Controls the velocity of the movement
+    //public float deltaMovement = 0.1f; //Error margin for the movement final position
 
     void Start(){
         
@@ -56,11 +56,18 @@ public class CameraController : MonoBehaviour {
     public void goTo(float x, float z){
 
         Vector3 newPosition = new Vector3(x, transform.position.y, z);
+        transform.position = newPosition;
 
         // StartCoroutine(SmoothMovement(newPosition));
-		transform.position = newPosition;
+
     }
 
+    public void goTo(Vector3 position) { goTo(position.x, position.z); }
+
+
+
+    /*
+    //Smooth movement of the camera to the position clicked in the minimap. 
     IEnumerator SmoothMovement(Vector3 newPosition)
     {
 
@@ -81,6 +88,7 @@ public class CameraController : MonoBehaviour {
             yield return null;
         }
     }
+    */
 
-    public void goTo(Vector3 position){ goTo (position.x, position.z); }
+    
 }

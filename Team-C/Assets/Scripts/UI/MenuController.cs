@@ -13,7 +13,7 @@ public class MenuController : MonoBehaviour {
     void Start()
 
     {
-        quitMenu.enabled = false;
+        quitMenu.enabled = false; //Quick menu disabled
 
     }
 
@@ -26,20 +26,24 @@ public class MenuController : MonoBehaviour {
         }
     }
 
-    public void ExitPress() //this function will be used on our Exit button
+    public void ExitPress() //This function will be used on our Exit button
 
     {
         quitMenu.enabled = true; //enable the Quit menu when we click the Exit button
-        startText.enabled = false; //then disable the Play and Exit buttons so they cannot be clicked
+
+        //Disable the Play and Exit buttons so they cannot be clicked
+        startText.enabled = false; 
         exitText.enabled = false;
 
     }
 
-    public void NoPress() //this function will be used for our "NO" button in our Quit Menu
+    public void NoPress() //This function will be used for our "NO" button in our Quit Menu
 
     {
-        quitMenu.enabled = false; //we'll disable the quit menu, meaning it won't be visible anymore
-        startText.enabled = true; //enable the Play and Exit buttons again so they can be clicked
+        quitMenu.enabled = false; //Disable the quit menu, meaning it won't be visible anymore
+
+        //Enable the Play and Exit buttons again 
+        startText.enabled = true; 
         exitText.enabled = true;
 
     }
@@ -49,10 +53,11 @@ public class MenuController : MonoBehaviour {
     {
         quitMenu.enabled = false;
         GetComponent<Canvas>().enabled = false;
+
         switch( menuType )
         {
             case MenuType.MainMenu:
-                Application.LoadLevel(1); //this will load our first level from our build settings
+                Application.LoadLevel(1); //this will load our first level 
                 break;
 
             case MenuType.PauseMenu:
@@ -69,10 +74,11 @@ public class MenuController : MonoBehaviour {
         switch( menuType )
         {
             case MenuType.MainMenu:
-                Application.Quit(); //this will quit our game. Note this will only work after building the game
+                Application.Quit(); //this will quit our game
                 break;
+
             case MenuType.PauseMenu:
-                Application.LoadLevel(0);
+                Application.LoadLevel(0);//this will return to our main menu
                 break;
         }
 
