@@ -7,60 +7,109 @@ public class Mascara : MonoBehaviour {
     private int radio = 1;
     private int sizePlane = 10;
     private float proporcion;
+    private Texture2D texture;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         //Todo este codigo tendra que ir en el metodo update y calcularse a cada frame.
         // Create a new 200x200 texture ARGB32 (32 bit with alpha) and no mipmaps
         sizeTexture = 200;
         radio = 1;
         sizePlane = 10;
 
+        //inicializamos la textura todo negra.
+        texture = new Texture2D(sizeTexture, sizeTexture, TextureFormat.ARGB32, false);
+        for (int i = 0; i < sizeTexture; i++)
+        {
+            for (int j = 0; j < sizeTexture; j++)
+            {
+                texture.SetPixel(i, j, new Color(1.0f, 1.0f, 1.0f, 1.0f));
+            }
+        }
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-        proporcion = (float)sizeTexture / sizePlane;
-
-        var texture = new Texture2D(sizeTexture, sizeTexture, TextureFormat.ARGB32, false);
-
-
-        Vector3 posicion = GameObject.Find("Personaje").transform.position;
-
-        float x = posicion[0];
-        float z = posicion[2];
-
-        print("Pues resulta que si que imprime");
-
-        print(posicion);
-        float zmax = (-20 * (z - 5)+20);
-        float zmin = (-20 * (z - 5)-20);
-        print("zmin: " + zmin + "/zmax: " + zmax);
-
-        float xmax = (-20 * (x - 5) + 20);
-        float xmin = (-20 * (x - 5) - 20);
-
-
-        int i = 0;
-        int j = 0;
+        //Ponemos todo el mapa visto en el ultimo frame como visitado sin visión
+        int i, j,k;
         for (i = 0; i < sizeTexture; i++)
         {
             for (j = 0; j < sizeTexture; j++)
             {
-                //el 5 es porque el plano esta centrado en el (0,0) por lo tanto va del -5 al 5
-                //if (j >(-20 * (z - 5)-20) && j < (-20 * (z - 5)+20) && i > (-20 * (x - 5)+20) && i < (-20 * (x - 5)-20))
-                if(i>xmin && i<xmax && j<zmax && j>zmin)
+
+                if (texture.GetPixel(i, j)[3] < 1)
                 {
-                    texture.SetPixel(i, j, new Color(1.0f, 1.0f, 1.0f, 0.0f));
-                }
-                    else
-                {
-                    texture.SetPixel(i, j, new Color(1.0f, 1.0f, 1.0f, 1.0f));
+                    texture.SetPixel(i, j, new Color(1.0f, 1.0f, 1.0f, 0.7f));
+
                 }
             }
         }
 
+
+        //cogemos todos los objetos en el mapa
+
+        Object[] objetos = GameObject.FindGameObjectsWithTag("Player_Unit");
+        GameObject g;
+
+        proporcion = (float)sizeTexture / sizePlane;
+
+
+
+
+        Vector3 posicion;
+        float x, z, xmin, xmax, zmin, zmax;
+
+
+        for (k = 0; k < objetos.Length; k++)
+        {
+            g = (GameObject)objetos[k];
+            posicion = g.transform.position;
+            x = posicion[0];
+            z = posicion[2];
+            // a ver que tal
+            x = -20 * (x - 5);
+            z = -20 * (z - 5);
+
+            //el 5 es porque el plano esta centrado en el (0,0) por lo tanto va del -5 al 5
+            //el -20 es la proporcion y el segundo +- 20 es la zona de visión.
+            zmax = (-20 * (z - 5) + 20);
+            zmin = (-20 * (z - 5) - 20);
+            xmax = (-20 * (x - 5) + 20);
+            xmin = (-20 * (x - 5) - 20);
+            for (i = 0; i < sizeTexture; i++)
+            {
+                for (j = 0; j < sizeTexture; j++)
+                {
+                    
+                    if    (  (Mathf.Pow((i-x),2)+Mathf.Pow((j-z),2) ) < 500)
+                    {
+                        texture.SetPixel(i, j, new Color(1.0f, 1.0f, 1.0f, 0.0f));
+                    }
+
+                }
+            }
+        }
+
+        //Pasamos a mirar que objetos de la CPU estan visibles
+        objetos = GameObject.FindGameObjectsWithTag("CPU_Unit");
+        int xfloor, xceil, zfloor, zceil;
+        for(k=0; k<objetos.Length; k++)
+        {
+            g = (GameObject)objetos[k];
+            posicion = g.transform.position;
+            x = posicion[0];
+            z = posicion[2];
+            x = -20 * (x - 5);
+            z = -20 * (z - 5);
+            xfloor = Mathf.FloorToInt(x);
+            zfloor = Mathf.FloorToInt(z);
+            xceil = Mathf.CeilToInt(x);
+            zceil = Mathf.CeilToInt(z);
+            g.GetComponent<Renderer>().enabled = (texture.GetPixel(xfloor, zfloor)[3] < 0.7) || (texture.GetPixel(xceil, zceil)[3] < 0.7) || g.GetComponent<Visible>().edificio;
+
+        }
 
 
 
