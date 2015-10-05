@@ -11,12 +11,11 @@ public class Infantry : Focusable
         actions = new List<Action>() { CreateBuilding, DestroyUnit };
         ini();
         Debug.Log("Start Vill");
-        //GameController.Instance.addAllyUnit(gameObject);
     }
 
     public void DestroyUnit()
     {
-        GameController.Instance.removeAllyUnit(gameObject);
+        GameController.Instance.removeUnit(gameObject);
         Destroy(gameObject, 2);
         GameController.Instance.Invoke("ClearSelection", 2);
     }

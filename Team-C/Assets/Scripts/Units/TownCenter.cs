@@ -13,14 +13,13 @@ public class TownCenter : Focusable
     {
         actions = new List<Action>() { CreateUnit, DestroyBuilding, Upgrade };
         ini();
-        //GameController.Instance.addAllyUnit(this.gameObject);
     }
 
     void Update()
     {
-        if (!isAdded && this.gameObject.tag == "Ally")
+        if (!isAdded)
         {
-            GameController.Instance.addAllyUnit(this.gameObject);
+            GameController.Instance.addUnit(this.gameObject);
             isAdded = true;
         }
     }
@@ -32,7 +31,7 @@ public class TownCenter : Focusable
 
     void DestroyBuilding()
     {
-        GameController.Instance.removeAllyUnit(gameObject);
+        GameController.Instance.removeUnit(gameObject);
         Destroy(gameObject, 3);
         GameController.Instance.Invoke("ClearSelection",3);
     }
@@ -40,5 +39,8 @@ public class TownCenter : Focusable
     void Upgrade()
     {
         GetComponent<Renderer>().material.color = Color.green;
+
+        //TEST: TO BE DELETED
+        GameController.Instance.killAllEnemies();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
 
 public class GameController : MonoBehaviour {
 	[SerializeField]
@@ -8,6 +9,7 @@ public class GameController : MonoBehaviour {
 
     //Keeps track of all allied units, add and remove with addAllyUnit and removeAllyUnit.
     private List<GameObject> allAllyUnits;
+    private List<GameObject> allEnemyUnits;
 
     public IngameHUD hud;
 
@@ -43,11 +45,11 @@ public class GameController : MonoBehaviour {
 		clickController = GetComponent<ClickController> ();
 
         allAllyUnits = new List<GameObject>();
-        //foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addAllyUnit(go);
+        allEnemyUnits = new List<GameObject>();
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update ()
     {
 		//Win Condition
 		var wonder = GameObject.FindGameObjectWithTag("Wonder");
@@ -139,17 +141,23 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-    public void addAllyUnit(GameObject u)
+    public void addUnit(GameObject u)
     {
-        allAllyUnits.Add(u);
-        //Debug.Log("Unit added, total units: " + allAllyUnits.Count);
+        if (u.tag == "Ally") allAllyUnits.Add(u);
+        if (u.tag == "Enemy") allEnemyUnits.Add(u);
     }
 
-    public void removeAllyUnit(GameObject u)
+    public void removeUnit(GameObject u)
     {
-        allAllyUnits.Remove(u);
-        //Debug.Log("Unit removed, total units: " + allAllyUnits.Count);
+        if (u.tag == "Ally") allAllyUnits.Remove(u);
+        if (u.tag == "Enemy") allEnemyUnits.Remove(u);
+        GameController.Instance.checkWin();
         GameController.Instance.checkLose();
+    }
+
+    public void checkWin()
+    {
+        if (allEnemyUnits.Count == 0) winCondition();
     }
 
     public void checkLose()
@@ -187,4 +195,12 @@ public class GameController : MonoBehaviour {
 
 		enabled = false;
 	}
+
+    //TEST: TO BE DELETED
+    public void killAllEnemies()
+    {
+        foreach (GameObject go in allEnemyUnits) Destroy(go, 0);
+        allEnemyUnits.Clear();
+        checkWin();
+    }
 }

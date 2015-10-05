@@ -14,21 +14,20 @@ public class Villager : Focusable
     {
         actions = new List<Action>() { CreateBuilding, DestroyUnit };
         ini();
-        //GameController.Instance.addAllyUnit(this.gameObject);
     }
 
     void Update()
     {
-        if (!isAdded && this.gameObject.tag == "Ally")
+        if (!isAdded)
         {
-            GameController.Instance.addAllyUnit(this.gameObject);
+            GameController.Instance.addUnit(this.gameObject);
             isAdded = true;
         }
     }
 
     public void DestroyUnit()
     {
-        GameController.Instance.removeAllyUnit(gameObject);
+        GameController.Instance.removeUnit(gameObject);
 		GetComponent<Animator> ().Play (deathAnimation.name);
         Destroy(gameObject, deathAnimation.averageDuration);
 		GameController.Instance.ClearSelection ();
