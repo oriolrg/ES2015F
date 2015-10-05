@@ -25,9 +25,13 @@ public class Villager : Focusable
         }
     }
 
-    public void DestroyUnit()
+    void OnDestroy()
     {
         GameController.Instance.removeUnit(gameObject);
+    }
+
+    public void DestroyUnit()
+    {
 		GetComponent<Animator> ().Play (deathAnimation.name);
         Destroy(gameObject, deathAnimation.averageDuration);
 		GameController.Instance.ClearSelection ();

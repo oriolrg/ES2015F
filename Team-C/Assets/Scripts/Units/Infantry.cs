@@ -25,9 +25,13 @@ public class Infantry : Focusable
         }
     }
 
-    public void DestroyUnit()
+    void OnDestroy()
     {
         GameController.Instance.removeUnit(gameObject);
+    }
+
+    public void DestroyUnit()
+    {
         Destroy(gameObject, 2);
         GameController.Instance.Invoke("ClearSelection", 2);
     }

@@ -24,6 +24,11 @@ public class TownCenter : Focusable
         }
     }
 
+    void OnDestroy()
+    {
+        GameController.Instance.removeUnit(gameObject);
+    }
+
     public void CreateUnit()
     {
         Instantiate(villagerPrefab, transform.position + transform.forward * 3, Quaternion.identity);
@@ -31,7 +36,6 @@ public class TownCenter : Focusable
 
     void DestroyBuilding()
     {
-        GameController.Instance.removeUnit(gameObject);
         Destroy(gameObject, 3);
         GameController.Instance.Invoke("ClearSelection",3);
     }
