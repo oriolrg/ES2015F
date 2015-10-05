@@ -32,10 +32,10 @@ public class DetectNearbyUnits : MonoBehaviour {
 
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position,radius);
 		foreach(Collider c in hitColliders){
-			if(c.tag == "ally_Unit"){
+			if(c.tag == "Ally"){
 				nearbyAlliedUnits += 1;
 			}
-			if(c.tag == "enemy_Unit"){
+			if(c.tag == "Enemy"){
 				nearbyEnemyUnits += 1;
 			}
 		}
