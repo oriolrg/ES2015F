@@ -83,7 +83,7 @@ public class GameController : MonoBehaviour {
 				}
 				else
 				{
-					Debug.Log("not Ally");
+					//Debug.Log("not Ally");
 				}
 			}
 			else
@@ -134,7 +134,7 @@ public class GameController : MonoBehaviour {
     public void addAllyUnit(GameObject u)
     {
         allAllyUnits.Add(u);
-        Debug.Log("Unit added, total units: " + allAllyUnits.Count);
+        //Debug.Log("Unit added, total units: " + allAllyUnits.Count);
     }
 
     public void removeAllyUnit(GameObject u)

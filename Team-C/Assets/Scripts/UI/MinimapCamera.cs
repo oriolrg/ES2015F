@@ -4,7 +4,7 @@ using System.Collections;
 public class MinimapCamera : MonoBehaviour {
 
 	private Camera minimapCamera;
-	[SerializeField] private Camera mainCamera = Camera.main;
+	[SerializeField] private Camera mainCamera;
 	[SerializeField] private Color colorMinimapRect = new Color(
 		255f, 240f, 245f, 25f
 	);
@@ -20,8 +20,10 @@ public class MinimapCamera : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//mainCamera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
-		mainCameraController = mainCamera.gameObject.GetComponent<CameraController> ();
+
+        mainCamera = Camera.main;
+        //mainCamera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
+        mainCameraController = mainCamera.gameObject.GetComponent<CameraController> ();
 
 		minimapCamera = GetComponent<Camera> ();
 		mouseClicked = false;

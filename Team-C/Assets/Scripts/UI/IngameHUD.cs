@@ -8,11 +8,11 @@ public delegate void Action();
 
 public class IngameHUD : MonoBehaviour
 {
-    [SerializeField] private GameObject winText;
+    [SerializeField] private GameObject winPanel;
 
-    [SerializeField] private GameObject loseText;
+    [SerializeField] private GameObject losePanel;
 
-    [SerializeField] private UISettings uiSettings;
+    [SerializeField] private UISettings uiSettingsData;
 
     [SerializeField] private Transform actionPanel;
 
@@ -22,7 +22,14 @@ public class IngameHUD : MonoBehaviour
 
     [SerializeField] private GameObject statPrefab;
 
-    [SerializeField] private Image previewPanel;
+    [SerializeField] private Image previewImage;
+
+    private Sprite defaultPreview;
+
+    void Start()
+    {
+        defaultPreview = previewImage.sprite;
+    }
 
     public void Clear()
     {
@@ -32,7 +39,7 @@ public class IngameHUD : MonoBehaviour
         foreach (Transform child in statPanel)
             Destroy(child.gameObject);
 
-        previewPanel.sprite = null;
+        previewImage.sprite = defaultPreview;
     }
     public void Refresh( UnitData data, List<Action> actions )
     {
@@ -44,7 +51,7 @@ public class IngameHUD : MonoBehaviour
             Destroy(child.gameObject);
 
         // Set preview image
-        previewPanel.sprite = data.preview;
+        previewImage.sprite = data.preview;
 
         // Set action buttons
         for ( int i = 0; i < data.actionSprites.Count; i++ )
@@ -66,17 +73,17 @@ public class IngameHUD : MonoBehaviour
 
             statGO.GetComponentInChildren<Text>().text = entry.Value.ToString();
             
-            statGO.GetComponentInChildren<Image>().sprite = uiSettings.statSprites[entry.Key];
+            statGO.GetComponentInChildren<Image>().sprite = uiSettingsData.statSprites[entry.Key];
         }
     }
 
     public void ShowWinMessage()
     {
-        winText.SetActive(true);
+        winPanel.SetActive(true);
     }
 
     internal void ShowLoseMessage()
     {
-        loseText.SetActive(true);
+        losePanel.SetActive(true);
     }
 }
