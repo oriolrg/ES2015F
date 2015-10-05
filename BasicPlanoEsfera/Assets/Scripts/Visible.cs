@@ -6,10 +6,7 @@ public class Visible : MonoBehaviour {
     public bool edificio;
 	// Use this for initialization
 	void Start () {
-        /*
-        visible = false;
-        edificio = false;
-        */
+
 	
     }
 	
