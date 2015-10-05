@@ -13,6 +13,8 @@ public class ClickController : MonoBehaviour {
 		Color color = provisionalPrefab.GetComponent<Renderer> ().material.color;
 		
 		provisionalPrefab.GetComponent<Renderer> ().material.color = new Color(color.r, color.g, color.b, 0.5f);
+
+        
 	}
 
 
