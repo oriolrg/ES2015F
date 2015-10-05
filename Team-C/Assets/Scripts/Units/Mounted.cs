@@ -14,7 +14,6 @@ public class Mounted : Focusable
     {
         actions = new List<Action>() { CreateBuilding, DestroyUnit };
         ini();
-        Debug.Log("Start Vill");
     }
 
     void Update()
