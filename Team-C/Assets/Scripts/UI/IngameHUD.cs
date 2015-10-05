@@ -8,6 +8,8 @@ public delegate void Action();
 
 public class IngameHUD : MonoBehaviour
 {
+	[SerializeField] private GameObject pauseMenu;
+
     [SerializeField] private GameObject winPanel;
 
     [SerializeField] private GameObject losePanel;
@@ -30,6 +32,14 @@ public class IngameHUD : MonoBehaviour
     {
         defaultPreview = previewImage.sprite;
     }
+
+	void Update()
+	{
+		if (Input.GetKeyDown (KeyCode.Escape)) 
+		{
+			pauseMenu.SetActive(true);
+		}
+	}
 
     public void Clear()
     {

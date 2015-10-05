@@ -17,15 +17,6 @@ public class MenuController : MonoBehaviour {
 
     }
 
-    void Update()
-    {
-        if( menuType == MenuType.PauseMenu && Input.GetKeyDown(KeyCode.Escape) )
-        {
-            GetComponent<Canvas>().enabled = true;
-            Time.timeScale = 0;
-        }
-    }
-
     public void ExitPress() //This function will be used on our Exit button
 
     {
@@ -52,7 +43,7 @@ public class MenuController : MonoBehaviour {
 
     {
         quitMenu.enabled = false;
-        GetComponent<Canvas>().enabled = false;
+		gameObject.SetActive (false);
 
         switch( menuType )
         {
