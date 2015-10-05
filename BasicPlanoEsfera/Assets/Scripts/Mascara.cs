@@ -50,7 +50,7 @@ public class Mascara : MonoBehaviour {
 
         //cogemos todos los objetos en el mapa
 
-        Object[] objetos = GameObject.FindGameObjectsWithTag("Player_Unit");
+        Object[] objetos = GameObject.FindGameObjectsWithTag("ally_Unit");
         GameObject g;
 
         proporcion = (float)sizeTexture / sizePlane;
@@ -93,7 +93,7 @@ public class Mascara : MonoBehaviour {
         }
 
         //Pasamos a mirar que objetos de la CPU estan visibles
-        objetos = GameObject.FindGameObjectsWithTag("CPU_Unit");
+        objetos = GameObject.FindGameObjectsWithTag("enemy_Unit");
         int xfloor, xceil, zfloor, zceil;
         for(k=0; k<objetos.Length; k++)
         {
