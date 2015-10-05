@@ -22,6 +22,6 @@ public class Villager : Focusable
 
     public void CreateBuilding()
     {
-        Instantiate(buildingPrefab, transform.position + transform.forward * 3, Quaternion.identity);
+		GameController.Instance.createBuilding (buildingPrefab);
     }
 }

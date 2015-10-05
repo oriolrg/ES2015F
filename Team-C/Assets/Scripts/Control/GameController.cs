@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour {
 	private bool isSelecting;
 	private Vector3 mPos;
 
+	private ClickController clickController;
+
     // Static singleton property
     public static GameController Instance { get; private set; }
 
@@ -35,6 +37,8 @@ public class GameController : MonoBehaviour {
     void Start ()
     {
 		selectedUnits = new List<GameObject> ();
+
+		clickController = GetComponent<ClickController> ();
 
         allAllyUnits = new List<GameObject>();
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addAllyUnit(go);
@@ -166,4 +170,12 @@ public class GameController : MonoBehaviour {
         selectedUnits.Clear();
         hud.Clear();
     }
+
+	public void createBuilding(GameObject prefab)
+	{
+
+		clickController.prefab = prefab;
+		clickController.enabled = true;
+		enabled = false;
+	}
 }
