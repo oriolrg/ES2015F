@@ -3,6 +3,7 @@ using System.Collections;
 
 public class MinimapCamera : MonoBehaviour {
 
+	[SerializeField] private GameObject ground;
 	private Camera minimapCamera;
 	[SerializeField] private Camera mainCamera;
 	[SerializeField] private Color colorMinimapRect = new Color(
@@ -122,17 +123,32 @@ public class MinimapCamera : MonoBehaviour {
 	private void updateCameraAttributes(){
 		// Updates orthographicSize so minimap can display whole ground
 		// Based on answer in http://answers.unity3d.com/questions/185141/ortographic-camera-show-all-of-the-object.html
-		Bounds bounds = GameObject.Find ("Ground").GetComponent<MeshRenderer> ().bounds;
+
+		Bounds bounds = ground.GetComponent<MeshRenderer> ().bounds;
 		float boundsAspectRatio = bounds.extents.x / bounds.extents.z;
 		float orthographicSize;
 
 		if (boundsAspectRatio < 1) {
-			orthographicSize = bounds.extents.y;
+			orthographicSize = bounds.extents.z;
 		} else {
 			orthographicSize = bounds.extents.x / 1;
 		}
 
 		minimapCamera.orthographicSize = orthographicSize;// * 1.15f; // also add extra size to display objects at border
+
+//		Vector3 bounds = ground.GetComponent<MeshRenderer> ().bounds.size / 2f;
+//		print (bounds.x);
+//		print (bounds.z);
+//		float boundsAspectRatio = bounds.x / bounds.z;
+//		float orthographicSize;
+//		
+//		if (boundsAspectRatio < 1) {
+//			orthographicSize = bounds.z;
+//		} else {
+//			orthographicSize = bounds.x / 1;
+//		}
+//		
+//		minimapCamera.orthographicSize = orthographicSize;// * 1.15f; // also add extra size to display objects at border
 	}
 
 	private void updateViewport(float aspect){

@@ -49,8 +49,10 @@ public class GameController : MonoBehaviour {
     {
 		//Win Condition
 		var wonder = GameObject.FindGameObjectWithTag("Wonder");
-		if (wonder != null)
+		if (wonder != null) 
+		{
 			winCondition ();
+		}
 
 		//Left Click Manager
 		if (Input.GetMouseButtonDown(0))
@@ -92,7 +94,7 @@ public class GameController : MonoBehaviour {
 			}
 			else
 			{
-				Debug.Log("No hit");
+				// Debug.Log("No hit");
 			}
 		}
 
@@ -173,9 +175,14 @@ public class GameController : MonoBehaviour {
 
 	public void createBuilding(GameObject prefab)
 	{
+		// old code with ClickController
+//		clickController.prefab = prefab;
+//		clickController.enabled = true;
 
-		clickController.prefab = prefab;
-		clickController.enabled = true;
+		// new code with BuildingPlacer
+		GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
+		building.AddComponent<BuildingPlacer> ().enabled = true;
+
 		enabled = false;
 	}
 }
