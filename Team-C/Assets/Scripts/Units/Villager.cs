@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class Villager : Focusable
 {
-    [SerializeField]
-    private GameObject buildingPrefab;
+    [SerializeField] private GameObject buildingPrefab;
+	[SerializeField] private AnimationClip deathAnimation;
 
     void Start()
     {
@@ -16,8 +16,9 @@ public class Villager : Focusable
     public void DestroyUnit()
     {
         GameController.Instance.removeAllyUnit(gameObject);
-        Destroy(gameObject, 2);
-        GameController.Instance.Invoke("ClearSelection",2);
+		GetComponent<Animator> ().Play (deathAnimation.name);
+        Destroy(gameObject, deathAnimation.averageDuration);
+		GameController.Instance.ClearSelection ();
     }
 
     public void CreateBuilding()
