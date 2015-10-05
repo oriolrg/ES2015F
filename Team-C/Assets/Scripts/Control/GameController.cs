@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour {
 	[SerializeField]
 	private List<GameObject> selectedUnits;
+
+    //Keeps track of all allied units, add and remove with addAllyUnit and removeAllyUnit.
     private List<GameObject> allAllyUnits;
 
     public IngameHUD hud;
@@ -41,7 +43,7 @@ public class GameController : MonoBehaviour {
 		clickController = GetComponent<ClickController> ();
 
         allAllyUnits = new List<GameObject>();
-        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addAllyUnit(go);
+        //foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addAllyUnit(go);
     }
 	
 	// Update is called once per frame
@@ -146,7 +148,7 @@ public class GameController : MonoBehaviour {
     public void removeAllyUnit(GameObject u)
     {
         allAllyUnits.Remove(u);
-        Debug.Log("Unit removed, total units: " + allAllyUnits.Count);
+        //Debug.Log("Unit removed, total units: " + allAllyUnits.Count);
         GameController.Instance.checkLose();
     }
 

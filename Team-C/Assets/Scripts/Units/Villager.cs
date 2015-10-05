@@ -6,11 +6,24 @@ public class Villager : Focusable
     [SerializeField] private GameObject buildingPrefab;
 	[SerializeField] private AnimationClip deathAnimation;
 
+    //Flag to add a newly created unit to the list of allied units. Will be true after it's
+    //added after the first frame.
+    private bool isAdded = false;
+
     void Start()
     {
         actions = new List<Action>() { CreateBuilding, DestroyUnit };
         ini();
-        //GameController.Instance.addAllyUnit(gameObject);
+        //GameController.Instance.addAllyUnit(this.gameObject);
+    }
+
+    void Update()
+    {
+        if (!isAdded && this.gameObject.tag == "Ally")
+        {
+            GameController.Instance.addAllyUnit(this.gameObject);
+            isAdded = true;
+        }
     }
 
     public void DestroyUnit()
