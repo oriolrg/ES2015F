@@ -5,7 +5,7 @@ public class Mascara : MonoBehaviour {
 
     private int sizeTexture = 200;
     private int radio = 1;
-    private int sizePlane = 10;
+    private float sizePlane = 100;
     private float proporcion;
     private Texture2D texture;
 
@@ -14,9 +14,7 @@ public class Mascara : MonoBehaviour {
     {
         //Todo este codigo tendra que ir en el metodo update y calcularse a cada frame.
         // Create a new 200x200 texture ARGB32 (32 bit with alpha) and no mipmaps
-        sizeTexture = 200;
-        radio = 1;
-        sizePlane = 10;
+        radio = 50;
 
         //inicializamos la textura todo negra.
         texture = new Texture2D(sizeTexture, sizeTexture, TextureFormat.ARGB32, false);
@@ -41,27 +39,21 @@ public class Mascara : MonoBehaviour {
 
                 if (texture.GetPixel(i, j)[3] < 1)
                 {
-                    texture.SetPixel(i, j, new Color(1.0f, 1.0f, 1.0f, 0.7f));
+                    texture.SetPixel(i, j, new Color(1.0f, 1.0f, 1.0f, 0.5f));
 
                 }
             }
         }
 
 
-        //cogemos todos los objetos en el mapa
+        //cogemos todos los objetos aliados en el mapa
 
         Object[] objetos = GameObject.FindGameObjectsWithTag("ally_Unit");
         GameObject g;
 
-        proporcion = (float)sizeTexture / sizePlane;
-
-
-
-
+        proporcion = -2;//(float)sizeTexture / sizePlane;
         Vector3 posicion;
-        float x, z, xmin, xmax, zmin, zmax;
-
-
+        float x, z;
         for (k = 0; k < objetos.Length; k++)
         {
             g = (GameObject)objetos[k];
@@ -69,21 +61,16 @@ public class Mascara : MonoBehaviour {
             x = posicion[0];
             z = posicion[2];
             // a ver que tal
-            x = -20 * (x - 5);
-            z = -20 * (z - 5);
+            x = proporcion* (x - sizePlane/2);
+            z = proporcion * (z - sizePlane/2);
 
-            //el 5 es porque el plano esta centrado en el (0,0) por lo tanto va del -5 al 5
-            //el -20 es la proporcion y el segundo +- 20 es la zona de visión.
-            zmax = (-20 * (z - 5) + 20);
-            zmin = (-20 * (z - 5) - 20);
-            xmax = (-20 * (x - 5) + 20);
-            xmin = (-20 * (x - 5) - 20);
+
             for (i = 0; i < sizeTexture; i++)
             {
                 for (j = 0; j < sizeTexture; j++)
                 {
                     
-                    if    (  (Mathf.Pow((i-x),2)+Mathf.Pow((j-z),2) ) < 500)
+                    if    (  (Mathf.Pow((i-x),2)+Mathf.Pow((j-z),2) ) < radio)
                     {
                         texture.SetPixel(i, j, new Color(1.0f, 1.0f, 1.0f, 0.0f));
                     }
@@ -101,13 +88,14 @@ public class Mascara : MonoBehaviour {
             posicion = g.transform.position;
             x = posicion[0];
             z = posicion[2];
-            x = -20 * (x - 5);
-            z = -20 * (z - 5);
+            x = proporcion * (x - sizePlane / 2);
+            z = proporcion * (z - sizePlane / 2);
             xfloor = Mathf.FloorToInt(x);
             zfloor = Mathf.FloorToInt(z);
             xceil = Mathf.CeilToInt(x);
             zceil = Mathf.CeilToInt(z);
-            g.GetComponent<Renderer>().enabled = (texture.GetPixel(xfloor, zfloor)[3] < 0.7) || (texture.GetPixel(xceil, zceil)[3] < 0.7) || g.GetComponent<Visible>().edificio;
+
+            g.GetComponent<Renderer>().enabled = (texture.GetPixel(xfloor, zfloor)[3] < 0.5) || (texture.GetPixel(xceil, zceil)[3] < 0.5) || g.GetComponent<Visible>().edificio;
 
         }
 

@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.IO;
 
-public class CustomEditor : MonoBehaviour 
+public class DataMenuEditor : MonoBehaviour 
 {
 
 	[MenuItem("Data/Create Unit Data")]
