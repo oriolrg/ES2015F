@@ -33,6 +33,9 @@ public class GameController : MonoBehaviour {
         // Here we save our singleton instance
         Instance = this;
 
+        allAllyUnits = new List<GameObject>();
+        allEnemyUnits = new List<GameObject>();
+
         // Furthermore we make sure that we don't destroy between scenes (this is optional)
         // not now!!! DontDestroyOnLoad(gameObject);
     }
@@ -43,9 +46,6 @@ public class GameController : MonoBehaviour {
 		selectedUnits = new List<GameObject> ();
 
 		clickController = GetComponent<ClickController> ();
-
-        allAllyUnits = new List<GameObject>();
-        allEnemyUnits = new List<GameObject>();
     }
 
     // Update is called once per frame
