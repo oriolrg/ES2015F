@@ -1,31 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class TownCenter : Focusable 
+public class TownCenter : Focusable
 {
-    [SerializeField] private GameObject villagerPrefab;
+    [SerializeField]
+    private GameObject villager;
 
-    void Start()
+    protected override List<Action> defineActions()
     {
-        actions = new List<Action>() { CreateUnit, DestroyBuilding, Upgrade };
-        ini();
-        GameController.Instance.addUnit(this.gameObject);
+        return new List<Action>() { CreateVillager, Upgrade, DestroyUnit };
     }
-
-    void OnDestroy()
+    
+    public void CreateVillager()
     {
-        GameController.Instance.removeUnit(gameObject);
-    }
-
-    public void CreateUnit()
-    {
-        Instantiate(villagerPrefab, transform.position + transform.forward * 3, Quaternion.identity);
-    }
-
-    void DestroyBuilding()
-    {
-        Destroy(gameObject, 3);
-        GameController.Instance.Invoke("ClearSelection",3);
+        Instantiate( villager, transform.position + transform.forward * 3, Quaternion.identity);
     }
 
     void Upgrade()

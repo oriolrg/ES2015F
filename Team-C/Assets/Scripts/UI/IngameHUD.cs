@@ -71,7 +71,7 @@ public class IngameHUD : MonoBehaviour
 
             Action act = actions[i];
 
-            actionGO.GetComponent<Button>().onClick.AddListener(() => { act(); } );
+            actionGO.GetComponent<Button>().onClick.AddListener(() => { act(); GameController.Instance.myEvent.Invoke(); } );
             actionGO.GetComponent<Image>().sprite = data.actionSprites[i];
         }
 

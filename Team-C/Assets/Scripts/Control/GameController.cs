@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UI;
-using System;
+using UnityEngine.Events;
 
 public class GameController : MonoBehaviour {
 	[SerializeField]
@@ -13,10 +12,9 @@ public class GameController : MonoBehaviour {
 
     public IngameHUD hud;
 
+    public UnityEvent myEvent;
 	private bool isSelecting;
 	private Vector3 mPos;
-
-	private ClickController clickController;
 
     // Static singleton property
     public static GameController Instance { get; private set; }
@@ -44,8 +42,6 @@ public class GameController : MonoBehaviour {
     void Start ()
     {
 		selectedUnits = new List<GameObject> ();
-
-		clickController = GetComponent<ClickController> ();
     }
 
     // Update is called once per frame
@@ -185,11 +181,6 @@ public class GameController : MonoBehaviour {
 
 	public void createBuilding(GameObject prefab)
 	{
-		// old code with ClickController
-//		clickController.prefab = prefab;
-//		clickController.enabled = true;
-
-		// new code with BuildingPlacer
 		GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 		building.AddComponent<BuildingPlacer> ().enabled = true;
 
@@ -202,5 +193,20 @@ public class GameController : MonoBehaviour {
         foreach (GameObject go in allEnemyUnits) Destroy(go, 0);
         allEnemyUnits.Clear();
         checkWin();
+    }
+
+    public void RefreshHUD( UnitData data, List<Action> actions )
+    {
+        hud.Refresh(data, actions );
+    }
+
+    public void destroyUnits()
+    {
+        print("hello");
+        for( int i = selectedUnits.Count - 1; i >= 0; i--)
+        {
+            Focusable f = selectedUnits[i].GetComponent<Focusable>();
+            f.DestroyUnit();
+        }
     }
 }

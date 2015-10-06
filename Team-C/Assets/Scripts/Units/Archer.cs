@@ -4,40 +4,15 @@ using System.Collections.Generic;
 public class Archer : Focusable
 {
     [SerializeField]
-    private GameObject buildingPrefab;
+    private GameObject wonder;
 
-    //Flag to add a newly created unit to the list of allied units. Will be true after it's
-    //added after the first frame.
-    private bool isAdded = false;
-
-    void Start()
+    protected override List<Action> defineActions()
     {
-        actions = new List<Action>() { CreateBuilding, DestroyUnit };
-        ini();
+        return new List<Action>() { CreateWonder, DestroyUnit };
     }
 
-    void Update()
+    public void CreateWonder()
     {
-        if (!isAdded)
-        {
-            GameController.Instance.addUnit(this.gameObject);
-            isAdded = true;
-        }
-    }
-
-    void OnDestroy()
-    {
-        GameController.Instance.removeUnit(gameObject);
-    }
-
-    public void DestroyUnit()
-    {
-        Destroy(gameObject, 2);
-        GameController.Instance.Invoke("ClearSelection", 2);
-    }
-
-    public void CreateBuilding()
-    {
-        Instantiate(buildingPrefab, transform.position + transform.forward * 3, Quaternion.identity);
+        GameController.Instance.createBuilding(wonder);
     }
 }
