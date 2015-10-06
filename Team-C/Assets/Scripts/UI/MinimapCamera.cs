@@ -120,6 +120,21 @@ public class MinimapCamera : MonoBehaviour {
 		}
 	}
 
+	public void mainCameraTransformUpdate(){
+		// Get position of where we clicked on the minimap
+		Ray ray = new Ray (mainCamera.transform.position, mainCamera.transform.forward);
+		RaycastHit hit;
+		
+		// Where is that point in the ground?
+		if (Physics.Raycast (ray, out hit, Mathf.Infinity, // max distance
+		                     minimapLookAtMask.value)) {
+			Debug.DrawLine (ray.origin, hit.point);
+			
+			// Set currentLookAtPoint so we can upload it in OnGUI
+			currentLookAtPoint = hit.point;
+		}
+	}
+
 	private void updateCameraAttributes(){
 		// Updates orthographicSize so minimap can display whole ground
 		// Based on answer in http://answers.unity3d.com/questions/185141/ortographic-camera-show-all-of-the-object.html
@@ -182,7 +197,8 @@ public class MinimapCamera : MonoBehaviour {
 		position -= size / 2f;
 
 		Rect rect = new Rect(position, size);
-		DrawQuad (rect, colorMinimapRect);
+		//DrawQuad (rect, colorMinimapRect);
+		RectDrawer.DrawScreenRectBorder (rect, 2, Color.white);
 	}
 
 	void DrawQuad(Rect position, Color color) {

@@ -46,4 +46,16 @@ public class RectDrawer : MonoBehaviour {
 		GUI.DrawTexture( rect, new Texture2D( 1, 1 ));
 		GUI.color = Color.white;
 	}
+
+	public static void DrawScreenRectBorder( Rect rect, float thickness, Color color )  
+	{
+		// Top
+		DrawScreenRect( new Rect( rect.xMin, rect.yMin, rect.width, thickness ), color );
+		// Left
+		DrawScreenRect( new Rect( rect.xMin, rect.yMin, thickness, rect.height ), color );
+		// Right
+		DrawScreenRect( new Rect( rect.xMax - thickness, rect.yMin, thickness, rect.height ), color);
+		// Bottom
+		DrawScreenRect( new Rect( rect.xMin, rect.yMax - thickness, rect.width, thickness ), color );
+	}
 }
