@@ -1,0 +1,25 @@
+Thank you for downloading Marble UI Kit by Jian Wei, www.madebyjw.com.
+You can follow me on twitter, @madebyjw or dribbble.com/madebyjw
+
+Enjoy!
+
+-----
+
+You're free to use the "Marble UI Kit" (user-interface elements) in any personal, 
+open-source or commercial work without obligation of payment (monetary or others) 
+or attribution. Do not sell this, host this (zip/packaged) or rent the UI kit 
+(either in existing or modified form).
+
+Intellectual Property rights are not transferred with the download of the UI kit.
+The author (madebyJW/Jian Wei) is not related or affilated to the software company 
+which used to design the UI kit.
+
+EXCEPT TO THE EXTENT REQUIRED BY APPLICABLE LAW, IN NO EVENT WILL JIAN WEI/MADEBYJW 
+BE LIABLE TO YOU ON ANY LEGAL THEORY FOR ANY SPECIAL, INCIDENTAL, CONSEQUENTIAL, 
+PUNITIVE OR EXEMPLARY DAMAGES ARISING OUT OF THE USE OF THE UI ELEMENTS, EVEN IF LICENSOR 
+HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+
+@madebyJW
+
+updated: 03/05/2013
