@@ -18,7 +18,7 @@ public class DetectNearbyUnits : MonoBehaviour {
 		nearbyAlliedUnits = 1;
 		nearbyEnemyUnits = 0; 
 		maxDistance = 5;
-		radius = 2;
+		radius = 4;
 		countText.text = "Allied units: " + nearbyAlliedUnits 
 			+ "\nEnemy units: " + nearbyEnemyUnits;
 	
@@ -27,7 +27,7 @@ public class DetectNearbyUnits : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		nearbyAlliedUnits = 1;
+		nearbyAlliedUnits = 0;
 		nearbyEnemyUnits = 0;
 
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position,radius);

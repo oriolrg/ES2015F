@@ -17,7 +17,7 @@ public class UnitMovement : MonoBehaviour {
 		seeker = GetComponent<Seeker>();
 		characterController = GetComponent<CharacterController>();
 		seeker.StartPath(transform.position,target.position,OnPathComplete);
-
+		target = (Transform)GameObject.Find("target").transform;
 		targetPos = target.position;
 	}
 	
@@ -45,7 +45,7 @@ public class UnitMovement : MonoBehaviour {
 		Vector3 dir = (path.vectorPath[currentWaypoint]-transform.position).normalized * speed;
 		characterController.SimpleMove(dir);
 
-		if (Vector3.Distance(transform.position,path.vectorPath[currentWaypoint]) < 2f){
+		if (Vector3.Distance(transform.position,path.vectorPath[currentWaypoint]) < 1.5f){
 			currentWaypoint++;
 		}
 	}
