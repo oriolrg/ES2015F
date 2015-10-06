@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
@@ -6,6 +6,9 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	private List<GameObject> selectedUnits;
     private List<GameObject> allAllyUnits;
+
+	[SerializeField]
+	private GameObject targetPrebab;
 
     public IngameHUD hud;
 
@@ -86,6 +89,22 @@ public class GameController : MonoBehaviour {
 			}
 		}
 
+		if (Input.GetMouseButtonDown(1))
+		{
+			//Click detection
+			RaycastHit hitInfo = new RaycastHit();
+			bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+			if (hit)
+			{
+				GameObject target = Instantiate(targetPrebab, hitInfo.point, Quaternion.identity) as GameObject;
+				moveUnits(target);
+			}
+			else
+			{
+				// Debug.Log("No hit");
+			}
+		}
+
 		//End of click
 		if( Input.GetMouseButtonUp( 0 ) )
 		{
@@ -128,6 +147,15 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	private void moveUnits(GameObject target)
+	{
+		foreach (var unit in selectedUnits) 
+		{
+			unit.GetComponentInParent<UnitMovement>().startMoving(target);
+			target.GetComponent<timerDeath>().AddUnit(unit);
+		}
+	}
+
     public void addAllyUnit(GameObject u)
     {
         allAllyUnits.Add(u);
@@ -150,6 +178,7 @@ public class GameController : MonoBehaviour {
     private void winCondition()
 	{
         hud.ShowWinMessage();
+		Time.timeScale = 0;
     }
 
     private void loseCondition()
