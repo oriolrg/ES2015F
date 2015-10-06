@@ -7,6 +7,7 @@ public class BuildingPlacer : MonoBehaviour {
 	private Color red = new Color(1f, 0f, 0f, 0.5f);
 
     private bool collision;//indicates if there is a collision
+	private int counterCollision;//indicates how many different collisions there are
 
 
 	void OnEnable()
@@ -19,11 +20,12 @@ public class BuildingPlacer : MonoBehaviour {
 		);
 
         collision = false;
+		counterCollision = 0;
     }
 
     void OnTriggerEnter(Collider col)
     {
-
+		counterCollision++;
         collision = true;
 
     }
@@ -31,7 +33,10 @@ public class BuildingPlacer : MonoBehaviour {
     void OnTriggerExit(Collider col)
     {
 
-        collision = false;
+		counterCollision--;
+		if (counterCollision == 0) {
+			collision = false;
+		}
 
     }
 	

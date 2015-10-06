@@ -3,8 +3,11 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour {
 
-    private float marginDelta = 10; // Pixels. The width border at the edge in which the movement work
-    public float speed = 3; // Scale. Speed of the movement
+
+	[SerializeField] float maxMarginDelta = 40; // Pixels. The width border at the edge in which the movement work
+	[SerializeField] float minMarginDelta = 1; // Pixels. The width border at the edge in which the movement work
+    
+    public float speed = 5; // Scale. Speed of the movement
 
     private Vector3 mRightDirection = Vector3.right; // Direction the camera should move when on the right edge
     private Vector3 mLeftDirection = Vector3.left; // Direction the camera should move when on the left edge
@@ -24,7 +27,7 @@ public class CameraController : MonoBehaviour {
     void Update(){
 		bool movement = false;
 
-        if ( (Input.mousePosition.x >= Screen.width - marginDelta) || (Input.GetKey(KeyCode.RightArrow)) || (Input.GetKey(KeyCode.D)) )
+		if ( (Input.mousePosition.x >= Screen.width - maxMarginDelta && Input.mousePosition.x <= Screen.width - minMarginDelta) || (Input.GetKey(KeyCode.RightArrow)) || (Input.GetKey(KeyCode.D)) )
         {
             // Move the camera to the right
             transform.position += mRightDirection * Time.deltaTime * speed;
@@ -32,7 +35,7 @@ public class CameraController : MonoBehaviour {
         }
 
 
-        if ( (Input.mousePosition.x <= marginDelta) || (Input.GetKey(KeyCode.LeftArrow)) || (Input.GetKey(KeyCode.A)) )
+		if ( (Input.mousePosition.x <= maxMarginDelta && Input.mousePosition.x >= minMarginDelta) || (Input.GetKey(KeyCode.LeftArrow)) || (Input.GetKey(KeyCode.A)) )
         {
             // Move the camera to the left
 			transform.position += mLeftDirection * Time.deltaTime * speed;
@@ -40,7 +43,7 @@ public class CameraController : MonoBehaviour {
         }
 
 
-        if ( (Input.mousePosition.y >= Screen.height - marginDelta) || (Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.W)) )
+		if ( (Input.mousePosition.y >= Screen.height - maxMarginDelta && Input.mousePosition.y <= Screen.height - minMarginDelta) || (Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.W)) )
         {
             // Move the camera up
 			transform.position += mUpDirection * Time.deltaTime * speed;
@@ -48,7 +51,7 @@ public class CameraController : MonoBehaviour {
         }
 
 
-        if ( (Input.mousePosition.y <= marginDelta) || (Input.GetKey(KeyCode.DownArrow)) || (Input.GetKey(KeyCode.S)) )
+		if ( (Input.mousePosition.y <= maxMarginDelta && Input.mousePosition.y >= minMarginDelta) || (Input.GetKey(KeyCode.DownArrow)) || (Input.GetKey(KeyCode.S)) )
         {
             // Move the camera down
 			transform.position += mDownDirection * Time.deltaTime * speed;
