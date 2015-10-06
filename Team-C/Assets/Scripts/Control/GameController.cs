@@ -68,24 +68,12 @@ public class GameController : MonoBehaviour {
 
 				GameObject selectedGO = hitInfo.transform.gameObject;
 				if (hitInfo.transform.gameObject.tag == "Ally")
-				{                   
-					if (Input.GetKey(KeyCode.LeftControl))
-					{
-						if (!selectedUnits.Contains(selectedGO)) selectedUnits.Add(selectedGO);
-						//Selection circle active
-						selectedGO.transform.Find("Selected").gameObject.SetActive(true);
-					}
-					else
-					{
-						foreach (var unit in selectedUnits) {
-							//Selection circle inactive
-							unit.transform.Find("Selected").gameObject.SetActive(false);
-						}
-						selectedUnits.Clear();
-                        selectedGO.GetComponent<Focusable>().onFocus();
-						selectedUnits.Add(selectedGO);
-						selectedGO.transform.Find("Selected").gameObject.SetActive(true);
-					}
+				{
+                    if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
+				
+                    selectedGO.GetComponent<Focusable>().onFocus();
+                    if (!selectedUnits.Contains(selectedGO)) selectedUnits.Add(selectedGO);
+                    selectedGO.transform.Find("Selected").gameObject.SetActive(true);
 				}
 				else
 				{
@@ -100,31 +88,34 @@ public class GameController : MonoBehaviour {
 
 		//End of click
 		if( Input.GetMouseButtonUp( 0 ) )
-		{		
-			isSelecting = false;
-			//We impose a size of 5 to detect a box.
-			//Box Selection
-			if ((mPos - Input.mousePosition).magnitude>5){
-				var camera = Camera.main;
-				var viewportBounds = RectDrawer.GetViewportBounds( camera, mPos, Input.mousePosition );
+		{
+            if (isSelecting)
+            {
+                isSelecting = false;
 
-				//Deselecting
-				foreach (var unit in selectedUnits) {
-					unit.transform.Find("Selected").gameObject.SetActive(false);
-				}
-				if (!Input.GetKey(KeyCode.LeftControl)) selectedUnits.Clear();
+                //We impose a size of 5 to detect a box.
+                //Box Selection
+                if ((mPos - Input.mousePosition).magnitude > 5)
+                {
+                    var camera = Camera.main;
+                    var viewportBounds = RectDrawer.GetViewportBounds(camera, mPos, Input.mousePosition);
 
-				//Selecting
-				foreach( var unit in FindObjectsOfType<GameObject>() )
-				{
-					//Units inside the rect get selected.
-					if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position )) & unit.tag=="Ally" & !selectedUnits.Contains(unit)) {
-						selectedUnits.Add(unit);
-						unit.transform.Find("Selected").gameObject.SetActive(true);
-					}
-				}
-			}
-		}
+                    //Deselecting
+                    if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
+
+                    //Selecting
+                    foreach (var unit in FindObjectsOfType<GameObject>())
+                    {
+                        //Units inside the rect get selected.
+                        if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position)) & unit.tag == "Ally" & !selectedUnits.Contains(unit))
+                        {
+                            selectedUnits.Add(unit);
+                            unit.transform.Find("Selected").gameObject.SetActive(true);
+                        }
+                    }
+                }
+            }
+	    }
 	}
 
 	void OnGUI()
@@ -169,6 +160,10 @@ public class GameController : MonoBehaviour {
     // Called when selected units are destroyed
     public void ClearSelection()
     {
+        foreach (var unit in selectedUnits)
+        {
+            unit.transform.Find("Selected").gameObject.SetActive(false);
+        }
         selectedUnits.Clear();
         hud.Clear();
     }
