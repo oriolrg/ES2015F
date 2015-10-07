@@ -144,7 +144,13 @@ public class GameController : MonoBehaviour {
             }
             Debug.LogError("MM");
         }
-	}
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Camera.main.transform.position = new Vector3(85, 13, -25);
+            Debug.Log("Future models");
+        }
+    }
 
 	void OnGUI()
 	{

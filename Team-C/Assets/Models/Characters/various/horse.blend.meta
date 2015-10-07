@@ -98,7 +98,289 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Default Take
+      takeName: Default Take
+      firstFrame: -1
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/root
+        weight: 1
+      - path: Armature/root/foot_control_L
+        weight: 1
+      - path: Armature/root/foot_control_L/foot_L
+        weight: 1
+      - path: Armature/root/foot_control_R
+        weight: 1
+      - path: Armature/root/foot_control_R/foot_R
+        weight: 1
+      - path: Armature/root/hand_control_L
+        weight: 1
+      - path: Armature/root/hand_control_L/hand_L
+        weight: 1
+      - path: Armature/root/hand_control_R
+        weight: 1
+      - path: Armature/root/hand_control_R/hand_R
+        weight: 1
+      - path: Armature/root/torso
+        weight: 1
+      - path: Armature/root/torso/chest
+        weight: 1
+      - path: Armature/root/torso/chest/lower_neck
+        weight: 1
+      - path: Armature/root/torso/chest/lower_neck/head_control
+        weight: 1
+      - path: Armature/root/torso/chest/lower_neck/head_control/head
+        weight: 1
+      - path: Armature/root/torso/chest/lower_neck/upper_neck
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_L
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_L/middle_arm_L
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_L/middle_arm_L/lower_arm_L
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_R
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_R/middle_arm_R
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_R/middle_arm_R/lower_arm_R
+        weight: 1
+      - path: Armature/root/torso/tail01
+        weight: 1
+      - path: Armature/root/torso/tail01/tail02
+        weight: 1
+      - path: Armature/root/torso/tail01/tail02/tail03
+        weight: 1
+      - path: Armature/root/torso/tail01/tail02/tail03/tail04
+        weight: 1
+      - path: Armature/root/torso/upper_leg_L
+        weight: 1
+      - path: Armature/root/torso/upper_leg_L/middle_leg_L
+        weight: 1
+      - path: Armature/root/torso/upper_leg_L/middle_leg_L/lower_leg_L
+        weight: 1
+      - path: Armature/root/torso/upper_leg_R
+        weight: 1
+      - path: Armature/root/torso/upper_leg_R/middle_leg_R
+        weight: 1
+      - path: Armature/root/torso/upper_leg_R/middle_leg_R/lower_leg_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: die
+      takeName: die
+      firstFrame: -1
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/root
+        weight: 1
+      - path: Armature/root/foot_control_L
+        weight: 1
+      - path: Armature/root/foot_control_L/foot_L
+        weight: 1
+      - path: Armature/root/foot_control_R
+        weight: 1
+      - path: Armature/root/foot_control_R/foot_R
+        weight: 1
+      - path: Armature/root/hand_control_L
+        weight: 1
+      - path: Armature/root/hand_control_L/hand_L
+        weight: 1
+      - path: Armature/root/hand_control_R
+        weight: 1
+      - path: Armature/root/hand_control_R/hand_R
+        weight: 1
+      - path: Armature/root/torso
+        weight: 1
+      - path: Armature/root/torso/chest
+        weight: 1
+      - path: Armature/root/torso/chest/lower_neck
+        weight: 1
+      - path: Armature/root/torso/chest/lower_neck/head_control
+        weight: 1
+      - path: Armature/root/torso/chest/lower_neck/head_control/head
+        weight: 1
+      - path: Armature/root/torso/chest/lower_neck/upper_neck
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_L
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_L/middle_arm_L
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_L/middle_arm_L/lower_arm_L
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_R
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_R/middle_arm_R
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_R/middle_arm_R/lower_arm_R
+        weight: 1
+      - path: Armature/root/torso/tail01
+        weight: 1
+      - path: Armature/root/torso/tail01/tail02
+        weight: 1
+      - path: Armature/root/torso/tail01/tail02/tail03
+        weight: 1
+      - path: Armature/root/torso/tail01/tail02/tail03/tail04
+        weight: 1
+      - path: Armature/root/torso/upper_leg_L
+        weight: 1
+      - path: Armature/root/torso/upper_leg_L/middle_leg_L
+        weight: 1
+      - path: Armature/root/torso/upper_leg_L/middle_leg_L/lower_leg_L
+        weight: 1
+      - path: Armature/root/torso/upper_leg_R
+        weight: 1
+      - path: Armature/root/torso/upper_leg_R/middle_leg_R
+        weight: 1
+      - path: Armature/root/torso/upper_leg_R/middle_leg_R/lower_leg_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: run
+      takeName: run
+      firstFrame: -1
+      lastFrame: 19
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/root
+        weight: 1
+      - path: Armature/root/foot_control_L
+        weight: 1
+      - path: Armature/root/foot_control_L/foot_L
+        weight: 1
+      - path: Armature/root/foot_control_R
+        weight: 1
+      - path: Armature/root/foot_control_R/foot_R
+        weight: 1
+      - path: Armature/root/hand_control_L
+        weight: 1
+      - path: Armature/root/hand_control_L/hand_L
+        weight: 1
+      - path: Armature/root/hand_control_R
+        weight: 1
+      - path: Armature/root/hand_control_R/hand_R
+        weight: 1
+      - path: Armature/root/torso
+        weight: 1
+      - path: Armature/root/torso/chest
+        weight: 1
+      - path: Armature/root/torso/chest/lower_neck
+        weight: 1
+      - path: Armature/root/torso/chest/lower_neck/head_control
+        weight: 1
+      - path: Armature/root/torso/chest/lower_neck/head_control/head
+        weight: 1
+      - path: Armature/root/torso/chest/lower_neck/upper_neck
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_L
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_L/middle_arm_L
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_L/middle_arm_L/lower_arm_L
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_R
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_R/middle_arm_R
+        weight: 1
+      - path: Armature/root/torso/chest/upper_arm_R/middle_arm_R/lower_arm_R
+        weight: 1
+      - path: Armature/root/torso/tail01
+        weight: 1
+      - path: Armature/root/torso/tail01/tail02
+        weight: 1
+      - path: Armature/root/torso/tail01/tail02/tail03
+        weight: 1
+      - path: Armature/root/torso/tail01/tail02/tail03/tail04
+        weight: 1
+      - path: Armature/root/torso/upper_leg_L
+        weight: 1
+      - path: Armature/root/torso/upper_leg_L/middle_leg_L
+        weight: 1
+      - path: Armature/root/torso/upper_leg_L/middle_leg_L/lower_leg_L
+        weight: 1
+      - path: Armature/root/torso/upper_leg_R
+        weight: 1
+      - path: Armature/root/torso/upper_leg_R/middle_leg_R
+        weight: 1
+      - path: Armature/root/torso/upper_leg_R/middle_leg_R/lower_leg_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -135,8 +417,10 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
