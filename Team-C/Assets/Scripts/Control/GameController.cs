@@ -132,6 +132,18 @@ public class GameController : MonoBehaviour {
                 }
             }
 	    }
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            for (int i = allAllyUnits.Count - 1; i >= 0; i--)
+            {
+                Animator a = allAllyUnits[i].GetComponent<Animator>();
+                if (a == null)
+                    a = allAllyUnits[i].GetComponentInParent<Animator>();
+                
+                a.SetBool("dead", true);
+            }
+            Debug.LogError("MM");
+        }
 	}
 
 	void OnGUI()

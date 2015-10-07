@@ -15,15 +15,16 @@ public class TownCenter : Focusable
 
     public void CreateUnit()
     {
-        Instantiate(villagerPrefab, transform.position + transform.forward * 3, Quaternion.identity);
         Instantiate(villagerPrefab, transform.position + transform.up * 10, Quaternion.identity);
     }
 
     void DestroyBuilding()
     {
         GameController.Instance.removeAllyUnit(gameObject);
+        GetComponent<Animator>().SetBool("dead", true);
         Destroy(gameObject, 3);
-        GameController.Instance.Invoke("ClearSelection",3);
+        GameController.Instance.ClearSelection();
+        
     }
 
     void Upgrade()
