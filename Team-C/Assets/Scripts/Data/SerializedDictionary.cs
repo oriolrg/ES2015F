@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
-using UnityEditor;
 
 [Serializable, DebuggerDisplay("Count = {Count}")]
 public class SerializableDictionary<TKey, TValue> : IDictionary<TKey, TValue>

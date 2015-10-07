@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class timerDeath : MonoBehaviour {
-	[SerializeField] 
-	private int timer = 20;
+public class timerDeath : MonoBehaviour
+{
 	private int cnt = 0;
 	
 	public List<GameObject> unitsGoingHere;

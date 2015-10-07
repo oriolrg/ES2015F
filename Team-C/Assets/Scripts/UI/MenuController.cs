@@ -13,6 +13,7 @@ public class MenuController : MonoBehaviour {
     void Start()
 
     {
+        if( menuType == MenuType.MainMenu)
         quitMenu.enabled = false; //Quick menu disabled
 
     }
@@ -20,11 +21,7 @@ public class MenuController : MonoBehaviour {
     public void ExitPress() //This function will be used on our Exit button
 
     {
-        quitMenu.enabled = true; //enable the Quit menu when we click the Exit button
-
-        //Disable the Play and Exit buttons so they cannot be clicked
-        startText.enabled = false; 
-        exitText.enabled = false;
+        Application.Quit();
 
     }
 
@@ -42,7 +39,8 @@ public class MenuController : MonoBehaviour {
     public void StartLevel() //this function will be used on our Play button
 
     {
-        quitMenu.enabled = false;
+        if (menuType == MenuType.MainMenu)
+            quitMenu.enabled = false;
 		gameObject.SetActive (false);
 
         switch( menuType )

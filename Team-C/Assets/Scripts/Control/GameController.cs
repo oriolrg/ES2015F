@@ -15,8 +15,6 @@ public class GameController : MonoBehaviour {
 	private bool isSelecting;
 	private Vector3 mPos;
 
-	private ClickController clickController;
-
     // Static singleton property
     public static GameController Instance { get; private set; }
 
@@ -40,8 +38,6 @@ public class GameController : MonoBehaviour {
     void Start ()
     {
 		selectedUnits = new List<GameObject> ();
-
-		clickController = GetComponent<ClickController> ();
 
         allAllyUnits = new List<GameObject>();
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addAllyUnit(go);
@@ -72,6 +68,7 @@ public class GameController : MonoBehaviour {
 				GameObject selectedGO = hitInfo.transform.gameObject;
 				if (hitInfo.transform.gameObject.tag == "Ally")
 				{
+                    print("Ally");
                     if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
 				
                     selectedGO.GetComponent<Focusable>().onFocus();
@@ -80,7 +77,7 @@ public class GameController : MonoBehaviour {
 				}
 				else
 				{
-					//Debug.Log("not Ally");
+					Debug.Log("not Ally");
 				}
 			}
 			else
@@ -178,12 +175,16 @@ public class GameController : MonoBehaviour {
     private void winCondition()
 	{
         hud.ShowWinMessage();
-		Time.timeScale = 0;
     }
 
     private void loseCondition()
     {
         hud.ShowLoseMessage();
+    }
+
+    public void reloadLevel()
+    {
+        Application.Quit();
     }
 
     // Called when selected units are destroyed

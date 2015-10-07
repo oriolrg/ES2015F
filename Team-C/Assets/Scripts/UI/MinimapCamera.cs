@@ -6,9 +6,6 @@ public class MinimapCamera : MonoBehaviour {
 	[SerializeField] private GameObject ground;
 	private Camera minimapCamera;
 	[SerializeField] private Camera mainCamera;
-	[SerializeField] private Color colorMinimapRect = new Color(
-		255f, 240f, 245f, 25f
-	);
 	[SerializeField] private LayerMask minimapLookAtMask = -1;
 	
 	private CameraController mainCameraController;

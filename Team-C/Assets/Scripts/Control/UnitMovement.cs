@@ -13,6 +13,8 @@ public class UnitMovement : MonoBehaviour {
 	CharacterController characterController;
 	Vector3 targetPos;
 
+    public AnimationClip runAnimation;
+
 	bool hasTarget;
 
 	// Use this for initialization
@@ -30,6 +32,7 @@ public class UnitMovement : MonoBehaviour {
 		seeker.StartPath(transform.position,target.transform.position,OnPathComplete);
 		targetPos = target.transform.position;
 		hasTarget = true;
+        GetComponent<Animator>().SetBool("running", true);
 	}
 	
 
@@ -57,13 +60,16 @@ public class UnitMovement : MonoBehaviour {
 			Vector3 dir = (path.vectorPath [currentWaypoint] - transform.position).normalized * speed;
 			characterController.SimpleMove (dir);
 
+            transform.LookAt(path.vectorPath[currentWaypoint]);
+
 			if (Vector3.Distance (transform.position, path.vectorPath [currentWaypoint]) < 1.5f) {
 				currentWaypoint++;
 			}
 			if((Vector3.Distance(transform.position,targetPos) < 2)){
 				target.GetComponent<timerDeath>().UnitLostTarget(gameObject);
 				hasTarget = false;
-			}
+                GetComponent<Animator>().SetBool("running", false);
+            }
 		}
 	}
 }
