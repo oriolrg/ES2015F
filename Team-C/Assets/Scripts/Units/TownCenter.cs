@@ -16,6 +16,7 @@ public class TownCenter : Focusable
     public void CreateUnit()
     {
         Instantiate(villagerPrefab, transform.position + transform.forward * 3, Quaternion.identity);
+        Instantiate(villagerPrefab, transform.position + transform.up * 10, Quaternion.identity);
     }
 
     void DestroyBuilding()
