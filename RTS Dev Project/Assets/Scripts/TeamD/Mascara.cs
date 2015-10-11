@@ -5,7 +5,7 @@ public class Mascara : MonoBehaviour {
 
     private int sizeTexture = 200;
     private int radio = 1;
-    private float sizePlane = 100;
+    private float sizePlane = 50;
     private float proporcion;
     private Texture2D texture;
 
@@ -23,13 +23,14 @@ public class Mascara : MonoBehaviour {
             for (int j = 0; j < sizeTexture; j++)
             {
                 texture.SetPixel(i, j, new Color(1.0f, 1.0f, 1.0f, 1.0f));
+                
             }
         }
     }
 	
 	// Update is called once per frame
 	void Update () {
-
+        /*
         //Ponemos todo el mapa visto en el ultimo frame como visitado sin visión
         int i, j,k;
         for (i = 0; i < sizeTexture; i++)
@@ -40,15 +41,15 @@ public class Mascara : MonoBehaviour {
                 if (texture.GetPixel(i, j)[3] < 1)
                 {
                     texture.SetPixel(i, j, new Color(1.0f, 1.0f, 1.0f, 0.5f));
-
+                   
                 }
             }
         }
-
+        
 
         //cogemos todos los objetos aliados en el mapa
 
-        Object[] objetos = GameObject.FindGameObjectsWithTag("ally_Unit");
+        Object[] objetos = GameObject.FindGameObjectsWithTag("Ally");
         GameObject g;
 
         proporcion = -2;//(float)sizeTexture / sizePlane;
@@ -77,8 +78,8 @@ public class Mascara : MonoBehaviour {
 
                 }
             }
-        }
-
+        }*/
+        /*
         //Pasamos a mirar que objetos de la CPU estan visibles
         objetos = GameObject.FindGameObjectsWithTag("enemy_Unit");
         int xfloor, xceil, zfloor, zceil;
@@ -98,14 +99,14 @@ public class Mascara : MonoBehaviour {
             g.GetComponent<Renderer>().enabled = (texture.GetPixel(xfloor, zfloor)[3] < 0.5) || (texture.GetPixel(xceil, zceil)[3] < 0.5) || g.GetComponent<Visible>().edificio;
 
         }
+        */
 
-
-
+        
         // Apply all SetPixel calls
         texture.Apply();
 
         // connect texture to material of GameObject this script is attached to
         GetComponent<Renderer>().material.mainTexture = texture;
-
+        
     }
 }
