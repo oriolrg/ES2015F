@@ -15,8 +15,12 @@ public class GameController : MonoBehaviour {
 	private bool isSelecting;
 	private Vector3 mPos;
 
+
+
     // Static singleton property
     public static GameController Instance { get; private set; }
+
+
 
     void Awake()
     {
@@ -41,6 +45,7 @@ public class GameController : MonoBehaviour {
 
         allAllyUnits = new List<GameObject>();
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addAllyUnit(go);
+
     }
 	
 	// Update is called once per frame
@@ -150,6 +155,10 @@ public class GameController : MonoBehaviour {
             Camera.main.transform.position = new Vector3(85, 13, -25);
             Debug.Log("Future models");
         }
+
+        
+   
+        
     }
 
 	void OnGUI()
@@ -192,7 +201,7 @@ public class GameController : MonoBehaviour {
     //Ends the game.
     private void winCondition()
 	{
-        hud.ShowWinMessage();
+        //hud.ShowWinMessage();
     }
 
     private void loseCondition()
@@ -218,14 +227,33 @@ public class GameController : MonoBehaviour {
 
 	public void createBuilding(GameObject prefab)
 	{
-		// old code with ClickController
-//		clickController.prefab = prefab;
-//		clickController.enabled = true;
+        // old code with ClickController
+        //		clickController.prefab = prefab;
+        //		clickController.enabled = true;
 
-		// new code with BuildingPlacer
+        // new code with BuildingPlacer
+
+        
+
 		GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
-		building.AddComponent<BuildingPlacer> ().enabled = true;
 
-		enabled = false;
+        foreach (var unit in selectedUnits) unit.GetComponent<Villager>().setBuildingToConstruct(building);
+
+        building.AddComponent<BuildingPlacer> ().enabled = true;
+
+       
+        enabled = false;
+        
 	}
+
+    public void buildingConstruction(Vector3 position)
+    {
+
+        GameObject target = Instantiate(targetPrebab, position, Quaternion.identity) as GameObject;
+        moveUnits(target);
+
+        //guardar array de units que estan construint per bloquejarles ¿?
+
+
+    }
 }

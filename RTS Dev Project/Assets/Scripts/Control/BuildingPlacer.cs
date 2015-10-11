@@ -78,13 +78,16 @@ public class BuildingPlacer : MonoBehaviour {
                 gameObject.GetComponent<Renderer> ().material.color = red;
 
 			} 
-			else if(Input.GetKeyDown (KeyCode.Mouse0))  
+			else if(Input.GetKeyUp (KeyCode.Mouse0))  
 			{
                 //When there is no collision and the mouse left button is clicked, remove the gameObject transparency and unable the script
 
-                gameObject.GetComponent<Renderer> ().material.color = originalColor;
+                gameObject.GetComponent<Renderer> ().material.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
 
-				GameController.Instance.enabled = true;
+                GameController.Instance.enabled = true;
+
+                GameController.Instance.buildingConstruction(gameObject.transform.position);
+
 				enabled = false;
 				Destroy (this);
 				
