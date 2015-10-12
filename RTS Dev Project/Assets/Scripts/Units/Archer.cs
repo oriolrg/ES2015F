@@ -4,15 +4,24 @@ using System.Collections.Generic;
 public class Archer : Focusable
 {
     [SerializeField]
-    private GameObject wonder;
+    private GameObject buildingPrefab;
 
-    protected override List<Action> defineActions()
+    void Start()
     {
-        return new List<Action>() { CreateWonder, DestroyUnit };
+        actions = new List<Action>() { CreateBuilding, DestroyUnit };
+        ini();
+        //GameController.Instance.addAllyUnit(gameObject);
     }
 
-    public void CreateWonder()
+    public void DestroyUnit()
     {
-        GameController.Instance.createBuilding(wonder);
+        GameController.Instance.removeAllyUnit(gameObject);
+        Destroy(gameObject, 2);
+        GameController.Instance.Invoke("ClearSelection", 2);
+    }
+
+    public void CreateBuilding()
+    {
+        Instantiate(buildingPrefab, transform.position + transform.forward * 3, Quaternion.identity);
     }
 }

@@ -3,16 +3,26 @@ using System.Collections.Generic;
 
 public class Villager : Focusable
 {
-    [SerializeField]
-    private GameObject wonder;
+    [SerializeField] private GameObject buildingPrefab;
+	[SerializeField] private AnimationClip deathAnimation;
 
-    protected override List<Action> defineActions()
+    void Start()
     {
-        return new List<Action>() { CreateWonder, DestroyUnit };
+        actions = new List<Action>() { CreateBuilding, DestroyUnit };
+        ini();
+        //GameController.Instance.addAllyUnit(gameObject);
     }
 
-    public void CreateWonder()
+    public void DestroyUnit()
     {
-        GameController.Instance.createBuilding(wonder);
+        GameController.Instance.removeAllyUnit(gameObject);
+		GetComponentInParent<Animator> ().SetBool("dead", true);
+        Destroy(gameObject, 3);
+		GameController.Instance.ClearSelection ();
+    }
+
+    public void CreateBuilding()
+    {
+		GameController.Instance.createBuilding (buildingPrefab);
     }
 }
