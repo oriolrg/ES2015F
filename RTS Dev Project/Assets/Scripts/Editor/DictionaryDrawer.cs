@@ -202,3 +202,6 @@ public class StatValueDictionaryDrawer : DictionaryDrawer<StatType, float> { }
 
 [CustomPropertyDrawer(typeof(StatSpriteDictionary))]
 public class StatSpriteDictionaryDrawer : DictionaryDrawer<StatType, Sprite> { }
+
+[CustomPropertyDrawer(typeof(CivilizationDataDictionary))]
+public class CivilizationDataDictionaryDrawer : DictionaryDrawer<Civilization, CivilizationData> { }

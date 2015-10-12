@@ -55,8 +55,4 @@ public class DataMenuEditor : MonoBehaviour
         }
         AssetDatabase.SaveAssets();
     }
-
-    public static void aaa() { }
-
-
 }
