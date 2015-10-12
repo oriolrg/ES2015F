@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: 29110bfdbdc2a9b4a8845e418705b32e
-timeCreated: 1443985439
+timeCreated: 1444689979
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - data: {fileID: 11400000, guid: 998dba7182f82fb4bbc832279c342239, type: 2}
+  - hud: {instanceID: 0}
+  - villagerPrefab: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

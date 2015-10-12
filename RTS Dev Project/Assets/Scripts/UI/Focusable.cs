@@ -12,6 +12,17 @@ public abstract class Focusable : MonoBehaviour
     [SerializeField]
     protected List<Action> actions;
 
+    protected bool inConstruction;
+
+    protected bool construct;
+
+
+    void start()
+    {
+        inConstruction = false;
+        construct = false;
+    }
+
     protected void ini()
     {
         hud = GameController.Instance.hud;
@@ -22,5 +33,15 @@ public abstract class Focusable : MonoBehaviour
     public void onFocus()
     {
         hud.Refresh(data, actions);
+    }
+
+    public void SetInConstruction(bool b)
+    {
+        inConstruction = b;Debug.Log(b);
+    }
+
+    public void ActivateBuildingToConstruct()
+    {
+        construct = true;
     }
 }

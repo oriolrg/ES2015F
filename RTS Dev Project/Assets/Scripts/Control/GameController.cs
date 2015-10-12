@@ -237,7 +237,7 @@ public class GameController : MonoBehaviour {
 
 		GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
-        foreach (var unit in selectedUnits) unit.GetComponent<Villager>().setBuildingToConstruct(building);
+        foreach (var unit in selectedUnits) unit.GetComponent<Villager>().SetBuildingToConstruct(building);
 
         building.AddComponent<BuildingPlacer> ().enabled = true;
 
@@ -251,6 +251,10 @@ public class GameController : MonoBehaviour {
 
         GameObject target = Instantiate(targetPrebab, position, Quaternion.identity) as GameObject;
         moveUnits(target);
+
+        
+
+        foreach (var unit in selectedUnits) unit.GetComponent<Focusable>().ActivateBuildingToConstruct();
 
         //guardar array de units que estan construint per bloquejarles ¿?
 

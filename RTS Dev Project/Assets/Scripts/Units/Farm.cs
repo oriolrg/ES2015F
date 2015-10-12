@@ -14,14 +14,21 @@ public class Farm : Focusable
 
     public void CreateUnit()
     {
-        Instantiate(villagerPrefab, transform.position + transform.forward * 3, Quaternion.identity);
+        if (!inConstruction)
+        {
+            Instantiate(villagerPrefab, transform.position + transform.forward * 3, Quaternion.identity);
+        }
+        
     }
 
     void DestroyBuilding()
     {
-        Destroy(gameObject, 3);
+        if (!inConstruction)
+        {
+            Destroy(gameObject, 3);
 
-        GameController.Instance.Invoke("ClearSelection", 3);
+            GameController.Instance.Invoke("ClearSelection", 3);
+        }
     }
 
     void Upgrade()
