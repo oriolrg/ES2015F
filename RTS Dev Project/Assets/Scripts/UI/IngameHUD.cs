@@ -2,9 +2,10 @@
 using UnityEngine.UI;
 
 using System.Collections.Generic;
-using System;
 
 public delegate void Action();
+
+public enum A { }
 
 public class IngameHUD : MonoBehaviour
 {

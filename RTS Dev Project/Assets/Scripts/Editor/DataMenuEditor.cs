@@ -29,6 +29,18 @@ public class DataMenuEditor : MonoBehaviour
         Selection.activeObject = data;
     }
 
+    [MenuItem("Data/Create Civilization Data")]
+    public static void CreateCivilizationData()
+    {
+        CivilizationData data = ScriptableObject.CreateInstance<CivilizationData>();
+
+        AssetDatabase.CreateAsset(data, "Assets/Data/Civilizations/newCivilization"+Random.Range(0,1000)+".asset");
+        AssetDatabase.SaveAssets();
+
+        EditorUtility.FocusProjectWindow();
+        Selection.activeObject = data;
+    }
+
     [MenuItem("Data/Save Data")]
     public static void SaveData()
     {
