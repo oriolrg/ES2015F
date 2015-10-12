@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
 
 public class GameController : MonoBehaviour {
 	[SerializeField]
@@ -32,6 +33,11 @@ public class GameController : MonoBehaviour {
 
         // Furthermore we make sure that we don't destroy between scenes (this is optional)
         // not now!!! DontDestroyOnLoad(gameObject);
+    }
+
+    internal void addCreation(Creation creation)
+    {
+        hud.addCreation(creation);
     }
 
     // Use this for initialization

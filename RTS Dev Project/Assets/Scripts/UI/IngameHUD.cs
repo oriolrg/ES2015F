@@ -17,36 +17,24 @@ public class IngameHUD : MonoBehaviour
     [SerializeField] private UISettings uiSettingsData;
 
     [SerializeField] private Transform actionPanel;
+    [SerializeField]
+    private Transform creationPanel;
 
-    [SerializeField] private Transform statPanel;
+    [SerializeField] private Text foodText;
+    [SerializeField] private Text woodText;
+    [SerializeField] private Text metalText;
 
     [SerializeField] private GameObject actionPrefab;
 
-    [SerializeField] private GameObject statPrefab;
+    [SerializeField] private GameObject creationPrefab;
 
     [SerializeField] private Image previewImage;
 
-    private Sprite defaultPreview;
-
-    void Start()
-    {
-        defaultPreview = previewImage.sprite;
-    }
-
-	void Update()
-	{
-		if (Input.GetKeyDown (KeyCode.Escape)) 
-		{
-			pauseMenu.SetActive(true);
-		}
-	}
+    [SerializeField] private Sprite defaultPreview;
 
     public void Clear()
     {
         foreach (Transform child in actionPanel)
-            Destroy(child.gameObject);
-
-        foreach (Transform child in statPanel)
             Destroy(child.gameObject);
 
         previewImage.sprite = defaultPreview;
@@ -55,9 +43,6 @@ public class IngameHUD : MonoBehaviour
     {
         // Destroy actual widgets
         foreach (Transform child in actionPanel)
-            Destroy(child.gameObject);
-
-        foreach (Transform child in statPanel)
             Destroy(child.gameObject);
 
         // Set preview image
@@ -72,19 +57,29 @@ public class IngameHUD : MonoBehaviour
             Action act = actions[i];
 
             actionGO.GetComponent<Button>().onClick.AddListener(() => { act(); } );
-            actionGO.GetComponent<Image>().sprite = data.actionSprites[i];
+            Transform insideImage = actionGO.transform.GetChild(0);
+            insideImage.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+            insideImage.GetComponent<Image>().sprite = data.actionSprites[i];
         }
 
-        // Set stats
-        foreach( KeyValuePair<StatType, float> entry in data.stats )
-        {
-            GameObject statGO = Instantiate(statPrefab) as GameObject;
-            statGO.transform.SetParent(statPanel);
+        
+    }
 
-            statGO.GetComponentInChildren<Text>().text = entry.Value.ToString();
-            
-            statGO.GetComponentInChildren<Image>().sprite = uiSettingsData.statSprites[entry.Key];
-        }
+    internal void addCreation(Creation creation)
+    {
+        GameObject creationGO = Instantiate(creationPrefab) as GameObject;
+        creationGO.transform.SetParent(creationPanel);
+
+        Image creationImage = creationGO.transform.GetChild(0).GetComponent<Image>();
+
+        creationImage.sprite = creation.sprite;
+
+        UnfillWithTime script = creationGO.GetComponentInChildren<UnfillWithTime>();
+        script.time = creation.time;
+        script.callback = creation.action;
+
+        script.enabled = true;
+
     }
 
     public void ShowWinMessage()
@@ -95,5 +90,10 @@ public class IngameHUD : MonoBehaviour
     internal void ShowLoseMessage()
     {
         losePanel.SetActive(true);
+    }
+
+    public void ShowPauseMenu()
+    {
+        pauseMenu.SetActive(true);
     }
 }
