@@ -5,9 +5,12 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour {
 	[SerializeField]
 	private List<GameObject> selectedUnits;
-    private List<GameObject> allAllyUnits;
 
-	[SerializeField]
+    //Keep track of all allied/enemy units, add and remove with addUnit and removeUnit.
+    private List<GameObject> allAllyUnits;
+    private List<GameObject> allEnemyUnits;
+
+    [SerializeField]
 	private GameObject targetPrebab;
 
     public IngameHUD hud;
@@ -30,6 +33,9 @@ public class GameController : MonoBehaviour {
         // Here we save our singleton instance
         Instance = this;
 
+        allAllyUnits = new List<GameObject>();
+        allEnemyUnits = new List<GameObject>();
+
         // Furthermore we make sure that we don't destroy between scenes (this is optional)
         // not now!!! DontDestroyOnLoad(gameObject);
     }
@@ -38,9 +44,6 @@ public class GameController : MonoBehaviour {
     void Start ()
     {
 		selectedUnits = new List<GameObject> ();
-
-        allAllyUnits = new List<GameObject>();
-        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addAllyUnit(go);
     }
 	
 	// Update is called once per frame
@@ -171,17 +174,23 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-    public void addAllyUnit(GameObject u)
+    public void addUnit(GameObject u)
     {
-        allAllyUnits.Add(u);
-        //Debug.Log("Unit added, total units: " + allAllyUnits.Count);
+        if (u.tag == "Ally") allAllyUnits.Add(u);
+        if (u.tag == "Enemy") allEnemyUnits.Add(u);
     }
 
-    public void removeAllyUnit(GameObject u)
+    public void removeUnit(GameObject u)
     {
-        allAllyUnits.Remove(u);
-        Debug.Log("Unit removed, total units: " + allAllyUnits.Count);
+        if (u.tag == "Ally") allAllyUnits.Remove(u);
+        if (u.tag == "Enemy") allEnemyUnits.Remove(u);
+        GameController.Instance.checkWin();
         GameController.Instance.checkLose();
+    }
+
+    public void checkWin()
+    {
+        if (allEnemyUnits.Count == 0) winCondition();
     }
 
     public void checkLose()
@@ -228,4 +237,12 @@ public class GameController : MonoBehaviour {
 
 		enabled = false;
 	}
+
+    //TEST: TO BE DELETED
+    public void killAllEnemies()
+    {
+        foreach (GameObject go in allEnemyUnits) Destroy(go, 0);
+        allEnemyUnits.Clear();
+        checkWin();
+    }
 }

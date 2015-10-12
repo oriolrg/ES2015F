@@ -4,25 +4,15 @@ using System.Collections.Generic;
 public class Mounted : Focusable
 {
     [SerializeField]
-    private GameObject buildingPrefab;
+    private GameObject wonder;
 
-    void Start()
+    protected override List<Action> defineActions()
     {
-        actions = new List<Action>() { CreateBuilding, DestroyUnit };
-        ini();
-        Debug.Log("Start Vill");
-        //GameController.Instance.addAllyUnit(gameObject);
+        return new List<Action>() { CreateWonder, DestroyUnit };
     }
 
-    public void DestroyUnit()
+    public void CreateWonder()
     {
-        GameController.Instance.removeAllyUnit(gameObject);
-        Destroy(gameObject, 2);
-        GameController.Instance.Invoke("ClearSelection", 2);
-    }
-
-    public void CreateBuilding()
-    {
-        Instantiate(buildingPrefab, transform.position + transform.forward * 3, Quaternion.identity);
+        GameController.Instance.createBuilding(wonder);
     }
 }
