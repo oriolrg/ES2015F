@@ -41,6 +41,7 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
         if (GUI.Button(buttonRect, new GUIContent("+", "Add item"), EditorStyles.miniButton))
         {
             AddNewItem();
+            EditorUtility.SetDirty(property.serializedObject.targetObject);
         }
 
         buttonRect.x -= kButtonWidth;
@@ -133,7 +134,6 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
             { typeof(Vector3), (rect, value) => EditorGUI.Vector3Field(rect, GUIContent.none, (Vector3)value) },
             { typeof(Bounds), (rect, value) => EditorGUI.BoundsField(rect, (Bounds)value) },
             { typeof(Rect), (rect, value) => EditorGUI.RectField(rect, (Rect)value) },
-            { typeof(StatType), (rect,value) => EditorGUI.EnumPopup(rect, (StatType) value) },
         };
 
     private static T DoField<T>(Rect rect, Type type, T value)
@@ -162,12 +162,14 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
         TK key;
         if (typeof(TK) == typeof(string))
             key = (TK)(object)"";
-        else if (typeof(TK) == typeof(StatType))
+        else if (typeof(TK).IsEnum)
         {
-            key = (TK)(object) StatType.Health;
+
             int i = 0;
             bool found = false;
-            Array types = Enum.GetValues(typeof(StatType));
+            Array types = Enum.GetValues(typeof(TK));
+
+            key = (TK)types.GetValue(0);
             while ( i < types.Length && !found )
             {
                 key = (TK)types.GetValue(i);
@@ -177,7 +179,7 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
             }
             if(!found)
             {
-                Debug.Log("All keys used.");
+                Debug.LogError("All keys used in this dictionary.");
                 return;
             }
             
@@ -196,12 +198,3 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
         }
     }
 }
-
-[CustomPropertyDrawer(typeof(StatValueDictionary))]
-public class StatValueDictionaryDrawer : DictionaryDrawer<StatType, float> { }
-
-[CustomPropertyDrawer(typeof(StatSpriteDictionary))]
-public class StatSpriteDictionaryDrawer : DictionaryDrawer<StatType, Sprite> { }
-
-[CustomPropertyDrawer(typeof(CivilizationDataDictionary))]
-public class CivilizationDataDictionaryDrawer : DictionaryDrawer<Civilization, CivilizationData> { }

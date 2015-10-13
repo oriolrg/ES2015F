@@ -7,12 +7,23 @@ public class HUD : MonoBehaviour
     [SerializeField] private UISettings data;
     [SerializeField] private List<Image> panels;
     [SerializeField] private Image flagImage;
-
-    private Sprite panel;
-
+    [SerializeField] private ResourceTextDictionary resourceTexts;
+    [SerializeField] private RectTransform healthImage;
+    private Sprite panelSprite;
+    public Unit testUnit;
+    public Troop testTroop;
+    public GameObject blockPrefab;
+    [SerializeField] RectTransform troopPanel;
+    // Test
     void Start()
     {
-        setCivilization(Civilization.Egyptians);
+        setCivilization(Civilization.Greeks);
+        updateResource(Resource.Food, 100);
+        updateResource(Resource.Wood, 100);
+        updateResource(Resource.Metal, 100);
+        updateResource(Resource.Population, 2);
+        updateHealth(testUnit);
+        updateSelection(testTroop);
     }
 
     // Changes the UI depending on the chosen civilization
@@ -25,7 +36,7 @@ public class HUD : MonoBehaviour
         Sprite panel = civilizationData.PanelSprite;
 
         // Store the civilization panel sprite for creating future dynamic panels
-        this.panel = panel;
+        this.panelSprite = panel;
 
         // Change the sprite of each panel
         foreach ( Image image in panels )
@@ -37,18 +48,36 @@ public class HUD : MonoBehaviour
         flagImage.sprite = flag;
     }
 
+    // Updates the text of a resource. resourceTexts should be filled within inspector
     public void updateResource( Resource resource, int value )
     {
+        // Get the Text component that corresponds to this resource
+        Text text = resourceTexts[resource];
 
+        // Show the value
+        text.text = value.ToString();
     }
 
     public void updateSelection( Troop troop )
     {
+        foreach( Unit unit in troop.units )
+        {
+            GameObject block = Instantiate(blockPrefab) as GameObject;
+            block.transform.SetParent(troopPanel);
 
+            Image background = block.GetComponent<Image>();
+            background.sprite = panelSprite;
+
+            Image foreground = block.transform.GetChild(0).GetComponent<Image>();
+            foreground.sprite = unit.Preview;
+        }
+        //Unit focusedUnit = troop.FocusedUnit;
     }
 
-    public void updateLife( int value )
+    public void updateHealth( Unit unit )
     {
-
+        // Set the health ratio : current / total as length of the health image
+        print(unit.HealthRatio);
+        healthImage.localScale = new Vector3(unit.HealthRatio, 1, 1 );
     }
 }

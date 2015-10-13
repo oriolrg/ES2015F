@@ -51,7 +51,7 @@ public class BuildingPlacer : MonoBehaviour {
 		hits = Physics.RaycastAll(ray);
 		
 		bool groundHitFound = false;
-		RaycastHit groundHit;
+		RaycastHit groundHit = default(RaycastHit); // ignore uninitialized error
 		
 		foreach (RaycastHit hit in hits) 
 		{

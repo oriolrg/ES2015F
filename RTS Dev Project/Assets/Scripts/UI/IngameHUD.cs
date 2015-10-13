@@ -3,10 +3,6 @@ using UnityEngine.UI;
 
 using System.Collections.Generic;
 
-public delegate void Action();
-
-public enum A { }
-
 public class IngameHUD : MonoBehaviour
 {
 	[SerializeField] private GameObject pauseMenu;
@@ -40,7 +36,7 @@ public class IngameHUD : MonoBehaviour
 
         previewImage.sprite = defaultPreview;
     }
-    public void Refresh( UnitData data, List<Action> actions )
+    public void Refresh( UnitData data, List<Command> actions )
     {
         // Destroy actual widgets
         foreach (Transform child in actionPanel)
@@ -55,7 +51,7 @@ public class IngameHUD : MonoBehaviour
             GameObject actionGO = Instantiate(actionPrefab) as GameObject;
             actionGO.transform.SetParent( actionPanel );
 
-            Action act = actions[i];
+            Command act = actions[i];
 
             actionGO.GetComponent<Button>().onClick.AddListener(() => { act(); } );
             Transform insideImage = actionGO.transform.GetChild(0);

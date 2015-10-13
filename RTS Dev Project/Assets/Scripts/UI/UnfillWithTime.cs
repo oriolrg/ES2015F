@@ -6,7 +6,7 @@ public class UnfillWithTime : MonoBehaviour {
 
 	public float time = 5;
 	public float remaining = 5;
-    public Action callback;
+    public Command callback;
 
 	// Use this for initialization
 	void OnEnable () 

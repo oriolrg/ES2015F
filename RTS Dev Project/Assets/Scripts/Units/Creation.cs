@@ -5,9 +5,9 @@ public struct Creation
 {
     public float time;
     public Sprite sprite;
-    public Action action;
+    public Command action;
 
-    public Creation( float _time, Sprite _sprite, Action _action )
+    public Creation( float _time, Sprite _sprite, Command _action )
     {
         time = _time;
         sprite = _sprite;

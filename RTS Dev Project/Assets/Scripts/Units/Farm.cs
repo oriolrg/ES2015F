@@ -8,7 +8,7 @@ public class Farm : Focusable
 
     void Start()
     {
-        actions = new List<Action>() { CreateUnit, DestroyBuilding, Upgrade };
+        actions = new List<Command>() { CreateUnit, DestroyBuilding, Upgrade };
         ini();
     }
 

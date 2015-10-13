@@ -8,7 +8,7 @@ public class TownCenter : Focusable
     
     void Start()
     {
-        actions = new List<Action>() { CreateUnit, DestroyBuilding, Upgrade };
+        actions = new List<Command>() { CreateUnit, DestroyBuilding, Upgrade };
         ini();
         //GameController.Instance.addAllyUnit(gameObject);
     }

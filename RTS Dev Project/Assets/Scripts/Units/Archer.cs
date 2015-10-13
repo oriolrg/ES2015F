@@ -8,7 +8,7 @@ public class Archer : Focusable
 
     void Start()
     {
-        actions = new List<Action>() { CreateBuilding, DestroyUnit };
+        actions = new List<Command>() { CreateBuilding, DestroyUnit };
         ini();
         //GameController.Instance.addAllyUnit(gameObject);
     }

@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
-public class Unit : MonoBehaviour {
+public class Unit : MonoBehaviour
+{
+    [SerializeField] private int health;
+    [SerializeField] private int maxHealth;
+    public List<DelayedAction> DelayedActions{ get; private set; }
+    public float HealthRatio { get { return health * 1f / maxHealth; }}
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    [SerializeField] private UnitData data;
+    public Sprite Preview { get { return data.preview; } }
+    
 }

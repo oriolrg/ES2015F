@@ -10,7 +10,7 @@ public abstract class Focusable : MonoBehaviour
     protected IngameHUD hud;
 
     [SerializeField]
-    protected List<Action> actions;
+    protected List<Command> actions;
 
     protected void ini()
     {
