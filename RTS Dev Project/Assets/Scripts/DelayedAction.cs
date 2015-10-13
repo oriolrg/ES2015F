@@ -1,12 +1,12 @@
 ﻿
 public class QueuedAction
 {
-    private Action action;
+    private ActionData action;
     private float remainingTime;
     private Command command;
     public float TimeRatio { get { return remainingTime / action.requiredTime; } }
     
-    public QueuedAction( Command command, Action action )
+    public QueuedAction( Command command, ActionData action )
     {
         this.action = action;
         this.command = command;

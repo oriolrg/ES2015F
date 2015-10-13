@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Action : ScriptableObject
+public class ActionData : ScriptableObject
 {
     public string description;
     public Sprite sprite;

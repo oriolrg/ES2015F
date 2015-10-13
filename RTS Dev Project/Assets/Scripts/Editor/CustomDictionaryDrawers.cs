@@ -3,10 +3,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CustomPropertyDrawer(typeof(StatValueDictionary))]
-public class StatValueDictionaryDrawer : DictionaryDrawer<StatType, float> { }
+public class StatValueDictionaryDrawer : DictionaryDrawer<Stat, float> { }
 
 [CustomPropertyDrawer(typeof(StatSpriteDictionary))]
-public class StatSpriteDictionaryDrawer : DictionaryDrawer<StatType, Sprite> { }
+public class StatSpriteDictionaryDrawer : DictionaryDrawer<Stat, Sprite> { }
 
 [CustomPropertyDrawer(typeof(CivilizationDataDictionary))]
 public class CivilizationDataDictionaryDrawer : DictionaryDrawer<Civilization, CivilizationData> { }

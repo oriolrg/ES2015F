@@ -9,14 +9,14 @@ public abstract class Unit : MonoBehaviour
 
     [SerializeField] private float health;
 
-    public float HealthRatio { get { return health * 1f / data.stats[StatType.Health]; }}
+    public float HealthRatio { get { return health * 1f / data.stats[Stat.Health]; }}
     public Sprite Preview { get { return data.preview; } }
 
     protected abstract List<Command> defineCommands();
 
-    void Start()
+    void Awake()
     {
-        health = data.stats[StatType.Health];
+        health = data.stats[Stat.Health];
         
         // Get the commands set in the subclass
         List<Command> list = defineCommands();
@@ -41,4 +41,8 @@ public abstract class Unit : MonoBehaviour
     {
         Debug.LogError("No command assigned to this action.");
     }
+    
+    public UnitData getData() { return data; }
+    public List<Command> getCommands() { return commands; }
+
 }

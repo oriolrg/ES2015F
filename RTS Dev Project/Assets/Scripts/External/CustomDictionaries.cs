@@ -1,9 +1,15 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
 
-// Concrete types of generic classes to be able to serialize them within Unity.
+
 [Serializable]
-public class StatValueDictionary : SerializableDictionary<StatType, float> { }
+public class StatSpriteDictionary : SerializableDictionary<Stat, Sprite> { }
+[Serializable]
+public class CivilizationDataDictionary : SerializableDictionary<Civilization, CivilizationData> { }
+
+[Serializable]
+public class StatValueDictionary : SerializableDictionary<Stat, float> { }
 
 [Serializable]
 public class ResourceTextDictionary : SerializableDictionary<Resource, Text> { }

@@ -4,53 +4,38 @@ using System.IO;
 
 public class DataMenuEditor : MonoBehaviour 
 {
-
-	[MenuItem("Data/Create Unit Data")]
-    public static void CreateUnitPack()
+    public static void CreateAsset<T>(string path) where T : ScriptableObject
     {
-        UnitData data = ScriptableObject.CreateInstance<UnitData>();
-        
-        AssetDatabase.CreateAsset(data, "Assets/Data/NewUnitData"+Random.Range(0,1000)+".asset");
+        T data = ScriptableObject.CreateInstance<T>();
+        AssetDatabase.CreateAsset(data, string.Format("Assets/Data/{0}/{1}.asset",path, Random.Range(0, 1000)));
         AssetDatabase.SaveAssets();
-        
+
         EditorUtility.FocusProjectWindow();
         Selection.activeObject = data;
+    }
+
+	[MenuItem("Data/Create Unit Data")]
+    public static void CreateUnitData()
+    {
+        CreateAsset<UnitData>("Units");
     }
 
     [MenuItem("Data/Create UI Settings")]
     public static void CreateUISettings()
     {
-        UISettings data = ScriptableObject.CreateInstance<UISettings>();
-
-        AssetDatabase.CreateAsset(data, "Assets/Data/UISettings.asset");
-        AssetDatabase.SaveAssets();
-
-        EditorUtility.FocusProjectWindow();
-        Selection.activeObject = data;
+        CreateAsset<UISettings>("Settings");
     }
 
     [MenuItem("Data/Create Civilization Data")]
     public static void CreateCivilizationData()
     {
-        CivilizationData data = ScriptableObject.CreateInstance<CivilizationData>();
-
-        AssetDatabase.CreateAsset(data, "Assets/Data/Civilizations/newCivilization"+Random.Range(0,1000)+".asset");
-        AssetDatabase.SaveAssets();
-
-        EditorUtility.FocusProjectWindow();
-        Selection.activeObject = data;
+        CreateAsset<CivilizationData>("Civilizations");
     }
 
     [MenuItem("Data/Create Action Data")]
     public static void CreateActionData()
     {
-        Action data = ScriptableObject.CreateInstance<Action>();
-
-        AssetDatabase.CreateAsset(data, "Assets/Data/Actions/action" + Random.Range(0, 1000) + ".asset");
-        AssetDatabase.SaveAssets();
-
-        EditorUtility.FocusProjectWindow();
-        Selection.activeObject = data;
+        CreateAsset<ActionData>("Actions");
     }
 
     [MenuItem("Data/Save Data")]

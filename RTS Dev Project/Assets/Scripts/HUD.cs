@@ -8,13 +8,16 @@ public class HUD : MonoBehaviour
     [SerializeField] private List<Image> panels;
     [SerializeField] private Image flagImage;
     [SerializeField] private ResourceTextDictionary resourceTexts;
+    [SerializeField] RectTransform troopPanel;
+    [SerializeField] RectTransform actionPanel;
+    [SerializeField] Image previewImage;
     [SerializeField] private RectTransform healthImage;
-    private Sprite panelSprite;
+
+    // Test
+    public Sprite panelSprite;
     public Unit testUnit;
     public Troop testTroop;
-    public GameObject blockPrefab;
-    [SerializeField] RectTransform troopPanel;
-    // Test
+    
     void Start()
     {
         setCivilization(Civilization.Greeks);
@@ -25,6 +28,8 @@ public class HUD : MonoBehaviour
         updateHealth(testUnit);
         updateSelection(testTroop);
     }
+
+    // End test
 
     // Changes the UI depending on the chosen civilization
     public void setCivilization( Civilization civilization )
@@ -62,7 +67,7 @@ public class HUD : MonoBehaviour
     {
         foreach( Unit unit in troop.units )
         {
-            GameObject block = Instantiate(blockPrefab) as GameObject;
+            GameObject block = Instantiate(data.blockPrefab) as GameObject;
             block.transform.SetParent(troopPanel);
 
             Image background = block.GetComponent<Image>();
@@ -71,13 +76,37 @@ public class HUD : MonoBehaviour
             Image foreground = block.transform.GetChild(0).GetComponent<Image>();
             foreground.sprite = unit.Preview;
         }
-        //Unit focusedUnit = troop.FocusedUnit;
+        Unit focusedUnit = troop.FocusedUnit;
+        previewImage.sprite = focusedUnit.Preview;
+
+        for (int i = 0; i < focusedUnit.getData().actions.Count; i++ )
+        {
+            ActionData actionData = focusedUnit.getData().actions[i];
+            Command command = focusedUnit.getCommands()[i];
+            GameObject block = Instantiate(data.blockPrefab) as GameObject;
+            block.transform.SetParent(actionPanel);
+
+            Image background = block.GetComponent<Image>();
+            background.sprite = panelSprite;
+
+            Image foreground = block.transform.GetChild(0).GetComponent<Image>();
+            foreground.sprite = actionData.sprite;
+
+            Button button = block.GetComponent<Button>();
+            button.onClick.AddListener(() => { command(); });
+        }
     }
 
+    // Set the health ratio : current / total as length of the health image
     public void updateHealth( Unit unit )
     {
-        // Set the health ratio : current / total as length of the health image
         print(unit.HealthRatio);
         healthImage.localScale = new Vector3(unit.HealthRatio, 1, 1 );
+    }
+
+    // Repaint delayed actions when a new one is created. Actions disappear automatically
+    public void updateDelayedActions( Unit unit )
+    {
+
     }
 }
