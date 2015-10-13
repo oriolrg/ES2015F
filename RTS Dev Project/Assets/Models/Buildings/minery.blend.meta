@@ -9,19 +9,24 @@ ModelImporter:
     100002: //RootNode
     100004: Stones
     100006: Wood
+    100008: Ground
     400000: House
     400002: //RootNode
     400004: Stones
     400006: Wood
+    400008: Ground
     2300000: House
     2300002: Stones
     2300004: Wood
+    2300006: Ground
     3300000: House
     3300002: Stones
     3300004: Wood
+    3300006: Ground
     4300000: Stones
     4300002: Wood
     4300004: House
+    4300006: Ground
     7400000: Default Take
     9500000: //RootNode
   materials:
