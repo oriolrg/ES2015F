@@ -7,3 +7,6 @@ public class StatValueDictionary : SerializableDictionary<StatType, float> { }
 
 [Serializable]
 public class ResourceTextDictionary : SerializableDictionary<Resource, Text> { }
+
+[Serializable]
+public class ResourceValueDictionary : SerializableDictionary<Resource, int> { }

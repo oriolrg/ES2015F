@@ -41,6 +41,18 @@ public class DataMenuEditor : MonoBehaviour
         Selection.activeObject = data;
     }
 
+    [MenuItem("Data/Create Action Data")]
+    public static void CreateActionData()
+    {
+        Action data = ScriptableObject.CreateInstance<Action>();
+
+        AssetDatabase.CreateAsset(data, "Assets/Data/Actions/action" + Random.Range(0, 1000) + ".asset");
+        AssetDatabase.SaveAssets();
+
+        EditorUtility.FocusProjectWindow();
+        Selection.activeObject = data;
+    }
+
     [MenuItem("Data/Save Data")]
     public static void SaveData()
     {

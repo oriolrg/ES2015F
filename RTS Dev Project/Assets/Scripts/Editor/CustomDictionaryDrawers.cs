@@ -13,3 +13,6 @@ public class CivilizationDataDictionaryDrawer : DictionaryDrawer<Civilization, C
 
 [CustomPropertyDrawer(typeof(ResourceTextDictionary))]
 public class ResourceTextDictionaryDrawer : DictionaryDrawer<Resource, Text> { }
+
+[CustomPropertyDrawer(typeof(ResourceValueDictionary))]
+public class ResourceValueDictionaryDrawer : DictionaryDrawer<Resource, int> { }

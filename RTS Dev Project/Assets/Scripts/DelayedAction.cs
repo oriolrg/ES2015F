@@ -1,14 +1,22 @@
-﻿using UnityEngine;
-
-public class DelayedAction : Action
+﻿
+public class QueuedAction
 {
-    private float totalTime;
-    private float time;
-    public float TimeRatio { get { return time / totalTime; } }
+    private Action action;
+    private float remainingTime;
+    private Command command;
+    public float TimeRatio { get { return remainingTime / action.requiredTime; } }
     
-    public DelayedAction( Command command, Sprite sprite, float totalTime ) : base(command, sprite)
+    public QueuedAction( Command command, Action action )
     {
-        this.totalTime = totalTime;
-        this.time = totalTime;
+        this.action = action;
+        this.command = command;
+        this.remainingTime = action.requiredTime;
     } 
+
+    public void updateRemainingTime( float timeGone )
+    {
+        remainingTime -= timeGone;
+        if (remainingTime < 0)
+            command();
+    }
 }

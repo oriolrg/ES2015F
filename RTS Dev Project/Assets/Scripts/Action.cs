@@ -1,18 +1,10 @@
 ﻿using UnityEngine;
 
-public class Action
+public class Action : ScriptableObject
 {
-    protected Command command;
-    protected Sprite sprite;
-
-    public Action( Command command, Sprite sprite )
-    {
-        this.command = command;
-        this.sprite = sprite;
-    }
-
-    public void execute()
-    {
-        command();
-    }
+    public string description;
+    public Sprite sprite;
+    public ResourceValueDictionary resourceCost;
+    public float requiredTime;
+    public Command command;
 }
