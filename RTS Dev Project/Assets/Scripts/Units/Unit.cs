@@ -1,13 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
+
+public struct ActionWithCommand
+{
+    public ActionData action;
+    public Command command;
+}
 
 public abstract class Unit : MonoBehaviour
 {
     [SerializeField] private UnitData data;
-    public Queue<QueuedAction> DelayedActions { get; private set; }
+    public List<QueuedAction> DelayedActions { get; private set; }
     private List<Command> commands;
 
     [SerializeField] private float health;
+
+    public List<ActionWithCommand> getActionStruct()
+    {
+        List<ActionWithCommand> res = new List<ActionWithCommand>();
+
+        for (int i = 0; i < data.actions.Count; i++)
+            res.Add( new ActionWithCommand() { action = data.actions[i], command=commands[i] });
+
+        return res;
+    }
 
     public float HealthRatio { get { return health * 1f / data.stats[Stat.Health]; }}
     public Sprite Preview { get { return data.preview; } }
@@ -17,6 +34,8 @@ public abstract class Unit : MonoBehaviour
     void Awake()
     {
         health = data.stats[Stat.Health];
+
+        DelayedActions = new List<QueuedAction>();
         
         // Get the commands set in the subclass
         List<Command> list = defineCommands();
@@ -36,13 +55,24 @@ public abstract class Unit : MonoBehaviour
             commands = list;
         }
     }
+
+    void FixedUpdate()
+    {
+        for (int i = DelayedActions.Count - 1; i >= 0; i--)
+        {
+            QueuedAction action = DelayedActions[i];
+            if (action.updateRemainingTime(Time.deltaTime))
+                DelayedActions.Remove(action);
+        }
+    }
     
     private void NoCommand()
     {
         Debug.LogError("No command assigned to this action.");
     }
-    
-    public UnitData getData() { return data; }
-    public List<Command> getCommands() { return commands; }
 
+    public void Enqueue(ActionData action, Command command)
+    {
+        DelayedActions.Add(new QueuedAction(command, action));
+    }
 }

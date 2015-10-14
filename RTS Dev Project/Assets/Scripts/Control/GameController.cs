@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	private GameObject targetPrebab;
 
-    public IngameHUD hud;
+    public HUD hud;
 
 	private bool isSelecting;
 	private Vector3 mPos;
@@ -33,11 +33,6 @@ public class GameController : MonoBehaviour {
 
         // Furthermore we make sure that we don't destroy between scenes (this is optional)
         // not now!!! DontDestroyOnLoad(gameObject);
-    }
-
-    internal void addCreation(Creation creation)
-    {
-        hud.addCreation(creation);
     }
 
     // Use this for initialization
@@ -198,12 +193,12 @@ public class GameController : MonoBehaviour {
     //Ends the game.
     private void winCondition()
 	{
-        hud.ShowWinMessage();
+        //!!!hud.ShowWinMessage();
     }
 
     private void loseCondition()
     {
-        hud.ShowLoseMessage();
+        //!!!hud.ShowLoseMessage();
     }
 
     public void reloadLevel()
@@ -219,7 +214,7 @@ public class GameController : MonoBehaviour {
             unit.transform.Find("Selected").gameObject.SetActive(false);
         }
         selectedUnits.Clear();
-        hud.Clear();
+        hud.ClearSelection();
     }
 
 	public void createBuilding(GameObject prefab)

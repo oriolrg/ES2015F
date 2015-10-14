@@ -62,23 +62,6 @@ public class IngameHUD : MonoBehaviour
         
     }
 
-    internal void addCreation(Creation creation)
-    {
-        GameObject creationGO = Instantiate(creationPrefab) as GameObject;
-        creationGO.transform.SetParent(creationPanel);
-
-        Image creationImage = creationGO.transform.GetChild(0).GetComponent<Image>();
-
-        creationImage.sprite = creation.sprite;
-
-        UnfillWithTime script = creationGO.GetComponentInChildren<UnfillWithTime>();
-        script.time = creation.time;
-        script.callback = creation.action;
-
-        script.enabled = true;
-
-    }
-
     public void ShowWinMessage()
     {
         winPanel.SetActive(true);

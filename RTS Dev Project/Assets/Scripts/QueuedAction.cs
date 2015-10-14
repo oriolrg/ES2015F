@@ -13,10 +13,18 @@ public class QueuedAction
         this.remainingTime = action.requiredTime;
     } 
 
-    public void updateRemainingTime( float timeGone )
+    public bool updateRemainingTime( float timeGone )
     {
         remainingTime -= timeGone;
         if (remainingTime < 0)
             command();
+        return remainingTime < 0;
+    }
+
+    public ActionData getAction() { return action;  }
+
+    public Command getCommand()
+    {
+        return command;
     }
 }

@@ -9,6 +9,9 @@ public class Civil : Unit
         return new List<Command>() { createWonder, sacrifice };
     }
 
-    private void createWonder() { }
-    private void sacrifice() { }
+    private void createWonder()
+    {
+        print("wonder");
+    }
+    private void sacrifice() { print("sacrifice"); GameController.Instance.ClearSelection(); }
 }

@@ -7,7 +7,7 @@ public abstract class Focusable : MonoBehaviour
     protected UnitData data;
 
     [SerializeField]
-    protected IngameHUD hud;
+    protected HUD hud;
 
     [SerializeField]
     protected List<Command> actions;
@@ -21,6 +21,6 @@ public abstract class Focusable : MonoBehaviour
 
     public void onFocus()
     {
-        hud.Refresh(data, actions);
+        //hud.Refresh(data, actions);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 public class HUD : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private List<Image> panels;
     [SerializeField] private Image flagImage;
     [SerializeField] private ResourceTextDictionary resourceTexts;
+    [SerializeField] RectTransform creationPanel;
     [SerializeField] RectTransform troopPanel;
     [SerializeField] RectTransform actionPanel;
     [SerializeField] Image previewImage;
@@ -65,7 +67,91 @@ public class HUD : MonoBehaviour
 
     public void updateSelection( Troop troop )
     {
-        foreach( Unit unit in troop.units )
+        // Update troop panel (private)
+        setTroopPreview( troop );
+
+        // Get focused unit of the troop
+        Unit focusedUnit = troop.FocusedUnit;
+
+        // Update preview image
+        previewImage.sprite = focusedUnit.Preview;
+
+        // Update Action buttons
+        List<ActionWithCommand> actionStructs = focusedUnit.getActionStruct();
+        foreach( ActionWithCommand actionStruct in actionStructs )
+        {
+            Command command = actionStruct.command;
+            ActionData action = actionStruct.action;
+            GameObject block = Instantiate(data.blockPrefab) as GameObject;
+            block.transform.SetParent(actionPanel);
+
+            Image background = block.GetComponent<Image>();
+            background.sprite = panelSprite;
+
+            Image foreground = block.transform.GetChild(0).GetComponent<Image>();
+            foreground.sprite = actionStruct.action.sprite;
+
+            Button button = block.GetComponent<Button>();
+            button.onClick.AddListener(() => { focusedUnit.Enqueue(action, command); updateDelayedActions(focusedUnit); });
+        }
+
+        updateHealth(focusedUnit);
+        updateDelayedActions(focusedUnit);
+
+    }
+
+    // Set the health ratio : current / total as length of the health image
+    public void updateHealth( Unit unit )
+    {
+        healthImage.localScale = new Vector3(unit.HealthRatio, 1, 1 );
+    }
+
+    // Repaint delayed actions when a new one is created. Actions disappear automatically
+    public void updateDelayedActions( Unit unit )
+    {
+        // Show / Hide creation panel depending on if there are any queued actions or not
+        creationPanel.GetComponent<Image>().enabled = unit.DelayedActions.Count > 0;
+
+        foreach (Transform child in creationPanel)
+            Destroy(child.gameObject);
+
+        List<QueuedAction> queuedActions = unit.DelayedActions;
+
+        foreach(QueuedAction action in queuedActions)
+        {
+            GameObject block = Instantiate(data.blockPrefab) as GameObject;
+            block.transform.SetParent(creationPanel);
+
+            Image background = block.GetComponent<Image>();
+            background.sprite = panelSprite;
+
+            Image foreground = block.transform.GetChild(0).GetComponent<Image>();
+            ActionData a = action.getAction();
+            print(a.description);
+            foreground.sprite = a.sprite;
+
+            Button button = block.GetComponent<Button>();
+            button.onClick.AddListener(() => { print("Cancel action"); });
+
+            GameObject timeFrame = Instantiate(data.overlappedTimeFrame) as GameObject;
+            timeFrame.transform.SetParent(block.transform.GetChild(0));
+
+            UnfillWithTime script = timeFrame.GetComponent<UnfillWithTime>();
+            script.action = action;
+        }
+    }
+
+    public void ClearSelection()
+    {
+        foreach (Transform child in troopPanel) Destroy(child.gameObject);
+        previewImage.sprite = default(Sprite);
+        foreach (Transform child in actionPanel) Destroy(child.gameObject);
+        foreach (Transform child in creationPanel) Destroy(child.gameObject);
+    }
+
+    public void setTroopPreview( Troop troop )
+    {
+        foreach (Unit unit in troop.units)
         {
             GameObject block = Instantiate(data.blockPrefab) as GameObject;
             block.transform.SetParent(troopPanel);
@@ -76,37 +162,5 @@ public class HUD : MonoBehaviour
             Image foreground = block.transform.GetChild(0).GetComponent<Image>();
             foreground.sprite = unit.Preview;
         }
-        Unit focusedUnit = troop.FocusedUnit;
-        previewImage.sprite = focusedUnit.Preview;
-
-        for (int i = 0; i < focusedUnit.getData().actions.Count; i++ )
-        {
-            ActionData actionData = focusedUnit.getData().actions[i];
-            Command command = focusedUnit.getCommands()[i];
-            GameObject block = Instantiate(data.blockPrefab) as GameObject;
-            block.transform.SetParent(actionPanel);
-
-            Image background = block.GetComponent<Image>();
-            background.sprite = panelSprite;
-
-            Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-            foreground.sprite = actionData.sprite;
-
-            Button button = block.GetComponent<Button>();
-            button.onClick.AddListener(() => { command(); });
-        }
-    }
-
-    // Set the health ratio : current / total as length of the health image
-    public void updateHealth( Unit unit )
-    {
-        print(unit.HealthRatio);
-        healthImage.localScale = new Vector3(unit.HealthRatio, 1, 1 );
-    }
-
-    // Repaint delayed actions when a new one is created. Actions disappear automatically
-    public void updateDelayedActions( Unit unit )
-    {
-
     }
 }

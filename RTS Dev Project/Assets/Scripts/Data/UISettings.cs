@@ -7,4 +7,5 @@ public class UISettings : ScriptableObject
 {
     public CivilizationDataDictionary civilizationDatas;
     public GameObject blockPrefab;
+    public GameObject overlappedTimeFrame;
 }
