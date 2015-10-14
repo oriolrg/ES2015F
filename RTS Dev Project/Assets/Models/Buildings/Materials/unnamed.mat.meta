@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: bdbd8daada0555847b271841d7c08ca8
 timeCreated: 1444576228
+=======
+guid: 8ea24ab265baf034caa8d6061d1e1f21
+timeCreated: 1444831657
+>>>>>>> torre
 licenseType: Free
 NativeFormatImporter:
   userData: 
