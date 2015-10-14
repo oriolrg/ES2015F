@@ -23,7 +23,7 @@ public class Villager : Focusable
 
     void Update()
     {
-        //if (buildingToConstruct != null)
+        //If a unit has the order to construct and it is close enough to the building, start the construction
         if(construct)
         {
             Debug.Log("holaaa");
@@ -40,8 +40,15 @@ public class Villager : Focusable
 
     public void DestroyUnit()
     {
-        if (!inConstruction)
+        
+        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
+
+            if (construct)
+            {
+                construct = false;
+            }
+
             GameController.Instance.removeAllyUnit(gameObject);
             GetComponentInParent<Animator>().SetBool("dead", true);
             Destroy(gameObject, 3);
@@ -54,6 +61,11 @@ public class Villager : Focusable
     {
         if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
+            if (construct)
+            {
+                construct = false;
+            }
+
             GameController.Instance.createBuilding(buildingPrefab);
         }
     }

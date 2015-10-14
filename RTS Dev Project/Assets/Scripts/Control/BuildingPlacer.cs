@@ -14,7 +14,7 @@ public class BuildingPlacer : MonoBehaviour {
 	void OnEnable()
 	{
 		originalColor = gameObject.GetComponent<Renderer> ().material.color;
-        transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
+        transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.3f);
         
         //Make the gameObject a bit transparent
         gameObject.GetComponent<Renderer> ().material.color = transparentColor;
@@ -44,7 +44,7 @@ public class BuildingPlacer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-
+        //Cancel the building creation with mouse right button
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             Destroy(gameObject);
@@ -93,11 +93,11 @@ public class BuildingPlacer : MonoBehaviour {
 			} 
 			else if(Input.GetKeyUp (KeyCode.Mouse0))  
 			{
-                //When there is no collision and the mouse left button is clicked, remove the gameObject transparency and unable the script
+                //When there is no collision and the mouse left button is clicked, order to start the construction
 
                 gameObject.GetComponent<Renderer> ().material.color = transparentColor;
 
-                GameController.Instance.enabled = true;
+                //GameController.Instance.enabled = true;
 
                 GameController.Instance.buildingConstruction(gameObject.transform.position);
 

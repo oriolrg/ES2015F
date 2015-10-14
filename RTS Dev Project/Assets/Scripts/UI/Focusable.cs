@@ -12,9 +12,9 @@ public abstract class Focusable : MonoBehaviour
     [SerializeField]
     protected List<Action> actions;
 
-    protected bool inConstruction;
+    protected bool inConstruction; //Indicates if a building is in construction or if a unit is constructing a building
 
-    protected bool construct;
+    protected bool construct; //Indicates if a unit has the order to construct a building
 
 
     void start()
@@ -40,8 +40,18 @@ public abstract class Focusable : MonoBehaviour
         inConstruction = b;Debug.Log(b);
     }
 
-    public void ActivateBuildingToConstruct()
+    public void setConstruct(bool b)
     {
-        construct = true;
+        construct = b;
+    }
+
+    public bool getConstruct()
+    {
+        return construct;
+    }
+
+    public bool getInConstruction()
+    {
+        return inConstruction;
     }
 }

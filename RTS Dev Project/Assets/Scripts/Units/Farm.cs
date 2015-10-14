@@ -14,7 +14,7 @@ public class Farm : Focusable
 
     public void CreateUnit()
     {
-        if (!inConstruction)
+        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
             Instantiate(villagerPrefab, transform.position + transform.forward * 3, Quaternion.identity);
         }
@@ -23,7 +23,7 @@ public class Farm : Focusable
 
     void DestroyBuilding()
     {
-        if (!inConstruction)
+        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
             Destroy(gameObject, 3);
 
@@ -33,6 +33,9 @@ public class Farm : Focusable
 
     void Upgrade()
     {
-        GetComponent<Renderer>().material.color = Color.green;
+        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
+        {
+            GetComponent<Renderer>().material.color = Color.green;
+        }
     }
 }

@@ -175,8 +175,20 @@ public class GameController : MonoBehaviour {
 	{
 		foreach (var unit in selectedUnits) 
 		{
-			unit.GetComponentInParent<UnitMovement>().startMoving(target);
-			target.GetComponent<timerDeath>().AddUnit(unit);
+
+            //Move the units only if they are not constructing a building
+            if (!unit.GetComponent<Focusable>().getInConstruction())
+            {
+                if (unit.GetComponent<Focusable>().getConstruct())
+                {
+                    unit.GetComponent<Focusable>().setConstruct(false);
+                }
+
+                unit.GetComponentInParent<UnitMovement>().startMoving(target);
+                target.GetComponent<timerDeath>().AddUnit(unit);
+
+            }
+			
 		}
 	}
 
@@ -227,13 +239,7 @@ public class GameController : MonoBehaviour {
 
 	public void createBuilding(GameObject prefab)
 	{
-        // old code with ClickController
-        //		clickController.prefab = prefab;
-        //		clickController.enabled = true;
-
-        // new code with BuildingPlacer
-
-        
+        //Instantiate the building and start the positioning of the building
 
 		GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
@@ -248,16 +254,14 @@ public class GameController : MonoBehaviour {
 
     public void buildingConstruction(Vector3 position)
     {
-
+        //Move the units that are selected to construct to the building position
         GameObject target = Instantiate(targetPrebab, position, Quaternion.identity) as GameObject;
         moveUnits(target);
 
-        
+        enabled = true;//Enable the script 
 
-        foreach (var unit in selectedUnits) unit.GetComponent<Focusable>().ActivateBuildingToConstruct();
-
-        //guardar array de units que estan construint per bloquejarles ¿?
-
+        //Order that the unit has to construct
+        foreach (var unit in selectedUnits) unit.GetComponent<Focusable>().setConstruct(true);
 
     }
 }

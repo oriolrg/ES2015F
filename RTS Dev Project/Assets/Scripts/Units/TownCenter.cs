@@ -17,7 +17,7 @@ public class TownCenter : Focusable
 
     public void CreateUnit()
     {
-        if (!inConstruction)
+        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
             Instantiate(villagerPrefab, transform.position + transform.up * 10, Quaternion.identity);
         }
@@ -25,7 +25,7 @@ public class TownCenter : Focusable
 
     void DestroyBuilding()
     {
-        if (!inConstruction)
+        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
             GameController.Instance.removeAllyUnit(gameObject);
             GetComponent<Animator>().SetBool("dead", true);
@@ -36,7 +36,10 @@ public class TownCenter : Focusable
 
     void Upgrade()
     {
-        GetComponent<Renderer>().material.color = Color.green;
+        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
+        {
+            GetComponent<Renderer>().material.color = Color.green;
+        }
     }
 
     
