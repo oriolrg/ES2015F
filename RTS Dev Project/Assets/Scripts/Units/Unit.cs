@@ -12,6 +12,7 @@ public abstract class Unit : MonoBehaviour
     public Sprite Preview { get { return data.preview; } }
 
     protected abstract List<Command> defineCommands();
+    private ActionData waitingForInputToEnqueue;
 
     void Awake()
     {
@@ -60,6 +61,16 @@ public abstract class Unit : MonoBehaviour
         {
             Invoke("nextAction", action.Data.requiredTime);
         }
+    }
+
+    public void EnqueueAfterInput( ActionData actionData )
+    {
+        waitingForInputToEnqueue = actionData;
+    }
+
+    public void InputDone()
+    {
+        Enqueue(waitingForInputToEnqueue);
     }
 
     public void nextAction()

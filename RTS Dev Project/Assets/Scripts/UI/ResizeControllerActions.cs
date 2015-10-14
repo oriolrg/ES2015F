@@ -2,16 +2,17 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class ResizeControllerActions : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
+public class ResizeControllerActions : MonoBehaviour
+{
+    // Define desired width height padding and spacing ratios
+	void Start ()
+    {
 	
 	}
 	
 	// Update is called once per frame
-	void Update () {
-
+	void Update ()
+    {
 		float height = GetComponent<RectTransform> ().rect.height;
 
 		GetComponent<GridLayoutGroup> ().cellSize = new Vector2(0.4f * height,0.4f * height);

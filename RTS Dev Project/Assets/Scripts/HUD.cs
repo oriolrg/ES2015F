@@ -31,6 +31,15 @@ public class HUD : MonoBehaviour
         updateSelection(testTroop);
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            testTroop.FocusedUnit.InputDone();
+            updateDelayedActions(testTroop.FocusedUnit);
+        }
+    }
+
     // End test
 
     // Changes the UI depending on the chosen civilization
@@ -91,7 +100,14 @@ public class HUD : MonoBehaviour
 
             Button button = block.GetComponent<Button>();
             ActionData ad = actionData;
-            button.onClick.AddListener(() => { focusedUnit.Enqueue(ad); updateDelayedActions(focusedUnit); });
+            button.onClick.AddListener(() => 
+            {
+                if( ad.needsExtraInput)
+                    focusedUnit.EnqueueAfterInput(ad);
+                else
+                    focusedUnit.Enqueue(ad);
+                updateDelayedActions(focusedUnit);
+            });
         }
 
         updateHealth(focusedUnit);
