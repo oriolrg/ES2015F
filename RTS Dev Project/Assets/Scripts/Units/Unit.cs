@@ -70,7 +70,15 @@ public abstract class Unit : MonoBehaviour
 
     public void InputDone()
     {
-        Enqueue(waitingForInputToEnqueue);
+        if (waitingForInputToEnqueue != null)
+        {
+            Enqueue(waitingForInputToEnqueue);
+            waitingForInputToEnqueue = null;
+        }
+        else
+        {
+            Debug.LogError("Calling InputDone when no action is waiting for input.");
+        }
     }
 
     public void nextAction()

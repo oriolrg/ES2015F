@@ -3,7 +3,7 @@
 using System;
 
 [Serializable]
-public class UISettings : ScriptableObject
+public class HUDData : ScriptableObject
 {
     public CivilizationDataDictionary civilizationDatas;
     public GameObject blockPrefab;

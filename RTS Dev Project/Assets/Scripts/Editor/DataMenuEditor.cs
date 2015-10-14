@@ -20,10 +20,10 @@ public class DataMenuEditor : MonoBehaviour
         CreateAsset<UnitData>("Units");
     }
 
-    [MenuItem("Data/Create UI Settings")]
+    [MenuItem("Data/Create HUD Data")]
     public static void CreateUISettings()
     {
-        CreateAsset<UISettings>("Settings");
+        CreateAsset<HUDData>("UI");
     }
 
     [MenuItem("Data/Create Civilization Data")]

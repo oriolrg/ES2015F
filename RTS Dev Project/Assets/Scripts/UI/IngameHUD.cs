@@ -11,7 +11,7 @@ public class IngameHUD : MonoBehaviour
 
     [SerializeField] private GameObject losePanel;
 
-    [SerializeField] private UISettings uiSettingsData;
+    [SerializeField] private HUDData uiSettingsData;
 
     [SerializeField] private Transform actionPanel;
     [SerializeField]

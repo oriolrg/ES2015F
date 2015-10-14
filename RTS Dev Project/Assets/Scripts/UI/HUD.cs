@@ -5,7 +5,7 @@ using System;
 
 public class HUD : MonoBehaviour
 {
-    [SerializeField] private UISettings data;
+    [SerializeField] private HUDData data;
     [SerializeField] private List<Image> panels;
     [SerializeField] private Image flagImage;
     [SerializeField] private ResourceTextDictionary resourceTexts;
