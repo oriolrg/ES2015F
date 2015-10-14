@@ -1,31 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System;
-
-public struct ActionWithCommand
-{
-    public ActionData action;
-    public Command command;
-}
 
 public abstract class Unit : MonoBehaviour
 {
     [SerializeField] private UnitData data;
-    public List<QueuedAction> DelayedActions { get; private set; }
     private List<Command> commands;
+    public Queue<Action> Queue { get; private set; }
 
     [SerializeField] private float health;
-
-    public List<ActionWithCommand> getActionStruct()
-    {
-        List<ActionWithCommand> res = new List<ActionWithCommand>();
-
-        for (int i = 0; i < data.actions.Count; i++)
-            res.Add( new ActionWithCommand() { action = data.actions[i], command=commands[i] });
-
-        return res;
-    }
-
     public float HealthRatio { get { return health * 1f / data.stats[Stat.Health]; }}
     public Sprite Preview { get { return data.preview; } }
 
@@ -35,7 +17,7 @@ public abstract class Unit : MonoBehaviour
     {
         health = data.stats[Stat.Health];
 
-        DelayedActions = new List<QueuedAction>();
+        Queue = new Queue<Action>();
         
         // Get the commands set in the subclass
         List<Command> list = defineCommands();
@@ -44,7 +26,7 @@ public abstract class Unit : MonoBehaviour
         if (list.Count != data.actions.Count)
         {
             // Incorrect, print error and use default command
-            Debug.LogError("Incorrect number of commands assigned." + commands.Count + " " + this.commands.Count);
+            Debug.LogError("Incorrect number of commands assigned." + commands.Count + " vs " + this.commands.Count);
             commands = new List<Command>();
             for (int i = 0; i < data.actions.Count; i++)
                 commands.Add(NoCommand);
@@ -58,12 +40,8 @@ public abstract class Unit : MonoBehaviour
 
     void FixedUpdate()
     {
-        for (int i = DelayedActions.Count - 1; i >= 0; i--)
-        {
-            QueuedAction action = DelayedActions[i];
-            if (action.updateRemainingTime(Time.deltaTime))
-                DelayedActions.Remove(action);
-        }
+        if( Queue.Count > 0)
+            Queue.Peek().updateRemainingTime(Time.deltaTime);
     }
     
     private void NoCommand()
@@ -71,8 +49,31 @@ public abstract class Unit : MonoBehaviour
         Debug.LogError("No command assigned to this action.");
     }
 
-    public void Enqueue(ActionData action, Command command)
+    public void Enqueue(ActionData actionData)
     {
-        DelayedActions.Add(new QueuedAction(command, action));
+        Command correspondingCommand = commands[data.actions.IndexOf(actionData)];
+        Action action = new Action(actionData, correspondingCommand);
+        Queue.Enqueue( action );
+
+        // if unique action start working on it
+        if( Queue.Count == 1 )
+        {
+            Invoke("nextAction", action.Data.requiredTime);
+        }
     }
+
+    public void nextAction()
+    {
+        Action action = Queue.Dequeue();
+        action.execute();
+
+        // if there are more actions, start working on the first one
+        if (Queue.Count > 0)
+        {
+            Action nextAction = Queue.Peek();
+            Invoke("nextAction", nextAction.Data.requiredTime);
+        }
+    }
+
+    public List<ActionData> getActionDatas() { return data.actions; }
 }

@@ -77,11 +77,9 @@ public class HUD : MonoBehaviour
         previewImage.sprite = focusedUnit.Preview;
 
         // Update Action buttons
-        List<ActionWithCommand> actionStructs = focusedUnit.getActionStruct();
-        foreach( ActionWithCommand actionStruct in actionStructs )
+        List<ActionData> actionDatas = focusedUnit.getActionDatas();
+        foreach( ActionData actionData in actionDatas )
         {
-            Command command = actionStruct.command;
-            ActionData action = actionStruct.action;
             GameObject block = Instantiate(data.blockPrefab) as GameObject;
             block.transform.SetParent(actionPanel);
 
@@ -89,10 +87,11 @@ public class HUD : MonoBehaviour
             background.sprite = panelSprite;
 
             Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-            foreground.sprite = actionStruct.action.sprite;
+            foreground.sprite = actionData.sprite;
 
             Button button = block.GetComponent<Button>();
-            button.onClick.AddListener(() => { focusedUnit.Enqueue(action, command); updateDelayedActions(focusedUnit); });
+            ActionData ad = actionData;
+            button.onClick.AddListener(() => { focusedUnit.Enqueue(ad); updateDelayedActions(focusedUnit); });
         }
 
         updateHealth(focusedUnit);
@@ -110,14 +109,14 @@ public class HUD : MonoBehaviour
     public void updateDelayedActions( Unit unit )
     {
         // Show / Hide creation panel depending on if there are any queued actions or not
-        creationPanel.GetComponent<Image>().enabled = unit.DelayedActions.Count > 0;
+        creationPanel.GetComponent<Image>().enabled = unit.Queue.Count > 0;
 
         foreach (Transform child in creationPanel)
             Destroy(child.gameObject);
 
-        List<QueuedAction> queuedActions = unit.DelayedActions;
+        Queue<Action> queuedActions = unit.Queue;
 
-        foreach(QueuedAction action in queuedActions)
+        foreach(Action action in queuedActions)
         {
             GameObject block = Instantiate(data.blockPrefab) as GameObject;
             block.transform.SetParent(creationPanel);
@@ -126,7 +125,7 @@ public class HUD : MonoBehaviour
             background.sprite = panelSprite;
 
             Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-            ActionData a = action.getAction();
+            ActionData a = action.Data;
             print(a.description);
             foreground.sprite = a.sprite;
 

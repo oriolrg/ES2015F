@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class UnfillWithTime : MonoBehaviour {
 
-    public QueuedAction action;
+    public Action action;
 
 	
 	// Update is called once per frame
