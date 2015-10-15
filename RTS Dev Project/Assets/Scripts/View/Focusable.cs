@@ -10,7 +10,8 @@ public abstract class Focusable : MonoBehaviour
     [SerializeField]
     protected List<Action> actions;
 
-    private List<Action> actions;
+    public AnimationClip deathAnimation;
+    
 
 
 

@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class TownCenter : Focusable
+public class TownCenter : Unit
 {
     [SerializeField]
     private GameObject villager;
 
-    protected override List<Action> defineActions()
+    protected override List<Command> defineCommands()
     {
-        return new List<Action>() { CreateVillager, Upgrade, DestroyUnit };
+        return new List<Command>() { CreateVillager, Upgrade };
     }
 
     public void CreateVillager()
