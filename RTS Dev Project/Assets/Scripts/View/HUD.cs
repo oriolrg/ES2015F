@@ -166,6 +166,18 @@ public class HUD : MonoBehaviour
 
     public void setTroopPreview( Troop troop )
     {
+        foreach (GameObject unit in troop.units)
+        {
+            GameObject block = Instantiate(data.blockPrefab) as GameObject;
+            block.transform.SetParent(troopPanel);
+
+            Image background = block.GetComponent<Image>();
+            background.sprite = panelSprite;
+
+            Image foreground = block.transform.GetChild(0).GetComponent<Image>();
+            foreground.sprite = unit.GetComponent<Unit>().Preview;
+        }
+        /*
         foreach (Unit unit in troop.units)
         {
             GameObject block = Instantiate(data.blockPrefab) as GameObject;
@@ -176,6 +188,6 @@ public class HUD : MonoBehaviour
 
             Image foreground = block.transform.GetChild(0).GetComponent<Image>();
             foreground.sprite = unit.Preview;
-        }
+        }*/
     }
 }

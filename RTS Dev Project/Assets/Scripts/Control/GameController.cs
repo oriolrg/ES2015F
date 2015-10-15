@@ -5,7 +5,7 @@ using System;
 
 public class GameController : MonoBehaviour {
 	[SerializeField]
-	private List<GameObject> selectedUnits;
+	private Troop selectedUnits;
 
     //Keep track of all allied/enemy units, add and remove with addUnit and removeUnit.
     private List<GameObject> allAllyUnits;
@@ -39,16 +39,14 @@ public class GameController : MonoBehaviour {
 
         allAllyUnits = new List<GameObject>();
         allEnemyUnits = new List<GameObject>();
-
-        // Furthermore we make sure that we don't destroy between scenes (this is optional)
-        // not now!!! DontDestroyOnLoad(gameObject);
+        selectedUnits = new Troop();
+        selectedUnits.units = new List<GameObject>();
     }
 
     // Use this for initialization
     void Start ()
     {
-		selectedUnits = new List<GameObject> ();
-        UIheight = 0.345f;
+        UIheight = 0.33f;
     }
 	
 	// Update is called once per frame
@@ -77,16 +75,16 @@ public class GameController : MonoBehaviour {
                     GameObject selectedGO = hitInfo.transform.gameObject;
                     if (hitInfo.transform.gameObject.tag == "Ally")
                     {
-                        print("Ally");
                         if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
 
                         //selectedGO.GetComponent<Focusable>().onFocus();
-                        if (!selectedUnits.Contains(selectedGO)) selectedUnits.Add(selectedGO);
+                        if (!selectedUnits.units.Contains(selectedGO)) selectedUnits.units.Add(selectedGO);
+                        selectedUnits.FocusedUnit = selectedGO.GetComponent<Unit>();
                         selectedGO.transform.Find("Selected").gameObject.SetActive(true);
                     }
                     else
                     {
-                        Debug.Log("not Ally");
+                        // Debug.Log("not Ally");
                     }
                 }
                 else
@@ -134,14 +132,20 @@ public class GameController : MonoBehaviour {
                     foreach (var unit in FindObjectsOfType<GameObject>())
                     {
                         //Units inside the rect get selected.
-                        if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position)) & unit.tag == "Ally" & !selectedUnits.Contains(unit))
+                        if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position)) & unit.tag == "Ally" & !selectedUnits.units.Contains(unit))
                         {
-                            selectedUnits.Add(unit);
+                            selectedUnits.units.Add(unit);
                             unit.transform.Find("Selected").gameObject.SetActive(true);
                         }
+                        if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0].GetComponent<Unit>();
                     }
                 }
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            //if (selectedUnits.units.Count > 0) { ... }
         }
 
         if (Input.GetKeyDown(KeyCode.M))
@@ -181,7 +185,7 @@ public class GameController : MonoBehaviour {
 
 	private void moveUnits(GameObject target)
 	{
-		foreach (var unit in selectedUnits) 
+		foreach (var unit in selectedUnits.units) 
 		{
 			unit.GetComponentInParent<UnitMovement>().startMoving(target);
 			target.GetComponent<timerDeath>().AddUnit(unit);
@@ -231,12 +235,16 @@ public class GameController : MonoBehaviour {
     // Called when selected units are destroyed
     public void ClearSelection()
     {
-        foreach (var unit in selectedUnits)
-        {
-            unit.transform.Find("Selected").gameObject.SetActive(false);
+        if (selectedUnits.units.Count > 0)
+        { 
+            foreach (var unit in selectedUnits.units)
+            {
+                unit.transform.Find("Selected").gameObject.SetActive(false);
+            }
+            selectedUnits.units.Clear();
+            selectedUnits.FocusedUnit = null;
+            //hud.Clear();
         }
-        selectedUnits.Clear();
-        hud.Clear();
     }
 
 	public void createBuilding(GameObject prefab)

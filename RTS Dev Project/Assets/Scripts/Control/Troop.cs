@@ -4,6 +4,12 @@ using System;
 
 public class Troop : MonoBehaviour
 {
-    [SerializeField] public List<Unit> units;
+    [SerializeField] public List<GameObject> units;
     public Unit FocusedUnit;
+
+    void Start()
+    {
+        units = new List<GameObject>();
+        FocusedUnit = null;
+    }
 }
