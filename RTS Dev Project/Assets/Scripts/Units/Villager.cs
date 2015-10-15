@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Villager : Focusable
+public class Villager : Unit
 {
     [SerializeField] private GameObject buildingPrefab;
 	[SerializeField] private AnimationClip deathAnimation;
@@ -9,14 +9,18 @@ public class Villager : Focusable
     [SerializeField] private float dist;
 
     private GameObject buildingToConstruct;
-   // private bool construct;
+    // private bool construct;
+
+    protected override List<Command> defineCommands()
+    {
+        return new List<Command>() { CreateBuilding, DestroyUnit };
+    }
+
+
 
     void Start()
     {
-        actions = new List<Action>() { CreateBuilding, DestroyUnit };
-        ini();
-        //GameController.Instance.addAllyUnit(gameObject);
-
+        
         dist = 2f;
         construct = false;
     }
@@ -32,7 +36,7 @@ public class Villager : Focusable
                 Debug.Log("A CONSTRUIIIIR!!!!!!!!");
                 buildingToConstruct.GetComponent<BuildingConstruction>().startConstruction(this.gameObject);
                 construct = false;
-                GetComponent<Focusable>().SetInConstruction(true);
+                GetComponent<Unit>().SetInConstruction(true);
             }
         }
     }
@@ -49,7 +53,7 @@ public class Villager : Focusable
                 construct = false;
             }
 
-            GameController.Instance.removeAllyUnit(gameObject);
+            GameController.Instance.removeUnit(gameObject);
             GetComponentInParent<Animator>().SetBool("dead", true);
             Destroy(gameObject, 3);
             GameController.Instance.ClearSelection();

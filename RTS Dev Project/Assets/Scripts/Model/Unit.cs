@@ -14,6 +14,10 @@ public abstract class Unit : MonoBehaviour
     protected abstract List<Command> defineCommands();
     private ActionData waitingForInputToEnqueue;
 
+    protected bool inConstruction; //Indicates if a building is in construction or if a unit is constructing a building
+
+    protected bool construct; //Indicates if a unit has the order to construct a building
+
     void Awake()
     {
         health = data.stats[Stat.Health];
@@ -38,6 +42,13 @@ public abstract class Unit : MonoBehaviour
             commands = list;
         }
     }
+
+    void start()
+    {
+        inConstruction = false;
+        construct = false;
+    }
+
 
     void FixedUpdate()
     {
@@ -95,4 +106,26 @@ public abstract class Unit : MonoBehaviour
     }
 
     public List<ActionData> getActionDatas() { return data.actions; }
+
+
+    public void SetInConstruction(bool b)
+    {
+        inConstruction = b; Debug.Log(b);
+    }
+
+    public void setConstruct(bool b)
+    {
+        construct = b;
+    }
+
+    public bool getConstruct()
+    {
+        return construct;
+    }
+
+    public bool getInConstruction()
+    {
+        return inConstruction;
+    }
+
 }

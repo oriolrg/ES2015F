@@ -30,7 +30,7 @@ public class BuildingConstruction : MonoBehaviour {
         //Debug.Log(timer);
 
         
-        if (GetComponent<Focusable>().getInConstruction())
+        if (GetComponent<Unit>().getInConstruction())
         {
             //Timer that changes the mesh of the building
 
@@ -47,9 +47,9 @@ public class BuildingConstruction : MonoBehaviour {
             if(timer<=0 && phase == 1)
             {
                 GetComponent<MeshFilter>().mesh = finalMesh;
-                foreach (var unit in constructingUnits) unit.GetComponent<Focusable>().SetInConstruction(false);
+                foreach (var unit in constructingUnits) unit.GetComponent<Unit>().SetInConstruction(false);
                 constructingUnits.Clear();
-                GetComponent<Focusable>().SetInConstruction(false);
+                GetComponent<Unit>().SetInConstruction(false);
 
             }
         }
@@ -70,7 +70,7 @@ public class BuildingConstruction : MonoBehaviour {
         //Start the construction 
         if(constructingUnits.Count == 1)
         {
-            GetComponent<Focusable>().SetInConstruction(true);
+            GetComponent<Unit>().SetInConstruction(true);
         }
 
 

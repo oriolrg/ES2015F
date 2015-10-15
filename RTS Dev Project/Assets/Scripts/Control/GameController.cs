@@ -50,10 +50,10 @@ public class GameController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-		selectedUnits = new List<GameObject> ();
+        selectedUnits = new Troop();
 
         allAllyUnits = new List<GameObject>();
-        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addAllyUnit(go);
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addUnit(go);
 
     }
 	
@@ -203,11 +203,11 @@ public class GameController : MonoBehaviour {
 		{
 
             //Move the units only if they are not constructing a building
-            if (!unit.GetComponent<Focusable>().getInConstruction())
+            if (!unit.GetComponent<Unit>().getInConstruction())
             {
-                if (unit.GetComponent<Focusable>().getConstruct())
+                if (unit.GetComponent<Unit>().getConstruct())
                 {
-                    unit.GetComponent<Focusable>().setConstruct(false);
+                    unit.GetComponent<Unit>().setConstruct(false);
                 }
 
                 unit.GetComponentInParent<UnitMovement>().startMoving(target);
@@ -279,7 +279,7 @@ public class GameController : MonoBehaviour {
 
 		GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
-        foreach (var unit in selectedUnits) unit.GetComponent<Villager>().SetBuildingToConstruct(building);
+        foreach (var unit in selectedUnits.units) unit.GetComponent<Civil>().SetBuildingToConstruct(building);
 
         building.AddComponent<BuildingPlacer> ().enabled = true;
 
@@ -297,7 +297,7 @@ public class GameController : MonoBehaviour {
         enabled = true;//Enable the script 
 
         //Order that the unit has to construct
-        foreach (var unit in selectedUnits) unit.GetComponent<Focusable>().setConstruct(true);
+        foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().setConstruct(true);
 
     }
 }
