@@ -6,12 +6,18 @@ using System;
 public class GameController : MonoBehaviour {
 	[SerializeField]
 	private List<GameObject> selectedUnits;
-    private List<GameObject> allAllyUnits;
 
-	[SerializeField]
+    //Keep track of all allied/enemy units, add and remove with addUnit and removeUnit.
+    private List<GameObject> allAllyUnits;
+    private List<GameObject> allEnemyUnits;
+
+    [SerializeField]
 	private GameObject targetPrebab;
 
-    public HUD hud;
+    [SerializeField]
+    private float UIheight;
+
+    public IngameHUD hud;
 
 	private bool isSelecting;
 	private Vector3 mPos;
@@ -31,6 +37,9 @@ public class GameController : MonoBehaviour {
         // Here we save our singleton instance
         Instance = this;
 
+        allAllyUnits = new List<GameObject>();
+        allEnemyUnits = new List<GameObject>();
+
         // Furthermore we make sure that we don't destroy between scenes (this is optional)
         // not now!!! DontDestroyOnLoad(gameObject);
     }
@@ -39,9 +48,7 @@ public class GameController : MonoBehaviour {
     void Start ()
     {
 		selectedUnits = new List<GameObject> ();
-
-        allAllyUnits = new List<GameObject>();
-        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addAllyUnit(go);
+        UIheight = 0.345f;
     }
 	
 	// Update is called once per frame
@@ -54,68 +61,71 @@ public class GameController : MonoBehaviour {
 			winCondition ();
 		}
 
-		//Left Click Manager
-		if (Input.GetMouseButtonDown(0))
-		{
-			isSelecting = true;
-			mPos = Input.mousePosition;
+        if (Input.mousePosition.y > Screen.height * UIheight)
+        {
+            //Left Click Manager
+            if (Input.GetMouseButtonDown(0))
+            {
+                isSelecting = true;
+                mPos = Input.mousePosition;
 
-			//Click detection
-			RaycastHit hitInfo = new RaycastHit();
-			bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
-			if (hit)
-			{
+                //Click detection
+                RaycastHit hitInfo = new RaycastHit();
+                bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+                if (hit)
+                {
+                    GameObject selectedGO = hitInfo.transform.gameObject;
+                    if (hitInfo.transform.gameObject.tag == "Ally")
+                    {
+                        print("Ally");
+                        if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
 
-				GameObject selectedGO = hitInfo.transform.gameObject;
-				if (hitInfo.transform.gameObject.tag == "Ally")
-				{
-                    print("Ally");
-                    if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
-				
-                    selectedGO.GetComponent<Focusable>().onFocus();
-                    if (!selectedUnits.Contains(selectedGO)) selectedUnits.Add(selectedGO);
-                    selectedGO.transform.Find("Selected").gameObject.SetActive(true);
-				}
-				else
-				{
-					Debug.Log("not Ally");
-				}
-			}
-			else
-			{
-				// Debug.Log("No hit");
-			}
-		}
+                        //selectedGO.GetComponent<Focusable>().onFocus();
+                        if (!selectedUnits.Contains(selectedGO)) selectedUnits.Add(selectedGO);
+                        selectedGO.transform.Find("Selected").gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        Debug.Log("not Ally");
+                    }
+                }
+                else
+                {
+                    // Debug.Log("No hit");
+                }
+            }
 
-		if (Input.GetMouseButtonDown(1))
-		{
-			//Click detection
-			RaycastHit hitInfo = new RaycastHit();
-			bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
-			if (hit)
-			{
-				GameObject target = Instantiate(targetPrebab, hitInfo.point, Quaternion.identity) as GameObject;
-				moveUnits(target);
-			}
-			else
-			{
-				// Debug.Log("No hit");
-			}
-		}
+            if (Input.GetMouseButtonDown(1))
+            {
+                //Click detection
+                RaycastHit hitInfo = new RaycastHit();
+                bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+                if (hit)
+                {
+                    GameObject target = Instantiate(targetPrebab, hitInfo.point, Quaternion.identity) as GameObject;
+                    moveUnits(target);
+                }
+                else
+                {
+                    // Debug.Log("No hit");
+                }
+            }
+        }
 
-		//End of click
-		if( Input.GetMouseButtonUp( 0 ) )
-		{
+        //End of click
+        if (Input.GetMouseButtonUp(0))
+        {
             if (isSelecting)
             {
                 isSelecting = false;
 
                 //We impose a size of 5 to detect a box.
                 //Box Selection
-                if ((mPos - Input.mousePosition).magnitude > 5)
+                Vector3 maxVector = new Vector3(Input.mousePosition.x, Mathf.Max(Input.mousePosition.y, UIheight * Screen.height), Input.mousePosition.z);
+                if ((mPos - maxVector).magnitude > 5)
                 {
                     var camera = Camera.main;
-                    var viewportBounds = RectDrawer.GetViewportBounds(camera, mPos, Input.mousePosition);
+                    var viewportBounds = RectDrawer.GetViewportBounds(camera, mPos, maxVector);
 
                     //Deselecting
                     if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
@@ -132,8 +142,9 @@ public class GameController : MonoBehaviour {
                     }
                 }
             }
-	    }
-        if(Input.GetKeyDown(KeyCode.M))
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
         {
             for (int i = allAllyUnits.Count - 1; i >= 0; i--)
             {
@@ -153,14 +164,19 @@ public class GameController : MonoBehaviour {
         }
     }
 
+
+
+
 	void OnGUI()
 	{
 		//Drawing of the box while selecting.
 		if( isSelecting )
 		{
-			var rect = RectDrawer.GetScreenRect(mPos, Input.mousePosition );
+            Vector3 maxVector = new Vector3(Input.mousePosition.x, Mathf.Max(Input.mousePosition.y, UIheight * Screen.height), Input.mousePosition.z);
+            var rect = RectDrawer.GetScreenRect(mPos, maxVector );
 			RectDrawer.DrawScreenRect( rect, new Color( 0.6f, 0.9f, 0.6f, 0.25f ) );
-		}
+            RectDrawer.DrawScreenRectBorder(rect, 3.0f, new Color(0.6f, 1.0f, 0.6f, 0.33f));
+        }
 	}
 
 	private void moveUnits(GameObject target)
@@ -172,17 +188,23 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-    public void addAllyUnit(GameObject u)
+    public void addUnit(GameObject u)
     {
-        allAllyUnits.Add(u);
-        //Debug.Log("Unit added, total units: " + allAllyUnits.Count);
+        if (u.tag == "Ally") allAllyUnits.Add(u);
+        if (u.tag == "Enemy") allEnemyUnits.Add(u);
     }
 
-    public void removeAllyUnit(GameObject u)
+    public void removeUnit(GameObject u)
     {
-        allAllyUnits.Remove(u);
-        Debug.Log("Unit removed, total units: " + allAllyUnits.Count);
+        if (u.tag == "Ally") allAllyUnits.Remove(u);
+        if (u.tag == "Enemy") allEnemyUnits.Remove(u);
+        GameController.Instance.checkWin();
         GameController.Instance.checkLose();
+    }
+
+    public void checkWin()
+    {
+        if (allEnemyUnits.Count == 0) winCondition();
     }
 
     public void checkLose()
@@ -214,7 +236,7 @@ public class GameController : MonoBehaviour {
             unit.transform.Find("Selected").gameObject.SetActive(false);
         }
         selectedUnits.Clear();
-        hud.ClearSelection();
+        hud.Clear();
     }
 
 	public void createBuilding(GameObject prefab)
@@ -229,4 +251,12 @@ public class GameController : MonoBehaviour {
 
 		enabled = false;
 	}
+
+    //TEST: TO BE DELETED
+    public void killAllEnemies()
+    {
+        foreach (GameObject go in allEnemyUnits) Destroy(go, 0);
+        allEnemyUnits.Clear();
+        checkWin();
+    }
 }

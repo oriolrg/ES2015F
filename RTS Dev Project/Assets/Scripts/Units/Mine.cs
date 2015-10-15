@@ -4,28 +4,23 @@ using System.Collections.Generic;
 public class Mine : Focusable
 {
     [SerializeField]
-    private GameObject villagerPrefab;
+    private GameObject villager;
 
-    void Start()
+    protected override List<Action> defineActions()
     {
-        actions = new List<Command>() { CreateUnit, DestroyBuilding, Upgrade };
-        ini();
+        return new List<Action>() { CreateVillager, Upgrade, DestroyUnit };
     }
 
-    public void CreateUnit()
+    public void CreateVillager()
     {
-        Instantiate(villagerPrefab, transform.position + transform.forward * 3, Quaternion.identity);
-    }
-
-    void DestroyBuilding()
-    {
-        Destroy(gameObject, 3);
-
-        GameController.Instance.Invoke("ClearSelection", 3);
+        Instantiate(villager, transform.position + transform.forward * 3, Quaternion.identity);
     }
 
     void Upgrade()
     {
         GetComponent<Renderer>().material.color = Color.green;
+
+        //TEST: TO BE DELETED
+        GameController.Instance.killAllEnemies();
     }
 }

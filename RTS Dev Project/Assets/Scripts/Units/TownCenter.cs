@@ -1,34 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class TownCenter : Focusable 
+public class TownCenter : Focusable
 {
     [SerializeField]
-    private GameObject villagerPrefab;
-    
-    void Start()
+    private GameObject villager;
+
+    protected override List<Action> defineActions()
     {
-        actions = new List<Command>() { CreateUnit, DestroyBuilding, Upgrade };
-        ini();
-        //GameController.Instance.addAllyUnit(gameObject);
+        return new List<Action>() { CreateVillager, Upgrade, DestroyUnit };
     }
 
-    public void CreateUnit()
+    public void CreateVillager()
     {
-        Instantiate(villagerPrefab, transform.position + transform.up * 10, Quaternion.identity);
-    }
-
-    void DestroyBuilding()
-    {
-        GameController.Instance.removeAllyUnit(gameObject);
-        GetComponent<Animator>().SetBool("dead", true);
-        Destroy(gameObject, 3);
-        GameController.Instance.ClearSelection();
-        
+        Instantiate(villager, transform.position + transform.forward * 3, Quaternion.identity);
     }
 
     void Upgrade()
     {
         GetComponent<Renderer>().material.color = Color.green;
+
+        //TEST: TO BE DELETED
+        GameController.Instance.killAllEnemies();
     }
 }
