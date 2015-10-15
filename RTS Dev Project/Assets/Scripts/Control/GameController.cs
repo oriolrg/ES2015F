@@ -22,8 +22,12 @@ public class GameController : MonoBehaviour {
 	private bool isSelecting;
 	private Vector3 mPos;
 
+
+
     // Static singleton property
     public static GameController Instance { get; private set; }
+
+
 
     void Awake()
     {
@@ -46,7 +50,11 @@ public class GameController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        UIheight = 0.33f;
+		selectedUnits = new List<GameObject> ();
+
+        allAllyUnits = new List<GameObject>();
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addAllyUnit(go);
+
     }
 	
 	// Update is called once per frame
@@ -168,6 +176,10 @@ public class GameController : MonoBehaviour {
             Camera.main.transform.position = new Vector3(85, 13, -25);
             Debug.Log("Future models");
         }
+
+        
+   
+        
     }
 
 
@@ -189,8 +201,20 @@ public class GameController : MonoBehaviour {
 	{
 		foreach (var unit in selectedUnits.units) 
 		{
-			unit.GetComponentInParent<UnitMovement>().startMoving(target);
-			target.GetComponent<timerDeath>().AddUnit(unit);
+
+            //Move the units only if they are not constructing a building
+            if (!unit.GetComponent<Focusable>().getInConstruction())
+            {
+                if (unit.GetComponent<Focusable>().getConstruct())
+                {
+                    unit.GetComponent<Focusable>().setConstruct(false);
+                }
+
+                unit.GetComponentInParent<UnitMovement>().startMoving(target);
+                target.GetComponent<timerDeath>().AddUnit(unit);
+
+            }
+			
 		}
 	}
 
@@ -251,22 +275,29 @@ public class GameController : MonoBehaviour {
 
 	public void createBuilding(GameObject prefab)
 	{
-		// old code with ClickController
-//		clickController.prefab = prefab;
-//		clickController.enabled = true;
+        //Instantiate the building and start the positioning of the building
 
-		// new code with BuildingPlacer
 		GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
-		building.AddComponent<BuildingPlacer> ().enabled = true;
 
-		enabled = false;
+        foreach (var unit in selectedUnits) unit.GetComponent<Villager>().SetBuildingToConstruct(building);
+
+        building.AddComponent<BuildingPlacer> ().enabled = true;
+
+       
+        enabled = false;
+        
 	}
 
-    //TEST: TO BE DELETED
-    public void killAllEnemies()
+    public void buildingConstruction(Vector3 position)
     {
-        foreach (GameObject go in allEnemyUnits) Destroy(go, 0);
-        allEnemyUnits.Clear();
-        checkWin();
+        //Move the units that are selected to construct to the building position
+        GameObject target = Instantiate(targetPrebab, position, Quaternion.identity) as GameObject;
+        moveUnits(target);
+
+        enabled = true;//Enable the script 
+
+        //Order that the unit has to construct
+        foreach (var unit in selectedUnits) unit.GetComponent<Focusable>().setConstruct(true);
+
     }
 }
