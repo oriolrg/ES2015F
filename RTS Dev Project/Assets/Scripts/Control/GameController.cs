@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour {
     [SerializeField]
     private float UIheight;
 
-    public IngameHUD hud;
+    public HUD hud;
 
 	private bool isSelecting;
 	private Vector3 mPos;
@@ -79,8 +79,9 @@ public class GameController : MonoBehaviour {
 
                         //selectedGO.GetComponent<Focusable>().onFocus();
                         if (!selectedUnits.units.Contains(selectedGO)) selectedUnits.units.Add(selectedGO);
-                        selectedUnits.FocusedUnit = selectedGO.GetComponent<Unit>();
+                        selectedUnits.FocusedUnit = selectedGO;
                         selectedGO.transform.Find("Selected").gameObject.SetActive(true);
+                        hud.updateSelection(selectedUnits);
                     }
                     else
                     {
@@ -135,9 +136,10 @@ public class GameController : MonoBehaviour {
                         if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position)) & unit.tag == "Ally" & !selectedUnits.units.Contains(unit))
                         {
                             selectedUnits.units.Add(unit);
-                            unit.transform.Find("Selected").gameObject.SetActive(true);
+                            //unit.transform.Find("Selected").gameObject.SetActive(true);
                         }
-                        if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0].GetComponent<Unit>();
+                        if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0];
+                        hud.updateSelection(selectedUnits);
                     }
                 }
             }

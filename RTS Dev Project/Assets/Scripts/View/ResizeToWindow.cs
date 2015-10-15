@@ -14,6 +14,14 @@ public class ResizeToWindow : MonoBehaviour
     {
         originalWidth = Screen.width;
         originalHeight = Screen.height;
+
+        float height = GetComponent<RectTransform>().rect.height;
+
+        GetComponent<GridLayoutGroup>().cellSize = heightPercent * height * Vector2.one;
+
+        GetComponent<GridLayoutGroup>().spacing = spacing * height * Vector2.one;
+
+        GetComponent<GridLayoutGroup>().padding = new RectOffset((int)(padding * height), (int)(padding * height), (int)(padding * height), (int)(padding * height));
     }
 
 	void Update ()

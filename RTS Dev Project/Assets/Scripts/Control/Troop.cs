@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System;
 
-public class Troop : MonoBehaviour
+public class Troop 
 {
     [SerializeField] public List<GameObject> units;
-    public Unit FocusedUnit;
+    public GameObject FocusedUnit;
 
-    void Start()
+    public Troop()
     {
         units = new List<GameObject>();
         FocusedUnit = null;
+        
+    }
+    public Troop(List<GameObject> units)
+    {
+        this.units = units;
+        if (units.Count > 0)
+            FocusedUnit = units[0];
     }
 }

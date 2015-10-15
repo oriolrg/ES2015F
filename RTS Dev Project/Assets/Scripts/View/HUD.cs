@@ -17,28 +17,19 @@ public class HUD : MonoBehaviour
 
     // Test
     public Sprite panelSprite;
-    public Unit testUnit;
-    public Troop testTroop;
+ 
     
     void Start()
     {
-        setCivilization(Civilization.Greeks);
+        setCivilization(Civilization.Egyptians);
         updateResource(Resource.Food, 100);
         updateResource(Resource.Wood, 100);
         updateResource(Resource.Metal, 100);
         updateResource(Resource.Population, 2);
-        updateHealth(testUnit);
-        updateSelection(testTroop);
+
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            testTroop.FocusedUnit.InputDone();
-            updateDelayedActions(testTroop.FocusedUnit);
-        }
-    }
+
 
     // End test
 
@@ -79,40 +70,48 @@ public class HUD : MonoBehaviour
         // Update troop panel (private)
         setTroopPreview( troop );
 
-        // Get focused unit of the troop
-        Unit focusedUnit = troop.FocusedUnit;
-
-        // Update preview image
-        previewImage.sprite = focusedUnit.Preview;
-
-        // Update Action buttons
-        List<ActionData> actionDatas = focusedUnit.getActionDatas();
-        foreach( ActionData actionData in actionDatas )
+        if (troop.FocusedUnit != null)
         {
-            GameObject block = Instantiate(data.blockPrefab) as GameObject;
-            block.transform.SetParent(actionPanel);
+            // Get focused unit of the troop
+            Unit focusedUnit = troop.FocusedUnit.GetComponent<Unit>();
 
-            Image background = block.GetComponent<Image>();
-            background.sprite = panelSprite;
+            // Update preview image
+            previewImage.sprite = focusedUnit.Preview;
 
-            Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-            foreground.sprite = actionData.sprite;
-
-            Button button = block.GetComponent<Button>();
-            ActionData ad = actionData;
-            button.onClick.AddListener(() => 
+            // Update Action buttons
+            List<ActionData> actionDatas = focusedUnit.getActionDatas();
+            foreach (ActionData actionData in actionDatas)
             {
-                if( ad.needsExtraInput)
-                    focusedUnit.EnqueueAfterInput(ad);
-                else
-                    focusedUnit.Enqueue(ad);
-                updateDelayedActions(focusedUnit);
-            });
+                GameObject block = Instantiate(data.blockPrefab) as GameObject;
+                block.transform.SetParent(actionPanel);
+
+                Image background = block.GetComponent<Image>();
+                background.sprite = panelSprite;
+
+                Image foreground = block.transform.GetChild(0).GetComponent<Image>();
+                foreground.sprite = actionData.sprite;
+
+
+
+                Button button = block.GetComponent<Button>();
+                ActionData ad = actionData;
+
+                //button.interactable = !focusedUnit.working;
+
+                button.onClick.AddListener(() =>
+                {
+                    print(ad.description);
+                    if (ad.needsExtraInput)
+                        focusedUnit.EnqueueAfterInput(ad);
+                    else
+                        focusedUnit.Enqueue(ad);
+                    updateDelayedActions(focusedUnit);
+                });
+            }
+
+            updateHealth(focusedUnit);
+            updateDelayedActions(focusedUnit);
         }
-
-        updateHealth(focusedUnit);
-        updateDelayedActions(focusedUnit);
-
     }
 
     // Set the health ratio : current / total as length of the health image
