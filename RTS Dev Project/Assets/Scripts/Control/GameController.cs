@@ -9,6 +9,10 @@ public class GameController : MonoBehaviour {
     private List<GameObject> allAllyUnits;
     private List<GameObject> allEnemyUnits;
 
+    //Keeps track of the resources the player has.
+    [SerializeField]
+    private ResourceValueDictionary resourceDict;
+
     [SerializeField]
 	private GameObject targetPrefab;
 
@@ -49,10 +53,7 @@ public class GameController : MonoBehaviour {
     void Start ()
     {
         selectedUnits = new Troop();
-
-        allAllyUnits = new List<GameObject>();
-        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addUnit(go);
-
+        initResourceValues();
     }
 	
 	// Update is called once per frame
@@ -191,10 +192,18 @@ public class GameController : MonoBehaviour {
                 {
                     unit.GetComponent<Unit>().setConstruct(false);
                 }
+<<<<<<< HEAD
                 UnitMovement script = unit.GetComponentInParent<UnitMovement>();
                 if (script != null)
                 {
                     script.startMoving(target);
+=======
+
+                //TEST
+                if (checkResources(Resource.Food,-10))
+                {
+                    unit.GetComponentInParent<UnitMovement>().startMoving(target);
+>>>>>>> origin/S2-Team-C
                     target.GetComponent<timerDeath>().AddUnit(unit);
                 }
             }
@@ -219,6 +228,41 @@ public class GameController : MonoBehaviour {
         {
             hud.ClearSelection();
         }
+    }
+
+    //Set starting resource values.
+    public void initResourceValues()
+    {
+        resourceDict[Resource.Food] = 100;
+        resourceDict[Resource.Wood] = 100;
+        resourceDict[Resource.Metal] = 100;
+        resourceDict[Resource.Population] = 2;
+        hud.updateResource(Resource.Food, resourceDict[Resource.Food]);
+        hud.updateResource(Resource.Wood, resourceDict[Resource.Wood]);
+        hud.updateResource(Resource.Metal, resourceDict[Resource.Metal]);
+        hud.updateResource(Resource.Population, resourceDict[Resource.Population]);
+    }
+
+    //Called to check whether there are enough resources to perform an action.
+    //Params: resource type, amount (negative amount to subtract, positive to add).
+    //Returns true if there are enough, and updates the resource type.
+    //Returns false if there aren't enough, and displays warnings.
+    public bool checkResources(Resource res, int value)
+    {
+        if (resourceDict[res] + value < 0)
+        {
+            //Here goes stuff that happens when there aren't enough resources to perform the action.
+            //i.e. text pop-up, sound warning.
+            return false;
+        }
+        updateResource(res, value);
+        return true;
+    }
+
+    public void updateResource(Resource res, int value)
+    {
+        resourceDict[res] += value;
+        hud.updateResource(res, resourceDict[res]);
     }
 
     public void checkWin()
