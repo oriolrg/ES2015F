@@ -22,10 +22,10 @@ public class HUD : MonoBehaviour
     void Start()
     {
         setCivilization(Civilization.Egyptians);
-        updateResource(Resource.Food, 100);
-        updateResource(Resource.Wood, 100);
-        updateResource(Resource.Metal, 100);
-        updateResource(Resource.Population, 2);
+        //updateResource(Resource.Food, 100);
+        //updateResource(Resource.Wood, 100);
+        //updateResource(Resource.Metal, 100);
+        //updateResource(Resource.Population, 2);
 
     }
 
