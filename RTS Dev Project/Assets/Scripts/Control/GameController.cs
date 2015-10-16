@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UI;
-using System;
 
 public class GameController : MonoBehaviour {
 	[SerializeField]
@@ -12,7 +10,7 @@ public class GameController : MonoBehaviour {
     private List<GameObject> allEnemyUnits;
 
     [SerializeField]
-	private GameObject targetPrebab;
+	private GameObject targetPrefab;
 
     [SerializeField]
     private float UIheight;
@@ -84,11 +82,12 @@ public class GameController : MonoBehaviour {
                     if (hitInfo.transform.gameObject.tag == "Ally")
                     {
                         if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
-
-                        //selectedGO.GetComponent<Focusable>().onFocus();
+                        
                         if (!selectedUnits.units.Contains(selectedGO)) selectedUnits.units.Add(selectedGO);
                         selectedUnits.FocusedUnit = selectedGO;
-                        selectedGO.transform.Find("Selected").gameObject.SetActive(true);
+                        Transform projector = selectedGO.transform.FindChild("Selected");
+                        if (projector != null)
+                            projector.gameObject.SetActive(true);
                         hud.updateSelection(selectedUnits);
                     }
                     else
@@ -109,7 +108,7 @@ public class GameController : MonoBehaviour {
                 bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
                 if (hit)
                 {
-                    GameObject target = Instantiate(targetPrebab, hitInfo.point, Quaternion.identity) as GameObject;
+                    GameObject target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
                     moveUnits(target);
                 }
                 else
@@ -122,10 +121,11 @@ public class GameController : MonoBehaviour {
         //End of click
         if (Input.GetMouseButtonUp(0))
         {
+            
             if (isSelecting)
             {
                 isSelecting = false;
-
+                
                 //We impose a size of 5 to detect a box.
                 //Box Selection
                 Vector3 maxVector = new Vector3(Input.mousePosition.x, Mathf.Max(Input.mousePosition.y, UIheight * Screen.height), Input.mousePosition.z);
@@ -144,42 +144,24 @@ public class GameController : MonoBehaviour {
                         if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position)) & unit.tag == "Ally" & !selectedUnits.units.Contains(unit))
                         {
                             selectedUnits.units.Add(unit);
-                            //unit.transform.Find("Selected").gameObject.SetActive(true);
+                            Transform projector = unit.transform.FindChild("Selected");
+                            if( projector != null)
+                                projector.gameObject.SetActive(true);
                         }
-                        if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0];
-                        hud.updateSelection(selectedUnits);
+                        
                     }
+                    if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0];
+                    hud.updateSelection(selectedUnits);
                 }
             }
+
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab))
+            if (Input.GetKeyDown(KeyCode.Tab))
         {
-            //if (selectedUnits.units.Count > 0) { ... }
+            selectedUnits.focusNext();
+            hud.updateSelection(selectedUnits); // There will exist an updateFocus method            
         }
-
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            for (int i = allAllyUnits.Count - 1; i >= 0; i--)
-            {
-                Animator a = allAllyUnits[i].GetComponent<Animator>();
-                if (a == null)
-                    a = allAllyUnits[i].GetComponentInParent<Animator>();
-                
-                a.SetBool("dead", true);
-            }
-            Debug.LogError("MM");
-        }
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Camera.main.transform.position = new Vector3(85, 13, -25);
-            Debug.Log("Future models");
-        }
-
-        
-   
-        
     }
 
 
@@ -209,10 +191,12 @@ public class GameController : MonoBehaviour {
                 {
                     unit.GetComponent<Unit>().setConstruct(false);
                 }
-
-                unit.GetComponentInParent<UnitMovement>().startMoving(target);
-                target.GetComponent<timerDeath>().AddUnit(unit);
-
+                UnitMovement script = unit.GetComponentInParent<UnitMovement>();
+                if (script != null)
+                {
+                    script.startMoving(target);
+                    target.GetComponent<timerDeath>().AddUnit(unit);
+                }
             }
 			
 		}
@@ -228,8 +212,13 @@ public class GameController : MonoBehaviour {
     {
         if (u.tag == "Ally") allAllyUnits.Remove(u);
         if (u.tag == "Enemy") allEnemyUnits.Remove(u);
-        GameController.Instance.checkWin();
-        GameController.Instance.checkLose();
+        checkWin();
+        checkLose();
+
+        if(selectedUnits.FocusedUnit == u)
+        {
+            hud.ClearSelection();
+        }
     }
 
     public void checkWin()
@@ -265,11 +254,11 @@ public class GameController : MonoBehaviour {
         { 
             foreach (var unit in selectedUnits.units)
             {
-                unit.transform.Find("Selected").gameObject.SetActive(false);
+                unit.transform.FindChild("Selected").gameObject.SetActive(false);
             }
             selectedUnits.units.Clear();
             selectedUnits.FocusedUnit = null;
-            //hud.Clear();
+            hud.ClearSelection();
         }
     }
 
@@ -291,7 +280,7 @@ public class GameController : MonoBehaviour {
     public void buildingConstruction(Vector3 position)
     {
         //Move the units that are selected to construct to the building position
-        GameObject target = Instantiate(targetPrebab, position, Quaternion.identity) as GameObject;
+        GameObject target = Instantiate(targetPrefab, position, Quaternion.identity) as GameObject;
         moveUnits(target);
 
         enabled = true;//Enable the script 

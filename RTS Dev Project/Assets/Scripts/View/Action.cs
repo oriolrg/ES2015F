@@ -5,6 +5,7 @@ public class Action
     private Command command;
     private float remainingTime;
     public float TimeRatio { get { return remainingTime / Data.requiredTime; } }
+    public bool isDone { get { return remainingTime <= 0; } }
     
     public Action( ActionData data, Command command )
     {

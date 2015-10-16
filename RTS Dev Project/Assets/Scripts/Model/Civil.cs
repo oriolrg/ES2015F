@@ -6,8 +6,6 @@ public class Civil : Unit
 {
 
     [SerializeField] private GameObject buildingPrefab;
-    [SerializeField]
-    private AnimationClip deathAnimation;
 
     [SerializeField]
     private float dist;
@@ -48,8 +46,6 @@ public class Civil : Unit
 
     public void DestroyUnit()
     {
-
-      
             if (construct)
             {
                 construct = false;
@@ -58,7 +54,6 @@ public class Civil : Unit
             GameController.Instance.removeUnit(gameObject);
             GetComponentInParent<Animator>().SetBool("dead", true);
             Destroy(gameObject, 3);
-            GameController.Instance.ClearSelection();
         
     }
 
@@ -80,19 +75,4 @@ public class Civil : Unit
     {
         buildingToConstruct = b;
     }
-
-
-
-    /*
-    protected override List<Command> defineCommands()
-    {
-        return new List<Command>() { createWonder, sacrifice };
-    }
-
-    private void createWonder()
-    {
-        print("wonder");
-    }
-    private void sacrifice() { print("sacrifice"); GameController.Instance.ClearSelection(); }
-    */
 }

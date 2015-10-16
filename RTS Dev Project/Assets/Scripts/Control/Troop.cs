@@ -5,7 +5,7 @@ using System;
 public class Troop 
 {
     [SerializeField] public List<GameObject> units;
-    public GameObject FocusedUnit;
+    public GameObject FocusedUnit; // should be an index instead of a gameobject.!!!
 
     public Troop()
     {
@@ -18,5 +18,16 @@ public class Troop
         this.units = units;
         if (units.Count > 0)
             FocusedUnit = units[0];
+    }
+
+    public void focusNext()
+    {
+        if (FocusedUnit == null) return;
+
+        int index = units.IndexOf(FocusedUnit);
+        if (index == units.Count - 1)
+            FocusedUnit = units[0];
+        else
+            FocusedUnit = units[index + 1];
     }
 }

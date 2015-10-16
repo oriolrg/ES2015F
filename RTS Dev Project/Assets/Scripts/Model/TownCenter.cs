@@ -3,13 +3,11 @@ using System.Collections.Generic;
 
 public class TownCenter : Unit 
 {
-    [SerializeField]
-    private GameObject villagerPrefab;
-
+    [SerializeField] private GameObject villagerPrefab;
 
     protected override List<Command> defineCommands()
     {
-        return new List<Command>() { CreateUnit, DestroyBuilding, Upgrade };
+        return new List<Command>() { CreateUnit, DestroyBuilding };
     }
 
 
@@ -18,7 +16,26 @@ public class TownCenter : Unit
     {
         if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
-            Instantiate(villagerPrefab, transform.position + transform.up * 10, Quaternion.identity);
+            Ray ray = new Ray(transform.position - 3 * transform.up + 10*transform.forward, -Vector3.up);
+
+            bool freeSpaceFound = false;
+
+            RaycastHit hitInfo = new RaycastHit();
+
+            while (!freeSpaceFound)
+            {
+                if (Physics.Raycast(ray, out hitInfo))
+                {
+                    if (hitInfo.transform.tag != "Ground")
+                    {
+                        ray.origin = ray.origin + Vector3.right * 2;
+                    }
+                    else
+                        freeSpaceFound = true;
+                    
+                }
+            }
+            Instantiate(villagerPrefab, hitInfo.point, Quaternion.identity);
         }
     }
 
@@ -29,7 +46,6 @@ public class TownCenter : Unit
             GameController.Instance.removeUnit(gameObject);
             GetComponent<Animator>().SetBool("dead", true);
             Destroy(gameObject, 3);
-            GameController.Instance.ClearSelection();
         }
     }
 

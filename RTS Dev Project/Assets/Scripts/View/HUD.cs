@@ -67,6 +67,7 @@ public class HUD : MonoBehaviour
 
     public void updateSelection( Troop troop )
     {
+        ClearSelection();
         // Update troop panel (private)
         setTroopPreview( troop );
 
@@ -75,8 +76,10 @@ public class HUD : MonoBehaviour
             // Get focused unit of the troop
             Unit focusedUnit = troop.FocusedUnit.GetComponent<Unit>();
 
-            // Update preview image
+            // Update preview image and focus
             previewImage.sprite = focusedUnit.Preview;
+
+            
 
             // Update Action buttons
             List<ActionData> actionDatas = focusedUnit.getActionDatas();
@@ -100,11 +103,7 @@ public class HUD : MonoBehaviour
 
                 button.onClick.AddListener(() =>
                 {
-                    print(ad.description);
-                    if (ad.needsExtraInput)
-                        focusedUnit.EnqueueAfterInput(ad);
-                    else
-                        focusedUnit.Enqueue(ad);
+                    focusedUnit.ActionClicked(ad);
                     updateDelayedActions(focusedUnit);
                 });
             }
@@ -123,8 +122,6 @@ public class HUD : MonoBehaviour
     // Repaint delayed actions when a new one is created. Actions disappear automatically
     public void updateDelayedActions( Unit unit )
     {
-        // Show / Hide creation panel depending on if there are any queued actions or not
-        creationPanel.GetComponent<Image>().enabled = unit.Queue.Count > 0;
 
         foreach (Transform child in creationPanel)
             Destroy(child.gameObject);
@@ -141,7 +138,6 @@ public class HUD : MonoBehaviour
 
             Image foreground = block.transform.GetChild(0).GetComponent<Image>();
             ActionData a = action.Data;
-            print(a.description);
             foreground.sprite = a.sprite;
 
             Button button = block.GetComponent<Button>();
@@ -158,35 +154,39 @@ public class HUD : MonoBehaviour
     public void ClearSelection()
     {
         foreach (Transform child in troopPanel) Destroy(child.gameObject);
-        previewImage.sprite = default(Sprite);
+        previewImage.sprite = panelSprite;
         foreach (Transform child in actionPanel) Destroy(child.gameObject);
         foreach (Transform child in creationPanel) Destroy(child.gameObject);
     }
 
     public void setTroopPreview( Troop troop )
     {
-        foreach (GameObject unit in troop.units)
+        for( int i = 0; i < troop.units.Count; i++ )
         {
-            GameObject block = Instantiate(data.blockPrefab) as GameObject;
-            block.transform.SetParent(troopPanel);
+            GameObject unit = troop.units[i];
 
-            Image background = block.GetComponent<Image>();
-            background.sprite = panelSprite;
+            // if actually a unit ( will be fixed )
+            if (unit.GetComponent<Unit>() != null)
+            {
+                GameObject block = Instantiate(data.blockPrefab) as GameObject;
+                block.transform.SetParent(troopPanel);
 
-            Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-            foreground.sprite = unit.GetComponent<Unit>().Preview;
+                Image background = block.GetComponent<Image>();
+                background.sprite = panelSprite;
+
+                Image foreground = block.transform.GetChild(0).GetComponent<Image>();
+                foreground.sprite = unit.GetComponent<Unit>().Preview;
+
+                //Paint focus fram
+                if (unit == troop.FocusedUnit)
+                {
+                    GameObject focusFrame = new GameObject("focus frame");
+                    Image image = focusFrame.AddComponent<Image>();
+                    image.sprite = data.focusSprite;
+                    image.color = new Color(.1f, 1, .1f, .5f);
+                    focusFrame.transform.SetParent(block.transform.GetChild(0));
+                }
+            }           
         }
-        /*
-        foreach (Unit unit in troop.units)
-        {
-            GameObject block = Instantiate(data.blockPrefab) as GameObject;
-            block.transform.SetParent(troopPanel);
-
-            Image background = block.GetComponent<Image>();
-            background.sprite = panelSprite;
-
-            Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-            foreground.sprite = unit.Preview;
-        }*/
     }
 }

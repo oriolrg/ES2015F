@@ -11,12 +11,11 @@ public abstract class Unit : MonoBehaviour
     public float HealthRatio { get { return health * 1f / data.stats[Stat.Health]; }}
     public Sprite Preview { get { return data.preview; } }
 
-    protected abstract List<Command> defineCommands();
-    private ActionData waitingForInputToEnqueue;
-
     protected bool inConstruction; //Indicates if a building is in construction or if a unit is constructing a building
 
     protected bool construct; //Indicates if a unit has the order to construct a building
+
+    private int maxQueueLength = 5;
 
     void Awake()
     {
@@ -43,7 +42,9 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    void start()
+    protected abstract List<Command> defineCommands();
+
+    void Start()
     {
         inConstruction = false;
         construct = false;
@@ -52,8 +53,17 @@ public abstract class Unit : MonoBehaviour
 
     void FixedUpdate()
     {
-        if( Queue.Count > 0)
-            Queue.Peek().updateRemainingTime(Time.deltaTime);
+        if (Queue.Count > 0)
+        {
+            Action currentAction = Queue.Peek();
+            currentAction.updateRemainingTime(Time.deltaTime);
+
+            if (currentAction.isDone)
+            {
+                Queue.Dequeue();
+                currentAction.execute();
+            }
+        }
     }
     
     private void NoCommand()
@@ -61,48 +71,24 @@ public abstract class Unit : MonoBehaviour
         Debug.LogError("No command assigned to this action.");
     }
 
-    public void Enqueue(ActionData actionData)
+    public void ActionClicked(ActionData actionData)
     {
         Command correspondingCommand = commands[data.actions.IndexOf(actionData)];
         Action action = new Action(actionData, correspondingCommand);
-        Queue.Enqueue( action );
 
-        // if unique action start working on it
-        if( Queue.Count == 1 )
-        {
-            Invoke("nextAction", action.Data.requiredTime);
-        }
-    }
+        if (actionData.requiredTime == 0)
 
-    public void EnqueueAfterInput( ActionData actionData )
-    {
-        waitingForInputToEnqueue = actionData;
-    }
+            action.execute();
 
-    public void InputDone()
-    {
-        if (waitingForInputToEnqueue != null)
-        {
-            Enqueue(waitingForInputToEnqueue);
-            waitingForInputToEnqueue = null;
-        }
         else
         {
-            Debug.LogError("Calling InputDone when no action is waiting for input.");
+            if (Queue.Count >= maxQueueLength)
+                Debug.LogWarning("Queue maximum length reached.");
+            else
+                Queue.Enqueue(action);
         }
-    }
 
-    public void nextAction()
-    {
-        Action action = Queue.Dequeue();
-        action.execute();
-
-        // if there are more actions, start working on the first one
-        if (Queue.Count > 0)
-        {
-            Action nextAction = Queue.Peek();
-            Invoke("nextAction", nextAction.Data.requiredTime);
-        }
+            
     }
 
     public List<ActionData> getActionDatas() { return data.actions; }
