@@ -12,28 +12,34 @@ public class UnitMovement : MonoBehaviour {
 	int currentWaypoint;
 	CharacterController characterController;
 	Vector3 targetPos;
+    Animator animator;
 
     public AnimationClip runAnimation;
 
 	bool hasTarget;
 
 	// Use this for initialization
-	void Start () {
+	void Awake ()
+    {
 		seeker = GetComponent<Seeker>();
 		characterController = GetComponent<CharacterController>();
-		//target = (Transform)GameObject.Find("target").transform;
-		//seeker.StartPath(transform.position,target.position,OnPathComplete);
-		hasTarget = false;
+        animator = GetComponent<Animator>();
+        hasTarget = false;
 	}
 
 	public void startMoving( GameObject target )
 	{
 		this.target = target.transform;
-		seeker.StartPath(transform.position,target.transform.position,OnPathComplete);
+        if ( seeker != null )
+        
+            seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
+        
 		targetPos = target.transform.position;
 		hasTarget = true;
-        var animator = GetComponent<Animator>();
-        if (animator != null) animator.SetBool("running", true);
+        
+        if (animator != null)
+
+            animator.SetBool("running", true);
 	}
 	
 

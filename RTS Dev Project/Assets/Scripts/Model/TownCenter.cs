@@ -14,7 +14,7 @@ public class TownCenter : Unit
 
     void Start()
     {
-        rallyPoint = transform.position - transform.forward*3;
+        rallyPoint = Vector3.zero;
     }
 
     public void CreateUnit()
