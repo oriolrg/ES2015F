@@ -130,9 +130,10 @@ public class TerrainFoW : MonoBehaviour
 					gos.AddRange (GameObject.FindGameObjectsWithTag (ExploreTag3));
 				if (!string.IsNullOrEmpty (ExploreTag4))
 					gos.AddRange (GameObject.FindGameObjectsWithTag (ExploreTag4));
-		
-				foreach (GameObject item in gos)
-					item.GetComponent<Renderer>().enabled = false;
+
+                foreach (GameObject item in gos)
+                    //item.GetComponent<Renderer>().enabled = false;
+                    item.SetActive(false);
 			} catch (Exception ex) {
 				Debug.Log (ex.Message);
 			}			
@@ -215,8 +216,9 @@ public class TerrainFoW : MonoBehaviour
 		
 			foreach (GameObject item in gos) {
 				float aux = Vector3.Distance (item.transform.position, pos);						
-				if (aux < (ExplorationSize / 2)) {			
-					item.GetComponent<Renderer>().enabled = true;
+				if (aux < (ExplorationSize / 2)) {
+                    item.SetActive(true);
+                    //item.GetComponent<Renderer>().enabled = true;
 				}
 			}
 		} catch (Exception ex) {
@@ -274,8 +276,10 @@ public class TerrainFoW : MonoBehaviour
 		for (int i = 0; i < realHeight; i++) {
 			for (int j = 0; j < realWidth; j++) {
 				for (int layerCount = 0; layerCount < splats.Count; layerCount++) {
-					try {	
-						alphas [i, j, layerCount] = alphasBkp [alphaMapStartPosZ + i, alphaMapStartPosX + j, layerCount];
+                    try {
+                        if (Mathf.Pow(-realWidth/2 + i, 2)+Mathf.Pow(-realHeight/2 + j,2)<400) {//Mathf.Max(realWidth,realHeight)) { 
+                        alphas[i, j, layerCount] = alphasBkp[alphaMapStartPosZ + i, alphaMapStartPosX + j, layerCount];
+                        }
 					} catch (Exception ex) {
 						//Empty Catch not to stop the processing of other positions in the array.
 					}
