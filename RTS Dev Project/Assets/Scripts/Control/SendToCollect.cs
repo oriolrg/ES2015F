@@ -10,7 +10,7 @@ public class SendToCollect : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Collider[] hitColliders = Physics.OverlapSphere(transform.position,3);
+		Collider[] hitColliders = Physics.OverlapSphere(transform.position,20);
 		foreach(Collider c in hitColliders){
 			if(c.tag=="Ally"){
 				UnitMovement u = c.GetComponentInParent<UnitMovement>();
