@@ -16,3 +16,6 @@ public class ResourceTextDictionaryDrawer : DictionaryDrawer<Resource, Text> { }
 
 [CustomPropertyDrawer(typeof(ResourceValueDictionary))]
 public class ResourceValueDictionaryDrawer : DictionaryDrawer<Resource, int> { }
+
+[CustomPropertyDrawer(typeof(ActionGroupPanelDictionary))]
+public class ActionGroupPanelDictionaryDrawer : DictionaryDrawer<ActionGroup, GameObject> { }

@@ -1,5 +1,5 @@
 ﻿
 public enum ActionGroup
 {
-    Creation, Movement, Special
+    Create, Move, Special
 }

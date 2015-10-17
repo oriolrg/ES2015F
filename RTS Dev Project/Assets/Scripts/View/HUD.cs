@@ -7,31 +7,25 @@ public class HUD : MonoBehaviour
 {
     [SerializeField] private HUDData data;
     [SerializeField] private List<Image> panels;
-    [SerializeField] private Image flagImage;
+    [SerializeField] private List<Text> texts;
     [SerializeField] private ResourceTextDictionary resourceTexts;
+    [SerializeField] private ActionGroupPanelDictionary actionGroupPanels;
+    [SerializeField] private Image flagImage;
     [SerializeField] RectTransform creationPanel;
     [SerializeField] RectTransform troopPanel;
     [SerializeField] RectTransform actionPanel;
     [SerializeField] Image previewImage;
     [SerializeField] private RectTransform healthImage;
 
-    // Test
-    public Sprite panelSprite;
- 
     
+    public Sprite panelSprite;
+
+    //Test
     void Start()
     {
-        setCivilization(Civilization.Egyptians);
-        //updateResource(Resource.Food, 100);
-        //updateResource(Resource.Wood, 100);
-        //updateResource(Resource.Metal, 100);
-        //updateResource(Resource.Population, 2);
+        setCivilization(Civilization.Greeks);
 
     }
-
-
-
-    // End test
 
     // Changes the UI depending on the chosen civilization
     public void setCivilization( Civilization civilization )
@@ -41,6 +35,8 @@ public class HUD : MonoBehaviour
 
         Sprite flag = civilizationData.FlagSprite;
         Sprite panel = civilizationData.PanelSprite;
+        Font font = civilizationData.font;
+        int fontSize = civilizationData.fontSize;
 
         // Store the civilization panel sprite for creating future dynamic panels
         this.panelSprite = panel;
@@ -49,6 +45,13 @@ public class HUD : MonoBehaviour
         foreach ( Image image in panels )
         {
             image.sprite = panel;
+        }
+
+        //Change the font of each text
+        foreach( Text text in texts )
+        {
+            text.font = font;
+            text.fontSize = fontSize;
         }
         
         // Change the flag sprite
@@ -99,7 +102,7 @@ public class HUD : MonoBehaviour
                 Button button = block.GetComponent<Button>();
                 ActionData ad = actionData;
 
-                button.interactable = !focusedUnit.getInConstruction(); //Disable the button if the unit is constructing a buliding.
+                button.interactable = !focusedUnit.getInConstruction(); //Disable the button if the unit is constructing a buliding. Doesnt work!!!
 
                 button.onClick.AddListener(() =>
                 {
