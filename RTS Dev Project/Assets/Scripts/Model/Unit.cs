@@ -60,8 +60,8 @@ public abstract class Unit : MonoBehaviour
 
             if (currentAction.isDone)
             {
-                Queue.Dequeue();
                 currentAction.execute();
+                Queue.Dequeue();
             }
         }
     }
@@ -76,9 +76,7 @@ public abstract class Unit : MonoBehaviour
         Command correspondingCommand = commands[data.actions.IndexOf(actionData)];
         Action action = new Action(actionData, correspondingCommand);
 
-        if (actionData.requiredTime == 0)
-
-            action.execute();
+        if (actionData.requiredTime == 0) action.execute();
 
         else
         {
@@ -86,9 +84,7 @@ public abstract class Unit : MonoBehaviour
                 Debug.LogWarning("Queue maximum length reached.");
             else
                 Queue.Enqueue(action);
-        }
-
-            
+        }   
     }
 
     public List<ActionData> getActionDatas() { return data.actions; }

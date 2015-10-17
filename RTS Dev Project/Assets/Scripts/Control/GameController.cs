@@ -197,14 +197,16 @@ public class GameController : MonoBehaviour {
                 UnitMovement script = unit.GetComponentInParent<UnitMovement>();
                 if (script != null)
                 {
-                    if (checkResources(Resource.Food, -10))
-                    {
-                        script.startMoving(target);
-                        target.GetComponent<timerDeath>().AddUnit(unit);
-                    }
+                    script.startMoving(target);
+                    target.GetComponent<timerDeath>().AddUnit(unit);
+                }
+
+                TownCenter TC = unit.GetComponentInParent<TownCenter>();
+                if (TC != null)
+                {
+                    TC.setRallyPoint(target.transform.position);
                 }
             }
-			
 		}
 	}
 
@@ -303,7 +305,37 @@ public class GameController : MonoBehaviour {
         }
     }
 
-	public void createBuilding(GameObject prefab)
+    public void CreateUnit(Transform buildingTrans, GameObject prefab, Vector3 rally)
+    {
+        Ray ray = new Ray(buildingTrans.position - 3 * buildingTrans.up + 10 * buildingTrans.forward, -Vector3.up);
+
+        bool freeSpaceFound = false;
+
+        RaycastHit hitInfo = new RaycastHit();
+
+        while (!freeSpaceFound)
+        {
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                if (hitInfo.transform.tag != "Ground")
+                {
+                    ray.origin = ray.origin + Vector3.right * 2;
+                }
+                else freeSpaceFound = true;
+            }
+        }
+
+        GameObject newUnit = Instantiate(prefab, hitInfo.point, Quaternion.identity) as GameObject;
+        GameObject target = Instantiate(targetPrefab, rally, Quaternion.identity) as GameObject;
+        UnitMovement script = newUnit.GetComponent<UnitMovement>();
+        if (script != null)
+        {
+            script.startMoving(target);
+            target.GetComponent<timerDeath>().AddUnit(newUnit);
+        }
+    }
+
+    public void createBuilding(GameObject prefab)
 	{
         //Instantiate the building and start the positioning of the building
 
@@ -313,9 +345,7 @@ public class GameController : MonoBehaviour {
 
         building.AddComponent<BuildingPlacer> ().enabled = true;
 
-       
-        enabled = false;
-        
+        enabled = false;        
 	}
 
     public void buildingConstruction(Vector3 position)

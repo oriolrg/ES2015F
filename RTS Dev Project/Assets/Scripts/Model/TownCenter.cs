@@ -4,38 +4,24 @@ using System.Collections.Generic;
 public class TownCenter : Unit 
 {
     [SerializeField] private GameObject villagerPrefab;
+    private Vector3 rallyPoint;
+
 
     protected override List<Command> defineCommands()
     {
         return new List<Command>() { CreateUnit, DestroyBuilding };
     }
 
-
+    void Start()
+    {
+        rallyPoint = transform.position - transform.forward*3;
+    }
 
     public void CreateUnit()
     {
         if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
-            Ray ray = new Ray(transform.position - 3 * transform.up + 10*transform.forward, -Vector3.up);
-
-            bool freeSpaceFound = false;
-
-            RaycastHit hitInfo = new RaycastHit();
-
-            while (!freeSpaceFound)
-            {
-                if (Physics.Raycast(ray, out hitInfo))
-                {
-                    if (hitInfo.transform.tag != "Ground")
-                    {
-                        ray.origin = ray.origin + Vector3.right * 2;
-                    }
-                    else
-                        freeSpaceFound = true;
-                    
-                }
-            }
-            Instantiate(villagerPrefab, hitInfo.point, Quaternion.identity);
+            GameController.Instance.CreateUnit(transform, villagerPrefab, rallyPoint);
         }
     }
 
@@ -57,5 +43,8 @@ public class TownCenter : Unit
         }
     }
 
-    
+    public void setRallyPoint(Vector3 rally)
+    {
+        rallyPoint = rally;
+    }
 }
