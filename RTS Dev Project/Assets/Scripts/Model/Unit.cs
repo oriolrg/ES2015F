@@ -96,7 +96,8 @@ public abstract class Unit : MonoBehaviour
 
     public void SetInConstruction(bool b)
     {
-        inConstruction = b; Debug.Log(b);
+        inConstruction = b;
+        Debug.Log(b);
     }
 
     public void setConstruct(bool b)

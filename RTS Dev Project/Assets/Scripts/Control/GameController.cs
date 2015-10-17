@@ -85,6 +85,7 @@ public class GameController : MonoBehaviour {
                         if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
                         
                         if (!selectedUnits.units.Contains(selectedGO)) selectedUnits.units.Add(selectedGO);
+
                         selectedUnits.FocusedUnit = selectedGO;
                         Transform projector = selectedGO.transform.FindChild("Selected");
                         if (projector != null)
@@ -184,7 +185,7 @@ public class GameController : MonoBehaviour {
 	{
 		foreach (var unit in selectedUnits.units) 
 		{
-
+            Debug.Log("presente");
             //Move the units only if they are not constructing a building
             if (!unit.GetComponent<Unit>().getInConstruction())
             {
@@ -196,7 +197,6 @@ public class GameController : MonoBehaviour {
                 UnitMovement script = unit.GetComponentInParent<UnitMovement>();
                 if (script != null)
                 {
-
                     if (checkResources(Resource.Food, -10))
                     {
                         script.startMoving(target);

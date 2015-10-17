@@ -10,8 +10,7 @@ public class Troop
     public Troop()
     {
         units = new List<GameObject>();
-        FocusedUnit = null;
-        
+        FocusedUnit = null;      
     }
     public Troop(List<GameObject> units)
     {

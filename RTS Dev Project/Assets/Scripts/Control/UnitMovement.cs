@@ -32,7 +32,8 @@ public class UnitMovement : MonoBehaviour {
 		seeker.StartPath(transform.position,target.transform.position,OnPathComplete);
 		targetPos = target.transform.position;
 		hasTarget = true;
-        GetComponent<Animator>().SetBool("running", true);
+        var animator = GetComponent<Animator>();
+        if (animator != null) animator.SetBool("running", true);
 	}
 	
 
@@ -68,7 +69,8 @@ public class UnitMovement : MonoBehaviour {
 			if((Vector3.Distance(transform.position,targetPos) < 2)){
 				target.GetComponent<timerDeath>().UnitLostTarget(gameObject);
 				hasTarget = false;
-                GetComponent<Animator>().SetBool("running", false);
+                var animator = GetComponent<Animator>();
+                if (animator != null) animator.SetBool("running", false);
             }
 		}
 	}
