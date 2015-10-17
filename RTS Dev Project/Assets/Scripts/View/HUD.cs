@@ -89,15 +89,19 @@ public class HUD : MonoBehaviour
             foreach (ActionData actionData in actionDatas)
             {
                 GameObject block = Instantiate(data.blockPrefab) as GameObject;
-                block.transform.SetParent(actionPanel);
-
+                
                 Image background = block.GetComponent<Image>();
                 background.sprite = panelSprite;
 
                 Image foreground = block.transform.GetChild(0).GetComponent<Image>();
                 foreground.sprite = actionData.sprite;
 
+                // Get the parent panel for this panel depending on its group
+                ActionGroup group = actionData.actionGroup;
+                GameObject parent = actionGroupPanels[group];
+                print(parent.name);
 
+                block.transform.SetParent(parent.transform);
 
                 Button button = block.GetComponent<Button>();
                 ActionData ad = actionData;
@@ -158,8 +162,14 @@ public class HUD : MonoBehaviour
     {
         foreach (Transform child in troopPanel) Destroy(child.gameObject);
         previewImage.sprite = panelSprite;
-        foreach (Transform child in actionPanel) Destroy(child.gameObject);
         foreach (Transform child in creationPanel) Destroy(child.gameObject);
+        foreach( KeyValuePair<ActionGroup,GameObject> kv in actionGroupPanels )
+        {
+            foreach( Transform child in kv.Value.transform )
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 
     public void setTroopPreview( Troop troop )
@@ -186,7 +196,7 @@ public class HUD : MonoBehaviour
                     GameObject focusFrame = new GameObject("focus frame");
                     Image image = focusFrame.AddComponent<Image>();
                     image.sprite = data.focusSprite;
-                    image.color = new Color(.1f, 1, .1f, .5f);
+                    image.color = new Color(.1f, .1f, .5f, .3f);
                     focusFrame.transform.SetParent(block.transform.GetChild(0));
                 }
             }           

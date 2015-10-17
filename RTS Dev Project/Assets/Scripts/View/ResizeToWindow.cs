@@ -4,9 +4,9 @@ using UnityEngine.UI;
 public class ResizeToWindow : MonoBehaviour
 {
     public float height = 0;
-    public float heightPercent = 0.9f;
-    public float spacing = 0.05f;
-    public float padding = 0.05f;
+    public float heightPercent = 0.8f;
+    public float spacing = 0.1f;
+    public float padding = 0.1f;
 
     private int originalWidth;
     private int originalHeight;
