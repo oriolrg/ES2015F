@@ -4,14 +4,14 @@ using Pathfinding;
 
 public class UnitMovement : MonoBehaviour {
 
-	[SerializeField] Transform target;
+	public Transform target;
 	[SerializeField] private float speed = 10;
 
 	Seeker seeker;
 	Path path;
 	int currentWaypoint;
 	CharacterController characterController;
-	Vector3 targetPos;
+	public Vector3 targetPos;
 
     public AnimationClip runAnimation;
 
@@ -33,6 +33,14 @@ public class UnitMovement : MonoBehaviour {
 		targetPos = target.transform.position;
 		hasTarget = true;
         GetComponent<Animator>().SetBool("running", true);
+	}
+
+	public void startMovingAfterCollect(Transform t){
+		this.target = t;
+		seeker.StartPath(transform.position,target.position,OnPathComplete);
+		targetPos = target.position;
+		hasTarget = true;
+		GetComponent<Animator>().SetBool("running", true);
 	}
 	
 
