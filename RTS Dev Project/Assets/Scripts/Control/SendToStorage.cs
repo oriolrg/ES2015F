@@ -16,13 +16,16 @@ public class SendToStorage : MonoBehaviour {
 		foreach(Collider c in hitColliders){
 			if(c.tag=="Ally"){
 				CollectResources collect = c.gameObject.GetComponentInParent<CollectResources>();
-				if(collect.targetToCollect == null || collect.targetToCollect == gameObject.transform){
-					DestroyOnExpend d = gameObject.GetComponent<DestroyOnExpend>();
-					if(collect.hasCollected == false){
-						d.amount = d.amount - 10;
-						collect.totalFood = d.amount;
-						collect.targetToCollect = gameObject.transform;
-						collect.startMovingToStorage(t.transform);
+				if(collect.goingToCollect == true){
+					if(collect.targetToCollect == null || collect.targetToCollect == gameObject.transform){
+						DestroyOnExpend d = gameObject.GetComponent<DestroyOnExpend>();
+						if(collect.hasCollected == false){
+							d.amount = d.amount - 10;
+							collect.totalFood = d.amount;
+							collect.targetToCollect = gameObject.transform;
+							collect.startMovingToStorage(t.transform);
+							collect.hasCollected = true;
+						}
 					}
 				}
 			}

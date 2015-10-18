@@ -6,12 +6,14 @@ public class CollectResources : MonoBehaviour {
 	public int totalFood;
 	public Transform targetToCollect;
 	public bool hasCollected;
-	UnitMovement u;
+	public bool goingToCollect;
+	public UnitMovement u;
 	
 	// Use this for initialization
 	void Start () {
 		u = GetComponent<UnitMovement>();
 		hasCollected = false;
+		goingToCollect = false;
 	}
 	
 	// Update is called once per frame

@@ -17,7 +17,7 @@ public class UnitMovement : MonoBehaviour {
 
     public AnimationClip runAnimation;
 
-	bool hasTarget;
+	public bool hasTarget;
 
 	// Use this for initialization
 	void Start () {
