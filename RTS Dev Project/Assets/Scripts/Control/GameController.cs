@@ -91,9 +91,15 @@ public class GameController : MonoBehaviour {
 			//Click detection
 			RaycastHit hitInfo = new RaycastHit();
 			bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+			GameObject target;
 			if (hit)
 			{
-				GameObject target = Instantiate(targetPrebab, hitInfo.point, Quaternion.identity) as GameObject;
+				if(hitInfo.transform.gameObject.tag == "Food"){
+					target = Instantiate(targetPrebab, hitInfo.transform.gameObject.transform.position, Quaternion.identity) as GameObject;
+					print("working!!!");
+				} else {
+					target = Instantiate(targetPrebab, hitInfo.point, Quaternion.identity) as GameObject;
+				}
 				moveUnits(target);
 			}
 			else

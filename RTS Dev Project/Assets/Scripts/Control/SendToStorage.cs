@@ -15,13 +15,15 @@ public class SendToStorage : MonoBehaviour {
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position,15);
 		foreach(Collider c in hitColliders){
 			if(c.tag=="Ally"){
-				UnitMovement u = c.GetComponentInParent<UnitMovement>();
-				DestroyOnExpend d = gameObject.GetComponent<DestroyOnExpend>();
-				if(u.hasCollected == false){
-					d.amount = d.amount - 10;
-					u.totalFood = d.amount;
-					u.targetToCollect = gameObject.transform;
-					u.startMovingToStorage(t.transform);
+				CollectResources collect = c.gameObject.GetComponentInParent<CollectResources>();
+				if(collect.targetToCollect == null || collect.targetToCollect == gameObject.transform){
+					DestroyOnExpend d = gameObject.GetComponent<DestroyOnExpend>();
+					if(collect.hasCollected == false){
+						d.amount = d.amount - 10;
+						collect.totalFood = d.amount;
+						collect.targetToCollect = gameObject.transform;
+						collect.startMovingToStorage(t.transform);
+					}
 				}
 			}
 		}
