@@ -57,16 +57,16 @@ public class GameController : MonoBehaviour {
         selectedUnits = new Troop();
         initResourceValues();
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
-		//Win Condition
-		var wonder = GameObject.FindGameObjectWithTag("Wonder");
-		if (wonder != null) 
-		{
-			winCondition ();
-		}
+        //Win Condition
+        var wonder = GameObject.FindGameObjectWithTag("Wonder");
+        if (wonder != null)
+        {
+            winCondition();
+        }
 
         if (Input.mousePosition.y > Screen.height * UIheight)
         {
@@ -85,7 +85,7 @@ public class GameController : MonoBehaviour {
                     if (hitInfo.transform.gameObject.tag == "Ally")
                     {
                         if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
-                        
+
                         if (!selectedUnits.units.Contains(selectedGO)) selectedUnits.units.Add(selectedGO);
 
                         selectedUnits.FocusedUnit = selectedGO;
@@ -105,71 +105,75 @@ public class GameController : MonoBehaviour {
                 }
             }
 
-		if (Input.GetMouseButtonDown(1))
-		{
-			//Click detection
-			RaycastHit hitInfo = new RaycastHit();
-			bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
-			GameObject target;
-			if (hit)
-			{
-				if(hitInfo.transform.gameObject.tag == "Food"){
-					target = Instantiate(targetPrebab, hitInfo.transform.gameObject.transform.position, Quaternion.identity) as GameObject;
-					moveUnitsCollect(target);
-				} else {
-					target = Instantiate(targetPrebab, hitInfo.point, Quaternion.identity) as GameObject;
-					moveUnits(target);
-				}
-			}
-			else
-			{
-				// Debug.Log("No hit");
-			}
-		}
-
-        //End of click
-        if (Input.GetMouseButtonUp(0))
-        {
-            
-            if (isSelecting)
+            if (Input.GetMouseButtonDown(1))
             {
-                isSelecting = false;
-                
-                //We impose a size of 5 to detect a box.
-                //Box Selection
-                Vector3 maxVector = new Vector3(Input.mousePosition.x, Mathf.Max(Input.mousePosition.y, UIheight * Screen.height), Input.mousePosition.z);
-                if ((mPos - maxVector).magnitude > 5)
+                //Click detection
+                RaycastHit hitInfo = new RaycastHit();
+                bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+                GameObject target;
+                if (hit)
                 {
-                    var camera = Camera.main;
-                    var viewportBounds = RectDrawer.GetViewportBounds(camera, mPos, maxVector);
-
-                    //Deselecting
-                    if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
-
-                    //Selecting
-                    foreach (var unit in FindObjectsOfType<GameObject>())
+                    if (hitInfo.transform.gameObject.tag == "Food")
                     {
-                        //Units inside the rect get selected.
-                        if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position)) & unit.tag == "Ally" & !selectedUnits.units.Contains(unit))
-                        {
-                            selectedUnits.units.Add(unit);
-                            Transform projector = unit.transform.FindChild("Selected");
-                            if( projector != null)
-                                projector.gameObject.SetActive(true);
-                        }
-                        
+                        target = Instantiate(targetPrefab, hitInfo.transform.gameObject.transform.position, Quaternion.identity) as GameObject;
+                        //moveUnitsCollect(target);
                     }
-                    if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0];
-                    hud.updateSelection(selectedUnits);
+                    else
+                    {
+                        target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+                        moveUnits(target);
+                    }
+                }
+                else
+                {
+                    // Debug.Log("No hit");
                 }
             }
 
-        }
+            //End of click
+            if (Input.GetMouseButtonUp(0))
+            {
+
+                if (isSelecting)
+                {
+                    isSelecting = false;
+
+                    //We impose a size of 5 to detect a box.
+                    //Box Selection
+                    Vector3 maxVector = new Vector3(Input.mousePosition.x, Mathf.Max(Input.mousePosition.y, UIheight * Screen.height), Input.mousePosition.z);
+                    if ((mPos - maxVector).magnitude > 5)
+                    {
+                        var camera = Camera.main;
+                        var viewportBounds = RectDrawer.GetViewportBounds(camera, mPos, maxVector);
+
+                        //Deselecting
+                        if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
+
+                        //Selecting
+                        foreach (var unit in FindObjectsOfType<GameObject>())
+                        {
+                            //Units inside the rect get selected.
+                            if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position)) & unit.tag == "Ally" & !selectedUnits.units.Contains(unit))
+                            {
+                                selectedUnits.units.Add(unit);
+                                Transform projector = unit.transform.FindChild("Selected");
+                                if (projector != null)
+                                    projector.gameObject.SetActive(true);
+                            }
+
+                        }
+                        if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0];
+                        hud.updateSelection(selectedUnits);
+                    }
+                }
+
+            }
 
             if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            selectedUnits.focusNext();
-            hud.updateSelection(selectedUnits); // There will exist an updateFocus method            
+            {
+                selectedUnits.focusNext();
+                hud.updateSelection(selectedUnits); // There will exist an updateFocus method            
+            }
         }
     }
 
