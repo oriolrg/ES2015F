@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
+using System;
 
 public class GameController : MonoBehaviour {
 	[SerializeField]
@@ -232,10 +234,10 @@ public class GameController : MonoBehaviour {
     //Set starting resource values.
     public void initResourceValues()
     {
-        resourceDict[Resource.Food] = 100;
-        resourceDict[Resource.Wood] = 100;
-        resourceDict[Resource.Metal] = 100;
-        resourceDict[Resource.Population] = 2;
+        resourceDict[Resource.Food] = 1000;
+        resourceDict[Resource.Wood] = 1000;
+        resourceDict[Resource.Metal] = 1000;
+        resourceDict[Resource.Population] = 10;
         hud.updateResource(Resource.Food, resourceDict[Resource.Food]);
         hud.updateResource(Resource.Wood, resourceDict[Resource.Wood]);
         hud.updateResource(Resource.Metal, resourceDict[Resource.Metal]);
@@ -243,25 +245,35 @@ public class GameController : MonoBehaviour {
     }
 
     //Called to check whether there are enough resources to perform an action.
-    //Params: resource type, amount (negative amount to subtract, positive to add).
+    //Params: resource type, amount (to subtract).
     //Returns true if there are enough, and updates the resource type.
     //Returns false if there aren't enough, and displays warnings.
-    public bool checkResources(Resource res, int value)
+    public bool checkResources(ResourceValueDictionary resourceCosts)
     {
-        if (resourceDict[res] + value < 0)
+        bool check = true;
+        foreach (KeyValuePair<Resource, int> kv in resourceCosts)
         {
-            //Here goes stuff that happens when there aren't enough resources to perform the action.
-            //i.e. text pop-up, sound warning.
-            return false;
+            if (resourceDict[kv.Key] - kv.Value < 0)
+            {
+                //Here goes stuff that happens when there aren't enough resources to perform the action.
+                //i.e. text pop-up, sound warning.
+                check = false;
+            }
         }
-        updateResource(res, value);
-        return true;
+        if (check)
+        {
+            foreach (KeyValuePair<Resource, int> kv in resourceCosts)
+            {
+                updateResource(kv.Key, kv.Value);
+            }
+        }
+        return check;
     }
 
     public void updateResource(Resource res, int value)
     {
-        resourceDict[res] += value;
-        hud.updateResource(res, resourceDict[res]);
+        resourceDict[res] -= value;
+        hud.updateResource(res, resourceDict[res] - value);    
     }
 
     public void checkWin()

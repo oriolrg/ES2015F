@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 
@@ -51,7 +52,7 @@ public class Civilian : Unit
             construct = false;
         }
 
-        GameController.Instance.createBuilding(wonderPrefab);
+        if(GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(wonderPrefab);
 
     }
 

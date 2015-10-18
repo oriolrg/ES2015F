@@ -7,6 +7,10 @@ public abstract class Unit : MonoBehaviour
     private List<Command> commands;
     public Queue<Action> Queue { get; private set; }
 
+    [SerializeField]
+    protected ResourceTextDictionary resourceCosts;
+
+
     [SerializeField] protected float health;
     [SerializeField] public string Name { get; protected set; }
     public float HealthRatio { get { return health * 1f / data.stats[Stat.Health]; }}
