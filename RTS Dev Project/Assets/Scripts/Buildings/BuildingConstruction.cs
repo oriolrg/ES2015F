@@ -34,8 +34,8 @@ public class BuildingConstruction : MonoBehaviour {
         {
             //Timer that changes the mesh of the building
 
-            Debug.Log(timer);
-            Debug.Log(constructingUnits.Count);
+            //Debug.Log(timer);
+            //Debug.Log(constructingUnits.Count);
             timer -= constructingUnits.Count * Time.deltaTime;
 
             if(timer < 15 && phase==0)

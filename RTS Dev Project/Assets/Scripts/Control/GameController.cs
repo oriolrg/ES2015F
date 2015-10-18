@@ -234,6 +234,13 @@ public class GameController : MonoBehaviour {
         checkWin();
         checkLose();
 
+        if (selectedUnits.units.Contains(u))
+        {
+            Transform projector = u.transform.FindChild("Selected");
+            if (projector != null) projector.gameObject.SetActive(false);
+            selectedUnits.units.Remove(u);
+        }
+
         if(selectedUnits.FocusedUnit == u)
         {
             hud.ClearSelection();
@@ -318,7 +325,9 @@ public class GameController : MonoBehaviour {
         { 
             foreach (var unit in selectedUnits.units)
             {
-                unit.transform.FindChild("Selected").gameObject.SetActive(false);
+                Transform projector = unit.transform.FindChild("Selected");
+                if (projector != null)
+                    projector.gameObject.SetActive(false);
             }
             selectedUnits.units.Clear();
             selectedUnits.FocusedUnit = null;
