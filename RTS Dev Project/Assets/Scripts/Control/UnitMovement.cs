@@ -13,28 +13,35 @@ public class UnitMovement : MonoBehaviour {
 	Path path;
 	int currentWaypoint;
 	CharacterController characterController;
-	public Vector3 targetPos;
+	Vector3 targetPos;
+    Animator animator;
 
     public AnimationClip runAnimation;
 
 	public bool hasTarget;
 
 	// Use this for initialization
-	void Start () {
+	void Awake ()
+    {
 		seeker = GetComponent<Seeker>();
 		characterController = GetComponent<CharacterController>();
-		//target = (Transform)GameObject.Find("target").transform;
-		//seeker.StartPath(transform.position,target.position,OnPathComplete);
-		hasTarget = false;
+        animator = GetComponent<Animator>();
+        hasTarget = false;
 	}
 
 	public void startMoving( GameObject target )
 	{
 		this.target = target.transform;
-		seeker.StartPath(transform.position,target.transform.position,OnPathComplete);
+        if ( seeker != null )
+        
+            seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
+        
 		targetPos = target.transform.position;
 		hasTarget = true;
-        GetComponent<Animator>().SetBool("running", true);
+        
+        if (animator != null)
+
+            animator.SetBool("running", true);
 	}
 
 	public void startMovingCollect(Transform target){
@@ -78,7 +85,8 @@ public class UnitMovement : MonoBehaviour {
 			if((Vector3.Distance(transform.position,targetPos) < 2)){
 				target.GetComponent<timerDeath>().UnitLostTarget(gameObject);
 				hasTarget = false;
-                GetComponent<Animator>().SetBool("running", false);
+                var animator = GetComponent<Animator>();
+                if (animator != null) animator.SetBool("running", false);
             }
 		}
 	}

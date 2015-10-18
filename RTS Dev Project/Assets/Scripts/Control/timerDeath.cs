@@ -35,7 +35,6 @@ public class timerDeath : MonoBehaviour
 	{
 		unitsGoingHere.Remove (unit);
 		cnt -= 1;
-		print (cnt);
 		if (cnt == 0)
 			Destroy (gameObject);
 	}

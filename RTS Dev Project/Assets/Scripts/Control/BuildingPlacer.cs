@@ -4,6 +4,7 @@ using System.Collections;
 public class BuildingPlacer : MonoBehaviour {
 
 	private Color originalColor;
+    private Color transparentColor;
 	private Color red = new Color(1f, 0f, 0f, 0.5f);
 
     private bool collision;//indicates if there is a collision
@@ -13,11 +14,10 @@ public class BuildingPlacer : MonoBehaviour {
 	void OnEnable()
 	{
 		originalColor = gameObject.GetComponent<Renderer> ().material.color;
-		
+        transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.3f);
+        
         //Make the gameObject a bit transparent
-		gameObject.GetComponent<Renderer> ().material.color = new Color(
-			originalColor.r, originalColor.g, originalColor.b, 0.5f
-		);
+        gameObject.GetComponent<Renderer> ().material.color = transparentColor;
 
         collision = false;
 		counterCollision = 0;
@@ -44,6 +44,19 @@ public class BuildingPlacer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        //Cancel the building creation with mouse right button
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            Destroy(gameObject);
+            
+            GameController.Instance.enabled = true;
+
+            enabled = false;
+
+            Destroy(this);
+        }
+
+
         //Create a ray and look for all collisions and keep the ground collision
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		
@@ -51,7 +64,7 @@ public class BuildingPlacer : MonoBehaviour {
 		hits = Physics.RaycastAll(ray);
 		
 		bool groundHitFound = false;
-		RaycastHit groundHit;
+		RaycastHit groundHit = default(RaycastHit); // ignore uninitialized error
 		
 		foreach (RaycastHit hit in hits) 
 		{
@@ -78,22 +91,23 @@ public class BuildingPlacer : MonoBehaviour {
                 gameObject.GetComponent<Renderer> ().material.color = red;
 
 			} 
-			else if(Input.GetKeyDown (KeyCode.Mouse0))  
+			else if(Input.GetKeyUp (KeyCode.Mouse0))  
 			{
-                //When there is no collision and the mouse left button is clicked, remove the gameObject transparency and unable the script
+                //When there is no collision and the mouse left button is clicked, order to start the construction
 
-                gameObject.GetComponent<Renderer> ().material.color = originalColor;
+                gameObject.GetComponent<Renderer> ().material.color = transparentColor;
 
-				GameController.Instance.enabled = true;
-				enabled = false;
+                //GameController.Instance.enabled = true;
+
+                GameController.Instance.buildingConstruction(gameObject.transform.position);
+
+                enabled = false;
 				Destroy (this);
 				
 			} else {
                 //GameObject original color with transparency
 
-				gameObject.GetComponent<Renderer> ().material.color = new Color(
-					originalColor.r, originalColor.g, originalColor.b, 0.5f
-				);
+				gameObject.GetComponent<Renderer> ().material.color = transparentColor;
 			}
 		}
 	
