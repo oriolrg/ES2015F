@@ -7,7 +7,9 @@ public class MinimapCamera : MonoBehaviour {
 	private Camera minimapCamera;
 	[SerializeField] private Camera mainCamera;
 	[SerializeField] private LayerMask minimapLookAtMask = -1;
-	
+
+	[SerializeField] private float edgeSize = 0.3f;
+
 	private CameraController mainCameraController;
 	
 	private static float ScreenAspect;
@@ -15,6 +17,8 @@ public class MinimapCamera : MonoBehaviour {
 	private Vector3 mainCameraOffset;
 	private Vector3 currentLookAtPoint;
 	private bool mouseClicked;
+
+	[SerializeField] private RectTransform minimapPanelRectTransform;
 
 	// Use this for initialization
 	void Start () {
@@ -106,7 +110,7 @@ public class MinimapCamera : MonoBehaviour {
 			// Where is that point in the ground?
 			if (Physics.Raycast (ray, out hit, Mathf.Infinity, // max distance
 			                     minimapLookAtMask.value)) {
-				Debug.DrawLine (ray.origin, hit.point);
+				//Debug.DrawLine (ray.origin, hit.point);
 
 				// Change camera position, adding offset
 				mainCameraController.goTo (hit.point + mainCameraOffset);
@@ -168,20 +172,22 @@ public class MinimapCamera : MonoBehaviour {
 		Rect rect = minimapCamera.rect;
 		
 		if (ScreenAspect > 1) {
-			rect.width = 0.4f / ScreenAspect;
-			rect.height = 0.4f;
+			rect.width = edgeSize / ScreenAspect;
+			rect.height = edgeSize;
 		} else {
-			rect.width = 0.4f;
-			rect.height = 0.4f / ScreenAspect;
+			rect.width = edgeSize;
+			rect.height = edgeSize / ScreenAspect;
 		}
-		
-		rect.x = 1.0f - rect.width;
-		rect.y = 1.0f - rect.height;
+
+		rect.x = (minimapPanelRectTransform.rect.width / Screen.width - rect.width) / 2f;
+		rect.y = (minimapPanelRectTransform.rect.height / Screen.height - rect.height) / 2f;
 		
 		minimapCamera.rect = rect;
 	}
 	
 	void OnGUI(){
+		//minimapCamera.Render (); // To display on top of GUI
+
 		// Draw a rect in the minimap to show the visible area
 		Vector2 position = minimapCamera.WorldToScreenPoint(currentLookAtPoint);
 		position.y = Screen.height - position.y;
