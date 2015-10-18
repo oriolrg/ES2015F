@@ -19,6 +19,7 @@ public class HUD : MonoBehaviour
     [SerializeField] Text descriptionText;
     [SerializeField] Image previewImage;
     [SerializeField] private RectTransform healthImage;
+    [SerializeField] private Text nameText;
 
     
     public Sprite panelSprite;
@@ -82,8 +83,9 @@ public class HUD : MonoBehaviour
             // Get focused unit of the troop
             Unit focusedUnit = troop.FocusedUnit.GetComponent<Unit>();
 
-            // Update preview image and focus
+            // Update preview image and name
             previewImage.sprite = focusedUnit.Preview;
+            nameText.text = focusedUnit.name;
 
             
 
@@ -102,7 +104,6 @@ public class HUD : MonoBehaviour
                 // Get the parent panel for this panel depending on its group
                 ActionGroup group = actionData.actionGroup;
                 GameObject parent = actionGroupPanels[group];
-                print(parent.name);
 
                 block.transform.SetParent(parent.transform);
 
@@ -177,6 +178,7 @@ public class HUD : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
+        nameText.text = "";
     }
 
     public void setTroopPreview( Troop troop )

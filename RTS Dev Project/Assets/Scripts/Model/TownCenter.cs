@@ -19,7 +19,9 @@ public class TownCenter : Unit
 
     void Start()
     {
-        rallyPoint = Vector3.zero;
+        rallyPoint = transform.position - 5*transform.up;
+        Random.seed = Random.seed*2;
+        name = string.Format("The {0} Town center", greekAdjectives[Random.Range(0,greekAdjectives.Count)]); 
     }
 
     public void CreateCivilian()

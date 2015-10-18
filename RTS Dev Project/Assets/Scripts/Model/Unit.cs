@@ -8,6 +8,7 @@ public abstract class Unit : MonoBehaviour
     public Queue<Action> Queue { get; private set; }
 
     [SerializeField] protected float health;
+    [SerializeField] public string Name { get; protected set; }
     public float HealthRatio { get { return health * 1f / data.stats[Stat.Health]; }}
     public Sprite Preview { get { return data.preview; } }
 
@@ -17,9 +18,14 @@ public abstract class Unit : MonoBehaviour
 
     private int maxQueueLength = 5;
 
+    public List<string> greekNames = new List<string>() { "Agapetus", "Anacletus", "Eustathius", "Helene", "Herodes", "Isidora", "Kosmas", "Lysimachus", "Lysistrata", "Nereus", "Niketas", "Theodoro", "Zephyros" };
+    public List<string> greekAdjectives = new List<string>() { "Important", "Lazy", "Popular", "Historical", "Scared", "Old", "Traditional", "Strong", "Helpful", "Competitive", "Legal", "Psychological", "Obvious" };
+    
+
     void Awake()
     {
         health = data.stats[Stat.Health];
+        name = string.Format("{0}, The {1}", greekNames[Random.Range(0,greekNames.Count)], greekAdjectives[Random.Range(0,greekAdjectives.Count)]);
 
         Queue = new Queue<Action>();
         

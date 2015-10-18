@@ -325,8 +325,6 @@ public class GameController : MonoBehaviour {
             }
         }
 
-        print(freeSpaceFound);
-
         GameObject newUnit = Instantiate(prefab, hitInfo.point, Quaternion.identity) as GameObject;
         GameObject target = Instantiate(targetPrefab, rally, Quaternion.identity) as GameObject;
         UnitMovement script = newUnit.GetComponent<UnitMovement>();
