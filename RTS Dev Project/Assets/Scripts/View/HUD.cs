@@ -9,11 +9,14 @@ public class HUD : MonoBehaviour
     [SerializeField] private List<Image> panels;
     [SerializeField] private List<Text> texts;
     [SerializeField] private ResourceTextDictionary resourceTexts;
+    [SerializeField] private ResourceTextDictionary resourceCosts;
     [SerializeField] private ActionGroupPanelDictionary actionGroupPanels;
     [SerializeField] private Image flagImage;
     [SerializeField] RectTransform creationPanel;
     [SerializeField] RectTransform troopPanel;
-    [SerializeField] RectTransform actionPanel;
+    [SerializeField] RectTransform rightPanel;
+    [SerializeField] RectTransform resourceCostPanel;
+    [SerializeField] Text descriptionText;
     [SerializeField] Image previewImage;
     [SerializeField] private RectTransform healthImage;
 
@@ -113,6 +116,10 @@ public class HUD : MonoBehaviour
                     focusedUnit.ActionClicked(ad);
                     updateDelayedActions(focusedUnit);
                 });
+
+                // Show resource costs when enter, hide when exit
+                ShowResourceCostWhenEnter script = block.AddComponent<ShowResourceCostWhenEnter>();
+                script.data = actionData;
             }
 
             updateHealth(focusedUnit);
@@ -196,10 +203,25 @@ public class HUD : MonoBehaviour
                     GameObject focusFrame = new GameObject("focus frame");
                     Image image = focusFrame.AddComponent<Image>();
                     image.sprite = data.focusSprite;
-                    image.color = new Color(.1f, .1f, .5f, .3f);
+                    image.color = new Color(.6f, .8f, 1f, .5f);
                     focusFrame.transform.SetParent(block.transform.GetChild(0));
                 }
             }           
         }
+    }
+
+    public void showRightPanel( ActionData data )
+    {
+        rightPanel.gameObject.SetActive(true);
+        foreach(KeyValuePair<Resource,Text> kv in resourceCosts)
+        {
+            kv.Value.text = data.resourceCost[kv.Key].ToString();
+        }
+        descriptionText.text = data.description;
+    }
+
+    public void hideRightPanel()
+    {
+        rightPanel.gameObject.SetActive(false);
     }
 }

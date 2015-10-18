@@ -344,7 +344,7 @@ public class GameController : MonoBehaviour {
 
 		GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
-        foreach (var unit in selectedUnits.units) unit.GetComponent<Civil>().SetBuildingToConstruct(building);
+        foreach (var unit in selectedUnits.units) unit.GetComponent<Civilian>().SetBuildingToConstruct(building);
 
         building.AddComponent<BuildingPlacer> ().enabled = true;
 
@@ -362,5 +362,15 @@ public class GameController : MonoBehaviour {
         //Order that the unit has to construct
         foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().setConstruct(true);
 
+    }
+
+    public void showRightPanel(ActionData data)
+    {
+        hud.showRightPanel(data);
+    }
+
+    public void hideRightPanel()
+    {
+        hud.hideRightPanel();
     }
 }

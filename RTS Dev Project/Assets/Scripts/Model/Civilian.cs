@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class Civil : Unit
+public class Civilian : Unit
 {
 
     [SerializeField] private GameObject wonderPrefab;
