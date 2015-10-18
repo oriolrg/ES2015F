@@ -6,10 +6,46 @@ ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
+    100002: columns
+    100004: door
+    100006: flowerpot
+    100008: framedoor
+    100010: plant
+    100012: rest
+    100014: roof
     400000: //RootNode
+    400002: columns
+    400004: door
+    400006: flowerpot
+    400008: framedoor
+    400010: plant
+    400012: rest
+    400014: roof
     2300000: //RootNode
+    2300002: columns
+    2300004: door
+    2300006: flowerpot
+    2300008: framedoor
+    2300010: plant
+    2300012: rest
+    2300014: roof
     3300000: //RootNode
+    3300002: columns
+    3300004: door
+    3300006: flowerpot
+    3300008: framedoor
+    3300010: plant
+    3300012: rest
+    3300014: roof
     4300000: Cylinder
+    4300002: Cube
+    4300004: door
+    4300006: rest
+    4300008: roof
+    4300010: framedoor
+    4300012: columns
+    4300014: flowerpot
+    4300016: plant
     7400000: Default Take
     9500000: //RootNode
   materials:
