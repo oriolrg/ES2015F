@@ -17,7 +17,10 @@ public class SendToCollect : MonoBehaviour {
 				if(u.totalFood > 0){
 					u.hasCollected = false;
 					u.startMovingToCollect(u.targetToCollect);
+				} else {
+					u.hasCollected = false;
 				}
+
 			}
 		}
 	}
