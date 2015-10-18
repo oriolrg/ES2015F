@@ -13,11 +13,14 @@ public class SendToCollect : MonoBehaviour {
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position,20);
 		foreach(Collider c in hitColliders){
 			if(c.tag=="Ally"){
-				UnitMovement u = c.GetComponentInParent<UnitMovement>();
-				if(u.totalFood > 0){
-					u.hasCollected = false;
-					u.startMovingToCollect(u.targetToCollect);
+				CollectResources collect = c.GetComponentInParent<CollectResources>();
+				if(collect.totalFood > 0){
+					collect.hasCollected = false;
+					collect.startMovingToCollect(collect.targetToCollect);
+				} else {
+					collect.hasCollected = false;
 				}
+
 			}
 		}
 	}

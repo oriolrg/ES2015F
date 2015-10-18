@@ -5,9 +5,7 @@ using Pathfinding;
 public class UnitMovement : MonoBehaviour {
 
 	public Transform target;
-	public int totalFood;
-	public Transform targetToCollect;
-	public bool hasCollected;
+
 
 	[SerializeField] private float speed = 10;
 
@@ -19,7 +17,7 @@ public class UnitMovement : MonoBehaviour {
 
     public AnimationClip runAnimation;
 
-	bool hasTarget;
+	public bool hasTarget;
 
 	// Use this for initialization
 	void Start () {
@@ -28,7 +26,6 @@ public class UnitMovement : MonoBehaviour {
 		//target = (Transform)GameObject.Find("target").transform;
 		//seeker.StartPath(transform.position,target.position,OnPathComplete);
 		hasTarget = false;
-		hasCollected = false;
 	}
 
 	public void startMoving( GameObject target )
@@ -40,24 +37,15 @@ public class UnitMovement : MonoBehaviour {
         GetComponent<Animator>().SetBool("running", true);
 	}
 
-	public void startMovingToStorage(Transform t){
-		this.target = t;
+	public void startMovingCollect(Transform target){
+		this.target = target;
 		seeker.StartPath(transform.position,target.position,OnPathComplete);
 		targetPos = target.position;
 		hasTarget = true;
-		hasCollected = true;
 		GetComponent<Animator>().SetBool("running", true);
 	}
 
-	public void startMovingToCollect(Transform t){
-		this.target = t;
-		seeker.StartPath(transform.position,target.position,OnPathComplete);
-		targetPos = target.position;
-		hasTarget = true;
-		GetComponent<Animator>().SetBool("running", true);
-	}
 	
-
 	public void OnPathComplete(Path p) {
 		path = p;
 		currentWaypoint = 0;
