@@ -1,13 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ShowResourceCostWhenEnter : MonoBehaviour, IPointerEnterHandler
+public class ShowResourceCostWhenEnter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public ActionData data;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        GameController.Instance.showRightPanel(data);
+        GameController.Instance.enterActionButton(data);
     }
-    
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        GameController.Instance.exitActionButton(data);
+    }
 }

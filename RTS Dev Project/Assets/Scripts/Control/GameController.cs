@@ -364,9 +364,14 @@ public class GameController : MonoBehaviour {
 
     }
 
-    public void showRightPanel(ActionData data)
+    public void enterActionButton(ActionData data)
     {
-        hud.showRightPanel(data);
+        hud.enterActionButton(data);
+    }
+
+    public void exitActionButton(ActionData data)
+    {
+        hud.exitActionButton(data);
     }
 
     public void hideRightPanel()

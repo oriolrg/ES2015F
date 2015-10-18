@@ -210,14 +210,31 @@ public class HUD : MonoBehaviour
         }
     }
 
-    public void showRightPanel( ActionData data )
+    public void enterActionButton( ActionData data )
     {
         rightPanel.gameObject.SetActive(true);
         foreach(KeyValuePair<Resource,Text> kv in resourceCosts)
         {
-            kv.Value.text = data.resourceCost[kv.Key].ToString();
+            Resource resource = kv.Key;
+            kv.Value.text = data.resourceCost[resource].ToString();
+            Text text = resourceTexts[resource];
+            int newvalue = (Int32.Parse(text.text) - data.resourceCost[resource]);
+            text.text =  newvalue.ToString();
+            text.color = newvalue > 0 ? new Color(.5f, .5f, 0f, 1f) : new Color(.5f, 0f, 0f, 1f);
         }
         descriptionText.text = data.description;
+    }
+
+    public void exitActionButton(ActionData data)
+    {
+        foreach (KeyValuePair<Resource, Text> kv in resourceCosts)
+        {
+            Resource resource = kv.Key;
+            kv.Value.text = data.resourceCost[resource].ToString();
+            Text text = resourceTexts[resource];
+            text.text = (Int32.Parse(text.text) + data.resourceCost[resource]).ToString();
+            text.color = new Color(0f, 0f, 0f, 1f);
+        }
     }
 
     public void hideRightPanel()
