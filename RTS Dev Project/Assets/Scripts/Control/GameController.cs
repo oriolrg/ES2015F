@@ -91,10 +91,16 @@ public class GameController : MonoBehaviour {
 			//Click detection
 			RaycastHit hitInfo = new RaycastHit();
 			bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+			GameObject target;
 			if (hit)
 			{
-				GameObject target = Instantiate(targetPrebab, hitInfo.point, Quaternion.identity) as GameObject;
-				moveUnits(target);
+				if(hitInfo.transform.gameObject.tag == "Food"){
+					target = Instantiate(targetPrebab, hitInfo.transform.gameObject.transform.position, Quaternion.identity) as GameObject;
+					moveUnitsCollect(target);
+				} else {
+					target = Instantiate(targetPrebab, hitInfo.point, Quaternion.identity) as GameObject;
+					moveUnits(target);
+				}
 			}
 			else
 			{
@@ -166,6 +172,18 @@ public class GameController : MonoBehaviour {
 	{
 		foreach (var unit in selectedUnits) 
 		{
+			unit.GetComponentInParent<CollectResources>().goingToCollect = false;
+			unit.GetComponentInParent<UnitMovement>().startMoving(target);
+			target.GetComponent<timerDeath>().AddUnit(unit);
+		}
+	}
+
+	private void moveUnitsCollect(GameObject target)
+	{
+		foreach (var unit in selectedUnits) 
+		{
+			CollectResources c = unit.GetComponentInParent<CollectResources>();
+			c.goingToCollect = true;
 			unit.GetComponentInParent<UnitMovement>().startMoving(target);
 			target.GetComponent<timerDeath>().AddUnit(unit);
 		}

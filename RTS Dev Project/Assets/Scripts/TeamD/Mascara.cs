@@ -25,11 +25,13 @@ public class Mascara : MonoBehaviour {
                 texture.SetPixel(i, j, new Color(1.0f, 1.0f, 1.0f, 1.0f));
             }
         }
+
+
     }
 	
 	// Update is called once per frame
 	void Update () {
-
+        
         //Ponemos todo el mapa visto en el ultimo frame como visitado sin visión
         int i, j,k;
         for (i = 0; i < sizeTexture; i++)
@@ -48,7 +50,7 @@ public class Mascara : MonoBehaviour {
 
         //cogemos todos los objetos aliados en el mapa
 
-        Object[] objetos = GameObject.FindGameObjectsWithTag("ally_Unit");
+        Object[] objetos = GameObject.FindGameObjectsWithTag("Ally");
         GameObject g;
 
         proporcion = -2;//(float)sizeTexture / sizePlane;
@@ -100,7 +102,7 @@ public class Mascara : MonoBehaviour {
         }
 
 
-
+    
         // Apply all SetPixel calls
         texture.Apply();
 
