@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 public abstract class Unit : MonoBehaviour
 {
-    [SerializeField] private UnitData data;
+    [SerializeField] protected UnitData data;
     private List<Command> commands;
     public Queue<Action> Queue { get; private set; }
 
-    [SerializeField] private float health;
+    [SerializeField] protected float health;
     public float HealthRatio { get { return health * 1f / data.stats[Stat.Health]; }}
     public Sprite Preview { get { return data.preview; } }
 
@@ -30,7 +30,7 @@ public abstract class Unit : MonoBehaviour
         if (list.Count != data.actions.Count)
         {
             // Incorrect, print error and use default command
-            Debug.LogError("Incorrect number of commands assigned." + commands.Count + " vs " + this.commands.Count);
+            Debug.LogError("Incorrect number of commands assigned: " + list.Count + " given vs " + data.actions.Count + " required.");
             commands = new List<Command>();
             for (int i = 0; i < data.actions.Count; i++)
                 commands.Add(NoCommand);

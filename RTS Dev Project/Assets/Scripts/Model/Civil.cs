@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Civil : Unit
 {
 
-    [SerializeField] private GameObject buildingPrefab;
+    [SerializeField] private GameObject wonderPrefab;
 
     [SerializeField]
     private float dist;
@@ -15,7 +15,7 @@ public class Civil : Unit
 
     protected override List<Command> defineCommands()
     {
-        return new List<Command>() { CreateBuilding, DestroyUnit };
+        return new List<Command>() { CreateWonder, Move, Stop, Sacrifice };
     }
 
 
@@ -43,8 +43,35 @@ public class Civil : Unit
         }
     }
 
+    public void CreateWonder()
+    {
 
-    public void DestroyUnit()
+        if (construct)
+        {
+            construct = false;
+        }
+
+        GameController.Instance.createBuilding(wonderPrefab);
+
+    }
+
+    public void Move()
+    {
+
+        // move to a specific place
+        print("not implemented yet");
+    }
+
+
+    public void Stop()
+    {
+        // move to a specific place
+        print("not implemented yet");
+    }
+
+
+
+    public void Sacrifice()
     {
             if (construct)
             {
@@ -58,17 +85,9 @@ public class Civil : Unit
     }
 
 
-    public void CreateBuilding()
-    {
-        
-            if (construct)
-            {
-                construct = false;
-            }
 
-            GameController.Instance.createBuilding(buildingPrefab);
-        
-    }
+
+    
 
 
     public void SetBuildingToConstruct(GameObject b)

@@ -3,13 +3,18 @@ using System.Collections.Generic;
 
 public class TownCenter : Unit 
 {
-    [SerializeField] private GameObject villagerPrefab;
+    [SerializeField] private GameObject civilianPrefab;
+    [SerializeField] private GameObject soldierPrefab;
+    [SerializeField] private GameObject knightPrefab;
+    [SerializeField] private GameObject archerPrefab;
+    
+    
     private Vector3 rallyPoint;
 
 
     protected override List<Command> defineCommands()
     {
-        return new List<Command>() { CreateUnit, DestroyBuilding };
+        return new List<Command>() { CreateCivilian, CreateSoldier, CreateKnight, CreateArcher, Repair, Sacrifice };
     }
 
     void Start()
@@ -17,15 +22,39 @@ public class TownCenter : Unit
         rallyPoint = Vector3.zero;
     }
 
-    public void CreateUnit()
+    public void CreateCivilian()
     {
         if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
-            GameController.Instance.CreateUnit(transform, villagerPrefab, rallyPoint);
+            GameController.Instance.CreateUnit(transform, civilianPrefab, rallyPoint);
         }
     }
 
-    void DestroyBuilding()
+    public void CreateSoldier()
+    {
+        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
+        {
+            GameController.Instance.CreateUnit(transform, soldierPrefab, rallyPoint);
+        }
+    }
+
+    public void CreateKnight()
+    {
+        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
+        {
+            GameController.Instance.CreateUnit(transform, knightPrefab, rallyPoint);
+        }
+    }
+
+    public void CreateArcher()
+    {
+        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
+        {
+            GameController.Instance.CreateUnit(transform, archerPrefab, rallyPoint);
+        }
+    }
+
+    void Sacrifice()
     {
         if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
@@ -35,11 +64,11 @@ public class TownCenter : Unit
         }
     }
 
-    void Upgrade()
+    void Repair()
     {
         if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
-            GetComponent<Renderer>().material.color = Color.green;
+            health = data.stats[Stat.Health];
         }
     }
 
