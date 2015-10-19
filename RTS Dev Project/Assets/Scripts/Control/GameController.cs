@@ -82,7 +82,8 @@ public class GameController : MonoBehaviour {
                 if (hit)
                 {
                     GameObject selectedGO = hitInfo.transform.gameObject;
-                    if (hitInfo.transform.gameObject.tag == "Ally")
+                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    if (hitInfo.transform.gameObject.tag == "Ally" || hitInfo.transform.gameObject.tag == "StorageFood")
                     {
                         if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
 
@@ -196,7 +197,6 @@ public class GameController : MonoBehaviour {
 	{
 		foreach (var unit in selectedUnits.units) 
 		{
-            Debug.Log("presente");
             //Move the units only if they are not constructing a building
             if (!unit.GetComponent<Unit>().getInConstruction())
             {
