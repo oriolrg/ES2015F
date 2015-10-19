@@ -11,7 +11,7 @@ public class BuildingPlacer : MonoBehaviour {
 	private int counterCollision;//indicates how many different collisions there are
 
 
-	void OnEnable()
+	void Start()
 	{
 		originalColor = gameObject.GetComponent<Renderer> ().material.color;
         transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.3f);
@@ -75,14 +75,16 @@ public class BuildingPlacer : MonoBehaviour {
 			}
 			
 		}
+
+        print(groundHit.point + " " + groundHitFound);
 		
 		if (groundHitFound) 
 		{
             //Move the game object to the mouse position, which is the ray hit position with the ground
 
-            gameObject.transform.position = new Vector3 (
-				groundHit.point.x, gameObject.transform.position.y, groundHit.point.z
-			);
+            gameObject.transform.position = groundHit.point;
+
+            print(gameObject.transform.position + "name" + name);
 			
             if(collision)
             {
