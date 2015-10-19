@@ -14,13 +14,17 @@ public class SendToCollect : MonoBehaviour {
 		foreach(Collider c in hitColliders){
 			if(c.tag=="Ally"){
 				CollectResources collect = c.GetComponentInParent<CollectResources>();
-                collect.goingToCollect = true;
-                collect.hasCollected = false;
-                if (collect.targetToCollect!=null){
-					collect.startMovingToCollect(collect.targetToCollect);
-				} else {
-                    AI.Instance.reassignResourceToVillager(c.gameObject);
-				}
+                if (!collect.goingToCollect)
+                {
+                    collect.goingToCollect = true;
+                    collect.hasCollected = false;
+                    if (collect.targetToCollect!=null){
+					    collect.startMovingToCollect(collect.targetToCollect);
+				    } else {
+                        AI.Instance.reassignResourceToCivilian(c.gameObject);
+				    }
+                }
+                
 
 			}
 		}

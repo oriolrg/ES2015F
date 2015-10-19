@@ -335,7 +335,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    public void CreateUnit(Transform buildingTrans, GameObject prefab, Vector3 rally)
+    public GameObject CreateUnit(Transform buildingTrans, GameObject prefab, Vector3 rally)
     {
         Ray ray = new Ray(buildingTrans.position - 3 * buildingTrans.up + 10 * buildingTrans.forward, -Vector3.up);
 
@@ -364,6 +364,7 @@ public class GameController : MonoBehaviour {
             script.startMoving(target);
             //target.GetComponent<timerDeath>().AddUnit(newUnit);
         }
+        return newUnit;
     }
 
     public void createBuilding(GameObject prefab)

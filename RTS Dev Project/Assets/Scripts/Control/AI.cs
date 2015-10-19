@@ -5,20 +5,23 @@ using System.Collections.Generic;
 public class AI : MonoBehaviour {
     private List<GameObject> resourcesFood;
     private List<GameObject> allCPUUnits;
-    private List<GameObject> villagers;
+    private List<GameObject> civilians;
     private GameObject urbanCenter;
     public static AI Instance { get; private set; }
     // Use this for initialization
     
     void Start () {
         allCPUUnits = new List<GameObject>();
-        villagers = new List<GameObject>();
+        civilians = new List<GameObject>();
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addCPUUnit(go);
         resourcesFood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Food"));
         urbanCenter = GameObject.FindGameObjectWithTag("StorageFood");
         resourcesFood.Sort((v1, v2) => (v1.transform.position - urbanCenter.transform.position).sqrMagnitude.CompareTo((v2.transform.position - urbanCenter.transform.position).sqrMagnitude));
-        Invoke("createVillager", 1);
-        Invoke("createVillager", 2);
+        Invoke("createCivilian", 2);
+        Invoke("createCivilian", 4);
+        Invoke("createCivilian", 6);
+        Invoke("createCivilian", 8);
+        Invoke("createCivilian", 10);
 
 
 
@@ -26,33 +29,23 @@ public class AI : MonoBehaviour {
 
     void Awake()
     {
-        // First we check if there are any other instances conflicting
         if (Instance != null && Instance != this)
         {
-            // If that is the case, we destroy other instances
             Destroy(gameObject);
         }
-
-        // Here we save our singleton instance
         Instance = this;
-
-
-        // Furthermore we make sure that we don't destroy between scenes (this is optional)
-        // not now!!! DontDestroyOnLoad(gameObject);
     }
-    // Update is called once per frame
     
     public void addCPUUnit(GameObject u)
     {
         allCPUUnits.Add(u);
         
     }
-    public void assignVillager(GameObject v)
+
+    public void assignCivilian(GameObject v)
     {
-        
-        
         allCPUUnits.Add(v);
-        villagers.Add(v);        
+        civilians.Add(v);        
         CollectResources c = v.GetComponentInParent<CollectResources>();
         c.goingToCollect = true;
         v.GetComponentInParent<UnitMovement>().startMovingCollect(resourcesFood[0].transform);  
@@ -60,20 +53,20 @@ public class AI : MonoBehaviour {
         
     }
 
-    private void createVillager()
+    private void createCivilian()
     {
         
-        urbanCenter.GetComponentInParent<TownCenter>().CreateUnit();
+        urbanCenter.GetComponentInParent<TownCenter>().CreateCivilian();
           
     }
     public void deleteResourceFood(GameObject r)
     {
         resourcesFood.Remove(r);
-        foreach (GameObject vil in villagers) if (vil.GetComponentInParent<CollectResources>().targetToCollect == r.transform) reassignResourceToVillager(vil);
+        foreach (GameObject vil in civilians) if (vil.GetComponentInParent<CollectResources>().targetToCollect == r.transform) reassignResourceToCivilian(vil);
        
 
     }
-    public void reassignResourceToVillager(GameObject v)
+    public void reassignResourceToCivilian(GameObject v)
     {
         CollectResources collect = v.GetComponentInParent<CollectResources>();
         collect.targetToCollect = resourcesFood[0].transform;
