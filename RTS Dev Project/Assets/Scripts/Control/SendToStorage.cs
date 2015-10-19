@@ -23,8 +23,10 @@ public class SendToStorage : MonoBehaviour {
 							d.amount = d.amount - 10;
 							collect.totalFood = d.amount;
 							collect.targetToCollect = gameObject.transform;
+                            collect.hasCollected = true;
+                            collect.goingToCollect = false;
 							collect.startMovingToStorage(t.transform);
-							collect.hasCollected = true;
+							
 						}
 					}
 				}
