@@ -1,37 +1,22 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
-guid: f2132a7c9d015d74f93e68476b7ab82e
-timeCreated: 1445178523
-=======
-guid: 84a7281b2fff2024ab30e23b0919ba2e
-timeCreated: 1445169536
->>>>>>> S2-Team-B-Edificis_trencats
+guid: a5c7df954cb2c9f4fa8f4cea78239131
+timeCreated: 1445171203
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: base
-    100002: columns
-    100004: roof
-    100006: urbanCenter
-    100008: //RootNode
-    400000: base
-    400002: columns
-    400004: roof
-    400006: urbanCenter
-    400008: //RootNode
-    2300000: base
-    2300002: columns
-    2300004: roof
-    2300006: urbanCenter
-    3300000: base
-    3300002: columns
-    3300004: roof
-    3300006: urbanCenter
-    4300000: base
-    4300002: columns
-    4300004: roof
-    4300006: urbanCenter
+    100000: blades
+    100002: //RootNode
+    100004: wall
+    400000: blades
+    400002: //RootNode
+    400004: wall
+    2300000: blades
+    2300002: wall
+    3300000: blades
+    3300002: wall
+    4300000: wall
+    4300002: blades
     7400000: Default Take
     9500000: //RootNode
   materials:
