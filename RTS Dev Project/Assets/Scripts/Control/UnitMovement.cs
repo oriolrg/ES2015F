@@ -39,9 +39,7 @@ public class UnitMovement : MonoBehaviour {
 		targetPos = target.transform.position;
 		hasTarget = true;
         
-        if (animator != null)
-
-            animator.SetBool("running", true);
+        if (animator != null) animator.SetBool("running", true);
 	}
 
 	public void startMovingCollect(Transform target){
@@ -49,8 +47,8 @@ public class UnitMovement : MonoBehaviour {
 		seeker.StartPath(transform.position,target.position,OnPathComplete);
 		targetPos = target.position;
 		hasTarget = true;
-		GetComponent<Animator>().SetBool("running", true);
-	}
+        if (animator != null) animator.SetBool("running", true);
+    }
 
 	
 	public void OnPathComplete(Path p) {
