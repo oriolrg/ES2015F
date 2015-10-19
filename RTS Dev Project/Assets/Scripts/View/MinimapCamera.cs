@@ -140,7 +140,7 @@ public class MinimapCamera : MonoBehaviour {
 		// Updates orthographicSize so minimap can display whole ground
 		// Based on answer in http://answers.unity3d.com/questions/185141/ortographic-camera-show-all-of-the-object.html
 
-		Bounds bounds = ground.GetComponent<MeshRenderer> ().bounds;
+		Bounds bounds = ground.GetComponent<TerrainCollider> ().bounds;
 		float boundsAspectRatio = bounds.extents.x / bounds.extents.z;
 		float orthographicSize;
 
@@ -194,7 +194,7 @@ public class MinimapCamera : MonoBehaviour {
 
 		Vector2 size = minimapCamera.rect.size;
 		float sqSize = Mathf.Min (size.x * Screen.width, size.y * Screen.height);
-		sqSize *= mainCamera.fieldOfView / 200;
+		sqSize *= mainCamera.fieldOfView / 200f;
 
 		size = new Vector2 (sqSize, sqSize);
 		position -= size / 2f;
