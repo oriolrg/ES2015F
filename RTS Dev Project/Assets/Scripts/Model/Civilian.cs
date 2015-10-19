@@ -5,26 +5,27 @@ using System.Collections.Generic;
 
 public class Civilian : Unit
 {
-
+    [SerializeField] private GameObject urbanCenterPrefab;
     [SerializeField] private GameObject wonderPrefab;
 
     [SerializeField]
     private float dist;
 
     private GameObject buildingToConstruct;
+    public GameObject dustPrefab;
+    public GameObject usingDust;
     // private bool construct;
 
     protected override List<Command> defineCommands()
     {
-        return new List<Command>() { CreateWonder, Move, Stop, Sacrifice };
+        return new List<Command>() { CreateUrbanCenter, CreateWonder, Move, Stop, Sacrifice };
     }
 
 
 
     void Start()
     {
-
-        dist = 2f;
+        
         construct = false;
     }
 
@@ -40,8 +41,27 @@ public class Civilian : Unit
                 buildingToConstruct.GetComponent<BuildingConstruction>().startConstruction(this.gameObject);
                 construct = false;
                 GetComponent<Unit>().SetInConstruction(true);
+                usingDust = Instantiate(dustPrefab, buildingToConstruct.transform.position, Quaternion.identity) as GameObject;
             }
         }
+        if (inConstruction)
+            GetComponentInParent<Animator>().SetBool("running", false);
+        if(inConstruction == false && usingDust != null)
+        {
+            Destroy(usingDust);
+        }
+    }
+
+    public void CreateUrbanCenter()
+    {
+
+        if (construct)
+        {
+            construct = false;
+        }
+
+        if (GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(urbanCenterPrefab);
+
     }
 
     public void CreateWonder()

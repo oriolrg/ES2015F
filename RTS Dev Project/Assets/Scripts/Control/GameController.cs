@@ -337,7 +337,7 @@ public class GameController : MonoBehaviour {
 
     public GameObject CreateUnit(Transform buildingTrans, GameObject prefab, Vector3 rally)
     {
-        Ray ray = new Ray(buildingTrans.position - 3 * buildingTrans.up + 10 * buildingTrans.forward, -Vector3.up);
+        Ray ray = new Ray(buildingTrans.position + 5 * buildingTrans.up + 10 * buildingTrans.forward, -Vector3.up);
 
         bool freeSpaceFound = false;
 
@@ -375,7 +375,7 @@ public class GameController : MonoBehaviour {
 
         foreach (var unit in selectedUnits.units) unit.GetComponent<Civilian>().SetBuildingToConstruct(building);
 
-        building.AddComponent<BuildingPlacer> ().enabled = true;
+        building.AddComponent<BuildingPlacer> ();
 
         enabled = false;        
 	}

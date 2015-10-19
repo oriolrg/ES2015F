@@ -29,7 +29,7 @@ public class TownCenter : Unit
         if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
             GameObject civilian = (GameObject) GameController.Instance.CreateUnit(transform, civilianPrefab, rallyPoint);
-            AI.Instance.assignCivilian(civilian);
+            //!!!AI.Instance.assignCivilian(civilian);
         }
     }
 

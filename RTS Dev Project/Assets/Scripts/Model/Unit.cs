@@ -22,12 +22,13 @@ public abstract class Unit : MonoBehaviour
 
     private int maxQueueLength = 5;
 
-    public List<string> greekNames = new List<string>() { "Agapetus", "Anacletus", "Eustathius", "Helene", "Herodes", "Isidora", "Kosmas", "Lysimachus", "Lysistrata", "Nereus", "Niketas", "Theodoro", "Zephyros" };
-    public List<string> greekAdjectives = new List<string>() { "Important", "Lazy", "Popular", "Historical", "Scared", "Old", "Traditional", "Strong", "Helpful", "Competitive", "Legal", "Psychological", "Obvious" };
+    protected List<string> greekNames = new List<string>() { "Agapetus", "Anacletus", "Eustathius", "Helene", "Herodes", "Isidora", "Kosmas", "Lysimachus", "Lysistrata", "Nereus", "Niketas", "Theodoro", "Zephyros" };
+    protected List<string> greekAdjectives = new List<string>() { "Important", "Lazy", "Popular", "Historical", "Scared", "Old", "Traditional", "Strong", "Helpful", "Competitive", "Legal", "Psychological", "Obvious" };
     
 
     void Awake()
     {
+        if (data == null) Debug.LogError("data asset missing on " + name+".");
         health = data.stats[Stat.Health];
         name = string.Format("{0}, The {1}", greekNames[Random.Range(0,greekNames.Count)], greekAdjectives[Random.Range(0,greekAdjectives.Count)]);
 

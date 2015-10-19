@@ -222,7 +222,8 @@ public class HUD : MonoBehaviour
             Text text = resourceTexts[resource];
             int newvalue = (Int32.Parse(text.text) - data.resourceCost[resource]);
             text.text =  newvalue.ToString();
-            text.color = newvalue > 0 ? new Color(.5f, .5f, 0f, 1f) : new Color(.5f, 0f, 0f, 1f);
+            if(data.resourceCost[resource] != 0)
+                text.color = newvalue > 0 ? new Color(.3f, .3f, .3f, 1f) : new Color(.5f, 0f, 0f, 1f);
         }
         descriptionText.text = data.description;
     }
