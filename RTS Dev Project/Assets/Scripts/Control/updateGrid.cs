@@ -5,7 +5,6 @@ public class updateGrid : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log("patata");
 		AstarPath.active.Scan();
 	}
 	

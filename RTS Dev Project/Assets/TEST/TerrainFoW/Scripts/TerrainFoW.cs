@@ -1,8 +1,4 @@
-/*--------------------------------------------------------------*/
-//Terrain FoW
-//Created by Rafael Batista
-//Control the Fog of War
-/*--------------------------------------------------------------*/
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -203,7 +199,7 @@ public class TerrainFoW : MonoBehaviour
 	{
         Vector3 pos = position;//ConvertPosition (position);		
 		WhitenTerrain (pos, ExplorationSize);		
-		try {
+		//try {
 			List<GameObject> gos = new List<GameObject> ();
 			if (!string.IsNullOrEmpty (ExploreTag1))
 				gos.AddRange (GameObject.FindGameObjectsWithTag (ExploreTag1));
@@ -221,26 +217,11 @@ public class TerrainFoW : MonoBehaviour
                     //item.GetComponent<Renderer>().enabled = true;
 				}
 			}
-		} catch (Exception ex) {
-			Debug.Log (ex.Message);
-		}		
-		List<TreeInstance> treesAux = new List<TreeInstance> ();
-		for (int i = 0; i < treesInstance.Count; i++) {
-			TreeInstance ti = treesInstance [i];	
-			TreeInstance currentTree = ti;
-			Vector3 currentTreeWorldPosition = Vector3.Scale (currentTree.position, Terrain.activeTerrain.terrainData.size) + Terrain.activeTerrain.transform.position;
-			float aux = Vector3.Distance (currentTreeWorldPosition, pos);						
-			if (aux < (ExplorationSize / 2)) {
-				TreeAux ta = treeAux.FirstOrDefault (n => n.Index == i);
-				if (ta != null) {
-					ti.prototypeIndex = ta.Prototype;
-				}
-			}
-			treesAux.Add (ti);
-		}
-		Terrain.activeTerrain.terrainData.treeInstances = treesAux.ToArray ();				
-		treesInstance = treesAux;
-	}	
+		//} catch (Exception ex) {
+		//	Debug.Log (ex.Message);
+		//}		
+
+    }	
 	//Darkens the terrain
 	protected void BlackTerrain ()
 	{

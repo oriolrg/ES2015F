@@ -14,7 +14,10 @@ public class SendToCollect : MonoBehaviour {
 		foreach(Collider c in hitColliders){
 			if(c.tag=="Ally"){
 				CollectResources collect = c.GetComponentInParent<CollectResources>();
-                if (!collect.goingToCollect)
+				if (collect == null){
+					// Doesn't have component, so doesn't collect
+					return;
+				} else if (!collect.goingToCollect)
                 {
                     collect.goingToCollect = true;
                     collect.hasCollected = false;

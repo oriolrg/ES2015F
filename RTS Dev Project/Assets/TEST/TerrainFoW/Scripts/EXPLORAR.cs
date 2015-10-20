@@ -3,8 +3,13 @@ using System.Collections;
 
 public class EXPLORAR : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    private int opt;
+    private Vector3 posicion;
+    private GameObject g;
+
+    // Use this for initialization
+    void Start () {
+        opt = 0;
         //Vector3 posicion = this.transform.position;
         /*
         GameObject g = GameObject.Find("Terrain");
@@ -16,9 +21,20 @@ public class EXPLORAR : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (opt == 15)
+        {
+            posicion = this.transform.position; // new Vector3(497.3756f, 797211, 191.3328f); //this.transform.position;
+            g = GameObject.Find("Terrain");
+            g.GetComponent<TerrainFoW>().ExploreArea(posicion, 50);
+            //TerrainFoW.Current.ExploreArea(posicion, 20);
+            opt = 0;
+        }
+        else
+        {
+            opt++;
+        }
         
-        Vector3 posicion = this.transform.position; // new Vector3(497.3756f, 797211, 191.3328f); //this.transform.position;
-        TerrainFoW.Current.ExploreArea(posicion, 20);
+
     
     }
 }

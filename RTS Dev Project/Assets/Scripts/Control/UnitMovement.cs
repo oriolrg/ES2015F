@@ -88,4 +88,15 @@ public class UnitMovement : MonoBehaviour {
             }
 		}
 	}
+
+	/*
+	void OnTriggerEnter(Collider collider) {	
+		print (gameObject.name + "|" + collider.name);
+		if (!collider.gameObject.Equals (gameObject) && collider.gameObject.tag=="Ally"){//collider.gameObject.GetComponent<UnitMovement>() != null){
+			print (gameObject.name + "|" + collider.name);
+			//gameObject.transform.position += gameObject.transform.right * GetComponent<BoxCollider> ().size.magnitude;
+			print ("adios");
+		}
+			
+	}*/
 }

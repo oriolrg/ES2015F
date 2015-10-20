@@ -74,6 +74,7 @@ public class AI : MonoBehaviour {
         {
             collect.goingToCollect = true;
             v.GetComponentInParent<UnitMovement>().startMovingCollect(resourcesFood[0].transform);
+			print("relocate");
         }
         
         
