@@ -34,7 +34,6 @@ public class Civilian : MobileUnit
         //If a unit has the order to construct and it is close enough to the building, start the construction
         if (construct)
         {
-            Debug.Log("holaaa");
             if ((transform.position - buildingToConstruct.transform.position).magnitude < dist)
             {
                 Debug.Log("A CONSTRUIIIIR!!!!!!!!");
