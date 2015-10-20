@@ -281,7 +281,7 @@ public class TerrainFoW : MonoBehaviour
                         alphas[i, j, layerCount] = alphasBkp[alphaMapStartPosZ + i, alphaMapStartPosX + j, layerCount];
                         }
 					} catch (Exception ex) {
-						//Empty Catch not to stop the processing of other positions in the array.
+                        //Empty Catch not to stop the processing of other positions in the array.
 					}
 				}
 			}

@@ -23,8 +23,7 @@ public abstract class Unit : MonoBehaviour
     private int maxQueueLength = 5;
 
     protected List<string> greekNames = new List<string>() { "Agapetus", "Anacletus", "Eustathius", "Helene", "Herodes", "Isidora", "Kosmas", "Lysimachus", "Lysistrata", "Nereus", "Niketas", "Theodoro", "Zephyros" };
-    protected List<string> greekAdjectives = new List<string>() { "Important", "Lazy", "Popular", "Historical", "Scared", "Old", "Traditional", "Strong", "Helpful", "Competitive", "Legal", "Psychological", "Obvious" };
-    
+    protected List<string> greekAdjectives = new List<string>() { "Important", "Lazy", "Popular", "Historical", "Scared", "Old", "Traditional", "Strong", "Helpful", "Competitive", "Legal", "Obvious" };
 
     void Awake()
     {

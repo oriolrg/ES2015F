@@ -75,16 +75,12 @@ public class BuildingPlacer : MonoBehaviour {
 			}
 			
 		}
-
-        print(groundHit.point + " " + groundHitFound);
 		
 		if (groundHitFound) 
 		{
             //Move the game object to the mouse position, which is the ray hit position with the ground
 
             gameObject.transform.position = groundHit.point;
-
-            print(gameObject.transform.position + "name" + name);
 			
             if(collision)
             {

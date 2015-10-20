@@ -29,4 +29,14 @@ public class Troop
         else
             FocusedUnit = units[index + 1];
     }
+
+    public bool hasMovableUnits()
+    {
+        foreach( GameObject unit in units )
+        {
+            if (unit.GetComponent<MobileUnit>() != null)
+                return true;
+        }
+        return false;
+    }
 }

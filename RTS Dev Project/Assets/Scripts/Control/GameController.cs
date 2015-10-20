@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 
-public class GameController : MonoBehaviour {
-	[SerializeField]
+public class GameController : MonoBehaviour
+{
+    [SerializeField] private GameObject unitsParent;
+    [SerializeField] private GameObject buildingsParent;
+    [SerializeField]
 	private Troop selectedUnits;
 
     //Keep track of all allied/enemy units, add and remove with addUnit and removeUnit.
@@ -195,30 +198,39 @@ public class GameController : MonoBehaviour {
 
 	private void moveUnits(GameObject target)
 	{
-		foreach (var unit in selectedUnits.units) 
-		{
-            //Move the units only if they are not constructing a building
-            if (!unit.GetComponent<Unit>().getInConstruction())
+        if (selectedUnits.hasMovableUnits())
+        {
+            foreach (var unit in selectedUnits.units)
             {
-                if (unit.GetComponent<Unit>().getConstruct())
+                //Move the units only if they are not constructing a building
+                if (!unit.GetComponent<Unit>().getInConstruction())
                 {
-                    unit.GetComponent<Unit>().setConstruct(false);
-                }
+                    if (unit.GetComponent<Unit>().getConstruct())
+                    {
+                        unit.GetComponent<Unit>().setConstruct(false);
+                    }
 
-                UnitMovement script = unit.GetComponentInParent<UnitMovement>();
-                if (script != null)
-                {
-                    script.startMoving(target);
-                    target.GetComponent<timerDeath>().AddUnit(unit);
-                }
-
-                TownCenter TC = unit.GetComponentInParent<TownCenter>();
-                if (TC != null)
-                {
-                    TC.setRallyPoint(target.transform.position);
+                    UnitMovement script = unit.GetComponentInParent<UnitMovement>();
+                    if (script != null)
+                    {
+                        script.startMoving(target);
+                        target.GetComponent<timerDeath>().AddUnit(unit);
+                    }
                 }
             }
-		}
+        }
+        else
+        {
+            foreach (var unit in selectedUnits.units)
+            {
+                StaticUnit script = unit.GetComponentInParent<StaticUnit>();
+                if (script != null)
+                {
+                    script.RallyPoint = target.transform.position;
+                }
+            }
+            Destroy(target.gameObject);
+        }
 	}
 
     public void addUnit(GameObject u)
@@ -356,13 +368,15 @@ public class GameController : MonoBehaviour {
         }
 
         GameObject newUnit = Instantiate(prefab, hitInfo.point, Quaternion.identity) as GameObject;
+        // Set unit as parent in hierarchy
+        newUnit.transform.SetParent(unitsParent.transform);
         GameObject target = Instantiate(targetPrefab, rally, Quaternion.identity) as GameObject;
         UnitMovement script = newUnit.GetComponent<UnitMovement>();
         
         if (script != null)
         {
             script.startMoving(target);
-            //target.GetComponent<timerDeath>().AddUnit(newUnit);
+            target.GetComponent<timerDeath>().AddUnit(newUnit);
         }
         return newUnit;
     }

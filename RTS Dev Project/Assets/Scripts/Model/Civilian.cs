@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 
-public class Civilian : Unit
+public class Civilian : MobileUnit
 {
     [SerializeField] private GameObject urbanCenterPrefab;
     [SerializeField] private GameObject wonderPrefab;

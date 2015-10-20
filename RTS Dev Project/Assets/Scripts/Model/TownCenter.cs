@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class TownCenter : Unit 
+public class TownCenter : StaticUnit 
 {
     [SerializeField] private GameObject civilianPrefab;
     [SerializeField] private GameObject soldierPrefab;
@@ -9,7 +9,7 @@ public class TownCenter : Unit
     [SerializeField] private GameObject archerPrefab;
     
     
-    private Vector3 rallyPoint;
+    
 
 
     protected override List<Command> defineCommands()
@@ -19,7 +19,7 @@ public class TownCenter : Unit
 
     void Start()
     {
-        rallyPoint = transform.position - 5*transform.up;
+        RallyPoint = transform.position - 5*transform.up;
         Random.seed = Random.seed*2;
         name = string.Format("The {0} Town center", greekAdjectives[Random.Range(0,greekAdjectives.Count)]); 
     }
@@ -28,7 +28,7 @@ public class TownCenter : Unit
     {
         if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
-            GameObject civilian = (GameObject) GameController.Instance.CreateUnit(transform, civilianPrefab, rallyPoint);
+            GameObject civilian = (GameObject) GameController.Instance.CreateUnit(transform, civilianPrefab, RallyPoint);
             //!!!AI.Instance.assignCivilian(civilian);
         }
     }
@@ -37,7 +37,7 @@ public class TownCenter : Unit
     {
         if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
-            GameController.Instance.CreateUnit(transform, soldierPrefab, rallyPoint);
+            GameController.Instance.CreateUnit(transform, soldierPrefab, RallyPoint);
         }
     }
 
@@ -45,7 +45,7 @@ public class TownCenter : Unit
     {
         if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
-            GameController.Instance.CreateUnit(transform, knightPrefab, rallyPoint);
+            GameController.Instance.CreateUnit(transform, knightPrefab, RallyPoint);
         }
     }
 
@@ -53,7 +53,7 @@ public class TownCenter : Unit
     {
         if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
-            GameController.Instance.CreateUnit(transform, archerPrefab, rallyPoint);
+            GameController.Instance.CreateUnit(transform, archerPrefab, RallyPoint);
         }
     }
 
@@ -74,9 +74,5 @@ public class TownCenter : Unit
             health = data.stats[Stat.Health];
         }
     }
-
-    public void setRallyPoint(Vector3 rally)
-    {
-        rallyPoint = rally;
-    }
+    
 }
