@@ -18,14 +18,17 @@ public class TownCenter : StaticUnit
     {
         RallyPoint = transform.position + 5*transform.up;
         Random.seed = Random.seed*2;
-        name = string.Format("The {0} Town center", greekAdjectives[Random.Range(0,greekAdjectives.Count)]); 
+        name = string.Format("The {0} Town center", greekAdjectives[Random.Range(0,greekAdjectives.Count)]);
+        AI.Instance.addTownCenter(gameObject);
     }
+  
 
     public void CreateCivilian()
     {
         if (!inConstruction) //Disable the action if the villager is constructing a buliding.
         {
             GameObject civilian = (GameObject) GameController.Instance.CreateUnit(transform, civilianPrefab, RallyPoint);
+            if (gameObject.tag == "Enemy") { civilian.tag = "Enemy"; }
             AI.Instance.assignCivilian(civilian);
         }
     }

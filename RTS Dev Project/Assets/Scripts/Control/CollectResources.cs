@@ -4,7 +4,7 @@ using System.Collections;
 public class CollectResources : MonoBehaviour {
 
 	public int totalFood;
-	public Transform targetToCollect;
+	public GameObject targetToCollect;
 	public bool hasCollected;
 	public bool goingToCollect;
 	public UnitMovement u;
@@ -21,13 +21,15 @@ public class CollectResources : MonoBehaviour {
 	
 	}
 
-	public void startMovingToStorage(Transform t){
+	public void startMovingToStorage(GameObject t){
 		hasCollected = true;
-		u.startMovingCollect(t);
+        goingToCollect = false;
+		u.startMoving(t);
 	}
 
-	public void startMovingToCollect(Transform t){
+	public void startMovingToCollect(GameObject t){
 		hasCollected = false;
-		u.startMovingCollect(t);
+        goingToCollect = true;
+		u.startMoving(t);
 	}
 }
