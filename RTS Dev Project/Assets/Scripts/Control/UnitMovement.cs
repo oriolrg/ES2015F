@@ -42,13 +42,7 @@ public class UnitMovement : MonoBehaviour {
         if (animator != null) animator.SetBool("running", true);
 	}
 
-	public void startMovingCollect(Transform target){
-		this.target = target;
-		seeker.StartPath(transform.position,target.position,OnPathComplete);
-		targetPos = target.position;
-		hasTarget = true;
-        if (animator != null) animator.SetBool("running", true);
-    }
+
 
 	
 	public void OnPathComplete(Path p) {
@@ -58,7 +52,6 @@ public class UnitMovement : MonoBehaviour {
 
 
 	void FixedUpdate(){
-
 		if (hasTarget) {
 			if (Vector3.Distance (targetPos, target.position) > 0) {
 				targetPos = target.position;
