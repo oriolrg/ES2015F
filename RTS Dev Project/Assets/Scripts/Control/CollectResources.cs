@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class CollectResources : MonoBehaviour {
-
-	public int totalFood;
+    
 	public GameObject targetToCollect;
 	public bool hasCollected;
 	public bool goingToCollect;
@@ -30,6 +29,6 @@ public class CollectResources : MonoBehaviour {
 	public void startMovingToCollect(GameObject t){
 		hasCollected = false;
         goingToCollect = true;
-		u.startMoving(t);
+        u.startMoving(t);
 	}
 }
