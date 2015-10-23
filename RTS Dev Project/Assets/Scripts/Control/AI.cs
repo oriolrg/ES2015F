@@ -18,7 +18,6 @@ public class AI : MonoBehaviour {
         townCentersPlayer = new List<GameObject>();
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addCPUUnit(go);
         resourcesFood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Food"));
-        //resourcesFood.Sort((v1, v2) => (v1.transform.position - townCentersCPU[0].transform.position).sqrMagnitude.CompareTo((v2.transform.position - townCentersCPU[0].transform.position).sqrMagnitude));
         Invoke("createCivilian", 2);
         Invoke("createCivilian", 4);
         Invoke("createCivilian", 6);
