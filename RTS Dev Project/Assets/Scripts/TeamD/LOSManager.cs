@@ -12,13 +12,13 @@ public class LOSManager : MonoBehaviour {
     // The parameters used to determine texture size and quality
     [Serializable]
     public class SizeParameters {
-        public Terrain Terrain;
+        //public Terrain Terrain;
         public int Width = -1, Height = -1;
         public float Quality = 1;
         public bool HighDetailTexture = false;
     }
     public SizeParameters Size;
-    public Terrain Terrain { get { return Size.Terrain; } }
+    public Terrain Terrain; //{ get { return Size.Terrain; } }
     public int Width { get { return Size.Width; } }
     public int Height { get { return Size.Height; } }
     public float Scale { get { return Size.Quality; } }
@@ -72,6 +72,7 @@ public class LOSManager : MonoBehaviour {
     private int GenerateParameterHash() { return (Width + Height * 1024) + Scale.GetHashCode() + HighDetailTexture.GetHashCode(); }
 
     void Start() {
+        Terrain = GameObject.FindWithTag("Ground").GetComponent<Terrain>();
         if (Application.isPlaying) InitializeTexture();
     }
 
