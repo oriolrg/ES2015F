@@ -13,6 +13,8 @@ public class LOSEntity : MonoBehaviour {
     public bool IsRevealer = false;
     // AO only really works on static entities, or very tall entities
     public bool EnableAO = false;
+    //
+    public bool IsEnemy = false;
 
     public float Range = 10;
     // Height is used for AO and peering over walls
@@ -81,6 +83,21 @@ public class LOSEntity : MonoBehaviour {
             }
         }
         return !RequiresFOWUpdate;
+    }
+
+    public void setActive(bool active)
+    {
+        if (IsEnemy)
+        {
+            if (!active)
+            {
+                // this.GetComponent<Renderer>().enabled = false;
+                //this.gameObject.SetActive(false);
+                foreach(Renderer R in this.GetComponentsInChildren<Renderer>()) { 
+                    R.enabled = active;
+                }
+            }
+        }
     }
 
 }

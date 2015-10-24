@@ -238,6 +238,14 @@ public class LOSManager : MonoBehaviour {
                             AnimatingEntities.Add(entity);
                     }
                 }
+                //Manage the fact that resources and enemies behave in a different way.
+                foreach (var entity in Entities)
+                {
+                    if (!entity.IsRevealer && entity.RevealState == LOSEntity.RevealStates.Fogged)
+                    {
+                        entity.setActive(false);
+                    }
+                }
             }
             bool isChanged = true;
             if (InterpolationRate > 0 && Application.isPlaying) {
