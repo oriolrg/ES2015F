@@ -40,7 +40,6 @@ public class HUD : MonoBehaviour
         Sprite flag = civilizationData.FlagSprite;
         Sprite panel = civilizationData.PanelSprite;
         Font font = civilizationData.font;
-        int fontSize = civilizationData.fontSize;
 
         // Store the civilization panel sprite for creating future dynamic panels
         this.panelSprite = panel;
@@ -55,7 +54,6 @@ public class HUD : MonoBehaviour
         foreach( Text text in texts )
         {
             text.font = font;
-            text.fontSize = fontSize;
         }
         
         // Change the flag sprite
