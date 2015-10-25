@@ -105,6 +105,8 @@ ModelImporter:
     7400000: Default Take
     7400002: attack
     7400004: walk
+    7400006: die
+    7400008: stand_by
     9500000: //RootNode
     13700000: cuerda_de_arco
     13700002: flecha

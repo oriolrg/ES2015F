@@ -27,6 +27,8 @@ public class Civilian : MobileUnit
     {
         
         construct = false;
+
+        dist = 7f;
     }
 
     void Update()

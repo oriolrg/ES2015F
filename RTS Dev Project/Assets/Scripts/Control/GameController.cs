@@ -385,14 +385,26 @@ public class GameController : MonoBehaviour
 	{
         //Instantiate the building and start the positioning of the building
 
-		GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
+        GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
         foreach (var unit in selectedUnits.units) unit.GetComponent<Civilian>().SetBuildingToConstruct(building);
 
         building.AddComponent<BuildingPlacer> ();
 
-        enabled = false;        
+        enabled = false;     
+        //createBuilding(prefab, new Vector3(213, -5, 141));   
 	}
+
+
+    public void createBuilding(GameObject prefab, Vector3 position)
+    {
+        GameObject building = Instantiate(prefab, position, gameObject.transform.rotation) as GameObject;
+
+        foreach (var unit in selectedUnits.units) unit.GetComponent<Civilian>().SetBuildingToConstruct(building);
+
+        buildingConstruction(position);
+
+    }
 
     public void buildingConstruction(Vector3 position)
     {
@@ -406,6 +418,8 @@ public class GameController : MonoBehaviour
         foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().setConstruct(true);
 
     }
+
+   
 
     public void enterActionButton(ActionData data)
     {
