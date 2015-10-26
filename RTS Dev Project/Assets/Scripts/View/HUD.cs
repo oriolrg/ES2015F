@@ -110,7 +110,7 @@ public class HUD : MonoBehaviour
                 Button button = block.GetComponent<Button>();
                 ActionData ad = actionData;
 
-                button.interactable = !focusedUnit.getInConstruction(); //Disable the button if the unit is constructing a buliding. Doesnt work!!!
+                button.interactable = !focusedUnit.getConstructionOnGoing(); //Disable the button if the unit is constructing a buliding. Doesnt work!!!
 
                 button.onClick.AddListener(() =>
                 {

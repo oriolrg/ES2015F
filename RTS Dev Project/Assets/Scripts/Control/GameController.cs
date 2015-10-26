@@ -122,6 +122,13 @@ public class GameController : MonoBehaviour
                         target = Instantiate(targetPrefab, hitInfo.transform.gameObject.transform.position, Quaternion.identity) as GameObject;
                         //moveUnitsCollect(target);
                     }
+                    else if(hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<Unit>().getConstructionOnGoing())
+                    {
+                        Debug.Log("vaig a construir");
+                        foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().SetBuildingToConstruct(hitInfo.transform.gameObject);
+                        buildingConstruction(hitInfo.transform.gameObject.transform.position);
+                        
+                    }
                     else
                     {
                         target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
@@ -202,21 +209,21 @@ public class GameController : MonoBehaviour
         {
             foreach (var unit in selectedUnits.units)
             {
-                //Move the units only if they are not constructing a building
-                if (!unit.GetComponent<Unit>().getInConstruction())
+                
+                if (unit.GetComponent<Unit>().getConstruct() || unit.GetComponent<Unit>().getInConstruction())
                 {
-                    if (unit.GetComponent<Unit>().getConstruct())
-                    {
-                        unit.GetComponent<Unit>().setConstruct(false);
-                    }
-
-                    UnitMovement script = unit.GetComponentInParent<UnitMovement>();
-                    if (script != null)
-                    {
-                        script.startMoving(target);
-                        target.GetComponent<timerDeath>().AddUnit(unit);
-                    }
+                    unit.GetComponent<Unit>().setConstruct(false);
+                    unit.GetComponent<Unit>().SetInConstruction(false);
+                    unit.GetComponent<Unit>().getBuildingToConstruct().GetComponent<BuildingConstruction>().deleteUnit(unit);
                 }
+
+                UnitMovement script = unit.GetComponentInParent<UnitMovement>();
+                if (script != null)
+                {
+                    script.startMoving(target);
+                    target.GetComponent<timerDeath>().AddUnit(unit);
+                }
+                
             }
         }
         else
@@ -387,7 +394,9 @@ public class GameController : MonoBehaviour
 
         GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
-        foreach (var unit in selectedUnits.units) unit.GetComponent<Civilian>().SetBuildingToConstruct(building);
+        building.GetComponent<Unit>().setConstructionOnGoing(true);
+
+        foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().SetBuildingToConstruct(building);
 
         building.AddComponent<BuildingPlacer> ();
 
@@ -400,7 +409,9 @@ public class GameController : MonoBehaviour
     {
         GameObject building = Instantiate(prefab, position, gameObject.transform.rotation) as GameObject;
 
-        foreach (var unit in selectedUnits.units) unit.GetComponent<Civilian>().SetBuildingToConstruct(building);
+        building.GetComponent<Unit>().setConstructionOnGoing(true);
+
+        foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().SetBuildingToConstruct(building);
 
         buildingConstruction(position);
 
@@ -412,11 +423,10 @@ public class GameController : MonoBehaviour
         GameObject target = Instantiate(targetPrefab, position, Quaternion.identity) as GameObject;
         moveUnits(target);
 
-        enabled = true;//Enable the script 
-
         //Order that the unit has to construct
         foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().setConstruct(true);
 
+        enabled = true;//Enable the script 
     }
 
    

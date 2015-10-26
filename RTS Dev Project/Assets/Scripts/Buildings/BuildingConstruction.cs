@@ -10,7 +10,7 @@ public class BuildingConstruction : MonoBehaviour {
     private Mesh finalMesh;
 
     //private bool inConstruction;
-    public float timer = 30; //Timer that changes the mesh
+    public float timer; //Timer that changes the mesh
     private int phase; //Phase of the construction
     private List<GameObject> constructingUnits; //Units that are constructing the building
 
@@ -20,22 +20,24 @@ public class BuildingConstruction : MonoBehaviour {
         finalMesh = GetComponent<MeshFilter>().mesh;
 
         constructingUnits = new List<GameObject>();
-
+        
         phase = 0;
+
+        timer = 30;
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-        //Debug.Log(timer);
+        Debug.Log(timer);
+        Debug.Log("-------------------------------num de units construint " + constructingUnits.Count);
 
-        
         if (GetComponent<Unit>().getInConstruction())
         {
             //Timer that changes the mesh of the building
 
             //Debug.Log(timer);
-            //Debug.Log(constructingUnits.Count);
+            
             timer -= constructingUnits.Count * Time.deltaTime;
 
             if(timer < 15 && phase==0)
@@ -50,6 +52,7 @@ public class BuildingConstruction : MonoBehaviour {
                 foreach (var unit in constructingUnits) unit.GetComponent<Unit>().SetInConstruction(false);
                 constructingUnits.Clear();
                 GetComponent<Unit>().SetInConstruction(false);
+                GetComponent<Unit>().setConstructionOnGoing(false);
 
             }
         }
@@ -74,5 +77,13 @@ public class BuildingConstruction : MonoBehaviour {
         }
 
 
+    }
+
+    public void deleteUnit(GameObject unit)
+    {
+        Debug.Log("Principi: Dins de deleteUnit " + constructingUnits.Count);
+        bool a = constructingUnits.Remove(unit);
+        Debug.Log(a);
+        Debug.Log("Final: Dins de deleteUnit " + constructingUnits.Count);
     }
 }

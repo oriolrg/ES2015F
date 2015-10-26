@@ -16,9 +16,12 @@ public abstract class Unit : MonoBehaviour
     public float HealthRatio { get { return health * 1f / data.stats[Stat.Health]; }}
     public Sprite Preview { get { return data.preview; } }
 
-    protected bool inConstruction; //Indicates if a building is in construction or if a unit is constructing a building
+    protected bool inConstruction; //Indicates if a building is being constructed or if a unit is constructing a building
 
     protected bool construct; //Indicates if a unit has the order to construct a building
+    protected bool constructionOnGoing; //Indicates if a building construction is on going
+
+    protected GameObject buildingToConstruct;
 
     private int maxQueueLength = 5;
 
@@ -58,6 +61,7 @@ public abstract class Unit : MonoBehaviour
     {
         inConstruction = false;
         construct = false;
+        constructionOnGoing = false;
     }
 
 
@@ -111,6 +115,11 @@ public abstract class Unit : MonoBehaviour
         construct = b;
     }
 
+    public void setConstructionOnGoing(bool b)
+    {
+        constructionOnGoing = b;
+    }
+
     public bool getConstruct()
     {
         return construct;
@@ -119,6 +128,21 @@ public abstract class Unit : MonoBehaviour
     public bool getInConstruction()
     {
         return inConstruction;
+    }
+
+    public bool getConstructionOnGoing()
+    {
+        return constructionOnGoing;
+    }
+
+    public void SetBuildingToConstruct(GameObject b)
+    {
+        buildingToConstruct = b;
+    }
+
+    public GameObject getBuildingToConstruct()
+    {
+        return buildingToConstruct;
     }
 
 }

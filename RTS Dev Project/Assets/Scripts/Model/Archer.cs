@@ -11,7 +11,7 @@ public class Archer : MobileUnit
     [SerializeField]
     private float dist;
 
-    private GameObject buildingToConstruct;
+    //private GameObject buildingToConstruct;
     public GameObject dustPrefab;
     public GameObject usingDust;
     // private bool construct;
@@ -55,9 +55,11 @@ public class Archer : MobileUnit
     public void CreateUrbanCenter()
     {
 
-        if (construct)
+        if (construct || inConstruction)
         {
             construct = false;
+            inConstruction = false;
+            buildingToConstruct.GetComponent<BuildingConstruction>().deleteUnit(this.gameObject);
         }
 
         if (GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(urbanCenterPrefab);
@@ -67,9 +69,11 @@ public class Archer : MobileUnit
     public void CreateWonder()
     {
 
-        if (construct)
+        if (construct || inConstruction)
         {
             construct = false;
+            inConstruction = false;
+            buildingToConstruct.GetComponent<BuildingConstruction>().deleteUnit(this.gameObject);
         }
 
         if(GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(wonderPrefab);
@@ -94,9 +98,11 @@ public class Archer : MobileUnit
 
     public void Sacrifice()
     {
-            if (construct)
+            if (construct || inConstruction)
             {
                 construct = false;
+            inConstruction = false;
+            buildingToConstruct.GetComponent<BuildingConstruction>().deleteUnit(this.gameObject);
             }
 
             GameController.Instance.removeUnit(gameObject);
@@ -110,9 +116,9 @@ public class Archer : MobileUnit
 
     
 
-
+    /*
     public void SetBuildingToConstruct(GameObject b)
     {
         buildingToConstruct = b;
-    }
+    }*/
 }
