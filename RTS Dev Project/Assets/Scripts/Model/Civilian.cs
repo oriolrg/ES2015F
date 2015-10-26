@@ -18,7 +18,8 @@ public class Civilian : MobileUnit
 
     protected override List<Command> defineCommands()
     {
-        return new List<Command>() { CreateUrbanCenter, CreateWonder, Move, Stop, Sacrifice };
+        return new List<Command>() { CreateUrbanCenter, CreateWonder,
+            CreateAcademy, CreateArchery, CreateStable, Move, Stop, Sacrifice };
     }
 
 
@@ -73,9 +74,46 @@ public class Civilian : MobileUnit
             construct = false;
         }
 
-        if(GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(wonderPrefab);
+        if (GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(wonderPrefab);
 
     }
+
+    public void CreateAcademy()
+    {
+
+        if (construct)
+        {
+            construct = false;
+        }
+
+        if (GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(wonderPrefab);
+
+    }
+
+    public void CreateArchery()
+    {
+
+        if (construct)
+        {
+            construct = false;
+        }
+
+        if (GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(wonderPrefab);
+
+    }
+
+    public void CreateStable()
+    {
+
+        if (construct)
+        {
+            construct = false;
+        }
+
+        if (GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(wonderPrefab);
+
+    }
+
 
     public void Move()
     {
