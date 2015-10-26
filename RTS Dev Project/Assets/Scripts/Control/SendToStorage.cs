@@ -16,7 +16,6 @@ public class SendToStorage : MonoBehaviour {
                         DestroyOnExpend d = gameObject.GetComponent<DestroyOnExpend>();
 				        if(collect.hasCollected != true){
 					        d.amount = d.amount - 10;
-					        collect.totalFood = d.amount;
 					        collect.targetToCollect = gameObject;                            
                             collect.startMovingToStorage(AI.Instance.getClosestTownCenter(c.gameObject));
 				        }
