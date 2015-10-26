@@ -14,5 +14,6 @@ public enum Civilization
     Phoenicians,
     Sumerians,
     Hittites,
-    Yamato
+    Yamato,
+	Neutral
 }

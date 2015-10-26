@@ -19,3 +19,6 @@ public class ResourceValueDictionaryDrawer : DictionaryDrawer<Resource, int> { }
 
 [CustomPropertyDrawer(typeof(ActionGroupPanelDictionary))]
 public class ActionGroupPanelDictionaryDrawer : DictionaryDrawer<ActionGroup, GameObject> { }
+
+[CustomPropertyDrawer(typeof(CivilizationValueDictionary))]
+public class CivilizationRepresentantsDictionaryDrawer : DictionaryDrawer<Civilization, float> { }

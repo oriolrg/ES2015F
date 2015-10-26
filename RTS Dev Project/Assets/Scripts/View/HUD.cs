@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public class HUD : MonoBehaviour
 {
@@ -21,6 +22,10 @@ public class HUD : MonoBehaviour
     [SerializeField] private RectTransform healthImage;
     [SerializeField] private Text nameText;
 
+	[SerializeField] private RectTransform controlPanel;
+
+	private Dictionary<Civilization, Color> civilizationColors;
+
     
     public Sprite panelSprite;
 
@@ -28,6 +33,12 @@ public class HUD : MonoBehaviour
     void Start()
     {
         setCivilization(Civilization.Greeks);
+
+		civilizationColors = new Dictionary<Civilization,Color> ();
+
+		foreach (KeyValuePair<Civilization, CivilizationData> kv in data.civilizationDatas) {
+			civilizationColors.Add (kv.Key, kv.Value.color);
+		}
 
     }
 
@@ -164,6 +175,44 @@ public class HUD : MonoBehaviour
         }
     }
 
+	public void updateControl(Objective objective)
+	{
+		foreach (Transform child in controlPanel) Destroy(child.gameObject);
+
+		CivilizationValueDictionary control = objective.control;
+
+		if (control.Max (x => x.Value) > .99f)
+			Invoke ("DisappearControl", 3);
+		else {
+			CancelInvoke ("DisappearControl");
+			controlPanel.gameObject.SetActive (true);
+		}
+		float accumulatedX = 0;
+		foreach (KeyValuePair<Civilization,float> kv in control) {
+			Civilization c = kv.Key;
+			float value = kv.Value;
+
+			GameObject controlGO = Instantiate (data.controlPrefab) as GameObject;
+
+			controlGO.transform.SetParent (controlPanel);
+
+			controlGO.GetComponent<Image> ().color = civilizationColors [c];
+
+			RectTransform rect = controlGO.GetComponent<RectTransform> ();
+
+			rect.anchorMin = new Vector2 (accumulatedX, 0);
+			accumulatedX += value;
+			if (accumulatedX > .99f)
+				accumulatedX = 1;
+			rect.anchorMax = new Vector2 (accumulatedX, 1);
+		
+			rect.offsetMin = Vector2.zero;
+			rect.offsetMax = Vector2.zero;
+	
+		}
+
+	}
+
     public void ClearSelection()
     {
         foreach (Transform child in troopPanel) Destroy(child.gameObject);
@@ -242,4 +291,9 @@ public class HUD : MonoBehaviour
     {
         rightPanel.gameObject.SetActive(false);
     }
+
+	private void DisappearControl()
+	{
+		controlPanel.gameObject.SetActive (false);
+	}
 }
