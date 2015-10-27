@@ -33,9 +33,9 @@ public class DataMenuEditor : MonoBehaviour
     }
 
     [MenuItem("Data/Create Action Data")]
-    public static void CreateActionData()
+    public static void CreateActionsData()
     {
-        CreateAsset<ActionData>("Actions");
+        CreateAsset<ActionsData>("Actions");
     }
 
     [MenuItem("Data/Save Data")]

@@ -6,7 +6,10 @@ using System.Collections.Generic;
 [Serializable]
 public class UnitData : ScriptableObject 
 {
+    public string description;
     public Sprite preview;
-    public List<ActionData> actions;
+    public ResourceValueDictionary resourceCost;
     public StatValueDictionary stats;
+
+    public GameObject prefab;
 }

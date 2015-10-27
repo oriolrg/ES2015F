@@ -406,7 +406,7 @@ public class GameController : MonoBehaviour
         foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().setConstruct(true);
 
     }
-
+    /*
     public void enterActionButton(ActionData data)
     {
         hud.enterActionButton(data);
@@ -416,7 +416,7 @@ public class GameController : MonoBehaviour
     {
         hud.exitActionButton(data);
     }
-
+    */
     public void hideRightPanel()
     {
         hud.hideRightPanel();

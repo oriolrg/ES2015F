@@ -40,7 +40,6 @@ public class HUD : MonoBehaviour
         Sprite flag = civilizationData.FlagSprite;
         Sprite panel = civilizationData.PanelSprite;
         Font font = civilizationData.font;
-        int fontSize = civilizationData.fontSize;
 
         // Store the civilization panel sprite for creating future dynamic panels
         this.panelSprite = panel;
@@ -55,7 +54,6 @@ public class HUD : MonoBehaviour
         foreach( Text text in texts )
         {
             text.font = font;
-            text.fontSize = fontSize;
         }
         
         // Change the flag sprite
@@ -87,9 +85,10 @@ public class HUD : MonoBehaviour
             previewImage.sprite = focusedUnit.Preview;
             nameText.text = focusedUnit.name;
 
-            
+
 
             // Update Action buttons
+            /*
             List<ActionData> actionDatas = focusedUnit.getActionDatas();
             foreach (ActionData actionData in actionDatas)
             {
@@ -121,7 +120,7 @@ public class HUD : MonoBehaviour
                 // Show resource costs when enter, hide when exit
                 ShowResourceCostWhenEnter script = block.AddComponent<ShowResourceCostWhenEnter>();
                 script.data = actionData;
-            }
+            }*/
 
             updateHealth(focusedUnit);
             updateDelayedActions(focusedUnit);
@@ -152,8 +151,8 @@ public class HUD : MonoBehaviour
             background.sprite = panelSprite;
 
             Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-            ActionData a = action.Data;
-            foreground.sprite = a.sprite;
+            //ActionData a = action.Data;
+            //foreground.sprite = a.sprite;
 
             Button button = block.GetComponent<Button>();
             button.onClick.AddListener(() => { print("Cancel action"); });
@@ -211,7 +210,7 @@ public class HUD : MonoBehaviour
             }           
         }
     }
-
+    /*
     public void enterActionButton( ActionData data )
     {
         rightPanel.gameObject.SetActive(true);
@@ -239,7 +238,7 @@ public class HUD : MonoBehaviour
             text.color = new Color(0f, 0f, 0f, 1f);
         }
     }
-
+    */
     public void hideRightPanel()
     {
         rightPanel.gameObject.SetActive(false);

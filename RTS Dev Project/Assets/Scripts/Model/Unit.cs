@@ -37,6 +37,7 @@ public abstract class Unit : MonoBehaviour
         List<Command> list = defineCommands();
 
         // Check correct number of commands set
+        /*
         if (list.Count != data.actions.Count)
         {
             // Incorrect, print error and use default command
@@ -49,7 +50,7 @@ public abstract class Unit : MonoBehaviour
         {
             // Correct
             commands = list;
-        }
+        }*/
     }
 
     protected abstract List<Command> defineCommands();
@@ -80,7 +81,7 @@ public abstract class Unit : MonoBehaviour
     {
         Debug.LogError("No command assigned to this action.");
     }
-
+    /*
     public void ActionClicked(ActionData actionData)
     {
         Command correspondingCommand = commands[data.actions.IndexOf(actionData)];
@@ -95,10 +96,10 @@ public abstract class Unit : MonoBehaviour
             else
                 Queue.Enqueue(action);
         }   
-    }
-
+    }*/
+    /*
     public List<ActionData> getActionDatas() { return data.actions; }
-
+    */
 
     public void SetInConstruction(bool b)
     {
