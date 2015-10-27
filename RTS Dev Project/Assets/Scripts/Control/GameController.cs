@@ -125,7 +125,19 @@ public class GameController : MonoBehaviour
                     else if(hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<Unit>().getConstructionOnGoing())
                     {
                         Debug.Log("vaig a construir");
-                        foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().SetBuildingToConstruct(hitInfo.transform.gameObject);
+
+                        foreach (var unit in selectedUnits.units)
+                        {
+                            if (unit.GetComponent<Unit>().getConstruct() || unit.GetComponent<Unit>().getInConstruction())
+                            {
+                                unit.GetComponent<Unit>().setConstruct(false);
+                                unit.GetComponent<Unit>().SetInConstruction(false);
+                                unit.GetComponent<Unit>().getBuildingToConstruct().GetComponent<BuildingConstruction>().deleteUnit(unit);
+                            }
+
+                            unit.GetComponent<Unit>().SetBuildingToConstruct(hitInfo.transform.gameObject);
+                        }
+
                         buildingConstruction(hitInfo.transform.gameObject.transform.position);
                         
                     }

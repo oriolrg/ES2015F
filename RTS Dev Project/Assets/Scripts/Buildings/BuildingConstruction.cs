@@ -32,8 +32,8 @@ public class BuildingConstruction : MonoBehaviour {
         Debug.Log(timer);
         Debug.Log("-------------------------------num de units construint " + constructingUnits.Count);
 
-        if (GetComponent<Unit>().getInConstruction())
-        {
+        //if (GetComponent<Unit>().getInConstruction())
+        //{
             //Timer that changes the mesh of the building
 
             //Debug.Log(timer);
@@ -55,7 +55,7 @@ public class BuildingConstruction : MonoBehaviour {
                 GetComponent<Unit>().setConstructionOnGoing(false);
 
             }
-        }
+        //}
 	}
 
     public void startConstruction(GameObject unit)
@@ -71,10 +71,10 @@ public class BuildingConstruction : MonoBehaviour {
         constructingUnits.Add(unit);
 
         //Start the construction 
-        if(constructingUnits.Count == 1)
+        /*if(constructingUnits.Count == 1)
         {
             GetComponent<Unit>().SetInConstruction(true);
-        }
+        }*/
 
 
     }
