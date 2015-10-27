@@ -131,8 +131,11 @@ public class AI : MonoBehaviour {
 
     private void createCivilian()
     {
+        if (townCentersCPU.Count > 0)
+        {
+            townCentersCPU[0].GetComponentInParent<TownCenter>().CreateCivilian();
+        }
         
-        townCentersCPU[0].GetComponentInParent<TownCenter>().CreateCivilian();
           
     }
     public void deleteResourceFood(GameObject r)

@@ -84,10 +84,14 @@ public class GameController : MonoBehaviour
                 bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
                 if (hit)
                 {
+                    
                     GameObject selectedGO = hitInfo.transform.gameObject;
+
+                    print(selectedGO);
                     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    if (hitInfo.transform.gameObject.tag == "Ally" || hitInfo.transform.gameObject.tag == "StorageFood")
+                    if (hitInfo.transform.gameObject.tag == "Ally")
                     {
+                       
                         if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
 
                         if (!selectedUnits.units.Contains(selectedGO)) selectedUnits.units.Add(selectedGO);
@@ -119,8 +123,8 @@ public class GameController : MonoBehaviour
                 {
                     if (hitInfo.transform.gameObject.tag == "Food")
                     {
-                        target = Instantiate(targetPrefab, hitInfo.transform.gameObject.transform.position, Quaternion.identity) as GameObject;
-                        //moveUnitsCollect(target);
+                        
+                        moveUnits(hitInfo.transform.gameObject);
                     }
                     else
                     {
@@ -213,8 +217,17 @@ public class GameController : MonoBehaviour
                     UnitMovement script = unit.GetComponentInParent<UnitMovement>();
                     if (script != null)
                     {
-                        script.startMoving(target);
-                        target.GetComponent<timerDeath>().AddUnit(unit);
+                        CollectResources collect = unit.GetComponent<CollectResources>();
+                        if (collect != null && target.tag == "Food")
+                        {
+                            collect.startMovingToCollect(target);
+                        }
+                        else
+                        {
+
+                            script.startMoving(target);
+                            target.GetComponent<timerDeath>().AddUnit(unit);
+                        }
                     }
                 }
             }

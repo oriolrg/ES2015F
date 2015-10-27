@@ -30,9 +30,6 @@ public class CollectResources : MonoBehaviour {
 	public void startMovingToCollect(GameObject t){
 		hasCollected = false;
         goingToCollect = true;
-        print(gameObject);
-        print(t);
-        print(u);
         u.startMoving(t);
 	}
 }
