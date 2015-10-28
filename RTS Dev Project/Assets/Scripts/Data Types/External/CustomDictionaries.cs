@@ -21,4 +21,4 @@ public class ResourceValueDictionary : SerializableDictionary<Resource, int> { }
 public class ActionGroupPanelDictionary : SerializableDictionary<ActionGroup, GameObject> { }
 
 [Serializable]
-public class UnitPrefabDictionary : SerializableDictionary<UnitType, GameObject> { }
+public class UnitDataDictionary : SerializableDictionary<UnitType, UnitData> { }

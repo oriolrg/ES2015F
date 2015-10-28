@@ -7,5 +7,5 @@ public class MoveData : ScriptableObject
 {
     public string description;
     public Sprite preview;
-    public Event codeToExecute;
+    public UnityEvent codeToExecute;
 }

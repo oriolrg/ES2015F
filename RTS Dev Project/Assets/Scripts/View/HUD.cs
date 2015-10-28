@@ -79,10 +79,13 @@ public class HUD : MonoBehaviour
         if (troop.FocusedUnit != null)
         {
             // Get focused unit of the troop
-            Unit focusedUnit = troop.FocusedUnit.GetComponent<Unit>();
+            Identity focusedUnit = troop.FocusedUnit.GetComponent<Identity>();
+            
+            if (focusedUnit == null) return;
 
+            UnitData unitData = focusedUnit.data;
             // Update preview image and name
-            previewImage.sprite = focusedUnit.Preview;
+            previewImage.sprite = unitData.preview;
             nameText.text = focusedUnit.name;
 
 
@@ -122,8 +125,8 @@ public class HUD : MonoBehaviour
                 script.data = actionData;
             }*/
 
-            updateHealth(focusedUnit);
-            updateDelayedActions(focusedUnit);
+            //updateHealth(focusedUnit);
+            //updateDelayedActions(focusedUnit);
         }
     }
 
@@ -184,31 +187,34 @@ public class HUD : MonoBehaviour
     {
         for( int i = 0; i < troop.units.Count; i++ )
         {
+            // Get the Unit Data of the current unit
             GameObject unit = troop.units[i];
 
-            // if actually a unit ( will be fixed )
-            if (unit.GetComponent<Unit>() != null)
+            Identity identity = unit.GetComponent<Identity>();
+
+            if (identity == null) continue;
+
+            UnitData unitData = identity.data;
+
+
+            // Instantiate a block with the correct image
+            GameObject block = Instantiate(data.blockPrefab) as GameObject;
+            block.transform.SetParent(troopPanel);
+
+            Image background = block.GetComponent<Image>();
+            background.sprite = panelSprite;
+
+            Image foreground = block.transform.GetChild(0).GetComponent<Image>();
+            foreground.sprite = unitData.preview;
+
+            // Additionally paint focus frame if its the focused unit
+            if (unit == troop.FocusedUnit)
             {
-                GameObject block = Instantiate(data.blockPrefab) as GameObject;
-                block.transform.SetParent(troopPanel);
-
-                Image background = block.GetComponent<Image>();
-                background.sprite = panelSprite;
-
-                Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-                foreground.sprite = unit.GetComponent<Unit>().Preview;
-
-                //Paint focus fram
-                if (unit == troop.FocusedUnit)
-                {
-                    GameObject focusFrame = new GameObject("focus frame");
-                    Image image = focusFrame.AddComponent<Image>();
-                    image.sprite = data.focusSprite;
-                    image.color = new Color(.6f, .8f, 1f, .5f);
-                    focusFrame.transform.SetParent(block.transform.GetChild(0));
-                }
-            }           
+                GameObject focusFrame = Instantiate(data.focusFrame) as GameObject;
+                focusFrame.transform.SetParent(block.transform.GetChild(0));
+            }
         }
+        
     }
     /*
     public void enterActionButton( ActionData data )

@@ -421,4 +421,16 @@ public class GameController : MonoBehaviour
     {
         hud.hideRightPanel();
     }
+
+    // Action events
+
+    public void moveSelection()
+    {
+        print("move");
+    }
+
+    public void stopSelection()
+    {
+        print("stop");
+    }
 }

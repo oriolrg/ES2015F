@@ -32,10 +32,22 @@ public class DataMenuEditor : MonoBehaviour
         CreateAsset<CivilizationData>("Civilizations");
     }
 
-    [MenuItem("Data/Create Action Data")]
+    [MenuItem("Data/Create Actions Data")]
     public static void CreateActionsData()
     {
         CreateAsset<ActionsData>("Actions");
+    }
+
+    [MenuItem("Data/Create Move Action Data")]
+    public static void CreateMoveData()
+    {
+        CreateAsset<MoveData>("Actions/Move");
+    }
+
+    [MenuItem("Data/Create Special Action Data")]
+    public static void CreateSpecialData()
+    {
+        CreateAsset<SpecialData>("Actions/Special");
     }
 
     [MenuItem("Data/Save Data")]
