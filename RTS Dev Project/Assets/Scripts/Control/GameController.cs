@@ -435,13 +435,18 @@ public class GameController : MonoBehaviour
         print("stop");
     }
 
-    public void OnCreateBuilding( GameObject prefab )
+    public void OnCreate( GameObject prefab )
     {
-        print("building");
+        print("create");
     }
 
-    public void OnCreateUnit( GameObject prefab )
+    public void OnSacrifice()
     {
-        print("creating unit");
+        print("sacrifice");
+    }
+
+    public void OnAttack()
+    {
+        print("attack");
     }
 }

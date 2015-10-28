@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Events;
 
 public class HUD : MonoBehaviour
 {
@@ -74,6 +75,7 @@ public class HUD : MonoBehaviour
     public void updateSelection( Troop troop )
     {
         ClearSelection();
+
         // Update troop panel (private)
         setTroopPreview( troop );
 
@@ -101,29 +103,29 @@ public class HUD : MonoBehaviour
                 // get the unit data of the unit that can be created
                 UnitData toCreate = DataManager.Instance.civilizations[focusedUnit.civilization].units[type];
 
-                // Create a block prefab with the image of the 
-                GameObject block = Instantiate(data.blockPrefab) as GameObject;
-                Image background = block.GetComponent<Image>();
-                background.sprite = panelSprite;
-                Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-                foreground.sprite = toCreate.preview;
-                block.transform.SetParent(createPanel.transform);
+                // Create a block prefab with the image of the action
+                GameObject block = addBlock(createPanel, toCreate.preview, () => { GameController.Instance.OnCreate(toCreate.prefab); });
 
-                // Add listener when clicked
-                Button button = block.GetComponent<Button>();
                 
-                button.onClick.AddListener(() =>
-                {
-                    if (type.isBuilding())
-                        GameController.Instance.OnCreateBuilding(toCreate.prefab);
-                    else
-                        GameController.Instance.OnCreateUnit(toCreate.prefab);
-                    //updateDelayedActions(focusedUnit.GetComponent<ActionQueue>());
-                });
+            }
 
-                // Show resource costs when enter, hide when exit
-                ShowResourceCostWhenEnter script = block.AddComponent<ShowResourceCostWhenEnter>();
-                script.data = toCreate;
+            // if the unittype is mobile add move actons
+            if( !unitType.isBuilding() )
+            {
+                List<MoveData> movements = actionsData.movements;
+                for( int i = 0; i < movements.Count; i++ )
+                {
+                    MoveData movement = movements[i];
+                    addBlock(movePanel, movement.preview, () => { movement.codeToExecute.Invoke(); });
+                }
+            }
+
+            // Add sacrifice action
+            List<SpecialData> specials = actionsData.specials;
+            for (int i = 0; i < specials.Count; i++)
+            {
+                SpecialData special = specials[i];
+                addBlock(specialPanel, special.preview, () => { special.codeToExecute.Invoke(); });
             }
 
             //updateHealth(focusedUnit);
@@ -245,5 +247,24 @@ public class HUD : MonoBehaviour
     public void hideRightPanel()
     {
         rightPanel.gameObject.SetActive(false);
+    }
+
+    private GameObject addBlock( Transform parent, Sprite image, UnityAction callback)
+    {
+        GameObject block = Instantiate(data.blockPrefab) as GameObject;
+        Image background = block.GetComponent<Image>();
+        background.sprite = panelSprite;
+        Image foreground = block.transform.GetChild(0).GetComponent<Image>();
+        foreground.sprite = image;
+        block.transform.SetParent(parent);
+
+        // Add listener when clicked
+        Button button = block.GetComponent<Button>();
+
+        button.onClick.AddListener(callback);
+
+
+
+        return block;
     }
 }
