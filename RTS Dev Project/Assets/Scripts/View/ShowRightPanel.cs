@@ -4,16 +4,16 @@ using UnityEngine.EventSystems;
 
 public class ShowResourceCostWhenEnter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    /*
-    public ActionData data;
-    */
+    
+    public UnitData data;
+    
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //GameController.Instance.enterActionButton(data);
+        GameController.Instance.OnActionButtonEnter(data);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        //GameController.Instance.exitActionButton(data);
+        GameController.Instance.OnActionButtonExit(data);
     }
 }

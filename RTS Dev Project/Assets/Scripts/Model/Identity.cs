@@ -5,10 +5,10 @@ using UnityEngine;
 public class Identity : MonoBehaviour
 {
     [SerializeField]
-    private Civilization civilization;
+    public Civilization civilization;
 
     [SerializeField]
-    private UnitType unit;
+    public UnitType unit;
 
     public UnitData data{ get; private set; }
 

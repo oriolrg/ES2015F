@@ -406,23 +406,24 @@ public class GameController : MonoBehaviour
         foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().setConstruct(true);
 
     }
-    /*
-    public void enterActionButton(ActionData data)
+
+    // Action events
+    public void OnActionButtonEnter(UnitData data)
     {
-        hud.enterActionButton(data);
+        hud.OnActionButtonEnter(data);
     }
 
-    public void exitActionButton(ActionData data)
+    public void OnActionButtonExit(UnitData data)
     {
-        hud.exitActionButton(data);
+        hud.OnActionButtonExit(data);
     }
-    */
+    
     public void hideRightPanel()
     {
         hud.hideRightPanel();
     }
 
-    // Action events
+    
 
     public void moveSelection()
     {
@@ -432,5 +433,15 @@ public class GameController : MonoBehaviour
     public void stopSelection()
     {
         print("stop");
+    }
+
+    public void OnCreateBuilding( GameObject prefab )
+    {
+        print("building");
+    }
+
+    public void OnCreateUnit( GameObject prefab )
+    {
+        print("creating unit");
     }
 }

@@ -5,37 +5,38 @@ using System;
 
 public class HUD : MonoBehaviour
 {
+    [SerializeField] private ActionsData actionsData;
     [SerializeField] private HUDData data;
     [SerializeField] private List<Image> panels;
     [SerializeField] private List<Text> texts;
     [SerializeField] private ResourceTextDictionary resourceTexts;
     [SerializeField] private ResourceTextDictionary resourceCosts;
-    [SerializeField] private ActionGroupPanelDictionary actionGroupPanels;
     [SerializeField] private Image flagImage;
     [SerializeField] RectTransform creationPanel;
     [SerializeField] RectTransform troopPanel;
     [SerializeField] RectTransform rightPanel;
     [SerializeField] RectTransform resourceCostPanel;
+    [SerializeField] RectTransform createPanel;
+    [SerializeField] RectTransform movePanel;
+    [SerializeField] RectTransform specialPanel;
     [SerializeField] Text descriptionText;
     [SerializeField] Image previewImage;
     [SerializeField] private RectTransform healthImage;
     [SerializeField] private Text nameText;
 
     
-    public Sprite panelSprite;
+    private Sprite panelSprite;
 
-    //Test
     void Start()
     {
         setCivilization(Civilization.Greeks);
-
     }
 
     // Changes the UI depending on the chosen civilization
     public void setCivilization( Civilization civilization )
     {
         // Load the civilization data from UISettings
-        CivilizationData civilizationData = data.civilizationDatas[civilization];
+        CivilizationData civilizationData = DataManager.Instance.civilizations[civilization];
 
         Sprite flag = civilizationData.FlagSprite;
         Sprite panel = civilizationData.PanelSprite;
@@ -91,39 +92,39 @@ public class HUD : MonoBehaviour
 
 
             // Update Action buttons
-            /*
-            List<ActionData> actionDatas = focusedUnit.getActionDatas();
-            foreach (ActionData actionData in actionDatas)
+            UnitType unitType = focusedUnit.unit;
+
+            List<UnitType> creations = actionsData.creationPermissions[unitType];
+            for( int i = 0; i < creations.Count; i++ )
             {
+                UnitType type = creations[i];
+                // get the unit data of the unit that can be created
+                UnitData toCreate = DataManager.Instance.civilizations[focusedUnit.civilization].units[type];
+
+                // Create a block prefab with the image of the 
                 GameObject block = Instantiate(data.blockPrefab) as GameObject;
-                
                 Image background = block.GetComponent<Image>();
                 background.sprite = panelSprite;
-
                 Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-                foreground.sprite = actionData.sprite;
+                foreground.sprite = toCreate.preview;
+                block.transform.SetParent(createPanel.transform);
 
-                // Get the parent panel for this panel depending on its group
-                ActionGroup group = actionData.actionGroup;
-                GameObject parent = actionGroupPanels[group];
-
-                block.transform.SetParent(parent.transform);
-
+                // Add listener when clicked
                 Button button = block.GetComponent<Button>();
-                ActionData ad = actionData;
-
-                button.interactable = !focusedUnit.getInConstruction(); //Disable the button if the unit is constructing a buliding. Doesnt work!!!
-
+                
                 button.onClick.AddListener(() =>
                 {
-                    focusedUnit.ActionClicked(ad);
-                    updateDelayedActions(focusedUnit);
+                    if (type.isBuilding())
+                        GameController.Instance.OnCreateBuilding(toCreate.prefab);
+                    else
+                        GameController.Instance.OnCreateUnit(toCreate.prefab);
+                    //updateDelayedActions(focusedUnit.GetComponent<ActionQueue>());
                 });
 
                 // Show resource costs when enter, hide when exit
                 ShowResourceCostWhenEnter script = block.AddComponent<ShowResourceCostWhenEnter>();
-                script.data = actionData;
-            }*/
+                script.data = toCreate;
+            }
 
             //updateHealth(focusedUnit);
             //updateDelayedActions(focusedUnit);
@@ -173,13 +174,9 @@ public class HUD : MonoBehaviour
         foreach (Transform child in troopPanel) Destroy(child.gameObject);
         previewImage.sprite = panelSprite;
         foreach (Transform child in creationPanel) Destroy(child.gameObject);
-        foreach( KeyValuePair<ActionGroup,GameObject> kv in actionGroupPanels )
-        {
-            foreach( Transform child in kv.Value.transform )
-            {
-                Destroy(child.gameObject);
-            }
-        }
+        foreach (Transform child in createPanel) Destroy(child.gameObject);
+        foreach (Transform child in movePanel) Destroy(child.gameObject);
+        foreach (Transform child in specialPanel) Destroy(child.gameObject);
         nameText.text = "";
     }
 
@@ -216,8 +213,8 @@ public class HUD : MonoBehaviour
         }
         
     }
-    /*
-    public void enterActionButton( ActionData data )
+    
+    public void OnActionButtonEnter( UnitData data )
     {
         rightPanel.gameObject.SetActive(true);
         foreach(KeyValuePair<Resource,Text> kv in resourceCosts)
@@ -233,7 +230,7 @@ public class HUD : MonoBehaviour
         descriptionText.text = data.description;
     }
 
-    public void exitActionButton(ActionData data)
+    public void OnActionButtonExit(UnitData data)
     {
         foreach (KeyValuePair<Resource, Text> kv in resourceCosts)
         {
@@ -244,7 +241,7 @@ public class HUD : MonoBehaviour
             text.color = new Color(0f, 0f, 0f, 1f);
         }
     }
-    */
+    
     public void hideRightPanel()
     {
         rightPanel.gameObject.SetActive(false);
