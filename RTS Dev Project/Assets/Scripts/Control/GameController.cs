@@ -178,6 +178,12 @@ public class GameController : MonoBehaviour
                 selectedUnits.focusNext();
                 hud.updateSelection(selectedUnits); // There will exist an updateFocus method            
             }
+
+			if (Input.GetKeyDown(KeyCode.B))
+			{
+				createCubeTestingGrid();
+			}
+
         }
     }
 
@@ -394,6 +400,25 @@ public class GameController : MonoBehaviour
 
         enabled = false;        
 	}
+
+	public void createCubeTestingGrid()
+	{
+
+		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		//Vector3 mousePos = Input.mousePosition;
+		//mousePos.z = 10.0f;
+		//Vector3 objectPos = Camera.main.ScreenToWorldPoint(mousePos);
+
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		if(Physics.Raycast(ray, out hit))
+		{
+			Vector3 pos = hit.point;
+			pos.y += cube.transform.localScale.y/2f;
+			Instantiate(cube, pos, Quaternion.identity);
+		}
+	}
+
 
     public void buildingConstruction(Vector3 position)
     {
