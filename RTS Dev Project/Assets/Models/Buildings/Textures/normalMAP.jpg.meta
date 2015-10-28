@@ -1,11 +1,16 @@
 fileFormatVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
 guid: f9a38d1f6423ea84ba93d78087c3f6bb
 timeCreated: 1445178480
 =======
 guid: 020524b8af1a84a4ca88a0b2dfd03c32
 timeCreated: 1445169344
 >>>>>>> S2-Team-B-Edificis_trencats
+=======
+guid: f9a38d1f6423ea84ba93d78087c3f6bb
+timeCreated: 1445178480
+>>>>>>> S3-Team-B
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}

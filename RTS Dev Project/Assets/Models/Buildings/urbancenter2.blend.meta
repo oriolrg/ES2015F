@@ -1,11 +1,16 @@
 fileFormatVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
 guid: f2132a7c9d015d74f93e68476b7ab82e
 timeCreated: 1445178523
 =======
 guid: 84a7281b2fff2024ab30e23b0919ba2e
 timeCreated: 1445169536
 >>>>>>> S2-Team-B-Edificis_trencats
+=======
+guid: f2132a7c9d015d74f93e68476b7ab82e
+timeCreated: 1445178523
+>>>>>>> S3-Team-B
 licenseType: Free
 ModelImporter:
   serializedVersion: 18

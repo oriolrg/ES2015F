@@ -16,9 +16,17 @@ ModelImporter:
     2300000: Cube
     2300002: Cube_001
     2300004: sostre
+<<<<<<< HEAD
     3300000: Cube
     3300002: Cube_001
     3300004: sostre
+=======
+    2300006: //RootNode
+    3300000: Cube
+    3300002: Cube_001
+    3300004: sostre
+    3300006: //RootNode
+>>>>>>> S3-Team-B
     4300000: Cube_001
     4300002: sostre
     4300004: Cube

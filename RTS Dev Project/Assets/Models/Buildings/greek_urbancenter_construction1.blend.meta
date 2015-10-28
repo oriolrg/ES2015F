@@ -13,10 +13,20 @@ ModelImporter:
     400004: //RootNode
     2300000: base
     2300002: columns
+<<<<<<< HEAD
     3300000: base
     3300002: columns
     4300000: base
     4300002: columns
+=======
+    2300004: //RootNode
+    3300000: base
+    3300002: columns
+    3300004: //RootNode
+    4300000: base
+    4300002: columns
+    4300004: greeks_urbancenter_inconstruction
+>>>>>>> S3-Team-B
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -75,8 +85,15 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+<<<<<<< HEAD
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+=======
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+>>>>>>> S3-Team-B
   additionalBone: 0
   userData: 
   assetBundleName: 

@@ -4,7 +4,9 @@ using Pathfinding;
 
 public class UnitMovement : MonoBehaviour {
 
-	[SerializeField] Transform target;
+	public Transform target;
+
+
 	[SerializeField] private float speed = 10;
 
 	Seeker seeker;
@@ -12,30 +14,37 @@ public class UnitMovement : MonoBehaviour {
 	int currentWaypoint;
 	CharacterController characterController;
 	Vector3 targetPos;
+    Animator animator;
 
     public AnimationClip runAnimation;
 
-	bool hasTarget;
+	public bool hasTarget;
 
 	// Use this for initialization
-	void Start () {
+	void Awake ()
+    {
 		seeker = GetComponent<Seeker>();
 		characterController = GetComponent<CharacterController>();
-		//target = (Transform)GameObject.Find("target").transform;
-		//seeker.StartPath(transform.position,target.position,OnPathComplete);
-		hasTarget = false;
+        animator = GetComponent<Animator>();
+        hasTarget = false;
 	}
 
 	public void startMoving( GameObject target )
 	{
 		this.target = target.transform;
-		seeker.StartPath(transform.position,target.transform.position,OnPathComplete);
+        if ( seeker != null )
+        
+            seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
+        
 		targetPos = target.transform.position;
 		hasTarget = true;
-        GetComponent<Animator>().SetBool("running", true);
+        
+        if (animator != null) animator.SetBool("running", true);
 	}
-	
 
+
+
+	
 	public void OnPathComplete(Path p) {
 		path = p;
 		currentWaypoint = 0;
@@ -43,7 +52,6 @@ public class UnitMovement : MonoBehaviour {
 
 
 	void FixedUpdate(){
-
 		if (hasTarget) {
 			if (Vector3.Distance (targetPos, target.position) > 0) {
 				targetPos = target.position;
@@ -68,8 +76,20 @@ public class UnitMovement : MonoBehaviour {
 			if((Vector3.Distance(transform.position,targetPos) < 2)){
 				target.GetComponent<timerDeath>().UnitLostTarget(gameObject);
 				hasTarget = false;
-                GetComponent<Animator>().SetBool("running", false);
+                var animator = GetComponent<Animator>();
+                if (animator != null) animator.SetBool("running", false);
             }
 		}
 	}
+
+	/*
+	void OnTriggerEnter(Collider collider) {	
+		print (gameObject.name + "|" + collider.name);
+		if (!collider.gameObject.Equals (gameObject) && collider.gameObject.tag=="Ally"){//collider.gameObject.GetComponent<UnitMovement>() != null){
+			print (gameObject.name + "|" + collider.name);
+			//gameObject.transform.position += gameObject.transform.right * GetComponent<BoxCollider> ().size.magnitude;
+			print ("adios");
+		}
+			
+	}*/
 }

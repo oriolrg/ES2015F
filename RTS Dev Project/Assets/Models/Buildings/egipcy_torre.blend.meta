@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: 2cfffba6aa0d1c44c977366eaa47958d
+<<<<<<< HEAD
 timeCreated: 1444933036
+=======
+timeCreated: 1446007837
+>>>>>>> S3-Team-B
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
+<<<<<<< HEAD
     100000: Cube
     100002: //RootNode
     100004: sostre
@@ -17,6 +22,13 @@ ModelImporter:
     3300002: sostre
     4300000: sostre
     4300002: Cube
+=======
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Cube
+>>>>>>> S3-Team-B
     7400000: Default Take
     9500000: //RootNode
   materials:

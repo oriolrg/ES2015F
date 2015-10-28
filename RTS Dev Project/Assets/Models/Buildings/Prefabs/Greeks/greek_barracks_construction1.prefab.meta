@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: dd26b812c276c9f43897c20458f4a911
 timeCreated: 1445180292
+=======
+guid: fbdd92dda360dc94ca353e047ede9a73
+timeCreated: 1445100877
+>>>>>>> S3-Team-B
 licenseType: Free
 NativeFormatImporter:
   userData: 

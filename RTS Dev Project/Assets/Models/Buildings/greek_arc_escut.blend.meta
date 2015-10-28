@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 615f4d994c6261d4192477a6b21c25ff
 timeCreated: 1445991520
+=======
+guid: 2ef5a675d111c5f4cad3098b42c381c6
+timeCreated: 1445189179
+>>>>>>> S3-Team-B
 licenseType: Free
 ModelImporter:
   serializedVersion: 18

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 6033ac1306ef0fe41831150de13bde70
+timeCreated: 1445371032
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - data: {instanceID: 0}
+  - civilianPrefab: {fileID: 165850, guid: b83fcd1a269453f40a8310810575f015, type: 2}
+  - soldierPrefab: {instanceID: 0}
+  - knightPrefab: {instanceID: 0}
+  - archerPrefab: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
