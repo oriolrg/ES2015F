@@ -1,11 +1,16 @@
 fileFormatVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
 guid: f3f7ddd734e2a2b4d95468764674ef96
 timeCreated: 1445629980
 =======
 guid: 96e54a79278441d4289b65c7ac7bd348
 timeCreated: 1445622330
 >>>>>>> 9b914f54de407508cb02051d45f483fb7801338d
+=======
+guid: 0822ebb5d7617ae44a193e5c11e94636
+timeCreated: 1445670887
+>>>>>>> origin/S3-Team-B
 licenseType: Free
 NativeFormatImporter:
   userData: 

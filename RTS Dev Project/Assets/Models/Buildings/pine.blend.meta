@@ -13,8 +13,15 @@ ModelImporter:
     400004: Trunk
     2300000: Crown
     2300002: Trunk
+<<<<<<< HEAD
     3300000: Crown
     3300002: Trunk
+=======
+    2300004: //RootNode
+    3300000: Crown
+    3300002: Trunk
+    3300004: //RootNode
+>>>>>>> S3-Team-B
     4300000: Crown
     4300002: Trunk
     7400000: Default Take
@@ -75,8 +82,15 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+<<<<<<< HEAD
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+=======
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+>>>>>>> S3-Team-B
   additionalBone: 0
   userData: 
   assetBundleName: 
