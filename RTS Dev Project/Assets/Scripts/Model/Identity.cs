@@ -9,12 +9,10 @@ public class Identity : MonoBehaviour
 
     [SerializeField]
     public UnitType unit;
-
-    public UnitData data{ get; private set; }
+    
 
     void Start()
     {
-        data = DataManager.Instance.civilizations[civilization].units[unit];
 
         // Create random name
         List<string> adjectives = DataManager.Instance.adjectives;

@@ -435,10 +435,21 @@ public class GameController : MonoBehaviour
         print("stop");
     }
 
-    public void OnCreate( GameObject prefab )
+    public void OnCreate( Identity who, UnitType what )
     {
-        print("create");
-    }
+        // get the unit data of the unit that can be created
+        GameObject toCreate = DataManager.Instance.civilizationDatas[who.civilization].units[what];
+
+        if(what.isBuilding())
+        {
+            //Laia code
+        }
+        else
+        {
+            //add to queue
+
+        }
+     }
 
     public void OnSacrifice()
     {

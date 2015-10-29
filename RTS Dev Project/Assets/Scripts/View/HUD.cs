@@ -37,7 +37,7 @@ public class HUD : MonoBehaviour
     public void setCivilization( Civilization civilization )
     {
         // Load the civilization data from UISettings
-        CivilizationData civilizationData = DataManager.Instance.civilizations[civilization];
+        CivilizationData civilizationData = DataManager.Instance.civilizationDatas[civilization];
 
         Sprite flag = civilizationData.FlagSprite;
         Sprite panel = civilizationData.PanelSprite;
@@ -86,7 +86,7 @@ public class HUD : MonoBehaviour
             
             if (focusedUnit == null) return;
 
-            UnitData unitData = focusedUnit.data;
+            UnitData unitData = DataManager.Instance.unitDatas[focusedUnit.unit];
             // Update preview image and name
             previewImage.sprite = unitData.preview;
             nameText.text = focusedUnit.name;
@@ -101,10 +101,10 @@ public class HUD : MonoBehaviour
             {
                 UnitType type = creations[i];
                 // get the unit data of the unit that can be created
-                UnitData toCreate = DataManager.Instance.civilizations[focusedUnit.civilization].units[type];
+                UnitData toCreate = DataManager.Instance.unitDatas[focusedUnit.unit];
 
                 // Create a block prefab with the image of the action
-                GameObject block = addBlock(createPanel, toCreate.preview, () => { GameController.Instance.OnCreate(toCreate.prefab); });
+                GameObject block = addBlock(createPanel, toCreate.preview, () => { GameController.Instance.OnCreate(focusedUnit,type); });
 
                 
             }
@@ -193,7 +193,7 @@ public class HUD : MonoBehaviour
 
             if (identity == null) continue;
 
-            UnitData unitData = identity.data;
+            UnitData unitData = DataManager.Instance.unitDatas[identity.unit];
 
 
             // Instantiate a block with the correct image

@@ -12,4 +12,5 @@ public class UnitData : ScriptableObject
     public StatValueDictionary stats;
 
     public GameObject prefab;
+    public float requiredTime;
 }
