@@ -2,6 +2,9 @@
 using System.Collections;
 using Pathfinding; 
 
+
+enum Status{idle, attacking, running, collecting};
+
 public class UnitMovement : MonoBehaviour {
 
 	public Transform target;
@@ -17,7 +20,6 @@ public class UnitMovement : MonoBehaviour {
     Animator animator;
 	AttackController attack;
 
-	enum Status{idle, attacking, running, collecting};
 
     public AnimationClip runAnimation;
 

@@ -127,10 +127,12 @@ public class GameController : MonoBehaviour
 						GameObject enemy = hitInfo.transform.gameObject;
 
 
-						foreach(var ally in selectedUnits.units){
-							ally.GetComponent<UnitMovement>()
-						}
+						//Crear nou metode moveUnit
+						//Crear interficie de atac!!!!!!!!!!!!!
 
+						foreach(var ally in selectedUnits.units){
+							ally.GetComponent<UnitMovement>();
+						}
 
 
 						GameObject allyUnit = selectedUnits.units[0];
