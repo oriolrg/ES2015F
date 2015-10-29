@@ -86,9 +86,6 @@ public class GameController : MonoBehaviour
                 {
                     
                     GameObject selectedGO = hitInfo.transform.gameObject;
-
-                    print(selectedGO);
-                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     if (hitInfo.transform.gameObject.tag == "Ally")
                     {
                        
@@ -121,11 +118,8 @@ public class GameController : MonoBehaviour
                 GameObject target;
                 if (hit)
                 {
-                    if (hitInfo.transform.gameObject.tag == "Food")
-                    {
-                        
-                        moveUnits(hitInfo.transform.gameObject);
-                    }
+                    if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))  moveUnits(hitInfo.transform.gameObject);
+                    
                     else
                     {
                         target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
@@ -218,9 +212,10 @@ public class GameController : MonoBehaviour
                     if (script != null)
                     {
                         CollectResources collect = unit.GetComponent<CollectResources>();
-                        if (collect != null && target.tag == "Food")
+                        if (collect != null && AI.Instance.resources.Contains(target.tag))
                         {
                             collect.startMovingToCollect(target);
+                            collect.targetToCollect = target;
                         }
                         else
                         {

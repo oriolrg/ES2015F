@@ -22,14 +22,9 @@ public class SendToCollect : MonoBehaviour {
                 }
                 else if (!collect.goingToCollect)
                 {
-                    if (collect.targetToCollect != null)
-                    {
-                        collect.startMovingToCollect(collect.targetToCollect);
-                    }
-                    else if (c.tag == "Enemy")
-                    {
-                        AI.Instance.reassignResourceToCivilian(c.gameObject);
-                    }
+                    if (collect.targetToCollect != null) collect.startMovingToCollect(collect.targetToCollect);
+                    else if (c.tag == "Enemy" & gameObject.tag == "Enemy")  AI.Instance.reassignResourceToCivilian(c.gameObject);
+                    
                 }
                 
 

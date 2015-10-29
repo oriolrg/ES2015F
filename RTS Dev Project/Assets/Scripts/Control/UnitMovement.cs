@@ -31,10 +31,10 @@ public class UnitMovement : MonoBehaviour {
 
 	public void startMoving( GameObject target )
 	{
+        CollectResources collect = gameObject.GetComponent<CollectResources>();
+        if (!AI.Instance.resources.Contains(target.tag) & collect != null) if (collect.goingToCollect) collect.goingToCollect = false;
 		this.target = target.transform;
-        if ( seeker != null )
-        
-            seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
+        if ( seeker != null ) seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
         
 		targetPos = target.transform.position;
 		hasTarget = true;

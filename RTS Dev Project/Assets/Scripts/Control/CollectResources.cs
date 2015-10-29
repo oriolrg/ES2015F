@@ -7,6 +7,8 @@ public class CollectResources : MonoBehaviour {
 	public bool hasCollected;
 	public bool goingToCollect;
 	public UnitMovement u;
+    public Resource resourceCollected;
+    public int quantityCollected;
 	
 	// Use this for initialization
     void Awake()
@@ -28,6 +30,8 @@ public class CollectResources : MonoBehaviour {
 	}
 
 	public void startMovingToCollect(GameObject t){
+        if (gameObject.tag == "Ally") GameController.Instance.updateResource(resourceCollected, -quantityCollected);
+        quantityCollected = 0;
 		hasCollected = false;
         goingToCollect = true;
         u.startMoving(t);
