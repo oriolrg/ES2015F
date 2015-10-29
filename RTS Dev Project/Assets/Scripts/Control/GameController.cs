@@ -371,6 +371,7 @@ public class GameController : MonoBehaviour
         // Set unit as parent in hierarchy
         newUnit.transform.SetParent(unitsParent.transform);
         GameObject target = Instantiate(targetPrefab, rally, Quaternion.identity) as GameObject;
+ 
         UnitMovement script = newUnit.GetComponent<UnitMovement>();
         
         if (script != null)
