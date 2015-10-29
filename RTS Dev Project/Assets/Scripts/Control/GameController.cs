@@ -122,11 +122,47 @@ public class GameController : MonoBehaviour
                         target = Instantiate(targetPrefab, hitInfo.transform.gameObject.transform.position, Quaternion.identity) as GameObject;
                         //moveUnitsCollect(target);
                     }
-                    else
+					else if(hitInfo.transform.gameObject.tag == "Enemy")
                     {
-                        target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+						GameObject enemy = hitInfo.transform.gameObject;
+
+
+						foreach(var ally in selectedUnits.units){
+							ally.GetComponent<UnitMovement>()
+						}
+
+
+
+						GameObject allyUnit = selectedUnits.units[0];
+
+						Vector3 allyPos = allyUnit.transform.position;
+
+						double d = Vector3.Distance(allyPos,enemyPos);
+
+						Vector3 vec =- allyPos + enemyPos;
+
+						vec = vec.normalized;
+
+						double r = allyUnit.GetComponent<attack_controller>().range;
+
+						Debug.Log(r);
+
+						double alpha =  d-(r/2.0);
+
+
+						vec.x *= (float) alpha;
+						vec.z *= (float) alpha;
+
+						Vector3 targetPos = vec + allyPos;
+
+
+                        target = Instantiate(targetPrefab, targetPos, Quaternion.identity) as GameObject;
                         moveUnits(target);
-                    }
+
+                    } else {
+						target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+						moveUnits(target);
+					}
                 }
                 else
                 {

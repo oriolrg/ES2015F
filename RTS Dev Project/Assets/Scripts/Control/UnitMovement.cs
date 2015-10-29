@@ -15,18 +15,26 @@ public class UnitMovement : MonoBehaviour {
 	CharacterController characterController;
 	Vector3 targetPos;
     Animator animator;
+	AttackController attack;
+
+	enum Status{idle, attacking, running, collecting};
 
     public AnimationClip runAnimation;
 
 	public bool hasTarget;
+
+	public Status status;
 
 	// Use this for initialization
 	void Awake ()
     {
 		seeker = GetComponent<Seeker>();
 		characterController = GetComponent<CharacterController>();
+		attack = GetComponent<AttackController> ();
         animator = GetComponent<Animator>();
         hasTarget = false;
+		status = Status.idle;
+
 	}
 
 	public void startMoving( GameObject target )
@@ -40,6 +48,8 @@ public class UnitMovement : MonoBehaviour {
 		hasTarget = true;
         
         if (animator != null) animator.SetBool("running", true);
+
+		status = Status.running;
 	}
 
 
@@ -78,6 +88,7 @@ public class UnitMovement : MonoBehaviour {
 				hasTarget = false;
                 var animator = GetComponent<Animator>();
                 if (animator != null) animator.SetBool("running", false);
+				status = Status.idle;
             }
 		}
 	}
