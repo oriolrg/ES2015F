@@ -126,7 +126,9 @@ public class GameController : MonoBehaviour
                     {
                         Debug.Log("vaig a construir");
 
-                        foreach (var unit in selectedUnits.units)
+                        Troop troop = new Troop(selectedUnits.units);
+
+                        foreach (var unit in troop.units)
                         {
                             if (unit.GetComponent<Unit>().getConstruct() || unit.GetComponent<Unit>().getInConstruction())
                             {
@@ -138,7 +140,7 @@ public class GameController : MonoBehaviour
                             unit.GetComponent<Unit>().SetBuildingToConstruct(hitInfo.transform.gameObject);
                         }
 
-                        buildingConstruction(hitInfo.transform.gameObject.transform.position);
+                        buildingConstruction(hitInfo.transform.gameObject.transform.position, troop);
                         
                     }
                     else
@@ -251,6 +253,43 @@ public class GameController : MonoBehaviour
             Destroy(target.gameObject);
         }
 	}
+
+    private void moveUnits(GameObject target, Troop troop)
+    {
+        if (troop.hasMovableUnits())
+        {
+            foreach (var unit in troop.units)
+            {
+
+                if (unit.GetComponent<Unit>().getConstruct() || unit.GetComponent<Unit>().getInConstruction())
+                {
+                    unit.GetComponent<Unit>().setConstruct(false);
+                    unit.GetComponent<Unit>().SetInConstruction(false);
+                    unit.GetComponent<Unit>().getBuildingToConstruct().GetComponent<BuildingConstruction>().deleteUnit(unit);
+                }
+
+                UnitMovement script = unit.GetComponentInParent<UnitMovement>();
+                if (script != null)
+                {
+                    script.startMoving(target);
+                    target.GetComponent<timerDeath>().AddUnit(unit);
+                }
+
+            }
+        }
+        else
+        {
+            foreach (var unit in troop.units)
+            {
+                StaticUnit script = unit.GetComponentInParent<StaticUnit>();
+                if (script != null)
+                {
+                    script.RallyPoint = target.transform.position;
+                }
+            }
+            Destroy(target.gameObject);
+        }
+    }
 
     public void addUnit(GameObject u)
     {
@@ -417,26 +456,26 @@ public class GameController : MonoBehaviour
 	}
 
 
-    public void createBuilding(GameObject prefab, Vector3 position)
+    public void createBuilding(GameObject prefab, Vector3 position, Troop t)
     {
         GameObject building = Instantiate(prefab, position, gameObject.transform.rotation) as GameObject;
 
         building.GetComponent<Unit>().setConstructionOnGoing(true);
 
-        foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().SetBuildingToConstruct(building);
+        foreach (var unit in t.units) unit.GetComponent<Unit>().SetBuildingToConstruct(building);
 
-        buildingConstruction(position);
+        buildingConstruction(position, t);
 
     }
 
-    public void buildingConstruction(Vector3 position)
+    public void buildingConstruction(Vector3 position, Troop t)
     {
         //Move the units that are selected to construct to the building position
         GameObject target = Instantiate(targetPrefab, position, Quaternion.identity) as GameObject;
-        moveUnits(target);
+        moveUnits(target, t);
 
         //Order that the unit has to construct
-        foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().setConstruct(true);
+        foreach (var unit in t.units) unit.GetComponent<Unit>().setConstruct(true);
 
         enabled = true;//Enable the script 
     }
@@ -456,5 +495,10 @@ public class GameController : MonoBehaviour
     public void hideRightPanel()
     {
         hud.hideRightPanel();
+    }
+
+    public Troop getSelectedUnits()
+    {
+        return selectedUnits;
     }
 }
