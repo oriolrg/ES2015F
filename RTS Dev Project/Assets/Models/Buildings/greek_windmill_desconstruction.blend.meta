@@ -13,8 +13,10 @@ ModelImporter:
     400004: wall
     2300000: blades
     2300002: wall
+    2300004: //RootNode
     3300000: blades
     3300002: wall
+    3300004: //RootNode
     4300000: wall
     4300002: blades
     7400000: Default Take
