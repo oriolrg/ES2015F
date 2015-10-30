@@ -1,49 +1,15 @@
 fileFormatVersion: 2
-guid: 7fdf2b2b801a5f54882701f3383ef6ef
-timeCreated: 1444665033
+guid: 72586480e3b8d5f42af48b17889a7bf5
+timeCreated: 1446224084
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: columns
-    100002: door
-    100004: flowerpot
-    100006: framedoor
-    100008: //RootNode
-    100010: plant
-    100012: rest
-    100014: roof
-    400000: columns
-    400002: door
-    400004: flowerpot
-    400006: framedoor
-    400008: //RootNode
-    400010: plant
-    400012: rest
-    400014: roof
-    2300000: columns
-    2300002: door
-    2300004: flowerpot
-    2300006: framedoor
-    2300008: plant
-    2300010: rest
-    2300012: roof
-    2300014: //RootNode
-    3300000: columns
-    3300002: door
-    3300004: flowerpot
-    3300006: framedoor
-    3300008: plant
-    3300010: rest
-    3300012: roof
-    3300014: //RootNode
-    4300000: door
-    4300002: rest
-    4300004: roof
-    4300006: framedoor
-    4300008: columns
-    4300010: flowerpot
-    4300012: plant
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Cube_001
     7400000: Default Take
     9500000: //RootNode
   materials:
