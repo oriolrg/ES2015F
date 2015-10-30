@@ -1,15 +1,22 @@
 fileFormatVersion: 2
-guid: 2c72c2dfee66e124dace27580049ec98
-timeCreated: 1446196342
+guid: 752f325b46f30164080d0b45c60d0294
+timeCreated: 1446196558
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Door
+    100000: Circle_MeshPart0
+    100002: Circle_MeshPart1
+    100004: //RootNode
+    400000: Circle_MeshPart0
+    400002: Circle_MeshPart1
+    400004: //RootNode
+    2300000: Circle_MeshPart0
+    2300002: Circle_MeshPart1
+    3300000: Circle_MeshPart0
+    3300002: Circle_MeshPart1
+    4300000: Circle_MeshPart0
+    4300002: Circle_MeshPart1
     7400000: Default Take
     9500000: //RootNode
   materials:
