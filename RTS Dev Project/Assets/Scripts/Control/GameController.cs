@@ -123,11 +123,10 @@ public class GameController : MonoBehaviour
                         target = Instantiate(targetPrefab, hitInfo.transform.gameObject.transform.position, Quaternion.identity) as GameObject;
                         //moveUnitsCollect(target);
                     }
-<<<<<<< HEAD
 					else if(hitInfo.transform.gameObject.tag == "Enemy")
                     if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))  moveUnits(hitInfo.transform.gameObject);
                     
-=======
+
                     else if(hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction>().getConstructionOnGoing())
                     {
                         Debug.Log("vaig a construir");
@@ -149,7 +148,6 @@ public class GameController : MonoBehaviour
                         buildingConstruction(hitInfo.transform.gameObject.transform.position, troop);
                         
                     }
->>>>>>> refs/remotes/origin/issue#100-1
                     else
                     {
 						/*
@@ -281,7 +279,6 @@ public class GameController : MonoBehaviour
                     unit.GetComponent<Construct>().getBuildingToConstruct().GetComponent<BuildingConstruction>().deleteUnit(unit);
                 }
 
-<<<<<<< HEAD
                     UnitMovement script = unit.GetComponentInParent<UnitMovement>();
                     if (script != null)
                     {
@@ -298,14 +295,7 @@ public class GameController : MonoBehaviour
                             target.GetComponent<timerDeath>().AddUnit(unit);
                         }
                     }
-=======
-                UnitMovement script = unit.GetComponentInParent<UnitMovement>();
-                if (script != null)
-                {
-                    script.startMoving(target);
-                    target.GetComponent<timerDeath>().AddUnit(unit);
->>>>>>> refs/remotes/origin/issue#100-1
-                }
+                
                 
             }
         }
@@ -525,7 +515,6 @@ public class GameController : MonoBehaviour
         //createBuilding(prefab, new Vector3(213, -5, 141));   
 	}
 
-<<<<<<< HEAD
 	public void createCubeTestingGrid()
 	{
 
@@ -548,8 +537,7 @@ public class GameController : MonoBehaviour
 	}
 
 
-    public void buildingConstruction(Vector3 position)
-=======
+
 
     public void createBuilding(GameObject prefab, Vector3 position, Troop t)
     {
@@ -564,7 +552,6 @@ public class GameController : MonoBehaviour
     }
 
     public void buildingConstruction(Vector3 position, Troop t)
->>>>>>> refs/remotes/origin/issue#100-1
     {
         //Move the units that are selected to construct to the building position
         GameObject target = Instantiate(targetPrefab, position, Quaternion.identity) as GameObject;
