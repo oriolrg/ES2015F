@@ -1,6 +1,7 @@
 fileFormatVersion: 2
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 guid: a62091002500e8b469031ddfcfc63a42
 timeCreated: 1445629980
 =======
@@ -11,6 +12,10 @@ timeCreated: 1445622330
 guid: ce09e59386db233418d1840322f8c33b
 timeCreated: 1445670887
 >>>>>>> origin/S3-Team-B
+=======
+guid: c3d428229a7bb9b4fa144138f5c2e7cc
+timeCreated: 1445809770
+>>>>>>> refs/remotes/origin/issue#100-1
 licenseType: Free
 NativeFormatImporter:
   userData: 

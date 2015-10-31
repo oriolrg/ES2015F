@@ -22,28 +22,28 @@ public class Archery : StaticUnit
 
     public void CreateArcher()
     {
-        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
-        {
-            GameController.Instance.CreateUnit(transform, archerPrefab, RallyPoint);
-        }
+        //if (!inConstruction) //Disable the action if the villager is constructing a buliding.
+        
+        GameController.Instance.CreateUnit(transform, archerPrefab, RallyPoint);
+        
     }
 
     void Sacrifice()
     {
-        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
-        {
-            GameController.Instance.removeUnit(gameObject);
-            GetComponent<Animator>().SetBool("dead", true);
-            Destroy(gameObject, 3);
-        }
+        //if (!inConstruction) //Disable the action if the villager is constructing a buliding.
+        
+        GameController.Instance.removeUnit(gameObject);
+        GetComponent<Animator>().SetBool("dead", true);
+        Destroy(gameObject, 3);
+        
     }
 
     void Repair()
     {
-        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
-        {
-            health = data.stats[Stat.Health];
-        }
+        //if (!inConstruction) //Disable the action if the villager is constructing a buliding.
+        
+        health = data.stats[Stat.Health];
+        
     }
     
 }

@@ -11,9 +11,11 @@ public class Civilian : MobileUnit
     [SerializeField]
     private float dist;
 
-    private GameObject buildingToConstruct;
+    //private GameObject buildingToConstruct;
+
     public GameObject dustPrefab;
     public GameObject usingDust;
+
     // private bool construct;
 
     protected override List<Command> defineCommands()
@@ -26,14 +28,19 @@ public class Civilian : MobileUnit
     void Start()
     {
         
-        construct = false;
+        //construct = false;
+
+        //dist = 10f;
     }
 
     void Update()
     {
+        
+        /*
         //If a unit has the order to construct and it is close enough to the building, start the construction
         if (construct)
         {
+            Debug.Log("dins de construct civilian");
             if ((transform.position - buildingToConstruct.transform.position).magnitude < dist)
             {
                 Debug.Log("A CONSTRUIIIIR!!!!!!!!");
@@ -49,15 +56,19 @@ public class Civilian : MobileUnit
         {
             Destroy(usingDust);
         }
+        */
+
     }
 
     public void CreateUrbanCenter()
     {
-
-        if (construct)
+        /*
+        if (construct || inConstruction)
         {
             construct = false;
-        }
+            inConstruction = false;
+            buildingToConstruct.GetComponent<BuildingConstruction>().deleteUnit(this.gameObject);
+        }*/
 
         if (GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(urbanCenterPrefab);
 
@@ -65,11 +76,13 @@ public class Civilian : MobileUnit
 
     public void CreateWonder()
     {
-
-        if (construct)
+        /*
+        if (construct || inConstruction)
         {
             construct = false;
-        }
+            inConstruction = false;
+            buildingToConstruct.GetComponent<BuildingConstruction>().deleteUnit(this.gameObject);
+        }*/
 
         if(GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(wonderPrefab);
 
@@ -93,10 +106,13 @@ public class Civilian : MobileUnit
 
     public void Sacrifice()
     {
-            if (construct)
+        /*
+            if (construct || inConstruction)
             {
                 construct = false;
-            }
+                inConstruction = false;
+                buildingToConstruct.GetComponent<BuildingConstruction>().deleteUnit(this.gameObject);
+        }*/
 
             GameController.Instance.removeUnit(gameObject);
             GetComponentInParent<Animator>().SetBool("dead", true);
@@ -106,12 +122,9 @@ public class Civilian : MobileUnit
 
 
 
-
-    
-
-
+    /*
     public void SetBuildingToConstruct(GameObject b)
     {
         buildingToConstruct = b;
-    }
+    }*/
 }
