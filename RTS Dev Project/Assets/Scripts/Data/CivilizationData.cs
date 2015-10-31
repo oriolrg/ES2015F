@@ -10,5 +10,5 @@ public class CivilizationData : ScriptableObject
 
     public Font font;
 
-    public int fontSize;
+    public UnitPrefabDictionary units;
 }

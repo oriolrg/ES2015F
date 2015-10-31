@@ -2,45 +2,46 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Events;
 
 public class HUD : MonoBehaviour
 {
+    [SerializeField] private ActionsData actionsData;
     [SerializeField] private HUDData data;
     [SerializeField] private List<Image> panels;
     [SerializeField] private List<Text> texts;
     [SerializeField] private ResourceTextDictionary resourceTexts;
     [SerializeField] private ResourceTextDictionary resourceCosts;
-    [SerializeField] private ActionGroupPanelDictionary actionGroupPanels;
     [SerializeField] private Image flagImage;
     [SerializeField] RectTransform creationPanel;
     [SerializeField] RectTransform troopPanel;
     [SerializeField] RectTransform rightPanel;
     [SerializeField] RectTransform resourceCostPanel;
+    [SerializeField] RectTransform createPanel;
+    [SerializeField] RectTransform movePanel;
+    [SerializeField] RectTransform specialPanel;
     [SerializeField] Text descriptionText;
     [SerializeField] Image previewImage;
     [SerializeField] private RectTransform healthImage;
     [SerializeField] private Text nameText;
 
     
-    public Sprite panelSprite;
+    private Sprite panelSprite;
 
-    //Test
     void Start()
     {
         setCivilization(Civilization.Greeks);
-
     }
 
     // Changes the UI depending on the chosen civilization
     public void setCivilization( Civilization civilization )
     {
         // Load the civilization data from UISettings
-        CivilizationData civilizationData = data.civilizationDatas[civilization];
+        CivilizationData civilizationData = DataManager.Instance.civilizationDatas[civilization];
 
         Sprite flag = civilizationData.FlagSprite;
         Sprite panel = civilizationData.PanelSprite;
         Font font = civilizationData.font;
-        int fontSize = civilizationData.fontSize;
 
         // Store the civilization panel sprite for creating future dynamic panels
         this.panelSprite = panel;
@@ -55,7 +56,6 @@ public class HUD : MonoBehaviour
         foreach( Text text in texts )
         {
             text.font = font;
-            text.fontSize = fontSize;
         }
         
         // Change the flag sprite
@@ -75,56 +75,61 @@ public class HUD : MonoBehaviour
     public void updateSelection( Troop troop )
     {
         ClearSelection();
+
         // Update troop panel (private)
         setTroopPreview( troop );
 
         if (troop.FocusedUnit != null)
         {
             // Get focused unit of the troop
-            Unit focusedUnit = troop.FocusedUnit.GetComponent<Unit>();
+            Identity focusedUnit = troop.FocusedUnit.GetComponent<Identity>();
+            
+            if (focusedUnit == null) return;
 
+            UnitData unitData = DataManager.Instance.unitDatas[focusedUnit.unit];
             // Update preview image and name
-            previewImage.sprite = focusedUnit.Preview;
+            previewImage.sprite = unitData.preview;
             nameText.text = focusedUnit.name;
 
-            
+
 
             // Update Action buttons
-            List<ActionData> actionDatas = focusedUnit.getActionDatas();
-            foreach (ActionData actionData in actionDatas)
+            UnitType unitType = focusedUnit.unit;
+
+            List<UnitType> creations = actionsData.creationPermissions[unitType];
+            for( int i = 0; i < creations.Count; i++ )
             {
-                GameObject block = Instantiate(data.blockPrefab) as GameObject;
+                UnitType type = creations[i];
+                // get the unit data of the unit that can be created
+                UnitData toCreate = DataManager.Instance.unitDatas[focusedUnit.unit];
+
+                // Create a block prefab with the image of the action
+                GameObject block = addBlock(createPanel, toCreate.preview, () => { GameController.Instance.OnCreate(focusedUnit,type); });
+
                 
-                Image background = block.GetComponent<Image>();
-                background.sprite = panelSprite;
-
-                Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-                foreground.sprite = actionData.sprite;
-
-                // Get the parent panel for this panel depending on its group
-                ActionGroup group = actionData.actionGroup;
-                GameObject parent = actionGroupPanels[group];
-
-                block.transform.SetParent(parent.transform);
-
-                Button button = block.GetComponent<Button>();
-                ActionData ad = actionData;
-
-                button.interactable = !focusedUnit.getInConstruction(); //Disable the button if the unit is constructing a buliding. Doesnt work!!!
-
-                button.onClick.AddListener(() =>
-                {
-                    focusedUnit.ActionClicked(ad);
-                    updateDelayedActions(focusedUnit);
-                });
-
-                // Show resource costs when enter, hide when exit
-                ShowResourceCostWhenEnter script = block.AddComponent<ShowResourceCostWhenEnter>();
-                script.data = actionData;
             }
 
-            updateHealth(focusedUnit);
-            updateDelayedActions(focusedUnit);
+            // if the unittype is mobile add move actons
+            if( !unitType.isBuilding() )
+            {
+                List<MoveData> movements = actionsData.movements;
+                for( int i = 0; i < movements.Count; i++ )
+                {
+                    MoveData movement = movements[i];
+                    addBlock(movePanel, movement.preview, () => { movement.codeToExecute.Invoke(); });
+                }
+            }
+
+            // Add sacrifice action
+            List<SpecialData> specials = actionsData.specials;
+            for (int i = 0; i < specials.Count; i++)
+            {
+                SpecialData special = specials[i];
+                addBlock(specialPanel, special.preview, () => { special.codeToExecute.Invoke(); });
+            }
+
+            //updateHealth(focusedUnit);
+            //updateDelayedActions(focusedUnit);
         }
     }
 
@@ -152,8 +157,8 @@ public class HUD : MonoBehaviour
             background.sprite = panelSprite;
 
             Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-            ActionData a = action.Data;
-            foreground.sprite = a.sprite;
+            //ActionData a = action.Data;
+            //foreground.sprite = a.sprite;
 
             Button button = block.GetComponent<Button>();
             button.onClick.AddListener(() => { print("Cancel action"); });
@@ -171,13 +176,9 @@ public class HUD : MonoBehaviour
         foreach (Transform child in troopPanel) Destroy(child.gameObject);
         previewImage.sprite = panelSprite;
         foreach (Transform child in creationPanel) Destroy(child.gameObject);
-        foreach( KeyValuePair<ActionGroup,GameObject> kv in actionGroupPanels )
-        {
-            foreach( Transform child in kv.Value.transform )
-            {
-                Destroy(child.gameObject);
-            }
-        }
+        foreach (Transform child in createPanel) Destroy(child.gameObject);
+        foreach (Transform child in movePanel) Destroy(child.gameObject);
+        foreach (Transform child in specialPanel) Destroy(child.gameObject);
         nameText.text = "";
     }
 
@@ -185,34 +186,37 @@ public class HUD : MonoBehaviour
     {
         for( int i = 0; i < troop.units.Count; i++ )
         {
+            // Get the Unit Data of the current unit
             GameObject unit = troop.units[i];
 
-            // if actually a unit ( will be fixed )
-            if (unit.GetComponent<Unit>() != null)
+            Identity identity = unit.GetComponent<Identity>();
+
+            if (identity == null) continue;
+
+            UnitData unitData = DataManager.Instance.unitDatas[identity.unit];
+
+
+            // Instantiate a block with the correct image
+            GameObject block = Instantiate(data.blockPrefab) as GameObject;
+            block.transform.SetParent(troopPanel);
+
+            Image background = block.GetComponent<Image>();
+            background.sprite = panelSprite;
+
+            Image foreground = block.transform.GetChild(0).GetComponent<Image>();
+            foreground.sprite = unitData.preview;
+
+            // Additionally paint focus frame if its the focused unit
+            if (unit == troop.FocusedUnit)
             {
-                GameObject block = Instantiate(data.blockPrefab) as GameObject;
-                block.transform.SetParent(troopPanel);
-
-                Image background = block.GetComponent<Image>();
-                background.sprite = panelSprite;
-
-                Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-                foreground.sprite = unit.GetComponent<Unit>().Preview;
-
-                //Paint focus fram
-                if (unit == troop.FocusedUnit)
-                {
-                    GameObject focusFrame = new GameObject("focus frame");
-                    Image image = focusFrame.AddComponent<Image>();
-                    image.sprite = data.focusSprite;
-                    image.color = new Color(.6f, .8f, 1f, .5f);
-                    focusFrame.transform.SetParent(block.transform.GetChild(0));
-                }
-            }           
+                GameObject focusFrame = Instantiate(data.focusFrame) as GameObject;
+                focusFrame.transform.SetParent(block.transform.GetChild(0));
+            }
         }
+        
     }
-
-    public void enterActionButton( ActionData data )
+    
+    public void OnActionButtonEnter( UnitData data )
     {
         rightPanel.gameObject.SetActive(true);
         foreach(KeyValuePair<Resource,Text> kv in resourceCosts)
@@ -228,7 +232,7 @@ public class HUD : MonoBehaviour
         descriptionText.text = data.description;
     }
 
-    public void exitActionButton(ActionData data)
+    public void OnActionButtonExit(UnitData data)
     {
         foreach (KeyValuePair<Resource, Text> kv in resourceCosts)
         {
@@ -239,9 +243,28 @@ public class HUD : MonoBehaviour
             text.color = new Color(0f, 0f, 0f, 1f);
         }
     }
-
+    
     public void hideRightPanel()
     {
         rightPanel.gameObject.SetActive(false);
+    }
+
+    private GameObject addBlock( Transform parent, Sprite image, UnityAction callback)
+    {
+        GameObject block = Instantiate(data.blockPrefab) as GameObject;
+        Image background = block.GetComponent<Image>();
+        background.sprite = panelSprite;
+        Image foreground = block.transform.GetChild(0).GetComponent<Image>();
+        foreground.sprite = image;
+        block.transform.SetParent(parent);
+
+        // Add listener when clicked
+        Button button = block.GetComponent<Button>();
+
+        button.onClick.AddListener(callback);
+
+
+
+        return block;
     }
 }

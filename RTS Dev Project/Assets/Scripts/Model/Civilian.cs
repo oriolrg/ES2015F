@@ -61,7 +61,7 @@ public class Civilian : MobileUnit
             construct = false;
         }
 
-        if (GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(urbanCenterPrefab);
+        //if (GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(urbanCenterPrefab);
 
     }
 
@@ -73,7 +73,7 @@ public class Civilian : MobileUnit
             construct = false;
         }
 
-        if(GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(wonderPrefab);
+        //if(GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(wonderPrefab);
 
     }
 

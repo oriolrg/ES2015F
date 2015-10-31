@@ -419,20 +419,57 @@ public class GameController : MonoBehaviour
 
     }
 
-   
-
-    public void enterActionButton(ActionData data)
+    // Action events
+    public void OnActionButtonEnter(UnitData data)
     {
-        hud.enterActionButton(data);
+        hud.OnActionButtonEnter(data);
     }
 
-    public void exitActionButton(ActionData data)
+    public void OnActionButtonExit(UnitData data)
     {
-        hud.exitActionButton(data);
+        hud.OnActionButtonExit(data);
     }
-
+    
     public void hideRightPanel()
     {
         hud.hideRightPanel();
+    }
+
+    
+
+    public void moveSelection()
+    {
+        print("move");
+    }
+
+    public void stopSelection()
+    {
+        print("stop");
+    }
+
+    public void OnCreate( Identity who, UnitType what )
+    {
+        // get the unit data of the unit that can be created
+        GameObject toCreate = DataManager.Instance.civilizationDatas[who.civilization].units[what];
+
+        if(what.isBuilding())
+        {
+            //Laia code
+        }
+        else
+        {
+            //add to queue
+
+        }
+     }
+
+    public void OnSacrifice()
+    {
+        print("sacrifice");
+    }
+
+    public void OnAttack()
+    {
+        print("attack");
     }
 }
