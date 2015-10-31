@@ -8,6 +8,8 @@ public class UnitMovement : MonoBehaviour {
 
 	public Transform target;
 
+	public float repathRate = 0.5f;
+	private float lastRepath = -9999;
 
 	[SerializeField] private float speed = 10;
 
@@ -63,11 +65,17 @@ public class UnitMovement : MonoBehaviour {
 
 	void FixedUpdate(){
 		if (hasTarget) {
+
+			if (Time.time - lastRepath > repathRate && seeker.IsDone()) {
+				lastRepath = Time.time+ Random.value*repathRate*0.5f;
+				seeker.StartPath (transform.position,target.position, OnPathComplete);
+			}
+			/*
 			if (Vector3.Distance (targetPos, target.position) > 0) {
 				targetPos = target.position;
 				seeker.StartPath (transform.position, target.position, OnPathComplete);
 			}
-
+			*/
 			if (path == null) {
 				return;
 			}
