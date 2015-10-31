@@ -58,7 +58,7 @@ public class GameController : MonoBehaviour
     void Start ()
     {
         selectedUnits = new Troop();
-        initResourceValues();
+        //initResourceValues();
     }
 
     // Update is called once per frame

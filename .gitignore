@@ -25,3 +25,6 @@ ProjectVersion.txt
 Team-C/ProjectSettings/ProjectVersion.txt
 *.DS_Store
 # *.meta
+
+Project/Assets/Models/Buildings/Materials/unnamed.mat.meta
+Project/Assets/Models/Buildings/Materials/unnamed.mat
