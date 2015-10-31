@@ -3,26 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class AI : MonoBehaviour {
+    public List<string> resources;
     private List<GameObject> resourcesFood;
+    private List<GameObject> resourcesMetal;
+    private List<GameObject> resourcesWood;
     private List<GameObject> allCPUUnits;
     private List<GameObject> civilians;
+    private List<GameObject> civiliansCPU;
     private List<GameObject> townCentersCPU;
     private List<GameObject> townCentersPlayer;
     public static AI Instance { get; private set; }
+
     // Use this for initialization
     
     void Start () {
+        resources = new List<string>(new string[] { "Food", "Metal", "Wood" });
         allCPUUnits = new List<GameObject>();
         civilians = new List<GameObject>();
+        civiliansCPU = new List<GameObject>();
         townCentersCPU = new List< GameObject > ();
         townCentersPlayer = new List<GameObject>();
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addCPUUnit(go);
         resourcesFood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Food"));
+        resourcesMetal = new List<GameObject>(GameObject.FindGameObjectsWithTag("Metal"));
+        resourcesWood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Wood"));
         Invoke("createCivilian", 2);
         Invoke("createCivilian", 4);
         Invoke("createCivilian", 6);
         Invoke("createCivilian", 8);
         Invoke("createCivilian", 10);
+
+        Invoke("createBuilding", 20);
 
 
 
@@ -51,7 +62,6 @@ public class AI : MonoBehaviour {
         else if (t.tag == "Enemy")
         {
             townCentersCPU.Add(t);
-            resourcesFood.Sort((v1, v2) => (v1.transform.position - townCentersCPU[0].transform.position).sqrMagnitude.CompareTo((v2.transform.position - townCentersCPU[0].transform.position).sqrMagnitude));
         }
 
     }
@@ -101,54 +111,64 @@ public class AI : MonoBehaviour {
         }
         else { return null; }
     }
-    public GameObject getClosestFood(GameObject c){
+    public GameObject getClosestResource(GameObject c, string r){
+        List<GameObject> resourcesX;
+        if (r == "Food") resourcesX = resourcesFood;
+        else if (r == "Metal") resourcesX = resourcesMetal;
+        else if (r == "Wood") resourcesX = resourcesWood;
+        else resourcesX = resourcesFood;
+        
         float aux;
-        float minDistance = (resourcesFood[0].transform.position - c.transform.position).magnitude;
-        GameObject closestFood = resourcesFood[0];
+        float minDistance = (resourcesX[0].transform.position - c.transform.position).magnitude;
+        GameObject closestResource = resourcesX[0];
 
-        for (int i = 0; i < resourcesFood.Count - 1; i++)
+        for (int i = 0; i < resourcesX.Count; i++)
         {
-            aux = (resourcesFood[i].transform.position - c.transform.position).magnitude;
+            aux = (resourcesX[i].transform.position - c.transform.position).magnitude;
             if (aux < minDistance)
             {
                 minDistance = aux;
-                closestFood = resourcesFood[i];
+                closestResource = resourcesX[i];
             }
         }
-        return closestFood;
+        return closestResource;
 
     }
 
     public void assignCivilian(GameObject v)
     {
-        allCPUUnits.Add(v);
-        civilians.Add(v);        
-        //CollectResources c = v.GetComponentInParent<CollectResources>();
-        //c.targetToCollect = resourcesFood[0];
-        //c.startMovingToCollect(resourcesFood[0]);  
+        civilians.Add(v);
+        if (v.tag == "Enemy") civiliansCPU.Add(v);    
+
        
     }
 
     private void createCivilian()
     {
+        if (townCentersCPU.Count > 0)
+        {
+            townCentersCPU[0].GetComponent<TownCenter>().CreateCivilian();
+        }
         
-        townCentersCPU[0].GetComponentInParent<TownCenter>().CreateCivilian();
           
     }
-    public void deleteResourceFood(GameObject r)
+    public void deleteResource(GameObject r)
     {
         resourcesFood.Remove(r);
+        resourcesMetal.Remove(r);
+        resourcesWood.Remove(r);
         foreach (GameObject vil in civilians) if (vil.GetComponent<CollectResources>().targetToCollect == r) reassignResourceToCivilian(vil);
        
 
     }
     public void reassignResourceToCivilian(GameObject v)
     {
-        CollectResources collect = v.GetComponentInParent<CollectResources>();
-        collect.targetToCollect = getClosestFood(v);
-        if (!collect.hasCollected)
-        {
-            collect.startMovingToCollect(collect.targetToCollect);
-        }
+        CollectResources collect = v.GetComponent<CollectResources>();
+        if (collect.targetToCollect != null) collect.targetToCollect = getClosestResource(v, collect.targetToCollect.tag);
+        ///PLEASE CHECK THIS IS AI WORK
+        else collect.targetToCollect = getClosestResource(v, "Metal");
+
+        collect.startMovingToCollect(collect.targetToCollect);
+
     }
 }

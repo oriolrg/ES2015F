@@ -2,10 +2,14 @@
 using System.Collections;
 using Pathfinding; 
 
+public enum Status{idle, attacking, running, collecting};
+
 public class UnitMovement : MonoBehaviour {
 
 	public Transform target;
 
+	public float repathRate = 0.5f;
+	private float lastRepath = -9999;
 
 	[SerializeField] private float speed = 10;
 
@@ -15,31 +19,39 @@ public class UnitMovement : MonoBehaviour {
 	CharacterController characterController;
 	Vector3 targetPos;
     Animator animator;
-
+	AttackController attack;
+	
     public AnimationClip runAnimation;
 
 	public bool hasTarget;
+
+	public Status status;
 
 	// Use this for initialization
 	void Awake ()
     {
 		seeker = GetComponent<Seeker>();
 		characterController = GetComponent<CharacterController>();
+		attack = GetComponent<AttackController> ();
         animator = GetComponent<Animator>();
         hasTarget = false;
+		status = Status.idle;
+
 	}
 
 	public void startMoving( GameObject target )
 	{
+        CollectResources collect = gameObject.GetComponent<CollectResources>();
+        //if (!AI.Instance.resources.Contains(target.tag) & collect != null) if (collect.goingToCollect) collect.goingToCollect = false;
 		this.target = target.transform;
-        if ( seeker != null )
-        
-            seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
+        if ( seeker != null ) seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
         
 		targetPos = target.transform.position;
 		hasTarget = true;
         
         if (animator != null) animator.SetBool("running", true);
+
+		status = Status.running;
 	}
 
 
@@ -53,11 +65,17 @@ public class UnitMovement : MonoBehaviour {
 
 	void FixedUpdate(){
 		if (hasTarget) {
+
+			if (Time.time - lastRepath > repathRate && seeker.IsDone()) {
+				lastRepath = Time.time+ Random.value*repathRate*0.5f;
+				seeker.StartPath (transform.position,target.position, OnPathComplete);
+			}
+			/*
 			if (Vector3.Distance (targetPos, target.position) > 0) {
 				targetPos = target.position;
 				seeker.StartPath (transform.position, target.position, OnPathComplete);
 			}
-
+			*/
 			if (path == null) {
 				return;
 			}
@@ -78,6 +96,7 @@ public class UnitMovement : MonoBehaviour {
 				hasTarget = false;
                 var animator = GetComponent<Animator>();
                 if (animator != null) animator.SetBool("running", false);
+				status = Status.idle;
             }
 		}
 	}

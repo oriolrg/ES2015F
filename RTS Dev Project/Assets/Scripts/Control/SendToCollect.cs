@@ -15,26 +15,23 @@ public class SendToCollect : MonoBehaviour {
             if (c.tag == "Enemy"||c.tag=="Ally")
             {
                 CollectResources collect = c.GetComponentInParent<CollectResources>();
-                if (collect == null)
-                {
-                    // Doesn't have component, so doesn't collect
-                    return;
-                }
-                else if (!collect.goingToCollect)
-                {
-                    if (collect.targetToCollect != null)
-                    {
-                        collect.startMovingToCollect(collect.targetToCollect);
-                    }
-                    else if (c.tag == "Enemy")
-                    {
-                        AI.Instance.reassignResourceToCivilian(c.gameObject);
-                    }
-                }
-                
+                if (collect == null) return;
+                else if (collect.hasCollected & c.tag == gameObject.tag) storeResource(c.gameObject);
+                else if (!collect.goingToCollect & c.tag == "Enemy" & gameObject.tag == "Enemy")  AI.Instance.reassignResourceToCivilian(c.gameObject);
 
             }
 			
 		}
 	}
+
+    private void storeResource(GameObject c)
+    {
+        CollectResources collect = c.GetComponent<CollectResources>();
+        if (gameObject.tag == "Ally") GameController.Instance.updateResource(collect.resourceCollected, -collect.quantityCollected);
+        collect.quantityCollected = 0;
+        collect.hasCollected = false;
+        if (collect.targetToCollect != null) collect.startMovingToCollect(collect.targetToCollect);
+    }
 }
+
+

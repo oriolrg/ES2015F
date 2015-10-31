@@ -47,6 +47,11 @@ public class LOSEntity : MonoBehaviour {
         LOSManager.RemoveEntity(this);
     }
 
+    void Start()
+    {
+        this.IsRevealer = gameObject.tag.Equals("Ally");
+    }
+
     // Some cache parameters for FOW animation
     Color _oldfowColor = Color.clear;
     Color _fowColor = Color.clear;

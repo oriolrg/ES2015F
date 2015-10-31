@@ -7,10 +7,13 @@ public class CollectResources : MonoBehaviour {
 	public bool hasCollected;
 	public bool goingToCollect;
 	public UnitMovement u;
+    public Resource resourceCollected;
+    public int quantityCollected;
 	
 	// Use this for initialization
     void Awake()
     {
+        quantityCollected = 0;
         u = GetComponent<UnitMovement>();
 		hasCollected = false;
 		goingToCollect = false;
@@ -28,11 +31,8 @@ public class CollectResources : MonoBehaviour {
 	}
 
 	public void startMovingToCollect(GameObject t){
-		hasCollected = false;
+        hasCollected = false;        
         goingToCollect = true;
-        print(gameObject);
-        print(t);
-        print(u);
         u.startMoving(t);
 	}
 }

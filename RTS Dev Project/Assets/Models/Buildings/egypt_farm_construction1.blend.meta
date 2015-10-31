@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:RTS Dev Project/Assets/Models/Buildings/egypt_farm_construction1.blend.meta
 guid: 73001c1a54a040340aaa6daf9aaa6351
 timeCreated: 1445857238
 licenseType: Free
@@ -40,6 +41,28 @@ ModelImporter:
     4300008: framedoor
     4300010: columns
     7400000: Default Take
+=======
+guid: 5e7382d92e36a7341a3763341452b041
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Camera
+    100002: Crown
+    100004: //RootNode
+    100006: Sun
+    100008: Trunk
+    400000: Camera
+    400002: Crown
+    400004: //RootNode
+    400006: Sun
+    400008: Trunk
+    2300000: Crown
+    2300002: Trunk
+    3300000: Crown
+    3300002: Trunk
+    4300000: Crown
+    4300002: Trunk
+>>>>>>> e97c70ff7592f005cacdbe5e267da14aec12f8d5:RTS Dev Project/Assets/Models/Buildings/pi.fbx.meta
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -64,7 +87,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
