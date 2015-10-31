@@ -456,10 +456,13 @@ public class GameController : MonoBehaviour
 	{
 
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		//Vector3 mousePos = Input.mousePosition;
-		//mousePos.z = 10.0f;
-		//Vector3 objectPos = Camera.main.ScreenToWorldPoint(mousePos);
-
+		cube.layer = LayerMask.NameToLayer("Obstacle");
+		cube.AddComponent<updateGrid>();
+		cube.transform.localScale += new Vector3(3,3,3);
+		BoxCollider c = cube.GetComponent<BoxCollider>();
+		if(c != null){
+			c.size += new Vector3(0.5f,0.5f,0.5f);
+		}
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
 		if(Physics.Raycast(ray, out hit))
