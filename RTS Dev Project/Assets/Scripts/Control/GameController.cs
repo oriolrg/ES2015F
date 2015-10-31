@@ -6,6 +6,7 @@ using System;
 public class GameController : MonoBehaviour
 {
     [SerializeField] private GameObject unitsParent;
+
     [SerializeField] private GameObject buildingsParent;
     [SerializeField]
 	private Troop selectedUnits;
@@ -18,6 +19,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private ResourceValueDictionary resourceDict;
 
+    [SerializeField]
+    private GameObject selectedPrefab;
     [SerializeField]
 	private GameObject targetPrefab;
 
@@ -462,6 +465,17 @@ public class GameController : MonoBehaviour
 
         }
      }
+
+    public void addSelectedPrefab(GameObject go)
+    {
+        GameObject selectedProj = Instantiate(selectedPrefab, go.transform.position + new Vector3(0,5,0), Quaternion.identity) as GameObject;
+        //selectedProj.transform.Rotate(90, 0, 0);
+        selectedProj.SetActive(false);
+        selectedProj.transform.SetParent(go.transform);
+        SelectionCircle script = selectedProj.GetComponent<SelectionCircle>();
+        if (script != null) script.init();
+
+    }
 
     public void OnSacrifice()
     {
