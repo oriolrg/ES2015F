@@ -2,8 +2,7 @@
 using System.Collections;
 using Pathfinding; 
 
-
-enum Status{idle, attacking, running, collecting};
+public enum Status{idle, attacking, running, collecting};
 
 public class UnitMovement : MonoBehaviour {
 
@@ -19,8 +18,7 @@ public class UnitMovement : MonoBehaviour {
 	Vector3 targetPos;
     Animator animator;
 	AttackController attack;
-
-
+	
     public AnimationClip runAnimation;
 
 	public bool hasTarget;

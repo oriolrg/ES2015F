@@ -124,12 +124,10 @@ public class GameController : MonoBehaviour
                     }
 					else if(hitInfo.transform.gameObject.tag == "Enemy")
                     {
+						/*
 						GameObject enemy = hitInfo.transform.gameObject;
-
-
 						//Crear nou metode moveUnit
 						//Crear interficie de atac!!!!!!!!!!!!!
-
 						foreach(var ally in selectedUnits.units){
 							ally.GetComponent<UnitMovement>();
 						}
@@ -160,6 +158,7 @@ public class GameController : MonoBehaviour
 
                         target = Instantiate(targetPrefab, targetPos, Quaternion.identity) as GameObject;
                         moveUnits(target);
+                        */
 
                     } else {
 						target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
