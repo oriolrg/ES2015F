@@ -14,6 +14,9 @@ public class BuildingConstruction : MonoBehaviour {
     private int phase; //Phase of the construction
     private List<GameObject> constructingUnits; //Units that are constructing the building
 
+
+    private bool constructionOnGoing = false; //Indicates if a building construction is on going
+
     // Use this for initialization
     void Start () {
 
@@ -24,11 +27,12 @@ public class BuildingConstruction : MonoBehaviour {
         phase = 0;
 
         timer = 30;
+       
     }
 	
 	// Update is called once per frame
 	void Update () {
-
+        //Debug.Log("---------------------------------construction on going " + constructionOnGoing);
         Debug.Log(timer);
         Debug.Log("-------------------------------num de units construint " + constructingUnits.Count);
 
@@ -49,10 +53,10 @@ public class BuildingConstruction : MonoBehaviour {
             if(timer<=0 && phase == 1)
             {
                 GetComponent<MeshFilter>().mesh = finalMesh;
-                foreach (var unit in constructingUnits) unit.GetComponent<Unit>().SetInConstruction(false);
+                foreach (var unit in constructingUnits) unit.GetComponent<Construct>().SetInConstruction(false);
                 constructingUnits.Clear();
-                GetComponent<Unit>().SetInConstruction(false);
-                GetComponent<Unit>().setConstructionOnGoing(false);
+                //GetComponent<Unit>().SetInConstruction(false);
+                constructionOnGoing = false;
 
             }
         //}
@@ -85,5 +89,15 @@ public class BuildingConstruction : MonoBehaviour {
         bool a = constructingUnits.Remove(unit);
         Debug.Log(a);
         Debug.Log("Final: Dins de deleteUnit " + constructingUnits.Count);
+    }
+
+    public void setConstructionOnGoing(bool b)
+    {
+        constructionOnGoing = b;
+    }
+
+    public bool getConstructionOnGoing()
+    {
+        return constructionOnGoing;
     }
 }

@@ -22,30 +22,29 @@ public class Academy : StaticUnit
 
     public void CreateSoldier()
     {
-        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
-        {
-            GameController.Instance.CreateUnit(transform, soldierPrefab, RallyPoint);
-        }
+        //if (!inConstruction) //Disable the action if the villager is constructing a bulidin
+        GameController.Instance.CreateUnit(transform, soldierPrefab, RallyPoint);
+        
     }
 
     
 
     void Sacrifice()
     {
-        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
-        {
-            GameController.Instance.removeUnit(gameObject);
-            GetComponent<Animator>().SetBool("dead", true);
-            Destroy(gameObject, 3);
-        }
+        //if (!inConstruction) //Disable the action if the villager is constructing a buliding.
+        
+        GameController.Instance.removeUnit(gameObject);
+        GetComponent<Animator>().SetBool("dead", true);
+        Destroy(gameObject, 3);
+        
     }
 
     void Repair()
     {
-        if (!inConstruction) //Disable the action if the villager is constructing a buliding.
-        {
-            health = data.stats[Stat.Health];
-        }
+        //if (!inConstruction) //Disable the action if the villager is constructing a buliding.
+        
+        health = data.stats[Stat.Health];
+        
     }
     
 }

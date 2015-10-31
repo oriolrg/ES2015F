@@ -26,11 +26,12 @@ public class Soldier : MobileUnit
     void Start()
     {
         
-        construct = false;
+        //construct = false;
     }
 
     void Update()
     {
+        /*
         //If a unit has the order to construct and it is close enough to the building, start the construction
         if (construct)
         {
@@ -49,19 +50,19 @@ public class Soldier : MobileUnit
         if(inConstruction == false && usingDust != null)
         {
             Destroy(usingDust);
-        }
+        }*/
     }
 
     public void CreateUrbanCenter()
     {
 
-        if (construct || inConstruction)
+        /*if (construct || inConstruction)
         {
             construct = false;
             inConstruction = false;
             buildingToConstruct.GetComponent<BuildingConstruction>().deleteUnit(this.gameObject);
 
-        }
+        }*/
 
         if (GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(urbanCenterPrefab);
 
@@ -70,13 +71,13 @@ public class Soldier : MobileUnit
     public void CreateWonder()
     {
 
-        if (construct || inConstruction)
+        /*if (construct || inConstruction)
         {
             construct = false;
             inConstruction = false;
             buildingToConstruct.GetComponent<BuildingConstruction>().deleteUnit(this.gameObject);
 
-        }
+        }*/
 
         if (GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(wonderPrefab);
 
@@ -100,12 +101,13 @@ public class Soldier : MobileUnit
 
     public void Sacrifice()
     {
+        /*
             if (construct || inConstruction)
             {
                 construct = false;
                 inConstruction = false;
                 buildingToConstruct.GetComponent<BuildingConstruction>().deleteUnit(this.gameObject);      
-            }
+            }*/
 
             GameController.Instance.removeUnit(gameObject);
             GetComponentInParent<Animator>().SetBool("dead", true);

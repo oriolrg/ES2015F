@@ -12,8 +12,10 @@ public class Civilian : MobileUnit
     private float dist;
 
     //private GameObject buildingToConstruct;
+
     public GameObject dustPrefab;
     public GameObject usingDust;
+
     // private bool construct;
 
     protected override List<Command> defineCommands()
@@ -26,13 +28,15 @@ public class Civilian : MobileUnit
     void Start()
     {
         
-        construct = false;
+        //construct = false;
 
-        dist = 10f;
+        //dist = 10f;
     }
 
     void Update()
     {
+        
+        /*
         //If a unit has the order to construct and it is close enough to the building, start the construction
         if (construct)
         {
@@ -52,17 +56,19 @@ public class Civilian : MobileUnit
         {
             Destroy(usingDust);
         }
+        */
+
     }
 
     public void CreateUrbanCenter()
     {
-
+        /*
         if (construct || inConstruction)
         {
             construct = false;
             inConstruction = false;
             buildingToConstruct.GetComponent<BuildingConstruction>().deleteUnit(this.gameObject);
-        }
+        }*/
 
         if (GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(urbanCenterPrefab);
 
@@ -70,13 +76,13 @@ public class Civilian : MobileUnit
 
     public void CreateWonder()
     {
-
+        /*
         if (construct || inConstruction)
         {
             construct = false;
             inConstruction = false;
             buildingToConstruct.GetComponent<BuildingConstruction>().deleteUnit(this.gameObject);
-        }
+        }*/
 
         if(GameController.Instance.checkResources(data.actions[0].resourceCost)) GameController.Instance.createBuilding(wonderPrefab);
 
@@ -100,12 +106,13 @@ public class Civilian : MobileUnit
 
     public void Sacrifice()
     {
+        /*
             if (construct || inConstruction)
             {
                 construct = false;
                 inConstruction = false;
                 buildingToConstruct.GetComponent<BuildingConstruction>().deleteUnit(this.gameObject);
-        }
+        }*/
 
             GameController.Instance.removeUnit(gameObject);
             GetComponentInParent<Animator>().SetBool("dead", true);
