@@ -1,41 +1,13 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:RTS Dev Project/Assets/Models/Buildings/tree_Apple_fruit.blend.meta
 guid: 752f325b46f30164080d0b45c60d0294
-timeCreated: 1446196558
-licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: Circle_MeshPart0
-    100002: Circle_MeshPart1
-    100004: //RootNode
-    400000: Circle_MeshPart0
-    400002: Circle_MeshPart1
-    400004: //RootNode
-    2300000: Circle_MeshPart0
-    2300002: Circle_MeshPart1
-    3300000: Circle_MeshPart0
-    3300002: Circle_MeshPart1
-    4300000: Circle_MeshPart0
-    4300002: Circle_MeshPart1
-=======
-guid: 43699608c955ac14ba7d5b51ef419c84
-ModelImporter:
-  serializedVersion: 18
-  fileIDToRecycleName:
-    100000: Crown
-    100002: //RootNode
-    100004: Trunk
-    400000: Crown
-    400002: //RootNode
-    400004: Trunk
-    2300000: Crown
-    2300002: Trunk
-    3300000: Crown
-    3300002: Trunk
-    4300000: Crown
-    4300002: Trunk
->>>>>>> e97c70ff7592f005cacdbe5e267da14aec12f8d5:RTS Dev Project/Assets/Models/Buildings/pine.blend.meta
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Circle
     7400000: Default Take
     9500000: //RootNode
   materials:

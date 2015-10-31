@@ -1,8 +1,5 @@
 fileFormatVersion: 2
 guid: 2cfffba6aa0d1c44c977366eaa47958d
-<<<<<<< HEAD
-timeCreated: 1446196228
-licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
@@ -11,23 +8,6 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: Cube
-=======
-ModelImporter:
-  serializedVersion: 18
-  fileIDToRecycleName:
-    100000: Cube
-    100002: //RootNode
-    100004: sostre
-    400000: Cube
-    400002: //RootNode
-    400004: sostre
-    2300000: Cube
-    2300002: sostre
-    3300000: Cube
-    3300002: sostre
-    4300000: sostre
-    4300002: Cube
->>>>>>> e97c70ff7592f005cacdbe5e267da14aec12f8d5
     7400000: Default Take
     9500000: //RootNode
   materials:

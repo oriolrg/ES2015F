@@ -3,26 +3,11 @@ guid: 6212d3ee5ae7a554ab7e9f7b9046b7a0
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-<<<<<<< HEAD
     100000: //RootNode
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
     4300000: greeks_urbancenter_inconstruction
-=======
-    100000: base
-    100002: columns
-    100004: //RootNode
-    400000: base
-    400002: columns
-    400004: //RootNode
-    2300000: base
-    2300002: columns
-    3300000: base
-    3300002: columns
-    4300000: base
-    4300002: columns
->>>>>>> e97c70ff7592f005cacdbe5e267da14aec12f8d5
     7400000: Default Take
     9500000: //RootNode
   materials:
