@@ -118,13 +118,59 @@ public class GameController : MonoBehaviour
                 GameObject target;
                 if (hit)
                 {
+<<<<<<< HEAD
+                    if (hitInfo.transform.gameObject.tag == "Food")
+                    {
+                        target = Instantiate(targetPrefab, hitInfo.transform.gameObject.transform.position, Quaternion.identity) as GameObject;
+                        //moveUnitsCollect(target);
+                    }
+					else if(hitInfo.transform.gameObject.tag == "Enemy")
+=======
                     if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))  moveUnits(hitInfo.transform.gameObject);
                     
                     else
+>>>>>>> S3-Team-D
                     {
-                        target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+						/*
+						GameObject enemy = hitInfo.transform.gameObject;
+						//Crear nou metode moveUnit
+						//Crear interficie de atac!!!!!!!!!!!!!
+						foreach(var ally in selectedUnits.units){
+							ally.GetComponent<UnitMovement>();
+						}
+
+
+						GameObject allyUnit = selectedUnits.units[0];
+
+						Vector3 allyPos = allyUnit.transform.position;
+
+						double d = Vector3.Distance(allyPos,enemyPos);
+
+						Vector3 vec =- allyPos + enemyPos;
+
+						vec = vec.normalized;
+
+						double r = allyUnit.GetComponent<attack_controller>().range;
+
+						Debug.Log(r);
+
+						double alpha =  d-(r/2.0);
+
+
+						vec.x *= (float) alpha;
+						vec.z *= (float) alpha;
+
+						Vector3 targetPos = vec + allyPos;
+
+
+                        target = Instantiate(targetPrefab, targetPos, Quaternion.identity) as GameObject;
                         moveUnits(target);
-                    }
+                        */
+
+                    } else {
+						target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+						moveUnits(target);
+					}
                 }
                 else
                 {
@@ -176,6 +222,12 @@ public class GameController : MonoBehaviour
                 selectedUnits.focusNext();
                 hud.updateSelection(selectedUnits); // There will exist an updateFocus method            
             }
+
+			if (Input.GetKeyDown(KeyCode.B))
+			{
+				createCubeTestingGrid();
+			}
+
         }
     }
 
@@ -402,6 +454,25 @@ public class GameController : MonoBehaviour
 
         enabled = false;        
 	}
+
+	public void createCubeTestingGrid()
+	{
+
+		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		//Vector3 mousePos = Input.mousePosition;
+		//mousePos.z = 10.0f;
+		//Vector3 objectPos = Camera.main.ScreenToWorldPoint(mousePos);
+
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		if(Physics.Raycast(ray, out hit))
+		{
+			Vector3 pos = hit.point;
+			pos.y += cube.transform.localScale.y/2f;
+			Instantiate(cube, pos, Quaternion.identity);
+		}
+	}
+
 
     public void buildingConstruction(Vector3 position)
     {
