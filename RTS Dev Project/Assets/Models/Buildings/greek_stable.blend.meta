@@ -1,29 +1,20 @@
 fileFormatVersion: 2
 guid: 7809125ba712fde4ab07921828ca10c5
-timeCreated: 1444644447
-licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: house
-    100004: roof
-    100006: woods
-    400000: //RootNode
-    400002: house
-    400004: roof
-    400006: woods
-    2300000: house
-    2300002: roof
-    2300004: woods
-    2300006: //RootNode
-    3300000: house
-    3300002: roof
-    3300004: woods
-    3300006: //RootNode
-    4300000: roof
-    4300002: woods
-    4300004: house
+    100000: Circle_004
+    100002: //RootNode
+    100004: Plane
+    400000: Circle_004
+    400002: //RootNode
+    400004: Plane
+    2300000: Circle_004
+    2300002: Plane
+    3300000: Circle_004
+    3300002: Plane
+    4300000: Circle_004
+    4300002: Plane
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -49,7 +40,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
