@@ -118,18 +118,15 @@ public class GameController : MonoBehaviour
                 GameObject target;
                 if (hit)
                 {
-<<<<<<< HEAD
                     if (hitInfo.transform.gameObject.tag == "Food")
                     {
                         target = Instantiate(targetPrefab, hitInfo.transform.gameObject.transform.position, Quaternion.identity) as GameObject;
                         //moveUnitsCollect(target);
                     }
 					else if(hitInfo.transform.gameObject.tag == "Enemy")
-=======
                     if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))  moveUnits(hitInfo.transform.gameObject);
                     
                     else
->>>>>>> S3-Team-D
                     {
 						/*
 						GameObject enemy = hitInfo.transform.gameObject;
