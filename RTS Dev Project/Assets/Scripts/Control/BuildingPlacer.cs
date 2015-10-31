@@ -97,7 +97,8 @@ public class BuildingPlacer : MonoBehaviour {
 
                 //GameController.Instance.enabled = true;
 
-                GameController.Instance.buildingConstruction(gameObject.transform.position);
+                Troop t = new Troop(GameController.Instance.getSelectedUnits().units);
+                GameController.Instance.buildingConstruction(gameObject.transform.position,t);
 
                 enabled = false;
 				Destroy (this);

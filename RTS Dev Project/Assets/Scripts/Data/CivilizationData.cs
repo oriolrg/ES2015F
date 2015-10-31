@@ -13,4 +13,6 @@ public class CivilizationData : ScriptableObject
     public Sprite PanelSprite;
 
     public Font font;
+
+    public UnitPrefabDictionary units;
 }
