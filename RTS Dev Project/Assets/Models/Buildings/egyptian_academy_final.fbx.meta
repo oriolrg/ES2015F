@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: ab5bcc37353a8fa4185f97906beaa38a
-timeCreated: 1445984802
+guid: ca1ac82bd63c4ed4398287b767712cd5
+timeCreated: 1446294125
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
@@ -9,10 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: wall
-    4300002: moli
-    7400000: Default Take
-    9500000: //RootNode
+    4300000: house
   materials:
     importMaterials: 1
     materialName: 0
@@ -71,7 +68,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

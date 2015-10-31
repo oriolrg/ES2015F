@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: ab5bcc37353a8fa4185f97906beaa38a
-timeCreated: 1445984802
+guid: b305b21ef7ad3cf4e944739ba941aa1a
+timeCreated: 1446293749
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
@@ -9,8 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: wall
-    4300002: moli
+    4300000: house
     7400000: Default Take
     9500000: //RootNode
   materials:
