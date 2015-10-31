@@ -84,10 +84,11 @@ public class GameController : MonoBehaviour
                 bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
                 if (hit)
                 {
+                    
                     GameObject selectedGO = hitInfo.transform.gameObject;
-                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    if (hitInfo.transform.gameObject.tag == "Ally" || hitInfo.transform.gameObject.tag == "StorageFood")
+                    if (hitInfo.transform.gameObject.tag == "Ally")
                     {
+                       
                         if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
 
                         if (!selectedUnits.units.Contains(selectedGO)) selectedUnits.units.Add(selectedGO);
@@ -117,12 +118,18 @@ public class GameController : MonoBehaviour
                 GameObject target;
                 if (hit)
                 {
+<<<<<<< HEAD
                     if (hitInfo.transform.gameObject.tag == "Food")
                     {
                         target = Instantiate(targetPrefab, hitInfo.transform.gameObject.transform.position, Quaternion.identity) as GameObject;
                         //moveUnitsCollect(target);
                     }
 					else if(hitInfo.transform.gameObject.tag == "Enemy")
+=======
+                    if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))  moveUnits(hitInfo.transform.gameObject);
+                    
+                    else
+>>>>>>> S3-Team-D
                     {
 						/*
 						GameObject enemy = hitInfo.transform.gameObject;
@@ -256,8 +263,18 @@ public class GameController : MonoBehaviour
                     UnitMovement script = unit.GetComponentInParent<UnitMovement>();
                     if (script != null)
                     {
-                        script.startMoving(target);
-                        target.GetComponent<timerDeath>().AddUnit(unit);
+                        CollectResources collect = unit.GetComponent<CollectResources>();
+                        if (collect != null && AI.Instance.resources.Contains(target.tag))
+                        {
+                            collect.startMovingToCollect(target);
+                            collect.targetToCollect = target;
+                        }
+                        else
+                        {
+
+                            script.startMoving(target);
+                            target.GetComponent<timerDeath>().AddUnit(unit);
+                        }
                     }
                 }
             }
