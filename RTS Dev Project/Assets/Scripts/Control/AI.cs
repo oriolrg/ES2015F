@@ -9,6 +9,7 @@ public class AI : MonoBehaviour {
     private List<GameObject> resourcesWood;
     private List<GameObject> allCPUUnits;
     private List<GameObject> civilians;
+    private List<GameObject> civiliansCPU;
     private List<GameObject> townCentersCPU;
     private List<GameObject> townCentersPlayer;
     public static AI Instance { get; private set; }
@@ -19,6 +20,7 @@ public class AI : MonoBehaviour {
         resources = new List<string>(new string[] { "Food", "Metal", "Wood" });
         allCPUUnits = new List<GameObject>();
         civilians = new List<GameObject>();
+        civiliansCPU = new List<GameObject>();
         townCentersCPU = new List< GameObject > ();
         townCentersPlayer = new List<GameObject>();
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addCPUUnit(go);
@@ -30,6 +32,8 @@ public class AI : MonoBehaviour {
         Invoke("createCivilian", 6);
         Invoke("createCivilian", 8);
         Invoke("createCivilian", 10);
+
+        Invoke("createBuilding", 20);
 
 
 
@@ -133,8 +137,8 @@ public class AI : MonoBehaviour {
 
     public void assignCivilian(GameObject v)
     {
-        allCPUUnits.Add(v);
-        civilians.Add(v);        
+        civilians.Add(v);
+        if (v.tag == "Enemy") civiliansCPU.Add(v);    
 
        
     }
@@ -160,10 +164,11 @@ public class AI : MonoBehaviour {
     public void reassignResourceToCivilian(GameObject v)
     {
         CollectResources collect = v.GetComponent<CollectResources>();
-        if (collect.targetToCollect!=null) collect.targetToCollect = getClosestResource(v,collect.targetToCollect.tag);
+        if (collect.targetToCollect != null) collect.targetToCollect = getClosestResource(v, collect.targetToCollect.tag);
         ///PLEASE CHECK THIS IS AI WORK
         else collect.targetToCollect = getClosestResource(v, "Metal");
-        if (collect.goingToCollect) collect.startMovingToCollect(collect.targetToCollect);
+
+        collect.startMovingToCollect(collect.targetToCollect);
 
     }
 }

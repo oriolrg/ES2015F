@@ -309,7 +309,7 @@ public class GameController : MonoBehaviour
     public void updateResource(Resource res, int value)
     {
         resourceDict[res] -= value;
-        hud.updateResource(res, resourceDict[res] - value);    
+        hud.updateResource(res, resourceDict[res]); //- value);  Per què es mostra un resource que no és el que hi ha?
     }
 
     public void checkWin()
