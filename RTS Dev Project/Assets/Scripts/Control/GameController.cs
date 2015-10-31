@@ -456,10 +456,8 @@ public class GameController : MonoBehaviour
 	{
 
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		//Vector3 mousePos = Input.mousePosition;
-		//mousePos.z = 10.0f;
-		//Vector3 objectPos = Camera.main.ScreenToWorldPoint(mousePos);
-
+		cube.layer = LayerMask.NameToLayer("Obstacle");
+		cube.AddComponent<updateGrid>();
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
 		if(Physics.Raycast(ray, out hit))
