@@ -6,6 +6,7 @@ public class UnfillWithTime : MonoBehaviour {
 
     public Action action;
 
+    /*
 	void Start()
     {
         GetComponent<Image>().fillAmount = action.TimeRatio;
@@ -18,5 +19,5 @@ public class UnfillWithTime : MonoBehaviour {
 
         GetComponent<Image>().fillAmount = action.TimeRatio;
                
-    }
+    }*/
 }

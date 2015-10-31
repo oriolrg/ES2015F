@@ -6,6 +6,7 @@ using System;
 public class GameController : MonoBehaviour
 {
     [SerializeField] private GameObject unitsParent;
+
     [SerializeField] private GameObject buildingsParent;
     [SerializeField]
 	private Troop selectedUnits;
@@ -18,6 +19,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private ResourceValueDictionary resourceDict;
 
+    [SerializeField]
+    private GameObject selectedPrefab;
     [SerializeField]
 	private GameObject targetPrefab;
 
@@ -480,18 +483,17 @@ public class GameController : MonoBehaviour
         enabled = true;//Enable the script 
     }
 
-   
-
-    public void enterActionButton(ActionData data)
+    // Action events
+    public void OnActionButtonEnter(UnitData data)
     {
-        hud.enterActionButton(data);
+        hud.OnActionButtonEnter(data);
     }
 
-    public void exitActionButton(ActionData data)
+    public void OnActionButtonExit(UnitData data)
     {
-        hud.exitActionButton(data);
+        hud.OnActionButtonExit(data);
     }
-
+    
     public void hideRightPanel()
     {
         hud.hideRightPanel();
@@ -500,5 +502,52 @@ public class GameController : MonoBehaviour
     public Troop getSelectedUnits()
     {
         return selectedUnits;
+    }
+
+public void moveSelection()
+    {
+        print("move");
+    }
+
+public void stopSelection()
+    {
+        print("stop");
+    }
+
+    public void OnCreate( Identity who, UnitType what )
+    {
+        // get the unit data of the unit that can be created
+        GameObject toCreate = DataManager.Instance.civilizationDatas[who.civilization].units[what];
+
+        if(what.isBuilding())
+        {
+            //Laia code
+        }
+        else
+        {
+            //add to queue
+
+        }
+     }
+
+    public void addSelectedPrefab(GameObject go)
+    {
+        GameObject selectedProj = Instantiate(selectedPrefab, go.transform.position + new Vector3(0,5,0), Quaternion.identity) as GameObject;
+        //selectedProj.transform.Rotate(90, 0, 0);
+        selectedProj.SetActive(false);
+        selectedProj.transform.SetParent(go.transform);
+        SelectionCircle script = selectedProj.GetComponent<SelectionCircle>();
+        if (script != null) script.init();
+
+    }
+
+    public void OnSacrifice()
+    {
+        print("sacrifice");
+    }
+
+    public void OnAttack()
+    {
+        print("attack");
     }
 }
