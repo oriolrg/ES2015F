@@ -57,6 +57,7 @@ public class BuildingConstruction : MonoBehaviour {
                 constructingUnits.Clear();
                 //GetComponent<Unit>().SetInConstruction(false);
                 constructionOnGoing = false;
+                GameController.Instance.updateInteractable();
 
             }
         //}

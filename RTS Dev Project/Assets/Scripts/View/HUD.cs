@@ -80,7 +80,9 @@ public class HUD : MonoBehaviour
         // Update troop panel (private)
         setTroopPreview( troop );
 
-        if (troop.FocusedUnit != null)
+        GameObject focusedUnit = troop.FocusedUnit;
+
+        if (focusedUnit != null)
         {
             // Get focused unit of the troop
             Identity identity = troop.FocusedUnit.GetComponent<Identity>();
@@ -105,8 +107,8 @@ public class HUD : MonoBehaviour
 				UnitData creationData = DataManager.Instance.unitDatas[type];
 
                 // Create a block prefab with the image of the action
-				GameObject block = addBlock(createPanel, creationData.preview, () => { GameController.Instance.OnCreate(identity,type); });
-
+				addBlock(createPanel, creationData.preview, () => { GameController.Instance.OnCreate(identity,type); });
+               
                 
             }
 
@@ -118,7 +120,9 @@ public class HUD : MonoBehaviour
                 {
                     MoveData movement = movements[i];
                     addBlock(movePanel, movement.preview, () => { movement.codeToExecute.Invoke(); });
+
                 }
+
             }
 
             // Add sacrifice action
@@ -129,8 +133,47 @@ public class HUD : MonoBehaviour
                 addBlock(specialPanel, special.preview, () => { special.codeToExecute.Invoke(); });
             }
 
+            updateInteractable(focusedUnit);
+
+
             //updateHealth(focusedUnit);
             //updateDelayedActions(focusedUnit);
+        }
+    }
+
+    public void updateInteractable(GameObject focusedUnit)
+    {
+        foreach(Transform child in createPanel)
+        {
+            
+            BuildingConstruction bc = focusedUnit.GetComponent<BuildingConstruction>();
+            if (bc != null)
+            {
+                child.GetComponent<Button>().interactable = !bc.getConstructionOnGoing();
+            }
+            
+        }
+
+        foreach (Transform child in movePanel)
+        {
+
+            BuildingConstruction bc = focusedUnit.GetComponent<BuildingConstruction>();
+            if (bc != null)
+            {
+                child.GetComponent<Button>().interactable = !bc.getConstructionOnGoing();
+            }
+
+        }
+
+        foreach (Transform child in specialPanel)
+        {
+
+            BuildingConstruction bc = focusedUnit.GetComponent<BuildingConstruction>();
+            if (bc != null)
+            {
+                child.GetComponent<Button>().interactable = !bc.getConstructionOnGoing();
+            }
+
         }
     }
 

@@ -365,6 +365,11 @@ public class GameController : MonoBehaviour
         hud.updateResource(res, resourceDict[res] - value);    
     }
 
+    public void updateInteractable()
+    {
+        hud.updateInteractable(selectedUnits.FocusedUnit);
+    }
+
     public void checkWin()
     {
         if (allEnemyUnits.Count == 0) winCondition();
@@ -449,6 +454,7 @@ public class GameController : MonoBehaviour
         GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
         building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
+        updateInteractable();
 
         foreach (var unit in selectedUnits.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
 
@@ -522,6 +528,9 @@ public void stopSelection()
         if(what.isBuilding())
         {
             //Laia code
+            GameObject prefab = DataManager.Instance.civilizationDatas[who.civilization].units[what];
+
+            createBuilding(prefab);
         }
         else
         {
@@ -550,4 +559,6 @@ public void stopSelection()
     {
         print("attack");
     }
+
+
 }
