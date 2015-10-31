@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AI : MonoBehaviour {
+public class AI : MonoBehaviour
+{
     public List<string> resources;
     private List<GameObject> resourcesFood;
     private List<GameObject> resourcesMetal;
@@ -15,13 +16,14 @@ public class AI : MonoBehaviour {
     public static AI Instance { get; private set; }
 
     // Use this for initialization
-    
-    void Start () {
+
+    void Start()
+    {
         resources = new List<string>(new string[] { "Food", "Metal", "Wood" });
         allCPUUnits = new List<GameObject>();
         civilians = new List<GameObject>();
         civiliansCPU = new List<GameObject>();
-        townCentersCPU = new List< GameObject > ();
+        townCentersCPU = new List<GameObject>();
         townCentersPlayer = new List<GameObject>();
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addCPUUnit(go);
         resourcesFood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Food"));
@@ -33,11 +35,11 @@ public class AI : MonoBehaviour {
         Invoke("createCivilian", 8);
         Invoke("createCivilian", 10);
 
-        Invoke("createBuilding", 20);
+        Invoke("createBuilding", 5);
 
 
 
-    }  
+    }
 
     void Awake()
     {
@@ -47,23 +49,16 @@ public class AI : MonoBehaviour {
         }
         Instance = this;
     }
-    
+
     public void addCPUUnit(GameObject u)
     {
         allCPUUnits.Add(u);
-        
+
     }
     public void addTownCenter(GameObject t)
     {
-        if (t.tag == "Ally")
-        {
-            townCentersPlayer.Add(t);
-        }
-        else if (t.tag == "Enemy")
-        {
-            townCentersCPU.Add(t);
-        }
-
+        if (t.tag == "Ally") townCentersPlayer.Add(t);
+        else if (t.tag == "Enemy")townCentersCPU.Add(t);
     }
     public GameObject getClosestTownCenter(GameObject c)
     {
@@ -93,7 +88,8 @@ public class AI : MonoBehaviour {
                 }
             }
             return closestTown;
-        } else if(c.tag == "Ally")
+        }
+        else if (c.tag == "Ally")
         {
             float minDistance = (townCentersPlayer[0].transform.position - c.transform.position).magnitude;
             GameObject closestTown = townCentersPlayer[0];
@@ -111,13 +107,14 @@ public class AI : MonoBehaviour {
         }
         else { return null; }
     }
-    public GameObject getClosestResource(GameObject c, string r){
+    public GameObject getClosestResource(GameObject c, string r)
+    {
         List<GameObject> resourcesX;
         if (r == "Food") resourcesX = resourcesFood;
         else if (r == "Metal") resourcesX = resourcesMetal;
         else if (r == "Wood") resourcesX = resourcesWood;
         else resourcesX = resourcesFood;
-        
+
         float aux;
         float minDistance = (resourcesX[0].transform.position - c.transform.position).magnitude;
         GameObject closestResource = resourcesX[0];
@@ -138,9 +135,9 @@ public class AI : MonoBehaviour {
     public void assignCivilian(GameObject v)
     {
         civilians.Add(v);
-        if (v.tag == "Enemy") civiliansCPU.Add(v);    
+        if (v.tag == "Enemy") civiliansCPU.Add(v);
 
-       
+
     }
 
     private void createCivilian()
@@ -149,16 +146,16 @@ public class AI : MonoBehaviour {
         {
             townCentersCPU[0].GetComponent<TownCenter>().CreateCivilian();
         }
-        
-          
+
+
     }
     public void deleteResource(GameObject r)
     {
         resourcesFood.Remove(r);
         resourcesMetal.Remove(r);
         resourcesWood.Remove(r);
-        foreach (GameObject vil in civilians) if (vil.GetComponent<CollectResources>().targetToCollect == r) reassignResourceToCivilian(vil);
-       
+        //foreach (GameObject vil in civilians) if (vil.GetComponent<CollectResources>().targetToCollect == r) reassignResourceToCivilian(vil);
+
 
     }
     public void reassignResourceToCivilian(GameObject v)
@@ -170,5 +167,13 @@ public class AI : MonoBehaviour {
 
         collect.startMovingToCollect(collect.targetToCollect);
 
+    }
+    public void createBuilding()
+    {
+        GameObject c = civiliansCPU[0];
+        Destroy(c.GetComponent<CollectResources>());
+        Troop t = new Troop(civiliansCPU.GetRange(0, 1));
+        print(t.units[0]);
+        GameController.Instance.createBuilding(c.GetComponent<Civilian>().urbanCenterPrefab,townCentersCPU[0].transform.position+ townCentersCPU[0].transform.up*50,t);
     }
 }
