@@ -32,7 +32,7 @@ public class HUD : MonoBehaviour
 
     void Start()
     {
-        setCivilization(Civilization.Egyptians);
+        setCivilization(Civilization.Greeks);
     }
 
     // Changes the UI depending on the chosen civilization
@@ -180,9 +180,11 @@ public class HUD : MonoBehaviour
     }
 
     // Set the health ratio : current / total as length of the health image
-    public void updateHealth( Unit unit )
+    public void updateHealth( GameObject unit )
     {
-        healthImage.localScale = new Vector3(unit.HealthRatio, 1, 1 );
+        Health script = unit.GetComponentOrEnd<Health>();
+
+        healthImage.localScale = new Vector3(script.HealthRatio, 1, 1 );
     }
 
     // Repaint delayed actions when a new one is created. Actions disappear automatically

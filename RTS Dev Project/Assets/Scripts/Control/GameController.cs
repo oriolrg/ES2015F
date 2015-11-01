@@ -247,10 +247,10 @@ public class GameController : MonoBehaviour
         {
             foreach (var unit in selectedUnits.units)
             {
-                StaticUnit script = unit.GetComponentInParent<StaticUnit>();
+                Spawner script = unit.GetComponentInParent<Spawner>();
                 if (script != null)
                 {
-                    script.RallyPoint = target.transform.position;
+                    script.rallyPoint = target.transform.position;
                 }
             }
             Destroy(target.gameObject);
@@ -284,10 +284,10 @@ public class GameController : MonoBehaviour
         {
             foreach (var unit in troop.units)
             {
-                StaticUnit script = unit.GetComponentInParent<StaticUnit>();
+                Spawner script = unit.GetComponentInParent<Spawner>();
                 if (script != null)
                 {
-                    script.RallyPoint = target.transform.position;
+                    script.rallyPoint = target.transform.position;
                 }
             }
             Destroy(target.gameObject);

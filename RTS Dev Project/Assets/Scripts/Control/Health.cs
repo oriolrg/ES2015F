@@ -5,7 +5,7 @@ public class Health : MonoBehaviour {
 
     public int MaxHealth;
     private int health;
-
+    public float HealthRatio { get { return (float)health / MaxHealth; } }
 	// Use this for initialization
 	void Start () {
         health = MaxHealth;
