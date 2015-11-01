@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public class HUD : MonoBehaviour
 {
@@ -19,6 +21,7 @@ public class HUD : MonoBehaviour
     [SerializeField] RectTransform createPanel;
     [SerializeField] RectTransform movePanel;
     [SerializeField] RectTransform specialPanel;
+    [SerializeField] RectTransform controlPanel;
     [SerializeField] Text descriptionText;
     [SerializeField] Image previewImage;
     [SerializeField] private RectTransform healthImage;
@@ -26,6 +29,8 @@ public class HUD : MonoBehaviour
     [SerializeField] private GameObject messageBox;
 
     private Sprite panelSprite;
+
+    private Dictionary<Civilization, Color> civilizationColors;
 
 
 
@@ -35,8 +40,8 @@ public class HUD : MonoBehaviour
 
 		civilizationColors = new Dictionary<Civilization,Color> ();
 
-		foreach (KeyValuePair<Civilization, CivilizationData> kv in data.civilizationDatas) {
-			civilizationColors.Add (kv.Key, kv.Value.color);
+		foreach (KeyValuePair<Civilization, CivilizationData> kv in DataManager.Instance.civilizationDatas) {
+            civilizationColors.Add(kv.Key, kv.Value.color);
 		}
 
     }
