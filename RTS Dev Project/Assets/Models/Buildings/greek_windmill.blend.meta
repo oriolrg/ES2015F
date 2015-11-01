@@ -16,9 +16,11 @@ ModelImporter:
     2300000: blades
     2300002: roof
     2300004: wall
+    2300006: //RootNode
     3300000: blades
     3300002: roof
     3300004: wall
+    3300006: //RootNode
     4300000: wall
     4300002: roof
     4300004: blades
@@ -80,8 +82,10 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

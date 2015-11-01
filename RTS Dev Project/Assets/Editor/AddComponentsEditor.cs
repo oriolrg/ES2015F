@@ -9,11 +9,12 @@ public class AddComponentsEditor : MonoBehaviour
 	public static List<Type> types = new List<Type>()
 	{
 		typeof(BoxCollider),
-		typeof(Seeker),
 		typeof(EXPLORAR),
 		typeof(updateGrid),
 		typeof(BuildingConstruction),
-		typeof(Identity)
+		typeof(Identity),
+        typeof(DelayedActionQueue),
+        typeof(Spawner)
 	};
 
 
