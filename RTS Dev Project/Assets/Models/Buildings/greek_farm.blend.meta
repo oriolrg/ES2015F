@@ -28,6 +28,7 @@ ModelImporter:
     2300008: plant
     2300010: rest
     2300012: roof
+    2300014: //RootNode
     3300000: columns
     3300002: door
     3300004: flowerpot
@@ -35,6 +36,7 @@ ModelImporter:
     3300008: plant
     3300010: rest
     3300012: roof
+    3300014: //RootNode
     4300000: door
     4300002: rest
     4300004: roof
@@ -100,8 +102,10 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
