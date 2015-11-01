@@ -176,6 +176,7 @@ public class HUD : MonoBehaviour
             }
 
         }
+
     }
 
     // Set the health ratio : current / total as length of the health image

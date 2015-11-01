@@ -32,8 +32,6 @@ public class GameController : MonoBehaviour
 	private bool isSelecting;
 	private Vector3 mPos;
 
-
-
     // Static singleton property
     public static GameController Instance { get; private set; }
 
@@ -67,6 +65,8 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
         //Win Condition
         var wonder = GameObject.FindGameObjectWithTag("Wonder");
         if (wonder != null)
@@ -439,6 +439,7 @@ public class GameController : MonoBehaviour
 
 
         GameObject newUnit = Instantiate(unit, spawningPoint, Quaternion.identity) as GameObject;
+        addSelectedPrefab(newUnit);
         // Set unit as parent in hierarchy
         newUnit.transform.SetParent(unitsParent.transform);
         GameObject target = Instantiate(targetPrefab, spawner.rallyPoint, Quaternion.identity) as GameObject;
@@ -459,11 +460,15 @@ public class GameController : MonoBehaviour
 
         GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
+        addSelectedPrefab(building);
+
+        
         building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
+        
         updateInteractable();
 
         //foreach (var unit in selectedUnits.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
-
+        
         building.AddComponent<BuildingPlacer> ();
 
         enabled = false;     
@@ -474,6 +479,8 @@ public class GameController : MonoBehaviour
     public void createBuilding(GameObject prefab, Vector3 position, Troop t)
     {
         GameObject building = Instantiate(prefab, position, gameObject.transform.rotation) as GameObject;
+
+        addSelectedPrefab(building);
 
         building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
 
@@ -565,6 +572,7 @@ public class GameController : MonoBehaviour
         //selectedProj.transform.Rotate(90, 0, 0);
         selectedProj.SetActive(false);
         selectedProj.transform.SetParent(go.transform);
+        selectedProj.transform.up = new Vector3(0,0,1);
         SelectionCircle script = selectedProj.GetComponent<SelectionCircle>();
         if (script != null) script.init();
 
