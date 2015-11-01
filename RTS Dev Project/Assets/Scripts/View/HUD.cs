@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using System.Collections.Generic;
 using System;
-using UnityEngine.Events;
+using System.Linq;
 
 public class HUD : MonoBehaviour
 {
@@ -20,19 +21,34 @@ public class HUD : MonoBehaviour
     [SerializeField] RectTransform createPanel;
     [SerializeField] RectTransform movePanel;
     [SerializeField] RectTransform specialPanel;
+    [SerializeField] RectTransform controlPanel;
+    [SerializeField] RectTransform countdownPanel;
     [SerializeField] Text descriptionText;
     [SerializeField] Image previewImage;
     [SerializeField] private RectTransform healthImage;
     [SerializeField] private Text nameText;
     [SerializeField] private GameObject messageBox;
+    [SerializeField] private Countdown countdownText;
+    [SerializeField] private Text victoryCondition;
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject losePanel;
 
     private Sprite panelSprite;
+
+    private Dictionary<Civilization, Color> civilizationColors;
 
 
 
     void Start()
     {
         setCivilization(Civilization.Greeks);
+
+		civilizationColors = new Dictionary<Civilization,Color> ();
+
+		foreach (KeyValuePair<Civilization, CivilizationData> kv in DataManager.Instance.civilizationDatas) {
+            civilizationColors.Add(kv.Key, kv.Value.color);
+		}
+
     }
 
     // Changes the UI depending on the chosen civilization
@@ -136,7 +152,7 @@ public class HUD : MonoBehaviour
 
             updateInteractable(focusedUnit);
 
-
+            updateControl(focusedUnit);
             //updateHealth(focusedUnit);
             //updateDelayedActions(focusedUnit);
         }
@@ -212,6 +228,55 @@ public class HUD : MonoBehaviour
             filling.action = action;
         }
     }
+
+	public void updateControl(GameObject unit)
+	{
+        Objective objective = unit.GetComponent<Objective>();
+
+        if (objective != null)
+        {
+            foreach (Transform child in controlPanel) Destroy(child.gameObject);
+
+            CivilizationValueDictionary control = objective.control;
+
+            if (control.Max(x => x.Value) > .99f)
+                Invoke("DisappearControl", 3);
+            else
+            {
+                CancelInvoke("DisappearControl");
+                controlPanel.gameObject.SetActive(true);
+            }
+            float accumulatedX = 0;
+            foreach (KeyValuePair<Civilization, float> kv in control)
+            {
+                Civilization c = kv.Key;
+                float value = kv.Value;
+
+                GameObject controlGO = Instantiate(data.controlPrefab) as GameObject;
+
+                controlGO.transform.SetParent(controlPanel);
+
+                controlGO.GetComponent<Image>().color = civilizationColors[c];
+
+                RectTransform rect = controlGO.GetComponent<RectTransform>();
+
+                rect.anchorMin = new Vector2(accumulatedX, 0);
+                accumulatedX += value;
+                if (accumulatedX > .99f)
+                    accumulatedX = 1;
+                rect.anchorMax = new Vector2(accumulatedX, 1);
+
+                rect.offsetMin = Vector2.zero;
+                rect.offsetMax = Vector2.zero;
+
+            }
+        }
+        else
+        {
+            DisappearControl();
+        }
+
+	}
 
     public void ClearSelection()
     {
@@ -291,6 +356,10 @@ public class HUD : MonoBehaviour
         rightPanel.gameObject.SetActive(false);
     }
 
+    private void DisappearControl()
+	{
+		controlPanel.gameObject.SetActive (false);
+	}
     private GameObject addBlock( Transform parent, Sprite image, UnityAction callback)
     {
         GameObject block = Instantiate(data.blockPrefab) as GameObject;
@@ -321,5 +390,18 @@ public class HUD : MonoBehaviour
     public void hideMessageBox()
     {
         messageBox.SetActive(false);
+    }
+
+    public void startCountdown(Victory victory, Civilization winner )
+    {
+        countdownPanel.gameObject.SetActive(true);
+        victoryCondition.text = string.Format("{0}: {1}", victory.ToString(), DataManager.Instance.civilizationDatas[winner].name);
+        countdownText.setTimer( victory.countdownTime(), () => { winPanel.SetActive(true); });
+    }
+
+    public void stopCountdown(Victory victory)
+    {
+        countdownPanel.gameObject.SetActive(false);
+        countdownText.stop();
     }
 }

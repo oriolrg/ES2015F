@@ -26,3 +26,6 @@ public class UnitDataDictionary : SerializableDictionary<UnitType, UnitData> { }
 [Serializable]
 public class UnitPrefabDictionary : SerializableDictionary<UnitType, GameObject> { }
 
+[Serializable]
+public class CivilizationValueDictionary : SerializableDictionary<Civilization, float> { }
+

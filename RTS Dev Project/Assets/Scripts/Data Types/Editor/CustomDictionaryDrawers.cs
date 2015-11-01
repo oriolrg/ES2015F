@@ -25,3 +25,6 @@ public class UnitDataDictionaryDrawer : DictionaryDrawer<UnitType, UnitData> { }
 
 [CustomPropertyDrawer(typeof(UnitPrefabDictionary))]
 public class UnitPrefabDictionaryDrawer : DictionaryDrawer<UnitType, GameObject> { }
+
+[CustomPropertyDrawer(typeof(CivilizationValueDictionary))]
+public class CivilizationValueDictionaryDrawer : DictionaryDrawer<Civilization, float> { }

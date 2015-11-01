@@ -29,8 +29,14 @@ public class GameController : MonoBehaviour
 
     public HUD hud;
 
+    [SerializeField] private GameObject objectivePrefab;
+
 	private bool isSelecting;
 	private Vector3 mPos;
+
+    public List<Objective> objectives;
+
+
 
     // Static singleton property
     public static GameController Instance { get; private set; }
@@ -60,6 +66,7 @@ public class GameController : MonoBehaviour
     {
         selectedUnits = new Troop();
         initResourceValues();
+        spawnRandomObjectives();
     }
 
     // Update is called once per frame
@@ -225,6 +232,35 @@ public class GameController : MonoBehaviour
         }
 	}
 
+    private void spawnRandomObjectives()
+    {
+        objectives = new List<Objective>();
+
+        int ammount = UnityEngine.Random.Range(3, 5);
+        GameObject ground = GameObject.FindGameObjectWithTag("Ground");
+        Bounds bounds = ground.GetComponent<BoxCollider>().bounds;
+
+        for ( int i = 0; i < ammount; i++ )
+        {
+            Vector3 position = new Vector3
+            (
+                bounds.center.x + UnityEngine.Random.Range(-bounds.extents.x / 2, bounds.extents.x / 2),
+                bounds.center.y + bounds.extents.y / 2 + 1,
+                bounds.center.z + UnityEngine.Random.Range(-bounds.extents.z / 2, bounds.extents.z / 2)
+            );
+
+            // Adjust to terrain hit
+            Ray ray = new Ray(position, -Vector3.up);
+            RaycastHit hitInfo = new RaycastHit();
+            Debug.DrawRay(position, -Vector3.up);
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                GameObject go = Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity) as GameObject;
+                objectives.Add(go.GetComponentOrEnd<Objective>());
+            }
+        }
+    }
+
 	private void moveUnits(GameObject target)
 	{
         if (selectedUnits.hasMovableUnits())
@@ -388,6 +424,24 @@ public class GameController : MonoBehaviour
         hud.updateInteractable(selectedUnits.FocusedUnit);
     }
 
+    public void updateControl( GameObject go )
+    {
+        if (go == selectedUnits.FocusedUnit)
+            hud.updateControl(go);
+    }
+
+    public void checkMapControl()
+    {
+        Civilization possibleWinner = objectives[0].Controller;
+        foreach(Objective objective in objectives)
+        {
+            if (objective.Controller != possibleWinner)
+                return;
+        }
+
+        if( possibleWinner != Civilization.Neutral )
+            hud.startCountdown(Victory.MapControl, possibleWinner);
+    }
     public void checkWin()
     {
         if (allEnemyUnits.Count == 0) winCondition();
