@@ -1,5 +1,6 @@
 ﻿using System;
-
+using UnityEngine;
+using UnityEditor;
 [Serializable]
 public enum UnitType
 {
@@ -25,8 +26,17 @@ public static class UnitExtensions
             unit == UnitType.Archery;
     }
 
-    public static string toString(this UnitType unit)
+    public static T GetComponentOrEnd<T>( this GameObject go )
     {
-        return unit.toString();
+        T result = go.GetComponent<T>();
+        
+        if( result == null )
+        {
+            Debug.LogError("Required component not found in " + go.name +". Aborting");
+            EditorApplication.isPlaying = false;
+            Application.Quit();
+        }
+
+        return result;
     }
 }

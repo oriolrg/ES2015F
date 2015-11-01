@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConstructionQueue : MonoBehaviour
+public class DelayedActionQueue : MonoBehaviour
 {
     public Queue<Action> Queue { get; private set; }
 

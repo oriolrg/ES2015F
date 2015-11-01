@@ -107,7 +107,7 @@ public class HUD : MonoBehaviour
 				UnitData creationData = DataManager.Instance.unitDatas[type];
 
                 // Create a block prefab with the image of the action
-				addBlock(createPanel, creationData.preview, () => { GameController.Instance.OnCreate(identity,type); });
+				addBlock(createPanel, creationData.preview, () => { GameController.Instance.OnCreate(identity,type); print("Creating " + type.ToString());  });
                
                 
             }
@@ -184,34 +184,28 @@ public class HUD : MonoBehaviour
     }
 
     // Repaint delayed actions when a new one is created. Actions disappear automatically
-    public void updateDelayedActions( Unit unit )
+    public void updateDelayedActions( GameObject unit )
     {
-
+        // Destroy all current actions
         foreach (Transform child in creationPanel)
             Destroy(child.gameObject);
 
-        Queue<Action> queuedActions = unit.Queue;
+        // Loop the queued actions
+        DelayedActionQueue script = unit.GetComponent<DelayedActionQueue>();
+        if (script == null) return;
+
+        Queue<Action> queuedActions = script.Queue;
 
         foreach(Action action in queuedActions)
         {
-            GameObject block = Instantiate(data.blockPrefab) as GameObject;
-            block.transform.SetParent(creationPanel);
-
-            Image background = block.GetComponent<Image>();
-            background.sprite = panelSprite;
-
-            Image foreground = block.transform.GetChild(0).GetComponent<Image>();
-            //ActionData a = action.Data;
-            //foreground.sprite = a.sprite;
-
-            Button button = block.GetComponent<Button>();
-            button.onClick.AddListener(() => { print("Cancel action"); });
-
+            GameObject block = addBlock(creationPanel, action.Preview, () => { print("cancel action"); });
+            
+            // Add time frame to each block
             GameObject timeFrame = Instantiate(data.overlappedTimeFrame) as GameObject;
             timeFrame.transform.SetParent(block.transform.GetChild(0));
 
-            UnfillWithTime script = timeFrame.GetComponent<UnfillWithTime>();
-            script.action = action;
+            UnfillWithTime filling = timeFrame.GetComponent<UnfillWithTime>();
+            filling.action = action;
         }
     }
 

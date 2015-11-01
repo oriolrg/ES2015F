@@ -413,10 +413,14 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public GameObject CreateUnit(Transform buildingTrans, GameObject prefab, Vector3 rally)
+    public GameObject CreateUnit(GameObject building, GameObject unit)
     {
-        Ray ray = new Ray(buildingTrans.position + 5 * buildingTrans.up + 10 * buildingTrans.forward, -Vector3.up);
+        Spawner spawner = building.GetComponentOrEnd<Spawner>();
 
+        Vector3 spawningPoint = spawner.spawningPoint;
+        /* adjust spawning point
+        Ray ray = new Ray(building.transform.position + 5 * building.transform.up + 10 * building.transform.forward, -Vector3.up);
+        
         bool freeSpaceFound = false;
 
         RaycastHit hitInfo = new RaycastHit();
@@ -431,14 +435,15 @@ public class GameController : MonoBehaviour
                 }
                 else freeSpaceFound = true;
             }
-        }
+        }*/
 
-        GameObject newUnit = Instantiate(prefab, hitInfo.point, Quaternion.identity) as GameObject;
+
+        GameObject newUnit = Instantiate(unit, spawningPoint, Quaternion.identity) as GameObject;
         // Set unit as parent in hierarchy
         newUnit.transform.SetParent(unitsParent.transform);
-        GameObject target = Instantiate(targetPrefab, rally, Quaternion.identity) as GameObject;
+        GameObject target = Instantiate(targetPrefab, spawner.rallyPoint, Quaternion.identity) as GameObject;
         UnitMovement script = newUnit.GetComponent<UnitMovement>();
-        
+
         if (script != null)
         {
             script.startMoving(target);
@@ -446,6 +451,7 @@ public class GameController : MonoBehaviour
         }
         return newUnit;
     }
+    
 
     public void createBuilding(GameObject prefab)
 	{
@@ -456,7 +462,7 @@ public class GameController : MonoBehaviour
         building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
         updateInteractable();
 
-        foreach (var unit in selectedUnits.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+        //foreach (var unit in selectedUnits.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
 
         building.AddComponent<BuildingPlacer> ();
 
@@ -471,7 +477,7 @@ public class GameController : MonoBehaviour
 
         building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
 
-        foreach (var unit in t.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+        //foreach (var unit in t.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
 
         buildingConstruction(position, t);
 
@@ -484,7 +490,7 @@ public class GameController : MonoBehaviour
         moveUnits(target, t);
 
         //Order that the unit has to construct
-        foreach (var unit in t.units) unit.GetComponent<Construct>().setConstruct(true);
+        //foreach (var unit in t.units) unit.GetComponent<Construct>().setConstruct(true);
 
         enabled = true;//Enable the script 
     }
@@ -510,31 +516,43 @@ public class GameController : MonoBehaviour
         return selectedUnits;
     }
 
-public void moveSelection()
+    public void moveSelection()
     {
         print("move");
     }
 
-public void stopSelection()
+    public void stopSelection()
     {
         print("stop");
     }
 
     public void OnCreate( Identity who, UnitType what )
     {
-        // get the unit data of the unit that can be created
-        GameObject toCreate = DataManager.Instance.civilizationDatas[who.civilization].units[what];
-
-        if(what.isBuilding())
+        // get the unit data and the prefab of the unit that can be created
+        GameObject prefab = DataManager.Instance.civilizationDatas[who.civilization].units[what];
+        UnitData unitData = DataManager.Instance.unitDatas[what];
+        //print("Creating " + unitData.description);
+        if (what.isBuilding())
         {
-            //Laia code
-            GameObject prefab = DataManager.Instance.civilizationDatas[who.civilization].units[what];
-
+            //Create the building
             createBuilding(prefab);
         }
         else
         {
-            //add to queue
+            //create an action and add it to the focused unit's queue
+
+            Action action = new Action(unitData.preview, unitData.requiredTime, () => 
+            {
+                CreateUnit(who.gameObject, prefab);
+                hud.updateDelayedActions(selectedUnits.FocusedUnit);
+            });
+
+            DelayedActionQueue script = selectedUnits.FocusedUnit.GetComponentOrEnd<DelayedActionQueue>();
+
+            script.Enqueue(action);
+
+            print("Creating " + unitData.description);
+            hud.updateDelayedActions(selectedUnits.FocusedUnit);
 
         }
      }

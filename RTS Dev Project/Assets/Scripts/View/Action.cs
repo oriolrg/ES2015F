@@ -4,17 +4,17 @@ using UnityEngine.Events;
 public class Action
 {
 
-    private Sprite preview;
-    private UnityEvent codeToExecute;
+    public Sprite Preview { get; private set; }
+    private UnityAction codeToExecute;
     private float requiredTime;
     private float remainingTime;
     
     public float TimeRatio { get { return remainingTime / requiredTime; } }
     public bool isDone { get { return remainingTime <= 0; } }
     
-    public Action( Sprite preview, float requiredTime, UnityEvent codeToExecute )
+    public Action( Sprite preview, float requiredTime, UnityAction codeToExecute )
     {
-        this.preview = preview;
+        this.Preview = preview;
 
         this.requiredTime = requiredTime;
         this.remainingTime = requiredTime;
