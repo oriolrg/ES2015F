@@ -147,7 +147,7 @@ public class HUD : MonoBehaviour
 
             updateInteractable(focusedUnit);
 
-
+            updateControl(focusedUnit);
             //updateHealth(focusedUnit);
             //updateDelayedActions(focusedUnit);
         }
@@ -221,41 +221,52 @@ public class HUD : MonoBehaviour
         }
     }
 
-	public void updateControl(Objective objective)
+	public void updateControl(GameObject unit)
 	{
-		foreach (Transform child in controlPanel) Destroy(child.gameObject);
+        Objective objective = unit.GetComponent<Objective>();
 
-		CivilizationValueDictionary control = objective.control;
+        if (objective != null)
+        {
+            foreach (Transform child in controlPanel) Destroy(child.gameObject);
 
-		if (control.Max (x => x.Value) > .99f)
-			Invoke ("DisappearControl", 3);
-		else {
-			CancelInvoke ("DisappearControl");
-			controlPanel.gameObject.SetActive (true);
-		}
-		float accumulatedX = 0;
-		foreach (KeyValuePair<Civilization,float> kv in control) {
-			Civilization c = kv.Key;
-			float value = kv.Value;
+            CivilizationValueDictionary control = objective.control;
 
-			GameObject controlGO = Instantiate (data.controlPrefab) as GameObject;
+            if (control.Max(x => x.Value) > .99f)
+                Invoke("DisappearControl", 3);
+            else
+            {
+                CancelInvoke("DisappearControl");
+                controlPanel.gameObject.SetActive(true);
+            }
+            float accumulatedX = 0;
+            foreach (KeyValuePair<Civilization, float> kv in control)
+            {
+                Civilization c = kv.Key;
+                float value = kv.Value;
 
-			controlGO.transform.SetParent (controlPanel);
+                GameObject controlGO = Instantiate(data.controlPrefab) as GameObject;
 
-			controlGO.GetComponent<Image> ().color = civilizationColors [c];
+                controlGO.transform.SetParent(controlPanel);
 
-			RectTransform rect = controlGO.GetComponent<RectTransform> ();
+                controlGO.GetComponent<Image>().color = civilizationColors[c];
 
-			rect.anchorMin = new Vector2 (accumulatedX, 0);
-			accumulatedX += value;
-			if (accumulatedX > .99f)
-				accumulatedX = 1;
-			rect.anchorMax = new Vector2 (accumulatedX, 1);
-		
-			rect.offsetMin = Vector2.zero;
-			rect.offsetMax = Vector2.zero;
-	
-		}
+                RectTransform rect = controlGO.GetComponent<RectTransform>();
+
+                rect.anchorMin = new Vector2(accumulatedX, 0);
+                accumulatedX += value;
+                if (accumulatedX > .99f)
+                    accumulatedX = 1;
+                rect.anchorMax = new Vector2(accumulatedX, 1);
+
+                rect.offsetMin = Vector2.zero;
+                rect.offsetMax = Vector2.zero;
+
+            }
+        }
+        else
+        {
+            DisappearControl();
+        }
 
 	}
 
@@ -337,11 +348,11 @@ public class HUD : MonoBehaviour
         rightPanel.gameObject.SetActive(false);
     }
 
-private void DisappearControl()
+    private void DisappearControl()
 	{
 		controlPanel.gameObject.SetActive (false);
 	}
-private GameObject addBlock( Transform parent, Sprite image, UnityAction callback)
+    private GameObject addBlock( Transform parent, Sprite image, UnityAction callback)
     {
         GameObject block = Instantiate(data.blockPrefab) as GameObject;
         Image background = block.GetComponent<Image>();

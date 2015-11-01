@@ -246,7 +246,6 @@ public class GameController : MonoBehaviour
             Debug.DrawRay(position, -Vector3.up);
             if (Physics.Raycast(ray, out hitInfo))
             {
-                print("hit");
                 Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity);
             }
         }
@@ -402,6 +401,11 @@ public class GameController : MonoBehaviour
         hud.updateInteractable(selectedUnits.FocusedUnit);
     }
 
+    public void updateControl( GameObject go )
+    {
+        if (go == selectedUnits.FocusedUnit)
+            hud.updateControl(go);
+    }
     public void checkWin()
     {
         if (allEnemyUnits.Count == 0) winCondition();

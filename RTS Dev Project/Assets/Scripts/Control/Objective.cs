@@ -38,7 +38,7 @@ public class Objective : MonoBehaviour
 					}
 				}
 			}
-			GameController.Instance.hud.updateControl (this);
+			GameController.Instance.updateControl (gameObject);
 		}
 	}
 	void detectUnits () 
