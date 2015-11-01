@@ -13,7 +13,9 @@ public class AddComponentsEditor : MonoBehaviour
 		typeof(EXPLORAR),
 		typeof(updateGrid),
 		typeof(BuildingConstruction),
-		typeof(Identity)
+		typeof(Identity),
+        typeof(DelayedActionQueue),
+        typeof(Spawner)
 	};
 
 

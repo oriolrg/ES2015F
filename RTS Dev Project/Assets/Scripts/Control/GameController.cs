@@ -250,7 +250,7 @@ public class GameController : MonoBehaviour
                 Spawner script = unit.GetComponentInParent<Spawner>();
                 if (script != null)
                 {
-                    script.rallyPoint = target.transform.position;
+                    script.RallyPoint = target.transform.position;
                 }
             }
             Destroy(target.gameObject);
@@ -287,7 +287,7 @@ public class GameController : MonoBehaviour
                 Spawner script = unit.GetComponentInParent<Spawner>();
                 if (script != null)
                 {
-                    script.rallyPoint = target.transform.position;
+                    script.RallyPoint = target.transform.position;
                 }
             }
             Destroy(target.gameObject);
@@ -417,7 +417,7 @@ public class GameController : MonoBehaviour
     {
         Spawner spawner = building.GetComponentOrEnd<Spawner>();
 
-        Vector3 spawningPoint = spawner.spawningPoint;
+        Vector3 spawningPoint = spawner.SpawningPoint;
         /* adjust spawning point
         Ray ray = new Ray(building.transform.position + 5 * building.transform.up + 10 * building.transform.forward, -Vector3.up);
         
@@ -442,7 +442,7 @@ public class GameController : MonoBehaviour
         addSelectedPrefab(newUnit);
         // Set unit as parent in hierarchy
         newUnit.transform.SetParent(unitsParent.transform);
-        GameObject target = Instantiate(targetPrefab, spawner.rallyPoint, Quaternion.identity) as GameObject;
+        GameObject target = Instantiate(targetPrefab, spawner.RallyPoint, Quaternion.identity) as GameObject;
         UnitMovement script = newUnit.GetComponent<UnitMovement>();
 
         if (script != null)
@@ -560,7 +560,6 @@ public class GameController : MonoBehaviour
 
             script.Enqueue(action);
 
-            print("Creating " + unitData.description);
             hud.updateDelayedActions(selectedUnits.FocusedUnit);
 
         }

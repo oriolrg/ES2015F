@@ -6,7 +6,7 @@ public class GameData : MonoBehaviour {
 
 	public static readonly short maxCPUPlayers = 3;
 
-	public enum DifficultyEnum { Easy, Medium, Hard };
+	public enum DifficultyEnum { Easy, Medium, Hard, None };
 	public static DifficultyEnum diff = DifficultyEnum.Medium;
 
 	public enum WinConditionEnum { Wonder, Domination, Time20 };
@@ -30,7 +30,7 @@ public class GameData : MonoBehaviour {
 	}
 
 	public class PlayerData {
-		public enum CivilizationEnum { Greeks, Egyptians, Romans };
+		public enum CivilizationEnum { Greeks, Egyptians, Romans, None };
 		public CivilizationEnum civ { get; private set; }
 
 		public PlayerData(CivilizationEnum civ){

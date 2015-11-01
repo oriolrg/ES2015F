@@ -34,7 +34,7 @@ public class GameInitializer : MonoBehaviour {
 	void Start() {
 		// Replace current scene map by GameData.map
 		throw new UnityException("GameInitializer not implemented yet"); // TODO: Delete this
-
+        /*
 		Destroy(sceneMap);
 		GameObject map = (GameObject) Instantiate (
 			GameData.map, 
@@ -45,7 +45,7 @@ public class GameInitializer : MonoBehaviour {
 		MinimapCamera minimapCamera = minimap.GetComponent<MinimapCamera>();
 		minimapCamera.ground = map;
 		minimapCamera.updateCameraAttributes();
-		
+		*/
 		// Replace current Town Centers by those detailed by GameData and GameData.map
 		// Delete old Town Centers
 

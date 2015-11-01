@@ -22,17 +22,18 @@ public class GameDataEditorPicker : MonoBehaviour {
 	public bool sceneFromMenu = true;
 
 	// Use this for initialization
-	public void AddFakeGameData () {
+	public void AddFakeGameData ()
+    {
 		GameData.diff = diff;
 		GameData.winConditions.Add (winCondition);
 
 		GameData.player = new GameData.PlayerData(playerCiv);
 
-		if (cpu1Skill != null && cpu1Civ != null)
+		if (cpu1Skill != GameData.DifficultyEnum.None && cpu1Civ != GameData.PlayerData.CivilizationEnum.None)
 			GameData.cpus.Add (new GameData.CPUData(cpu1Civ, cpu1Skill));
-		if (cpu2Skill != null && cpu2Civ != null)
+		if (cpu2Skill != GameData.DifficultyEnum.None && cpu2Civ != GameData.PlayerData.CivilizationEnum.None)
 			GameData.cpus.Add (new GameData.CPUData(cpu2Civ, cpu2Skill));
-		if (cpu3Skill != null && cpu3Civ != null)
+		if (cpu3Skill != GameData.DifficultyEnum.None && cpu3Civ != GameData.PlayerData.CivilizationEnum.None)
 			GameData.cpus.Add (new GameData.CPUData(cpu3Civ, cpu3Skill));
 
 		GameData.map = map;

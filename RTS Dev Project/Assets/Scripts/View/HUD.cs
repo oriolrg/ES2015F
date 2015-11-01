@@ -108,7 +108,7 @@ public class HUD : MonoBehaviour
 				UnitData creationData = DataManager.Instance.unitDatas[type];
 
                 // Create a block prefab with the image of the action
-				addBlock(createPanel, creationData.preview, () => { GameController.Instance.OnCreate(identity,type); print("Creating " + type.ToString());  });
+				addBlock(createPanel, creationData.preview, () => { GameController.Instance.OnCreate(identity,type);  });
                
                 
             }
