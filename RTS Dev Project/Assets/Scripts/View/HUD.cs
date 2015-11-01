@@ -25,12 +25,13 @@ public class HUD : MonoBehaviour
     [SerializeField] private RectTransform healthImage;
     [SerializeField] private Text nameText;
 
-    
     private Sprite panelSprite;
+
+
 
     void Start()
     {
-        setCivilization(Civilization.Greeks);
+        setCivilization(Civilization.Egyptians);
     }
 
     // Changes the UI depending on the chosen civilization
@@ -79,33 +80,35 @@ public class HUD : MonoBehaviour
         // Update troop panel (private)
         setTroopPreview( troop );
 
-        if (troop.FocusedUnit != null)
+        GameObject focusedUnit = troop.FocusedUnit;
+
+        if (focusedUnit != null)
         {
             // Get focused unit of the troop
-            Identity focusedUnit = troop.FocusedUnit.GetComponent<Identity>();
+            Identity identity = troop.FocusedUnit.GetComponent<Identity>();
             
-            if (focusedUnit == null) return;
+			if (identity == null) return;
 
-            UnitData unitData = DataManager.Instance.unitDatas[focusedUnit.unit];
+			UnitData unitData = DataManager.Instance.unitDatas[identity.unit];
             // Update preview image and name
             previewImage.sprite = unitData.preview;
-            nameText.text = focusedUnit.name;
+			nameText.text = identity.name;
 
 
 
             // Update Action buttons
-            UnitType unitType = focusedUnit.unit;
+			UnitType unitType = identity.unit;
 
             List<UnitType> creations = actionsData.creationPermissions[unitType];
             for( int i = 0; i < creations.Count; i++ )
             {
                 UnitType type = creations[i];
                 // get the unit data of the unit that can be created
-                UnitData toCreate = DataManager.Instance.unitDatas[focusedUnit.unit];
+				UnitData creationData = DataManager.Instance.unitDatas[type];
 
                 // Create a block prefab with the image of the action
-                GameObject block = addBlock(createPanel, toCreate.preview, () => { GameController.Instance.OnCreate(focusedUnit,type); });
-
+				addBlock(createPanel, creationData.preview, () => { GameController.Instance.OnCreate(identity,type); });
+               
                 
             }
 
@@ -117,7 +120,9 @@ public class HUD : MonoBehaviour
                 {
                     MoveData movement = movements[i];
                     addBlock(movePanel, movement.preview, () => { movement.codeToExecute.Invoke(); });
+
                 }
+
             }
 
             // Add sacrifice action
@@ -128,8 +133,47 @@ public class HUD : MonoBehaviour
                 addBlock(specialPanel, special.preview, () => { special.codeToExecute.Invoke(); });
             }
 
+            updateInteractable(focusedUnit);
+
+
             //updateHealth(focusedUnit);
             //updateDelayedActions(focusedUnit);
+        }
+    }
+
+    public void updateInteractable(GameObject focusedUnit)
+    {
+        foreach(Transform child in createPanel)
+        {
+            
+            BuildingConstruction bc = focusedUnit.GetComponent<BuildingConstruction>();
+            if (bc != null)
+            {
+                child.GetComponent<Button>().interactable = !bc.getConstructionOnGoing();
+            }
+            
+        }
+
+        foreach (Transform child in movePanel)
+        {
+
+            BuildingConstruction bc = focusedUnit.GetComponent<BuildingConstruction>();
+            if (bc != null)
+            {
+                child.GetComponent<Button>().interactable = !bc.getConstructionOnGoing();
+            }
+
+        }
+
+        foreach (Transform child in specialPanel)
+        {
+
+            BuildingConstruction bc = focusedUnit.GetComponent<BuildingConstruction>();
+            if (bc != null)
+            {
+                child.GetComponent<Button>().interactable = !bc.getConstructionOnGoing();
+            }
+
         }
     }
 
