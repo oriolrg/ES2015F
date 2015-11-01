@@ -1,29 +1,34 @@
-﻿
+﻿using UnityEngine;
+using UnityEngine.Events;
+
 public class Action
 {
-    /*
-    public ActionData Data { get; private set; }*/
-    private Command command;
-    private float remainingTime;
-    //public float TimeRatio { get { return remainingTime / Data.requiredTime; } }
-    public bool isDone { get { return remainingTime <= 0; } }
-    /*
-    public Action( ActionData data, Command command )
-    {
-        this.Data = data;
-        this.command = command;
-        this.remainingTime = data.requiredTime;
-    } */
 
-    public void updateRemainingTime( float timeGone )
+    public Sprite Preview { get; private set; }
+    private UnityAction codeToExecute;
+    private float requiredTime;
+    private float remainingTime;
+    
+    public float TimeRatio { get { return remainingTime / requiredTime; } }
+    public bool isDone { get { return remainingTime <= 0; } }
+    
+    public Action( Sprite preview, float requiredTime, UnityAction codeToExecute )
     {
-        remainingTime -= timeGone;
+        this.Preview = preview;
+
+        this.requiredTime = requiredTime;
+        this.remainingTime = requiredTime;
+
+        this.codeToExecute = codeToExecute;
     }
-    /*
-    public ActionData getData() { return Data;  }
-    */
+
+    public void updateRemainingTime( float ammount )
+    {
+        remainingTime -= ammount;
+    }
+
     public void execute()
     {
-        command();
+        codeToExecute.Invoke();
     }
 }

@@ -18,7 +18,7 @@ public class Identity : MonoBehaviour
         List<string> adjectives = DataManager.Instance.adjectives;
 
         if (unit.isBuilding())
-            name = string.Format("The {0} {1}", adjectives[Random.Range(0, adjectives.Count)], unit.toString() );
+            name = string.Format("The {0} {1}", adjectives[Random.Range(0, adjectives.Count)], unit.ToString() );
         else
         {
             List<string> names = DataManager.Instance.names[civilization];
