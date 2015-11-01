@@ -46,6 +46,14 @@ public class ChoicePicker : MonoBehaviour {
 		return options;
 	}
 
+	public void SetOptions(List<string> options){
+		if (options.Count == 0)
+			throw new UnityException("Trying to set options in ChoicePicker wit no options");
+
+		this.options = options;
+		ChangeState(0);
+	}
+
 	public void ChangeState(){
 		currentOption++;
 

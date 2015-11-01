@@ -10,14 +10,20 @@ public class GameInitializer : MonoBehaviour {
 
 	void Awake() {
 		GameDataEditorPicker gmep = GetComponent<GameDataEditorPicker>();
-		if (gmep != null) 
-			gmep.AddFakeGameData();
-
-		if (!GameData.sceneFromMenu) {
-			// Don't instantiate anything; only do that when coming from the menu.
-			this.enabled = false;
-			return;
+		if (!GameData.sceneFromMenu){
+			if (gmep != null && gmep.isActiveAndEnabled)
+				// Only use those values when not coming from the menu
+				gmep.AddFakeGameData();
+			else {
+				// Don't instantiate anything
+				// Only do that when coming from the menu or when GameDataEditorPicker is enabled
+				this.enabled = false; // this ensures that this.Start isn't called
+				return;
+			}
 		}
+
+		// If we get here, it means we have to change the scene.
+		// Do the first changes
 
 		// Reallocate mainCamera wherever map tells us
 		Transform newCameraTransform = GameData.map.transform.Find ("Main Camera");
@@ -27,6 +33,8 @@ public class GameInitializer : MonoBehaviour {
 
 	void Start() {
 		// Replace current scene map by GameData.map
+		throw new UnityException("GameInitializer not implemented yet"); // TODO: Delete this
+
 		Destroy(sceneMap);
 		GameObject map = (GameObject) Instantiate (
 			GameData.map, 
@@ -37,8 +45,10 @@ public class GameInitializer : MonoBehaviour {
 		MinimapCamera minimapCamera = minimap.GetComponent<MinimapCamera>();
 		minimapCamera.ground = map;
 		minimapCamera.updateCameraAttributes();
-		//minimapCamera.updateViewport();
 		
 		// Replace current Town Centers by those detailed by GameData and GameData.map
+		// Delete old Town Centers
+
+		// Instantiate new Town Centers according to the number of players
 	}
 }
