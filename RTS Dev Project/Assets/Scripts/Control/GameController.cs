@@ -519,11 +519,13 @@ public class GameController : MonoBehaviour
     public void moveSelection()
     {
         print("move");
+        GameController.Instance.hud.showMessageBox("Not implemented");
     }
 
     public void stopSelection()
     {
         print("stop");
+        GameController.Instance.hud.showMessageBox("Not implemented");
     }
 
     public void OnCreate( Identity who, UnitType what )
@@ -571,11 +573,13 @@ public class GameController : MonoBehaviour
     public void OnSacrifice()
     {
         print("sacrifice");
+        GameController.Instance.hud.showMessageBox("Not implemented");
     }
 
     public void OnAttack()
     {
         print("attack");
+        GameController.Instance.hud.showMessageBox("Not implemented");
     }
 
 

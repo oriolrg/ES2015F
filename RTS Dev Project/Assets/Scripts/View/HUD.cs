@@ -24,6 +24,7 @@ public class HUD : MonoBehaviour
     [SerializeField] Image previewImage;
     [SerializeField] private RectTransform healthImage;
     [SerializeField] private Text nameText;
+    [SerializeField] private GameObject messageBox;
 
     private Sprite panelSprite;
 
@@ -304,5 +305,18 @@ public class HUD : MonoBehaviour
 
 
         return block;
+    }
+
+    public void showMessageBox( string text)
+    {
+        messageBox.SetActive(true);
+        messageBox.transform.GetChild(0).GetComponent<Text>().text = text;
+        CancelInvoke("hideMessageBox");
+        Invoke("hideMessageBox", 3);
+    }
+
+    public void hideMessageBox()
+    {
+        messageBox.SetActive(false);
     }
 }
