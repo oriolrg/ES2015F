@@ -29,6 +29,8 @@ public class GameController : MonoBehaviour
 
     public HUD hud;
 
+    [SerializeField] private GameObject objectivePrefab;
+
 	private bool isSelecting;
 	private Vector3 mPos;
 
@@ -62,6 +64,7 @@ public class GameController : MonoBehaviour
     {
         selectedUnits = new Troop();
         initResourceValues();
+        spawnRandomObjectives();
     }
 
     // Update is called once per frame
@@ -219,6 +222,35 @@ public class GameController : MonoBehaviour
             RectDrawer.DrawScreenRectBorder(rect, 3.0f, new Color(0.6f, 1.0f, 0.6f, 0.33f));
         }
 	}
+
+    private void spawnRandomObjectives()
+    {
+        int ammount = UnityEngine.Random.Range(3, 5);
+        GameObject ground = GameObject.FindGameObjectWithTag("Ground");
+        Bounds bounds = ground.GetComponent<BoxCollider>().bounds;
+
+        for ( int i = 0; i < ammount; i++ )
+        {
+            Vector3 position = new Vector3
+            (
+                bounds.center.x + UnityEngine.Random.Range(-bounds.extents.x / 2, bounds.extents.x / 2),
+                bounds.center.y + bounds.extents.y / 2 + 1,
+                bounds.center.z + UnityEngine.Random.Range(-bounds.extents.z / 2, bounds.extents.z / 2)
+            );
+
+            print(position);
+
+            // Adjust to terrain hit
+            Ray ray = new Ray(position, -Vector3.up);
+            RaycastHit hitInfo = new RaycastHit();
+            Debug.DrawRay(position, -Vector3.up);
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                print("hit");
+                Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity);
+            }
+        }
+    }
 
 	private void moveUnits(GameObject target)
 	{
