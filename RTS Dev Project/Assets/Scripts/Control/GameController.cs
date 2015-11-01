@@ -34,6 +34,8 @@ public class GameController : MonoBehaviour
 	private bool isSelecting;
 	private Vector3 mPos;
 
+    public List<Objective> objectives;
+
 
 
     // Static singleton property
@@ -225,6 +227,8 @@ public class GameController : MonoBehaviour
 
     private void spawnRandomObjectives()
     {
+        objectives = new List<Objective>();
+
         int ammount = UnityEngine.Random.Range(3, 5);
         GameObject ground = GameObject.FindGameObjectWithTag("Ground");
         Bounds bounds = ground.GetComponent<BoxCollider>().bounds;
@@ -238,15 +242,14 @@ public class GameController : MonoBehaviour
                 bounds.center.z + UnityEngine.Random.Range(-bounds.extents.z / 2, bounds.extents.z / 2)
             );
 
-            print(position);
-
             // Adjust to terrain hit
             Ray ray = new Ray(position, -Vector3.up);
             RaycastHit hitInfo = new RaycastHit();
             Debug.DrawRay(position, -Vector3.up);
             if (Physics.Raycast(ray, out hitInfo))
             {
-                Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity);
+                GameObject go = Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity) as GameObject;
+                objectives.Add(go.GetComponentOrEnd<Objective>());
             }
         }
     }
@@ -405,6 +408,19 @@ public class GameController : MonoBehaviour
     {
         if (go == selectedUnits.FocusedUnit)
             hud.updateControl(go);
+    }
+
+    public void checkMapControl()
+    {
+        Civilization possibleWinner = objectives[0].Controller;
+        foreach(Objective objective in objectives)
+        {
+            if (objective.Controller != possibleWinner)
+                return;
+        }
+
+        if( possibleWinner != Civilization.Neutral )
+            hud.startCountdown(Victory.MapControl, possibleWinner);
     }
     public void checkWin()
     {

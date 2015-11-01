@@ -22,11 +22,16 @@ public class HUD : MonoBehaviour
     [SerializeField] RectTransform movePanel;
     [SerializeField] RectTransform specialPanel;
     [SerializeField] RectTransform controlPanel;
+    [SerializeField] RectTransform countdownPanel;
     [SerializeField] Text descriptionText;
     [SerializeField] Image previewImage;
     [SerializeField] private RectTransform healthImage;
     [SerializeField] private Text nameText;
     [SerializeField] private GameObject messageBox;
+    [SerializeField] private Countdown countdownText;
+    [SerializeField] private Text victoryCondition;
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject losePanel;
 
     private Sprite panelSprite;
 
@@ -382,5 +387,18 @@ public class HUD : MonoBehaviour
     public void hideMessageBox()
     {
         messageBox.SetActive(false);
+    }
+
+    public void startCountdown(Victory victory, Civilization winner )
+    {
+        countdownPanel.gameObject.SetActive(true);
+        victoryCondition.text = string.Format("{0}: {1}", victory.ToString(), DataManager.Instance.civilizationDatas[winner].name);
+        countdownText.setTimer( victory.countdownTime(), () => { winPanel.SetActive(true); });
+    }
+
+    public void stopCountdown(Victory victory)
+    {
+        countdownPanel.gameObject.SetActive(false);
+        countdownText.stop();
     }
 }

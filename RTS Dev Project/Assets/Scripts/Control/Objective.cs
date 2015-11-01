@@ -4,7 +4,9 @@ using System.Linq;
 
 public class Objective : MonoBehaviour 
 {
-	public float tickValue = .001f;
+    public Civilization Controller { get; private set; }
+
+    public float tickValue = .001f;
 	public float radius = 10;
 	public CivilizationValueDictionary representants;
 	public CivilizationValueDictionary control;
@@ -13,6 +15,7 @@ public class Objective : MonoBehaviour
 	void Start()
 	{
 		InvokeRepeating ("detectUnits", 0, 3);
+        Controller = gameObject.GetComponentOrEnd<Identity>().civilization;
 	}
 
 	void FixedUpdate()
@@ -37,6 +40,13 @@ public class Objective : MonoBehaviour
 							control.Remove (other);
 					}
 				}
+
+                if (control.Count == 1)
+                {
+                    // new controller
+                    Controller = maximalCivilization;
+                    GameController.Instance.checkMapControl();
+                }
 			}
 			GameController.Instance.updateControl (gameObject);
 		}
@@ -48,10 +58,15 @@ public class Objective : MonoBehaviour
 
 		foreach (Collider collider in colliders) 
 		{
+            if (collider.gameObject == gameObject) continue;
+
 			Identity identity = collider.GetComponent<Identity>();
 			if( identity != null )
 			{
 				Civilization civ = identity.civilization;
+
+                if (civ == Civilization.Neutral) continue;
+
 				if( representants.ContainsKey( civ ) )
 				{
 					representants[civ]++;
@@ -75,7 +90,6 @@ public class Objective : MonoBehaviour
 		if (representants.Count == 0)
 			return Civilization.Neutral;
 		Civilization c = representants.OrderByDescending(x => x.Value).FirstOrDefault().Key;
-		print (c);
 		float maxValue = representants [c];
 		if(representants.Where(x => x.Value == maxValue ).Count () != 1)
 			return Civilization.Neutral;
