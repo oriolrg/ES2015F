@@ -32,9 +32,9 @@ public class BuildingConstruction : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //Debug.Log("---------------------------------construction on going " + constructionOnGoing);
-        //Debug.Log(timer);
-        //Debug.Log("-------------------------------num de units construint " + constructingUnits.Count);
+        Debug.Log("---------------------------------construction on going " + constructionOnGoing);
+        Debug.Log(timer);
+        Debug.Log("-------------------------------num de units construint " + constructingUnits.Count);
 
         //if (GetComponent<Unit>().getInConstruction())
         //{
@@ -74,6 +74,7 @@ public class BuildingConstruction : MonoBehaviour {
 
         //Add the unit
         constructingUnits.Add(unit);
+        Debug.Log("unit added");
 
         //Start the construction 
         /*if(constructingUnits.Count == 1)

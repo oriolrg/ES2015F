@@ -133,14 +133,19 @@ public class GameController : MonoBehaviour
 
                         foreach (var unit in troop.units)
                         {
-                            if (unit.GetComponent<Construct>().getConstruct() || unit.GetComponent<Construct>().getInConstruction())
-                            {
-                                unit.GetComponent<Construct>().setConstruct(false);
-                                unit.GetComponent<Construct>().SetInConstruction(false);
-                                unit.GetComponent<Construct>().getBuildingToConstruct().GetComponent<BuildingConstruction>().deleteUnit(unit);
-                            }
+                            Construct scriptConstruct = unit.GetComponent<Construct>();
 
-                            unit.GetComponent<Construct>().SetBuildingToConstruct(hitInfo.transform.gameObject);
+                            if (scriptConstruct != null) {
+
+                                if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
+                                {
+                                    scriptConstruct.setConstruct(false);
+                                    scriptConstruct.SetInConstruction(false);
+                                    scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                                }
+
+                                scriptConstruct.SetBuildingToConstruct(hitInfo.transform.gameObject);
+                            }
                         }
 
                         buildingConstruction(hitInfo.transform.gameObject.transform.position, troop);
@@ -226,12 +231,18 @@ public class GameController : MonoBehaviour
         {
             foreach (var unit in selectedUnits.units)
             {
-                
-                if (unit.GetComponent<Construct>().getConstruct() || unit.GetComponent<Construct>().getInConstruction())
+
+                Construct scriptConstruct = unit.GetComponent<Construct>();
+
+                if (scriptConstruct != null)
                 {
-                    unit.GetComponent<Construct>().setConstruct(false);
-                    unit.GetComponent<Construct>().SetInConstruction(false);
-                    unit.GetComponent<Construct>().getBuildingToConstruct().GetComponent<BuildingConstruction>().deleteUnit(unit);
+
+                    if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
+                    {
+                        scriptConstruct.setConstruct(false);
+                        scriptConstruct.SetInConstruction(false);
+                        scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                    }
                 }
 
                 UnitMovement script = unit.GetComponentInParent<UnitMovement>();
@@ -264,11 +275,18 @@ public class GameController : MonoBehaviour
             foreach (var unit in troop.units)
             {
 
-                if (unit.GetComponent<Construct>().getConstruct() || unit.GetComponent<Construct>().getInConstruction())
+                Construct scriptConstruct = unit.GetComponent<Construct>();
+
+                if (scriptConstruct != null)
                 {
-                    unit.GetComponent<Construct>().setConstruct(false);
-                    unit.GetComponent<Construct>().SetInConstruction(false);
-                    unit.GetComponent<Construct>().getBuildingToConstruct().GetComponent<BuildingConstruction>().deleteUnit(unit);
+
+                    if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
+                    {
+                        scriptConstruct.setConstruct(false);
+                        scriptConstruct.SetInConstruction(false);
+                        scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                    }
+
                 }
 
                 UnitMovement script = unit.GetComponentInParent<UnitMovement>();
@@ -460,6 +478,8 @@ public class GameController : MonoBehaviour
 
         GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
+        building.tag = "Ally";
+
         addSelectedPrefab(building);
 
         
@@ -467,11 +487,31 @@ public class GameController : MonoBehaviour
         
         updateInteractable();
 
-        //foreach (var unit in selectedUnits.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+        foreach (var unit in selectedUnits.units)
+        {
+            Construct scriptConstruct = unit.GetComponent<Construct>();
+
+            if (scriptConstruct != null)
+            {
+
+                if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
+                {
+                    scriptConstruct.setConstruct(false);
+                    scriptConstruct.SetInConstruction(false);
+                    scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                }
+                unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+
+
+            }
+            
+            
+        }
         
         building.AddComponent<BuildingPlacer> ();
 
         enabled = false;     
+
         //createBuilding(prefab, new Vector3(213, -5, 141));   
 	}
 
@@ -479,12 +519,12 @@ public class GameController : MonoBehaviour
     public void createBuilding(GameObject prefab, Vector3 position, Troop t)
     {
         GameObject building = Instantiate(prefab, position, gameObject.transform.rotation) as GameObject;
-
+        building.tag = "Ally";
         addSelectedPrefab(building);
 
         building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
 
-        //foreach (var unit in t.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+        foreach (var unit in t.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
 
         buildingConstruction(position, t);
 
@@ -497,7 +537,7 @@ public class GameController : MonoBehaviour
         moveUnits(target, t);
 
         //Order that the unit has to construct
-        //foreach (var unit in t.units) unit.GetComponent<Construct>().setConstruct(true);
+        foreach (var unit in t.units) unit.GetComponent<Construct>().setConstruct(true);
 
         enabled = true;//Enable the script 
     }
@@ -569,6 +609,7 @@ public class GameController : MonoBehaviour
     {
         GameObject selectedProj = Instantiate(selectedPrefab, go.transform.position + new Vector3(0,5,0), Quaternion.identity) as GameObject;
         //selectedProj.transform.Rotate(90, 0, 0);
+        selectedProj.name = "Selected";
         selectedProj.SetActive(false);
         selectedProj.transform.SetParent(go.transform);
         selectedProj.transform.up = new Vector3(0,0,1);

@@ -38,16 +38,19 @@ public class Construct : MonoBehaviour {
             {
                 Debug.Log("A CONSTRUIIIIR!!!!!!!!");
                 buildingToConstruct.GetComponent<BuildingConstruction>().startConstruction(this.gameObject);
+                
                 construct = false;
                 inConstruction = true;
-                usingDust = Instantiate(dustPrefab, buildingToConstruct.transform.position, Quaternion.identity) as GameObject;
+                if(usingDust == null) usingDust = Instantiate(dustPrefab, buildingToConstruct.transform.position, Quaternion.identity) as GameObject;
             }
         }
         if (inConstruction)
             GetComponentInParent<Animator>().SetBool("running", false);
         if (inConstruction == false && usingDust != null)
         {
+            
             Destroy(usingDust);
+            usingDust = null;
         }
 
     }
