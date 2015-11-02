@@ -13,7 +13,7 @@ public class PlayersPanelListener : ChoicePickerChangeStateListener {
 	}
 
 
-	public override void OnChangeState(string state){
+	public override void OnChangeState(string state) {
 		switch (state) {
 		case "2":
 			cpuBox2.SetActive(false);
@@ -28,5 +28,9 @@ public class PlayersPanelListener : ChoicePickerChangeStateListener {
 			cpuBox3.SetActive(true);
 			break;
 		}
+	}
+
+	public override void OnChangeActive(bool active) {
+		// Need to override, but don't do anything
 	}
 }

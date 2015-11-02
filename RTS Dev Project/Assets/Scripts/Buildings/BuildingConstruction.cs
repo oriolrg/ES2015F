@@ -10,9 +10,12 @@ public class BuildingConstruction : MonoBehaviour {
     private Mesh finalMesh;
 
     //private bool inConstruction;
-    public float timer = 30; //Timer that changes the mesh
+    public float timer; //Timer that changes the mesh
     private int phase; //Phase of the construction
     private List<GameObject> constructingUnits; //Units that are constructing the building
+
+
+    private bool constructionOnGoing = false; //Indicates if a building construction is on going
 
     // Use this for initialization
     void Start () {
@@ -20,22 +23,25 @@ public class BuildingConstruction : MonoBehaviour {
         finalMesh = GetComponent<MeshFilter>().mesh;
 
         constructingUnits = new List<GameObject>();
-
+        
         phase = 0;
+
+        timer = 30;
+       
     }
 	
 	// Update is called once per frame
 	void Update () {
+        Debug.Log("---------------------------------construction on going " + constructionOnGoing);
+        Debug.Log(timer);
+        Debug.Log("-------------------------------num de units construint " + constructingUnits.Count);
 
-        //Debug.Log(timer);
-
-        
-        if (GetComponent<Unit>().getInConstruction())
-        {
+        //if (GetComponent<Unit>().getInConstruction())
+        //{
             //Timer that changes the mesh of the building
 
             //Debug.Log(timer);
-            //Debug.Log(constructingUnits.Count);
+            
             timer -= constructingUnits.Count * Time.deltaTime;
 
             if(timer < 15 && phase==0)
@@ -47,12 +53,14 @@ public class BuildingConstruction : MonoBehaviour {
             if(timer<=0 && phase == 1)
             {
                 GetComponent<MeshFilter>().mesh = finalMesh;
-                foreach (var unit in constructingUnits) unit.GetComponent<Unit>().SetInConstruction(false);
+                foreach (var unit in constructingUnits) unit.GetComponent<Construct>().SetInConstruction(false);
                 constructingUnits.Clear();
-                GetComponent<Unit>().SetInConstruction(false);
+                //GetComponent<Unit>().SetInConstruction(false);
+                constructionOnGoing = false;
+                GameController.Instance.updateInteractable();
 
             }
-        }
+        //}
 	}
 
     public void startConstruction(GameObject unit)
@@ -66,13 +74,32 @@ public class BuildingConstruction : MonoBehaviour {
 
         //Add the unit
         constructingUnits.Add(unit);
+        Debug.Log("unit added");
 
         //Start the construction 
-        if(constructingUnits.Count == 1)
+        /*if(constructingUnits.Count == 1)
         {
             GetComponent<Unit>().SetInConstruction(true);
-        }
+        }*/
 
 
+    }
+
+    public void deleteUnit(GameObject unit)
+    {
+        Debug.Log("Principi: Dins de deleteUnit " + constructingUnits.Count);
+        bool a = constructingUnits.Remove(unit);
+        Debug.Log(a);
+        Debug.Log("Final: Dins de deleteUnit " + constructingUnits.Count);
+    }
+
+    public void setConstructionOnGoing(bool b)
+    {
+        constructionOnGoing = b;
+    }
+
+    public bool getConstructionOnGoing()
+    {
+        return constructionOnGoing;
     }
 }
