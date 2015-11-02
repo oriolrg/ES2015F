@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: a6725eda7db9dad4ca07b98aee411b8b
-timeCreated: 1446403128
-licenseType: Free
+timeCreated: 1444156130
+licenseType: Pro
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
@@ -47,8 +47,6 @@ ModelImporter:
     100078: upper_ring_R
     100080: upper_thumb_L
     100082: upper_thumb_R
-    100084: foot_rotation_L
-    100086: foot_rotation_R
     400000: Armature
     400002: chest
     400004: foot_L
@@ -91,16 +89,9 @@ ModelImporter:
     400078: upper_ring_R
     400080: upper_thumb_L
     400082: upper_thumb_R
-    400084: foot_rotation_L
-    400086: foot_rotation_R
     4300000: human
     7400000: Default Take
     7400002: walk
-    7400004: chop
-    7400006: cultivate
-    7400008: cut
-    7400010: die
-    7400012: stand_by
     9500000: //RootNode
     13700000: human
   materials:
@@ -159,10 +150,8 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
-    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
-  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

@@ -47,11 +47,6 @@ ModelImporter:
     100078: upper_ring_R
     100080: upper_thumb_L
     100082: upper_thumb_R
-    100084: Armature_001
-    100086: Bone
-    100088: Circle
-    100090: foot_rotation_L
-    100092: foot_rotation_R
     400000: Armature
     400002: chest
     400004: //RootNode
@@ -94,18 +89,11 @@ ModelImporter:
     400078: upper_ring_R
     400080: upper_thumb_L
     400082: upper_thumb_R
-    400084: Armature_001
-    400086: Bone
-    400088: Circle
-    400090: foot_rotation_L
-    400092: foot_rotation_R
     4300000: human
-    4300002: Circle
     7400000: Default Take
     7400002: walk
     9500000: //RootNode
     13700000: human
-    13700002: Circle
   materials:
     importMaterials: 1
     materialName: 0
