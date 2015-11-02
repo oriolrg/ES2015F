@@ -13,8 +13,10 @@ ModelImporter:
     400004: woods
     2300000: house
     2300002: woods
+    2300004: //RootNode
     3300000: house
     3300002: woods
+    3300004: //RootNode
     4300000: woods
     4300002: house
     7400000: Default Take
@@ -75,8 +77,10 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

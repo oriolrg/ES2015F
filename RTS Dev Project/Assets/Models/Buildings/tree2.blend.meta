@@ -169,6 +169,7 @@ ModelImporter:
     2300102: Plane_052
     2300104: Plane_053
     2300106: tree2_trunk
+    2300108: //RootNode
     3300000: Plane
     3300002: Plane_001
     3300004: Plane_002
@@ -223,6 +224,7 @@ ModelImporter:
     3300102: Plane_052
     3300104: Plane_053
     3300106: tree2_trunk
+    3300108: //RootNode
     4300000: Plane_053
     4300002: Plane_052
     4300004: Plane_051
@@ -335,8 +337,10 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

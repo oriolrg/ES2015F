@@ -12,12 +12,12 @@ public class SendToStorage : MonoBehaviour {
             {
                 CollectResources collect = c.gameObject.GetComponentInParent<CollectResources>();
 		        if(collect!=null && collect.goingToCollect == true){
-                    if (collect.targetToCollect == null || collect.targetToCollect == gameObject){
+                    if (collect.targetToCollect == gameObject){
                         DestroyOnExpend d = gameObject.GetComponent<DestroyOnExpend>();
 				        if(collect.hasCollected != true){
 					        d.amount = d.amount - 10;
-					        collect.totalFood = d.amount;
-					        collect.targetToCollect = gameObject;                            
+                            collect.resourceCollected = (Resource)System.Enum.Parse(typeof(Resource), this.tag);
+                            collect.quantityCollected = 10;                         
                             collect.startMovingToStorage(AI.Instance.getClosestTownCenter(c.gameObject));
 				        }
 			        }
