@@ -16,7 +16,7 @@ public class TownCenter : StaticUnit
 
     void Start()
     {
-        RallyPoint = transform.position + 5*transform.up;
+		RallyPoint = transform.position + 20 * transform.up;
         Random.seed = Random.seed*2;
         name = string.Format("The {0} Town center", greekAdjectives[Random.Range(0,greekAdjectives.Count)]);
         AI.Instance.addTownCenter(gameObject);

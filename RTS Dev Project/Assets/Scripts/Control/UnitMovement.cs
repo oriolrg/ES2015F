@@ -20,6 +20,8 @@ public class UnitMovement : MonoBehaviour {
 	Vector3 targetPos;
     Animator animator;
 	AttackController attack;
+
+	public float dis;
 	
     public AnimationClip runAnimation;
 
@@ -91,13 +93,21 @@ public class UnitMovement : MonoBehaviour {
 			if (Vector3.Distance (transform.position, path.vectorPath [currentWaypoint]) < 1.5f) {
 				currentWaypoint++;
 			}
-			if((Vector3.Distance(transform.position,targetPos) < 2)){
-				target.GetComponent<timerDeath>().UnitLostTarget(gameObject);
+
+			Vector3 v = new Vector3(1.0f,transform.localScale.y/2.0f,1.0f);
+			dis = (Vector3.Distance(transform.position,Vector3.Scale(targetPos,v)));
+
+			if(dis < 4.5){
+				timerDeath timer = target.GetComponent<timerDeath>();
+				if(timer != null){
+					timer.UnitLostTarget(gameObject);
+				}
 				hasTarget = false;
-                var animator = GetComponent<Animator>();
-                if (animator != null) animator.SetBool("running", false);
+				var animator = GetComponent<Animator>();
+				if (animator != null) animator.SetBool("running", false);
 				status = Status.idle;
             }
+
 		}
 	}
 
