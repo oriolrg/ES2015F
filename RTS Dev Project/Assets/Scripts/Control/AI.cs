@@ -16,6 +16,7 @@ public class AI : MonoBehaviour {
     private List<GameObject> civiliansCPU;
     private List<GameObject> townCentersCPU;
     private List<GameObject> townCentersPlayer;
+    private ResourceValueDictionary resourcesCPU;
     public static AI Instance { get; private set; }
    
 
@@ -53,6 +54,11 @@ public class AI : MonoBehaviour {
         }
 
         Instance = this;
+
+        resourcesCPU[Resource.Food] = 1000;
+        resourcesCPU[Resource.Wood] = 1000;
+        resourcesCPU[Resource.Metal] = 1000;
+        resourcesCPU[Resource.Population] = 10;
     }
     void Update()
     {
@@ -198,6 +204,25 @@ public class AI : MonoBehaviour {
 
         collect.startMovingToCollect(collect.targetToCollect);
 
+    }
+
+    public bool checkResources(ResourceValueDictionary resourceCosts)
+    {
+        bool check = true;
+        foreach (KeyValuePair<Resource, int> kv in resourceCosts)
+        {
+            if (resourcesCPU[kv.Key] - kv.Value < 0)
+            {
+                //Here goes stuff that happens when there aren't enough resources to perform the action.
+                //i.e. text pop-up, sound warning.
+                check = false;
+            }
+        }        
+        return check;
+    }
+    public void updateResource(Resource res, int value)
+    {
+        resourcesCPU[res] -= value;
     }
 
     public class Task : MonoBehaviour

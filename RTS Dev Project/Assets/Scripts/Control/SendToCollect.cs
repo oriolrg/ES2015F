@@ -28,6 +28,7 @@ public class SendToCollect : MonoBehaviour {
     {
         CollectResources collect = c.GetComponent<CollectResources>();
         if (gameObject.tag == "Ally") GameController.Instance.updateResource(collect.resourceCollected, -collect.quantityCollected);
+        else if(gameObject.tag == "Enemy") AI.Instance.updateResource(collect.resourceCollected, -collect.quantityCollected);
         collect.quantityCollected = 0;
         collect.hasCollected = false;
         if (collect.targetToCollect != null) collect.startMovingToCollect(collect.targetToCollect);
