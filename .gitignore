@@ -25,3 +25,5 @@ ProjectVersion.txt
 Team-C/ProjectSettings/ProjectVersion.txt
 *.DS_Store
 # *.meta
+
+.gitignore

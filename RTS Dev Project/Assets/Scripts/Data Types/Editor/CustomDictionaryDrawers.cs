@@ -19,3 +19,12 @@ public class ResourceValueDictionaryDrawer : DictionaryDrawer<Resource, int> { }
 
 [CustomPropertyDrawer(typeof(ActionGroupPanelDictionary))]
 public class ActionGroupPanelDictionaryDrawer : DictionaryDrawer<ActionGroup, GameObject> { }
+
+[CustomPropertyDrawer(typeof(UnitDataDictionary))]
+public class UnitDataDictionaryDrawer : DictionaryDrawer<UnitType, UnitData> { }
+
+[CustomPropertyDrawer(typeof(UnitPrefabDictionary))]
+public class UnitPrefabDictionaryDrawer : DictionaryDrawer<UnitType, GameObject> { }
+
+[CustomPropertyDrawer(typeof(CivilizationValueDictionary))]
+public class CivilizationValueDictionaryDrawer : DictionaryDrawer<Civilization, float> { }

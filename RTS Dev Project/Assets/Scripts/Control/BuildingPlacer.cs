@@ -13,9 +13,10 @@ public class BuildingPlacer : MonoBehaviour {
 
 	void Start()
 	{
+
 		originalColor = gameObject.GetComponent<Renderer> ().material.color;
         transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.3f);
-        
+        gameObject.GetComponent<LOSEntity>().IsRevealer = false;
         //Make the gameObject a bit transparent
         gameObject.GetComponent<Renderer> ().material.color = transparentColor;
 
@@ -25,18 +26,27 @@ public class BuildingPlacer : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-		counterCollision++;
-        collision = true;
+        Debug.Log(col.gameObject.name);
+        if(col.gameObject.name != "Terrain")
+        {
+            counterCollision++;
+            collision = true;
+
+        }
+		
 
     }
 
     void OnTriggerExit(Collider col)
     {
-
-		counterCollision--;
-		if (counterCollision == 0) {
-			collision = false;
-		}
+        if (col.gameObject.name != "Terrain")
+        {
+            counterCollision--;
+            if (counterCollision == 0)
+            {
+                collision = false;
+            }
+        }
 
     }
 	
@@ -97,8 +107,9 @@ public class BuildingPlacer : MonoBehaviour {
 
                 //GameController.Instance.enabled = true;
 
-                GameController.Instance.buildingConstruction(gameObject.transform.position);
-
+                Troop t = new Troop(GameController.Instance.getSelectedUnits().units);
+                GameController.Instance.buildingConstruction(gameObject.transform.position,t);
+                gameObject.GetComponent<LOSEntity>().IsRevealer = true;
                 enabled = false;
 				Destroy (this);
 				
