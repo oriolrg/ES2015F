@@ -14,7 +14,8 @@ public class GameInitializer : MonoBehaviour {
 			if (gmep != null && gmep.isActiveAndEnabled)
 				// Only use those values when not coming from the menu
 				gmep.AddFakeGameData();
-			else {
+
+			if (!GameData.sceneFromMenu){ // could have changed with AddFake
 				// Don't instantiate anything
 				// Only do that when coming from the menu or when GameDataEditorPicker is enabled
 				this.enabled = false; // this ensures that this.Start isn't called
