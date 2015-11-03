@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour {
 
 	[SerializeField] private GameObject loadingScreen;
+	[SerializeField] private MessagePopUp messagePopUp;
 
 	[SerializeField] private ChoicePicker gameDiff, map, playerCivilization;
 	[SerializeField] private List<GameObject> cpuBoxes;
@@ -74,9 +75,13 @@ public class MainMenu : MonoBehaviour {
 		GameData.sceneFromMenu = true; 
 
 		// Check if all GameConditions are correct
-		if (GameData.GameConditionsCorrect()){
-			// Everything's fine. Start game
-			StartCoroutine( LoadScene(scene) );
+		try{
+			if (GameData.GameConditionsCorrect()){
+				// Everything's fine. Start game
+				StartCoroutine( LoadScene(scene) );
+			}
+		} catch (GameData.GameConditionsException e){
+			messagePopUp.ShowMessage(e.Message);
 		}
 	}
 	

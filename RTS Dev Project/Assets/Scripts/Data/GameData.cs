@@ -25,6 +25,17 @@ public class GameData : MonoBehaviour {
 			throw new GameConditionsException ("No win condition selected!");
 		else if (cpus.Count < 1)
 			throw new GameConditionsException ("No CPU selected!");
+		else if (
+			(cpus.Count > 1 && cpus[0].civ.Equals(cpus[1].civ)) ||
+			(cpus.Count == 3 && (
+				cpus[0].civ.Equals (cpus[2].civ) ||
+				cpus[1].civ.Equals (cpus[2].civ)
+			)) ||
+			(cpus.Count >= 1 && cpus[0].civ.Equals (player.civ)) ||
+			(cpus.Count >= 2 && cpus[1].civ.Equals (player.civ)) ||
+			(cpus.Count == 3 && cpus[3].civ.Equals (player.civ))
+		)
+			throw new GameConditionsException ("There can't be two identical civilizations!");
 		else
 			return true;
 	}
