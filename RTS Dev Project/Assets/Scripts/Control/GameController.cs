@@ -254,7 +254,8 @@ public class GameController : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.B))
 			{
-				createCubeTestingGrid();
+                //Pobre Sergiot
+                //createCubeTestingGrid();
 			}
 
         }
@@ -324,23 +325,23 @@ public class GameController : MonoBehaviour
                     }
                 }
 
-                    UnitMovement script = unit.GetComponentInParent<UnitMovement>();
-                    if (script != null)
+                UnitMovement script = unit.GetComponentInParent<UnitMovement>();
+                if (script != null)
+                {
+                    CollectResources collect = unit.GetComponent<CollectResources>();
+                    if (collect != null && AI.Instance.resources.Contains(target.tag))
                     {
-                        CollectResources collect = unit.GetComponent<CollectResources>();
-                        if (collect != null && AI.Instance.resources.Contains(target.tag))
-                        {
-                            collect.startMovingToCollect(target);
-                            collect.targetToCollect = target;
-                        }
-                        else
-                        {
-			    script.startMoving(target);
-                            target.GetComponent<timerDeath>().AddUnit(unit);
-                        }
+                        collect.startMovingToCollect(target);
+                        collect.targetToCollect = target;
+                    }
+                    else
+                    {
+			            script.startMoving(target);
+                        target.GetComponent<timerDeath>().AddUnit(unit);
                     }
                 }
             }
+            
         }
         else
         {
@@ -578,7 +579,7 @@ public class GameController : MonoBehaviour
     }
     
 
-    public void createBuilding(GameObject prefab)
+    public GameObject createBuilding(GameObject prefab)
 	{
         //Instantiate the building and start the positioning of the building
 
@@ -616,7 +617,9 @@ public class GameController : MonoBehaviour
         
         building.AddComponent<BuildingPlacer> ();
 
-        enabled = false;     
+        enabled = false;
+
+        return building;  
 
         //createBuilding(prefab, new Vector3(213, -5, 141));   
 	}
@@ -690,7 +693,11 @@ public class GameController : MonoBehaviour
         if (what.isBuilding())
         {
             //Create the building
-            createBuilding(prefab);
+            GameObject created = createBuilding(prefab);
+
+            //Add to AI
+            if( what == UnitType.TownCenter )
+                AI.Instance.addTownCenter(created);
         }
         else
         {
@@ -698,7 +705,10 @@ public class GameController : MonoBehaviour
 
             Action action = new Action(unitData.preview, unitData.requiredTime, () => 
             {
-                CreateUnit(who.gameObject, prefab);
+                GameObject created = CreateUnit(who.gameObject, prefab);
+                //Add to AI
+                if (what == UnitType.Civilian)
+                    AI.Instance.assignCivilian(gameObject);
                 hud.updateDelayedActions(selectedUnits.FocusedUnit);
             });
 
@@ -707,6 +717,8 @@ public class GameController : MonoBehaviour
             script.Enqueue(action);
 
             hud.updateDelayedActions(selectedUnits.FocusedUnit);
+
+            
 
         }
      }

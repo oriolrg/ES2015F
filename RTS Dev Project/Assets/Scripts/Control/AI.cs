@@ -147,7 +147,8 @@ public class AI : MonoBehaviour {
     {
         if (townCentersCPU.Count > 0)
         {
-            townCentersCPU[0].GetComponent<TownCenter>().CreateCivilian();
+            //townCentersCPU[0].GetComponent<TownCenter>().CreateCivilian();
+            GameController.Instance.OnCreate(townCentersCPU[0].GetComponent<Identity>(), UnitType.Civilian);
         }
         
           
