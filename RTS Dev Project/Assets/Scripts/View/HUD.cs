@@ -200,7 +200,7 @@ public class HUD : MonoBehaviour
     {
         Health script = unit.GetComponentOrEnd<Health>();
 
-        healthImage.localScale = new Vector3(script.HealthRatio, 1, 1 );
+//        healthImage.localScale = new Vector3(script.HealthRatio, 1, 1 );
     }
 
     // Repaint delayed actions when a new one is created. Actions disappear automatically
