@@ -6,8 +6,9 @@ using System;
 public class GameController : MonoBehaviour
 {
     [SerializeField] private GameObject unitsParent;
-
     [SerializeField] private GameObject buildingsParent;
+    [SerializeField] private GameObject objectivesParent;
+
     [SerializeField]
 	private Troop selectedUnits;
 
@@ -67,6 +68,7 @@ public class GameController : MonoBehaviour
         selectedUnits = new Troop();
         initResourceValues();
         spawnRandomObjectives();
+        addSelectedPrefabstoCurrentUnits();
     }
 
     // Update is called once per frame
@@ -301,6 +303,7 @@ public class GameController : MonoBehaviour
             {
                 GameObject go = Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity) as GameObject;
                 objectives.Add(go.GetComponentOrEnd<Objective>());
+                go.transform.SetParent(objectivesParent.transform);
             }
         }
     }
@@ -481,6 +484,12 @@ public class GameController : MonoBehaviour
     {
         if (go == selectedUnits.FocusedUnit)
             hud.updateControl(go);
+    }
+
+    public void updateHealth(GameObject go )
+    {
+        if (go == selectedUnits.FocusedUnit)
+            hud.updateHealth(go);
     }
 
     public void checkMapControl()
@@ -730,6 +739,15 @@ public class GameController : MonoBehaviour
         SelectionCircle script = selectedProj.GetComponent<SelectionCircle>();
         if (script != null) script.init();
 
+    }
+
+    public void addSelectedPrefabstoCurrentUnits()
+    {
+        GameObject[] allies = GameObject.FindGameObjectsWithTag("Ally");
+        foreach( GameObject ally in allies )
+        {
+            addSelectedPrefab(ally);
+        }
     }
 
     public void OnSacrifice()

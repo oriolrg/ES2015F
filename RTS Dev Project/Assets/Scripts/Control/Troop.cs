@@ -36,7 +36,7 @@ public class Troop
         {
             Identity identity = unit.GetComponentOrEnd<Identity>();
 
-            if (!identity.unit.isBuilding())
+            if (!identity.unitType.isBuilding())
                 return true;
         }
         return false;

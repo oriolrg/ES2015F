@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class SelectionCircle : MonoBehaviour {
-    private Renderer parentRenderer;
+    private Bounds parentBounds;
     private Projector projector;
 
 	// Use this for initialization
@@ -17,11 +17,25 @@ public class SelectionCircle : MonoBehaviour {
 
     public void init()
     {
-        parentRenderer = GetComponentInParent<Renderer>();
-        projector = GetComponent<Projector>();
-        if (parentRenderer != null && projector != null)
+        CharacterController character = GetComponentInParent<CharacterController>();
+        if( character != null )
         {
-                projector.orthographicSize = parentRenderer.bounds.size.x + 1;
+            parentBounds = character.bounds;
+        }
+        else
+        {
+            BoxCollider box = GetComponentInParent<BoxCollider>();
+            if (box != null)
+            {
+                parentBounds = box.bounds;
+            }
+        }
+
+        projector = GetComponent<Projector>();
+
+        if (parentBounds != null && projector != null)
+        {
+                projector.orthographicSize = Mathf.Max( parentBounds.extents.x, parentBounds.extents.z )*2 + .5f;
         }
     }
 }

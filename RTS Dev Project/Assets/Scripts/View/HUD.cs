@@ -106,7 +106,7 @@ public class HUD : MonoBehaviour
             
 			if (identity == null) return;
 
-			UnitData unitData = DataManager.Instance.unitDatas[identity.unit];
+			UnitData unitData = DataManager.Instance.unitDatas[identity.unitType];
             // Update preview image and name
             previewImage.sprite = unitData.preview;
 			nameText.text = identity.name;
@@ -114,7 +114,7 @@ public class HUD : MonoBehaviour
 
 
             // Update Action buttons
-			UnitType unitType = identity.unit;
+			UnitType unitType = identity.unitType;
 
             List<UnitType> creations = actionsData.creationPermissions[unitType];
             for( int i = 0; i < creations.Count; i++ )
@@ -153,7 +153,7 @@ public class HUD : MonoBehaviour
             updateInteractable(focusedUnit);
 
             updateControl(focusedUnit);
-            //updateHealth(focusedUnit);
+            updateHealth(focusedUnit);
             //updateDelayedActions(focusedUnit);
         }
     }
@@ -198,9 +198,11 @@ public class HUD : MonoBehaviour
     // Set the health ratio : current / total as length of the health image
     public void updateHealth( GameObject unit )
     {
-        Health script = unit.GetComponentOrEnd<Health>();
-
-//        healthImage.localScale = new Vector3(script.HealthRatio, 1, 1 );
+        Health script = unit.GetComponent<Health>();
+        if (script != null)
+            healthImage.localScale = new Vector3(script.HealthRatio, 1, 1);
+        else
+            healthImage.localScale = Vector3.zero;
     }
 
     // Repaint delayed actions when a new one is created. Actions disappear automatically
@@ -300,7 +302,7 @@ public class HUD : MonoBehaviour
 
             if (identity == null) continue;
 
-            UnitData unitData = DataManager.Instance.unitDatas[identity.unit];
+            UnitData unitData = DataManager.Instance.unitDatas[identity.unitType];
 
 
             // Instantiate a block with the correct image
