@@ -32,10 +32,6 @@ public class BuildingConstruction : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log("---------------------------------construction on going " + constructionOnGoing);
-        Debug.Log(timer);
-        Debug.Log("-------------------------------num de units construint " + constructingUnits.Count);
-
         //if (GetComponent<Unit>().getInConstruction())
         //{
             //Timer that changes the mesh of the building
@@ -80,7 +76,6 @@ public class BuildingConstruction : MonoBehaviour {
 
         //Add the unit
         constructingUnits.Add(unit);
-        Debug.Log("unit added");
 
         //Start the construction 
         /*if(constructingUnits.Count == 1)
@@ -93,10 +88,7 @@ public class BuildingConstruction : MonoBehaviour {
 
     public void deleteUnit(GameObject unit)
     {
-        Debug.Log("Principi: Dins de deleteUnit " + constructingUnits.Count);
         bool a = constructingUnits.Remove(unit);
-        Debug.Log(a);
-        Debug.Log("Final: Dins de deleteUnit " + constructingUnits.Count);
     }
 
     public void setConstructionOnGoing(bool b)

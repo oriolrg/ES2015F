@@ -150,6 +150,8 @@ public class MinimapCamera : MonoBehaviour {
 
 		minimapCamera.orthographicSize = orthographicSize;// * 1.15f; // also add extra size to display objects at border
 
+		minimapCamera.transform.position = ground.transform.position + new Vector3(bounds.extents.x, 500, bounds.extents.z);
+
 //		Vector3 bounds = ground.GetComponent<MeshRenderer> ().bounds.size / 2f;
 //		print (bounds.x);
 //		print (bounds.z);
