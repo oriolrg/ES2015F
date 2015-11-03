@@ -14,11 +14,11 @@ public class TerrainListener : ChoicePickerChangeStateListener {
 	
 	public override void OnChangeState(string state) {
 		switch (state) {
-		case "Mountains":
+		case "Mountain Map":
 			mountains.SetActive (true);
 			desert.SetActive (false);
 			break;
-		case "Desert":
+		case "Desert Map":
 			mountains.SetActive (false);
 			desert.SetActive (true);
 			break;

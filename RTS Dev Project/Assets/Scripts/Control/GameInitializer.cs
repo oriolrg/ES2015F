@@ -7,7 +7,6 @@ public class GameInitializer : MonoBehaviour {
 	[SerializeField] private GameObject sceneMap; // Map that will be replaced by GameData.map
 	[SerializeField] private GameObject minimap; // To replace variable Ground
 	[SerializeField] private GameObject buildings;
-	[SerializeField] private List<GameObject> townCenters; // Town centers that will be erased when Initializing
 
 	private LOSManager terrainLOSManager;
 	private bool firstUpdate = true; // used to activate FoW when first Update

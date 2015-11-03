@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour {
 
+	// Edit if you want the menu to pass info to the game
+	[SerializeField] private bool useMenuInfo = true;
+
 	[SerializeField] private GameObject loadingScreen;
 	[SerializeField] private MessagePopUp messagePopUp;
 
@@ -72,7 +75,7 @@ public class MainMenu : MonoBehaviour {
 		}
 
 		// Tell GameController that it should initialize game with GameData
-		GameData.sceneFromMenu = true; 
+		GameData.sceneFromMenu = useMenuInfo; 
 
 		// Check if all GameConditions are correct
 		try{
