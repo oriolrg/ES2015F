@@ -16,28 +16,28 @@ public class MainMenu : MonoBehaviour {
 	[SerializeField] private List<GameObject> maps;
 
 	void Start() {
-//		List<string> mapNames = new List<string>(maps.Count);
-//		foreach (GameObject m in maps)
-//			mapNames.Add(m.GetComponent<MapData>().name);
-//		
-//		map.GetComponent<ChoicePicker>().SetOptions(mapNames);
+		List<string> mapNames = new List<string>(maps.Count);
+		foreach (GameObject m in maps)
+			mapNames.Add(m.GetComponent<MapInfo>().mapName);
+		
+		map.GetComponent<ChoicePicker>().SetOptions(mapNames);
 	}
 
 	public void NewGame(string scene){
 		GameData.diff = Utils.GetEnumValue<GameData.DifficultyEnum>(gameDiff.GetCurrentOption ());
 
 		// Set map
-//		bool mapFound = false;
-//		foreach (GameObject m in maps){
-//			if (m.GetComponent<MapData>().name == map.GetCurrentOption()){
-//				GameData.map = m;
-//				mapFound = true;
-//				break;
-//			}
-//		}
-//
-//		if (!mapFound)
-//			throw new UnityException("Picked map not found in maps list!");
+		bool mapFound = false;
+		foreach (GameObject m in maps){
+			if (m.GetComponent<MapInfo>().mapName.Equals(map.GetCurrentOption())){
+				GameData.map = m;
+				mapFound = true;
+				break;
+			}
+		}
+
+		if (!mapFound)
+			throw new UnityException("Picked map not found in maps list!");
 
 		// Set winConditions
 		GameData.winConditions.Clear ();

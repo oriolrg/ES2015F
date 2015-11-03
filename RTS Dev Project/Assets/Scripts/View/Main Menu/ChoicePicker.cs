@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 public class ChoicePicker : MonoBehaviour {
 
-	private Text label;
+	private Text label = null;
 
 	// State variables
-	[SerializeField] private string variableName;
+	[SerializeField] private string variableName = "choicePicker";
 
 	[SerializeField] private List<string> options = new List<string>();
-	[SerializeField] private string defaultOption;
+	[SerializeField] private string defaultOption = null;
 
 	public int currentOption { get; private set; }
 
@@ -32,10 +32,9 @@ public class ChoicePicker : MonoBehaviour {
 		}
 
 		if (defaultOptionIndex >= options.Count)
-			throw new UnityException ("Default Option not in options");
-		else {
-			ChangeState (defaultOptionIndex);
-		}
+			defaultOptionIndex = 0;
+
+		ChangeState (defaultOptionIndex);
 	}
 	
 	public string GetCurrentOption(){
@@ -48,7 +47,7 @@ public class ChoicePicker : MonoBehaviour {
 
 	public void SetOptions(List<string> options){
 		if (options.Count == 0)
-			throw new UnityException("Trying to set options in ChoicePicker wit no options");
+			throw new UnityException("Trying to set options in ChoicePicker with no options");
 
 		this.options = options;
 		ChangeState(0);
@@ -64,6 +63,9 @@ public class ChoicePicker : MonoBehaviour {
 	}
 
 	private void ChangeState(int op){
+		if (options == null || variableName == null || label == null)
+			return;
+
 		label.text = variableName + ": " + options [op];			
 		currentOption = op;
 
