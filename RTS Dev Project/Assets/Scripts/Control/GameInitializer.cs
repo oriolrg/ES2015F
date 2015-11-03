@@ -6,14 +6,19 @@ public class GameInitializer : MonoBehaviour {
 
 	[SerializeField] private GameObject sceneMap; // Map that will be replaced by GameData.map
 	[SerializeField] private GameObject minimap; // To replace variable Ground
+	[SerializeField] private GameObject buildings;
 	[SerializeField] private List<GameObject> townCenters; // Town centers that will be erased when Initializing
+
+	private LOSManager terrainLOSManager;
+	private bool firstUpdate = true; // used to activate FoW when first Update
 
 	void Awake() {
 		GameDataEditorPicker gmep = GetComponent<GameDataEditorPicker>();
 		if (!GameData.sceneFromMenu){
-			if (gmep != null && gmep.isActiveAndEnabled)
+			if (gmep != null){
 				// Only use those values when not coming from the menu
 				gmep.AddFakeGameData();
+			}
 
 			if (!GameData.sceneFromMenu){ // could have changed with AddFake
 				// Don't instantiate anything
@@ -34,22 +39,86 @@ public class GameInitializer : MonoBehaviour {
 
 	void Start() {
 		// Replace current scene map by GameData.map
-		throw new UnityException("GameInitializer not implemented yet"); // TODO: Delete this
-        /*
+		// throw new UnityException("GameInitializer not implemented yet"); // TODO: Delete this
+
+		// Change scene map
 		Destroy(sceneMap);
+
+		terrainLOSManager = GameData.map.GetComponent<LOSManager>();
+		terrainLOSManager.enabled = false;
+
 		GameObject map = (GameObject) Instantiate (
 			GameData.map, 
-			Vector3.zero, //GameData.map.GetComponent<TerrainCollider>().bounds.extents / 2f, 
+			Vector3.zero,
 			Quaternion.identity
 		);
 
+		MapInfo mapInfo = map.GetComponent<MapInfo>();
+
+		terrainLOSManager = map.GetComponent<LOSManager>();
+		// Remember to activate LOSManager when everything is set
+
+		// Change minimap settings
 		MinimapCamera minimapCamera = minimap.GetComponent<MinimapCamera>();
 		minimapCamera.ground = map;
 		minimapCamera.updateCameraAttributes();
-		*/
+
 		// Replace current Town Centers by those detailed by GameData and GameData.map
 		// Delete old Town Centers
+		foreach (Transform t in buildings.transform) {
+			if (t.gameObject.name.Contains("TownCenter"))
+				Destroy(t.gameObject);
+		}
 
 		// Instantiate new Town Centers according to the number of players
+
+		// Player
+		GameObject townCenterPrefab = DataManager.Instance.civilizationDatas[
+			Utils.GetEnumValue<Civilization>(GameData.player.civ.ToString())
+		].units[UnitType.TownCenter];
+
+		GameObject townCenter = (GameObject) Instantiate (
+			townCenterPrefab, 
+			mapInfo.towncenter1.transform.position,
+			mapInfo.towncenter1.transform.rotation
+		);
+
+		townCenter.name = "PlayerTownCenter";
+		townCenter.transform.SetParent(buildings.transform);
+
+		int cpus = 0;
+		Transform townCenterTransform;
+		foreach (GameData.CPUData cpu in GameData.cpus) {
+			cpus++;
+
+			townCenterPrefab = DataManager.Instance.civilizationDatas[
+				Utils.GetEnumValue<Civilization>(cpu.civ.ToString())
+			].units[UnitType.TownCenter];
+
+			if (cpus == 1)
+				townCenterTransform = mapInfo.towncenter2.transform;
+			else if (cpus == 2)
+				townCenterTransform = mapInfo.towncenter3.transform;
+			else if (cpus == 3)
+				townCenterTransform = mapInfo.towncenter4.transform;
+			else
+				continue;
+
+			townCenter = (GameObject) Instantiate (
+				townCenterPrefab, 
+				townCenterTransform.position,
+				townCenterTransform.rotation
+			);
+
+			townCenter.name = "CPU" + cpus.ToString() + "TownCenter";
+			townCenter.transform.SetParent(buildings.transform);
+		}
+	}
+
+	void Update() {
+		if (firstUpdate){
+			terrainLOSManager.enabled = true;
+			firstUpdate = false;
+		}
 	}
 }

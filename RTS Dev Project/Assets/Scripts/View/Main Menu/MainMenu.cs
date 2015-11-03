@@ -24,7 +24,7 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	public void NewGame(string scene){
-		GameData.diff = GetEnumValue<GameData.DifficultyEnum>(gameDiff.GetCurrentOption ());
+		GameData.diff = Utils.GetEnumValue<GameData.DifficultyEnum>(gameDiff.GetCurrentOption ());
 
 		// Set map
 //		bool mapFound = false;
@@ -43,7 +43,7 @@ public class MainMenu : MonoBehaviour {
 		GameData.winConditions.Clear ();
 		foreach (TextToggle t in winConditions) {
 			if (t.isActive()){
-				GameData.winConditions.Add (GetEnumValue<GameData.WinConditionEnum>(t.getValue()));
+				GameData.winConditions.Add (Utils.GetEnumValue<GameData.WinConditionEnum>(t.getValue()));
 			}
 		}
 
@@ -51,7 +51,7 @@ public class MainMenu : MonoBehaviour {
 		String civ, skill;
 
 		GameData.player = new GameData.PlayerData (
-			GetEnumValue<GameData.PlayerData.CivilizationEnum>(
+			Utils.GetEnumValue<GameData.PlayerData.CivilizationEnum>(
 				playerCivilization.GetCurrentOption()
 			)
 		);
@@ -64,8 +64,8 @@ public class MainMenu : MonoBehaviour {
 
 				GameData.cpus.Add (
 					new GameData.CPUData(
-						GetEnumValue<GameData.PlayerData.CivilizationEnum> (civ),
-						GetEnumValue<GameData.DifficultyEnum> (skill)
+						Utils.GetEnumValue<GameData.PlayerData.CivilizationEnum> (civ),
+						Utils.GetEnumValue<GameData.DifficultyEnum> (skill)
 					)
 				);
 			}
@@ -99,10 +99,5 @@ public class MainMenu : MonoBehaviour {
 	public void Quit(){
 		print ("Quit");
 		Application.Quit ();
-	}
-	
-
-	public static T GetEnumValue<T> (string name) { 
-		return (T) Enum.Parse (typeof(T), name);
 	}
 }
