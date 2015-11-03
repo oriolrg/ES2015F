@@ -33,7 +33,7 @@ public class GameData : MonoBehaviour {
 			)) ||
 			(cpus.Count >= 1 && cpus[0].civ.Equals (player.civ)) ||
 			(cpus.Count >= 2 && cpus[1].civ.Equals (player.civ)) ||
-			(cpus.Count == 3 && cpus[3].civ.Equals (player.civ))
+			(cpus.Count == 3 && cpus[2].civ.Equals (player.civ))
 		)
 			throw new GameConditionsException ("There can't be two identical civilizations!");
 		else
@@ -41,7 +41,7 @@ public class GameData : MonoBehaviour {
 	}
 
 	public class PlayerData {
-		public enum CivilizationEnum { Greeks, Egyptians, Romans, None };
+		public enum CivilizationEnum { Greeks, Egyptians, Babylonians, None };
 		public CivilizationEnum civ { get; private set; }
 
 		public PlayerData(CivilizationEnum civ){
