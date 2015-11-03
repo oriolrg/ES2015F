@@ -85,6 +85,9 @@ public class GameInitializer : MonoBehaviour {
 		townCenter.name = "PlayerTownCenter";
 		townCenter.transform.SetParent(buildings.transform);
 
+		townCenter.tag = "Ally";
+		GameController.Instance.addSelectedPrefab(townCenter);
+
 		int cpus = 0;
 		Transform townCenterTransform;
 		foreach (GameData.CPUData cpu in GameData.cpus) {
