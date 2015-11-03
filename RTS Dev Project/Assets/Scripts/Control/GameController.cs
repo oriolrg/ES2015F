@@ -282,7 +282,7 @@ public class GameController : MonoBehaviour
 
         int ammount = UnityEngine.Random.Range(3, 5);
         GameObject ground = GameObject.FindGameObjectWithTag("Ground");
-        Bounds bounds = ground.GetComponent<BoxCollider>().bounds;
+        Bounds bounds = ground.GetComponent<TerrainCollider>().bounds;
 
         for ( int i = 0; i < ammount; i++ )
         {
@@ -566,6 +566,7 @@ public class GameController : MonoBehaviour
         GameObject newUnit = Instantiate(unit, spawningPoint, Quaternion.identity) as GameObject;
         addSelectedPrefab(newUnit);
         // Set unit as parent in hierarchy
+        print(newUnit.name);
         newUnit.transform.SetParent(unitsParent.transform);
         GameObject target = Instantiate(targetPrefab, spawner.RallyPoint, Quaternion.identity) as GameObject;
         UnitMovement script = newUnit.GetComponent<UnitMovement>();
@@ -690,14 +691,13 @@ public class GameController : MonoBehaviour
         GameObject prefab = DataManager.Instance.civilizationDatas[who.civilization].units[what];
         UnitData unitData = DataManager.Instance.unitDatas[what];
         //print("Creating " + unitData.description);
+
         if (what.isBuilding())
         {
             //Create the building
             GameObject created = createBuilding(prefab);
+            created.tag = who.gameObject.tag;
 
-            //Add to AI
-            if( what == UnitType.TownCenter )
-                AI.Instance.addTownCenter(created);
         }
         else
         {
@@ -706,21 +706,17 @@ public class GameController : MonoBehaviour
             Action action = new Action(unitData.preview, unitData.requiredTime, () => 
             {
                 GameObject created = CreateUnit(who.gameObject, prefab);
-                //Add to AI
-                if (what == UnitType.Civilian)
-                    AI.Instance.assignCivilian(gameObject);
+                created.tag = who.gameObject.tag;
                 hud.updateDelayedActions(selectedUnits.FocusedUnit);
             });
-
-            DelayedActionQueue script = selectedUnits.FocusedUnit.GetComponentOrEnd<DelayedActionQueue>();
+            DelayedActionQueue script = who.gameObject.GetComponentOrEnd<DelayedActionQueue>();
 
             script.Enqueue(action);
 
-            hud.updateDelayedActions(selectedUnits.FocusedUnit);
-
+            if(who.gameObject.tag=="Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
             
-
         }
+        
      }
 
     public void addSelectedPrefab(GameObject go)

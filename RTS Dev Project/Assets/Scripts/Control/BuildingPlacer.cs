@@ -16,7 +16,7 @@ public class BuildingPlacer : MonoBehaviour {
 
 		originalColor = gameObject.GetComponent<Renderer> ().material.color;
         transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.3f);
-        
+        gameObject.GetComponent<LOSEntity>().IsRevealer = false;
         //Make the gameObject a bit transparent
         gameObject.GetComponent<Renderer> ().material.color = transparentColor;
 
@@ -109,7 +109,7 @@ public class BuildingPlacer : MonoBehaviour {
 
                 Troop t = new Troop(GameController.Instance.getSelectedUnits().units);
                 GameController.Instance.buildingConstruction(gameObject.transform.position,t);
-
+                gameObject.GetComponent<LOSEntity>().IsRevealer = true;
                 enabled = false;
 				Destroy (this);
 				

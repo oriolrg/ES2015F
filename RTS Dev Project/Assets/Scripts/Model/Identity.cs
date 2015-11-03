@@ -25,6 +25,8 @@ public class Identity : MonoBehaviour
             
             name = string.Format("{0}, The {1}", names[Random.Range(0, names.Count)], adjectives[Random.Range(0, adjectives.Count)]);
         }
-            
+        if (unit == UnitType.TownCenter) AI.Instance.addTownCenter(gameObject);
+        if (unit == UnitType.Civilian) AI.Instance.assignCivilian(gameObject);
+
     }
 }

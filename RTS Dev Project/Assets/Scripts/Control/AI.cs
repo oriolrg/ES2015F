@@ -30,7 +30,7 @@ public class AI : MonoBehaviour {
     private void elaborateStrategy()
     {
         Task t = new Task(new Method(createCivilian));
-        tasks.AddRange(Enumerable.Repeat(t, 10));
+        tasks.AddRange(Enumerable.Repeat(t, 3));
         t = new Task(new Method(createWonder));
     }
 
@@ -47,7 +47,7 @@ public class AI : MonoBehaviour {
         resourcesFood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Food"));
         resourcesMetal = new List<GameObject>(GameObject.FindGameObjectsWithTag("Metal"));
         resourcesWood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Wood"));
-
+        resourcesCPU = new ResourceValueDictionary();
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -64,7 +64,7 @@ public class AI : MonoBehaviour {
     {
         if (tasks.Count > 0)
         {
-            tasks[0].method();
+            //tasks[0].method();
             tasks.RemoveAt(0);
         }
     }
@@ -168,18 +168,13 @@ public class AI : MonoBehaviour {
     {
         if (townCentersCPU.Count > 0)
         {
-            print(civiliansCPU.Count + 1);
-            //townCentersCPU[0].GetComponent<TownCenter>().CreateCivilian();
             GameController.Instance.OnCreate(townCentersCPU[0].GetComponent<Identity>(), UnitType.Civilian);
         }
-        
-          
     }
     private void createWonder()
     {
         if (civiliansCPU.Count > 0)
         {
-            print("WIN I GUESS");
             GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 20), new Troop(civiliansCPU));
             //GameController.Instance.OnCreate(civiliansCPU[0].GetComponent<Identity>(),);
         }

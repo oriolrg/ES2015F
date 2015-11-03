@@ -13,6 +13,7 @@ public enum UnitType
     Barracs,
     Stable,
     Archery
+    
 }
 
 public static class UnitExtensions
