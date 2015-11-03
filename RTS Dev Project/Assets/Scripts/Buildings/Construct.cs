@@ -18,7 +18,6 @@ public class Construct : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        Debug.Log("Start de construct-----------------");
         inConstruction = false;
         construct = false;
 
@@ -33,10 +32,8 @@ public class Construct : MonoBehaviour {
         //If a unit has the order to construct and it is close enough to the building, start the construction
         if (construct)
         {
-            Debug.Log("dins de construct civilian");
             if ((transform.position - buildingToConstruct.transform.position).magnitude < dist)
             {
-                Debug.Log("A CONSTRUIIIIR!!!!!!!!");
                 buildingToConstruct.GetComponent<BuildingConstruction>().startConstruction(this.gameObject);
                 
                 construct = false;
@@ -63,13 +60,11 @@ public class Construct : MonoBehaviour {
 
     public void setConstruct(bool b)
     {
-        Debug.Log("-----------setConstruct");
         construct = b;
     }
 
     public void SetBuildingToConstruct(GameObject b)
     {
-        Debug.Log("-----------setBuildingToConstruct");
         buildingToConstruct = b;
     }
 

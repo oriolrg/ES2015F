@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject unitsParent;
     [SerializeField] private GameObject buildingsParent;
     [SerializeField] private GameObject objectivesParent;
+    [SerializeField] private GameObject targetsParent;
 
     [SerializeField]
 	private Troop selectedUnits;
@@ -131,7 +132,7 @@ public class GameController : MonoBehaviour
                 if (hit)
                 {
                     if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))  
-			moveUnits(hitInfo.transform.gameObject);                    
+			        moveUnits(hitInfo.transform.gameObject);                    
                     else if(hitInfo.transform.gameObject.tag == "Enemy")
                     {
 						/*
@@ -171,7 +172,7 @@ public class GameController : MonoBehaviour
                         */
 
                     } 
-		    else if(hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction>().getConstructionOnGoing())
+		            else if(hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction>().getConstructionOnGoing())
                     {
                         Debug.Log("vaig a construir");
 
@@ -197,11 +198,12 @@ public class GameController : MonoBehaviour
                         buildingConstruction(hitInfo.transform.gameObject.transform.position, troop);
                         
                     }
-		    else 
-		    {
-			target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
-			moveUnits(target);
-		    }
+		            else 
+		            {
+			            target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+                        target.transform.SetParent(targetsParent.transform);
+			            moveUnits(target);
+		            }
                 }
                 else
                 {
@@ -550,8 +552,10 @@ public class GameController : MonoBehaviour
     public GameObject CreateUnit(GameObject building, GameObject unit)
     {
         Spawner spawner = building.GetComponentOrEnd<Spawner>();
-
+        spawner.initBounds();
         Vector3 spawningPoint = spawner.SpawningPoint;
+        
+        print(spawningPoint);
         /* adjust spawning point
         Ray ray = new Ray(building.transform.position + 5 * building.transform.up + 10 * building.transform.forward, -Vector3.up);
         
@@ -578,8 +582,9 @@ public class GameController : MonoBehaviour
         print(newUnit.name);
         newUnit.transform.SetParent(unitsParent.transform);
         GameObject target = Instantiate(targetPrefab, spawner.RallyPoint, Quaternion.identity) as GameObject;
-        UnitMovement script = newUnit.GetComponent<UnitMovement>();
+        target.transform.SetParent(targetsParent.transform);
 
+        UnitMovement script = newUnit.GetComponent<UnitMovement>();
         if (script != null)
         {
             script.startMoving(target);
@@ -592,13 +597,12 @@ public class GameController : MonoBehaviour
     public GameObject createBuilding(GameObject prefab)
 	{
         //Instantiate the building and start the positioning of the building
-
+        
         GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
         building.tag = "Ally";
 
         addSelectedPrefab(building);
-
         
         building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
         
@@ -621,8 +625,6 @@ public class GameController : MonoBehaviour
 
 
             }
-            
-            
         }
         
         building.AddComponent<BuildingPlacer> ();
@@ -653,6 +655,7 @@ public class GameController : MonoBehaviour
     {
         //Move the units that are selected to construct to the building position
         GameObject target = Instantiate(targetPrefab, position, Quaternion.identity) as GameObject;
+        target.transform.SetParent(targetsParent.transform);
         moveUnits(target, t);
 
         //Order that the unit has to construct
@@ -706,7 +709,8 @@ public class GameController : MonoBehaviour
             //Create the building
             GameObject created = createBuilding(prefab);
             created.tag = who.gameObject.tag;
-
+            Spawner spa = created.GetComponent<Spawner>();
+            if (spa != null) spa.initBounds(); 
         }
         else
         {

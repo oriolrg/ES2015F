@@ -109,7 +109,7 @@ public class LOSManager : MonoBehaviour {
                 )
             );
         }
-        Debug.Log("FOW Texture created, " + width + " x" + height);
+        //Debug.Log("FOW Texture created, " + width + " x" + height);
     }
 
     void Update() {

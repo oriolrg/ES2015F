@@ -8,16 +8,23 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
-        BoxCollider script = GetComponent<BoxCollider>();
+        initBounds();
+    }
 
-        if( script != null )
+    public void initBounds()
+    {
+        print("in init");
+        BoxCollider box = GetComponent<BoxCollider>();
+
+        if (box != null)
         {
-            SpawningPoint = transform.position + transform.forward * (script.bounds.extents.z + 1);
+            SpawningPoint = transform.position + transform.forward * (box.bounds.extents.z + 1);
         }
         else
         {
-            SpawningPoint = Vector3.zero;
+            SpawningPoint = transform.position + transform.forward * 3;
         }
         RallyPoint = SpawningPoint + transform.forward * 5;
+        print(SpawningPoint);
     }
 }

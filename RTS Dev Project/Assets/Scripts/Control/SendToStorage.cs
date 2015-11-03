@@ -7,7 +7,7 @@ public class SendToStorage : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         GameObject c = collision.gameObject;
-        print(c.name);
+        //print(c.name);
         if (c.tag == "Ally" || c.tag == "Enemy")
         {
             CollectResources collect = c.gameObject.GetComponentInParent<CollectResources>();
