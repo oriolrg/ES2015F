@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 
 public class AI : MonoBehaviour {
+    public delegate void Method();
+    private List<Task> tasks;
     public List<string> resources;
     private List<GameObject> resourcesFood;
     private List<GameObject> resourcesMetal;
@@ -13,10 +17,25 @@ public class AI : MonoBehaviour {
     private List<GameObject> townCentersCPU;
     private List<GameObject> townCentersPlayer;
     public static AI Instance { get; private set; }
+   
 
     // Use this for initialization
     
     void Start () {
+        
+        elaborateStrategy();
+    }
+
+    private void elaborateStrategy()
+    {
+        Task t = new Task(new Method(createCivilian));
+        tasks.AddRange(Enumerable.Repeat(t, 10));
+        t = new Task(new Method(createWonder));
+    }
+
+    void Awake()
+    {
+        tasks = new List<Task>();
         resources = new List<string>(new string[] { "Food", "Metal", "Wood" });
         allCPUUnits = new List<GameObject>();
         civilians = new List<GameObject>();
@@ -27,25 +46,21 @@ public class AI : MonoBehaviour {
         resourcesFood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Food"));
         resourcesMetal = new List<GameObject>(GameObject.FindGameObjectsWithTag("Metal"));
         resourcesWood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Wood"));
-        Invoke("createCivilian", 2);
-        Invoke("createCivilian", 4);
-        Invoke("createCivilian", 6);
-        Invoke("createCivilian", 8);
-        Invoke("createCivilian", 10);
 
-        Invoke("createBuilding", 20);
-
-
-
-    }  
-
-    void Awake()
-    {
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
+
         Instance = this;
+    }
+    void Update()
+    {
+        if (tasks.Count > 0)
+        {
+            tasks[0].method();
+            tasks.RemoveAt(0);
+        }
     }
     
     public void addCPUUnit(GameObject u)
@@ -147,11 +162,23 @@ public class AI : MonoBehaviour {
     {
         if (townCentersCPU.Count > 0)
         {
+            print(civiliansCPU.Count + 1);
             //townCentersCPU[0].GetComponent<TownCenter>().CreateCivilian();
             GameController.Instance.OnCreate(townCentersCPU[0].GetComponent<Identity>(), UnitType.Civilian);
         }
         
           
+    }
+    private void createWonder()
+    {
+        if (civiliansCPU.Count > 0)
+        {
+            print("WIN I GUESS");
+            GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 20), new Troop(civiliansCPU));
+            //GameController.Instance.OnCreate(civiliansCPU[0].GetComponent<Identity>(),);
+        }
+
+
     }
     public void deleteResource(GameObject r)
     {
@@ -170,6 +197,16 @@ public class AI : MonoBehaviour {
         else collect.targetToCollect = getClosestResource(v, "Metal");
 
         collect.startMovingToCollect(collect.targetToCollect);
+
+    }
+
+    public class Task : MonoBehaviour
+    {
+        public Method method;
+        public Task(Method m)
+        {
+            method = m;
+        }
 
     }
 }
