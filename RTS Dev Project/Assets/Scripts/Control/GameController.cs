@@ -7,6 +7,8 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] private GameObject unitsParent;
     [SerializeField] private GameObject buildingsParent;
+    [SerializeField] private GameObject objectivesParent;
+
     [SerializeField]
 	private Troop selectedUnits;
 
@@ -19,6 +21,8 @@ public class GameController : MonoBehaviour
     private ResourceValueDictionary resourceDict;
 
     [SerializeField]
+    private GameObject selectedPrefab;
+    [SerializeField]
 	private GameObject targetPrefab;
 
     [SerializeField]
@@ -26,8 +30,12 @@ public class GameController : MonoBehaviour
 
     public HUD hud;
 
+    [SerializeField] private GameObject objectivePrefab;
+
 	private bool isSelecting;
 	private Vector3 mPos;
+
+    public List<Objective> objectives;
 
 
 
@@ -59,11 +67,15 @@ public class GameController : MonoBehaviour
     {
         selectedUnits = new Troop();
         initResourceValues();
+        spawnRandomObjectives();
+        addSelectedPrefabstoCurrentUnits();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+
         //Win Condition
         var wonder = GameObject.FindGameObjectWithTag("Wonder");
         if (wonder != null)
@@ -84,10 +96,11 @@ public class GameController : MonoBehaviour
                 bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
                 if (hit)
                 {
+                    
                     GameObject selectedGO = hitInfo.transform.gameObject;
-                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    if (hitInfo.transform.gameObject.tag == "Ally" || hitInfo.transform.gameObject.tag == "StorageFood")
+                    if (hitInfo.transform.gameObject.tag == "Ally")
                     {
+                       
                         if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
 
                         if (!selectedUnits.units.Contains(selectedGO)) selectedUnits.units.Add(selectedGO);
@@ -117,16 +130,78 @@ public class GameController : MonoBehaviour
                 GameObject target;
                 if (hit)
                 {
-                    if (hitInfo.transform.gameObject.tag == "Food")
+                    if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))  
+			moveUnits(hitInfo.transform.gameObject);                    
+                    else if(hitInfo.transform.gameObject.tag == "Enemy")
                     {
-                        target = Instantiate(targetPrefab, hitInfo.transform.gameObject.transform.position, Quaternion.identity) as GameObject;
-                        //moveUnitsCollect(target);
-                    }
-                    else
-                    {
-                        target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+						/*
+						GameObject enemy = hitInfo.transform.gameObject;
+						//Crear nou metode moveUnit
+						//Crear interficie de atac!!!!!!!!!!!!!
+						foreach(var ally in selectedUnits.units){
+							ally.GetComponent<UnitMovement>();
+						}
+
+
+						GameObject allyUnit = selectedUnits.units[0];
+
+						Vector3 allyPos = allyUnit.transform.position;
+
+						double d = Vector3.Distance(allyPos,enemyPos);
+
+						Vector3 vec =- allyPos + enemyPos;
+
+						vec = vec.normalized;
+
+						double r = allyUnit.GetComponent<attack_controller>().range;
+
+						Debug.Log(r);
+
+						double alpha =  d-(r/2.0);
+
+
+						vec.x *= (float) alpha;
+						vec.z *= (float) alpha;
+
+						Vector3 targetPos = vec + allyPos;
+
+
+                        target = Instantiate(targetPrefab, targetPos, Quaternion.identity) as GameObject;
                         moveUnits(target);
+                        */
+
+                    } 
+		    else if(hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction>().getConstructionOnGoing())
+                    {
+                        Debug.Log("vaig a construir");
+
+                        Troop troop = new Troop(selectedUnits.units);
+
+                        foreach (var unit in troop.units)
+                        {
+                            Construct scriptConstruct = unit.GetComponent<Construct>();
+
+                            if (scriptConstruct != null) {
+
+                                if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
+                                {
+                                    scriptConstruct.setConstruct(false);
+                                    scriptConstruct.SetInConstruction(false);
+                                    scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                                }
+
+                                scriptConstruct.SetBuildingToConstruct(hitInfo.transform.gameObject);
+                            }
+                        }
+
+                        buildingConstruction(hitInfo.transform.gameObject.transform.position, troop);
+                        
                     }
+		    else 
+		    {
+			target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+			moveUnits(target);
+		    }
                 }
                 else
                 {
@@ -178,6 +253,13 @@ public class GameController : MonoBehaviour
                 selectedUnits.focusNext();
                 hud.updateSelection(selectedUnits); // There will exist an updateFocus method            
             }
+
+			if (Input.GetKeyDown(KeyCode.B))
+			{
+                //Pobre Sergiot
+                //createCubeTestingGrid();
+			}
+
         }
     }
 
@@ -196,34 +278,79 @@ public class GameController : MonoBehaviour
         }
 	}
 
+    private void spawnRandomObjectives()
+    {
+        objectives = new List<Objective>();
+
+        int ammount = UnityEngine.Random.Range(3, 5);
+        GameObject ground = GameObject.FindGameObjectWithTag("Ground");
+        Bounds bounds = ground.GetComponent<TerrainCollider>().bounds;
+
+        for ( int i = 0; i < ammount; i++ )
+        {
+            Vector3 position = new Vector3
+            (
+                bounds.center.x + UnityEngine.Random.Range(-bounds.extents.x / 2, bounds.extents.x / 2),
+                bounds.center.y + bounds.extents.y / 2 + 1,
+                bounds.center.z + UnityEngine.Random.Range(-bounds.extents.z / 2, bounds.extents.z / 2)
+            );
+
+            // Adjust to terrain hit
+            Ray ray = new Ray(position, -Vector3.up);
+            RaycastHit hitInfo = new RaycastHit();
+            Debug.DrawRay(position, -Vector3.up);
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                GameObject go = Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity) as GameObject;
+                objectives.Add(go.GetComponentOrEnd<Objective>());
+                go.transform.SetParent(objectivesParent.transform);
+            }
+        }
+    }
+
 	private void moveUnits(GameObject target)
 	{
         if (selectedUnits.hasMovableUnits())
         {
             foreach (var unit in selectedUnits.units)
             {
-                //Move the units only if they are not constructing a building
-                if (!unit.GetComponent<Unit>().getInConstruction())
-                {
-                    if (unit.GetComponent<Unit>().getConstruct())
-                    {
-                        unit.GetComponent<Unit>().setConstruct(false);
-                    }
 
-                    UnitMovement script = unit.GetComponentInParent<UnitMovement>();
-                    if (script != null)
+                Construct scriptConstruct = unit.GetComponent<Construct>();
+
+                if (scriptConstruct != null)
+                {
+
+                    if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
                     {
-                        script.startMoving(target);
+                        scriptConstruct.setConstruct(false);
+                        scriptConstruct.SetInConstruction(false);
+                        scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                    }
+                }
+
+                UnitMovement script = unit.GetComponentInParent<UnitMovement>();
+                if (script != null)
+                {
+                    CollectResources collect = unit.GetComponent<CollectResources>();
+                    if (collect != null && AI.Instance.resources.Contains(target.tag))
+                    {
+                        collect.startMovingToCollect(target);
+                        collect.targetToCollect = target;
+                    }
+                    else
+                    {
+			            script.startMoving(target);
                         target.GetComponent<timerDeath>().AddUnit(unit);
                     }
                 }
             }
+            
         }
         else
         {
             foreach (var unit in selectedUnits.units)
             {
-                StaticUnit script = unit.GetComponentInParent<StaticUnit>();
+                Spawner script = unit.GetComponentInParent<Spawner>();
                 if (script != null)
                 {
                     script.RallyPoint = target.transform.position;
@@ -232,6 +359,50 @@ public class GameController : MonoBehaviour
             Destroy(target.gameObject);
         }
 	}
+
+    private void moveUnits(GameObject target, Troop troop)
+    {
+        if (troop.hasMovableUnits())
+        {
+            foreach (var unit in troop.units)
+            {
+
+                Construct scriptConstruct = unit.GetComponent<Construct>();
+
+                if (scriptConstruct != null)
+                {
+
+                    if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
+                    {
+                        scriptConstruct.setConstruct(false);
+                        scriptConstruct.SetInConstruction(false);
+                        scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                    }
+
+                }
+
+                UnitMovement script = unit.GetComponentInParent<UnitMovement>();
+                if (script != null)
+                {
+                    script.startMoving(target);
+                    target.GetComponent<timerDeath>().AddUnit(unit);
+                }
+
+            }
+        }
+        else
+        {
+            foreach (var unit in troop.units)
+            {
+                Spawner script = unit.GetComponentInParent<Spawner>();
+                if (script != null)
+                {
+                    script.RallyPoint = target.transform.position;
+                }
+            }
+            Destroy(target.gameObject);
+        }
+    }
 
     public void addUnit(GameObject u)
     {
@@ -301,9 +472,38 @@ public class GameController : MonoBehaviour
     public void updateResource(Resource res, int value)
     {
         resourceDict[res] -= value;
-        hud.updateResource(res, resourceDict[res] - value);    
+        hud.updateResource(res, resourceDict[res]); //- value);  Per què es mostra un resource que no és el que hi ha?
     }
 
+    public void updateInteractable()
+    {
+        hud.updateInteractable(selectedUnits.FocusedUnit);
+    }
+
+    public void updateControl( GameObject go )
+    {
+        if (go == selectedUnits.FocusedUnit)
+            hud.updateControl(go);
+    }
+
+    public void updateHealth(GameObject go )
+    {
+        if (go == selectedUnits.FocusedUnit)
+            hud.updateHealth(go);
+    }
+
+    public void checkMapControl()
+    {
+        Civilization possibleWinner = objectives[0].Controller;
+        foreach(Objective objective in objectives)
+        {
+            if (objective.Controller != possibleWinner)
+                return;
+        }
+
+        if( possibleWinner != Civilization.Neutral )
+            hud.startCountdown(Victory.MapControl, possibleWinner);
+    }
     public void checkWin()
     {
         if (allEnemyUnits.Count == 0) winCondition();
@@ -347,10 +547,14 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public GameObject CreateUnit(Transform buildingTrans, GameObject prefab, Vector3 rally)
+    public GameObject CreateUnit(GameObject building, GameObject unit)
     {
-        Ray ray = new Ray(buildingTrans.position + 5 * buildingTrans.up + 10 * buildingTrans.forward, -Vector3.up);
+        Spawner spawner = building.GetComponentOrEnd<Spawner>();
 
+        Vector3 spawningPoint = spawner.SpawningPoint;
+        /* adjust spawning point
+        Ray ray = new Ray(building.transform.position + 5 * building.transform.up + 10 * building.transform.forward, -Vector3.up);
+        
         bool freeSpaceFound = false;
 
         RaycastHit hitInfo = new RaycastHit();
@@ -365,14 +569,17 @@ public class GameController : MonoBehaviour
                 }
                 else freeSpaceFound = true;
             }
-        }
+        }*/
 
-        GameObject newUnit = Instantiate(prefab, hitInfo.point, Quaternion.identity) as GameObject;
+
+        GameObject newUnit = Instantiate(unit, spawningPoint, Quaternion.identity) as GameObject;
+        addSelectedPrefab(newUnit);
         // Set unit as parent in hierarchy
+        print(newUnit.name);
         newUnit.transform.SetParent(unitsParent.transform);
-        GameObject target = Instantiate(targetPrefab, rally, Quaternion.identity) as GameObject;
+        GameObject target = Instantiate(targetPrefab, spawner.RallyPoint, Quaternion.identity) as GameObject;
         UnitMovement script = newUnit.GetComponent<UnitMovement>();
-        
+
         if (script != null)
         {
             script.startMoving(target);
@@ -380,45 +587,180 @@ public class GameController : MonoBehaviour
         }
         return newUnit;
     }
+    
 
-    public void createBuilding(GameObject prefab)
+    public GameObject createBuilding(GameObject prefab)
 	{
         //Instantiate the building and start the positioning of the building
 
-		GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
+        GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
-        foreach (var unit in selectedUnits.units) unit.GetComponent<Civilian>().SetBuildingToConstruct(building);
+        building.tag = "Ally";
 
+        addSelectedPrefab(building);
+
+        
+        building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
+        
+        updateInteractable();
+
+        foreach (var unit in selectedUnits.units)
+        {
+            Construct scriptConstruct = unit.GetComponent<Construct>();
+
+            if (scriptConstruct != null)
+            {
+
+                if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
+                {
+                    scriptConstruct.setConstruct(false);
+                    scriptConstruct.SetInConstruction(false);
+                    scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                }
+                unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+
+
+            }
+            
+            
+        }
+        
         building.AddComponent<BuildingPlacer> ();
 
-        enabled = false;        
+        enabled = false;
+
+        return building;  
+
+        //createBuilding(prefab, new Vector3(213, -5, 141));   
 	}
 
-    public void buildingConstruction(Vector3 position)
+
+    public void createBuilding(GameObject prefab, Vector3 position, Troop t)
+    {
+        GameObject building = Instantiate(prefab, position, gameObject.transform.rotation) as GameObject;
+        building.tag = "Ally";
+        addSelectedPrefab(building);
+
+        building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
+
+        foreach (var unit in t.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+
+        buildingConstruction(position, t);
+
+    }
+
+    public void buildingConstruction(Vector3 position, Troop t)
     {
         //Move the units that are selected to construct to the building position
         GameObject target = Instantiate(targetPrefab, position, Quaternion.identity) as GameObject;
-        moveUnits(target);
-
-        enabled = true;//Enable the script 
+        moveUnits(target, t);
 
         //Order that the unit has to construct
-        foreach (var unit in selectedUnits.units) unit.GetComponent<Unit>().setConstruct(true);
+        foreach (var unit in t.units) unit.GetComponent<Construct>().setConstruct(true);
 
+        enabled = true;//Enable the script 
     }
 
-    public void enterActionButton(ActionData data)
+    // Action events
+    public void OnActionButtonEnter(UnitData data)
     {
-        hud.enterActionButton(data);
+        hud.OnActionButtonEnter(data);
     }
 
-    public void exitActionButton(ActionData data)
+    public void OnActionButtonExit(UnitData data)
     {
-        hud.exitActionButton(data);
+        hud.OnActionButtonExit(data);
     }
-
+    
     public void hideRightPanel()
     {
         hud.hideRightPanel();
     }
+
+    public Troop getSelectedUnits()
+    {
+        return selectedUnits;
+    }
+
+    public void moveSelection()
+    {
+        print("move");
+        GameController.Instance.hud.showMessageBox("Not implemented");
+    }
+
+    public void stopSelection()
+    {
+        print("stop");
+        GameController.Instance.hud.showMessageBox("Not implemented");
+    }
+
+    public void OnCreate( Identity who, UnitType what )
+    {
+        // get the unit data and the prefab of the unit that can be created
+        GameObject prefab = DataManager.Instance.civilizationDatas[who.civilization].units[what];
+        UnitData unitData = DataManager.Instance.unitDatas[what];
+        //print("Creating " + unitData.description);
+
+        if (what.isBuilding())
+        {
+            //Create the building
+            GameObject created = createBuilding(prefab);
+            created.tag = who.gameObject.tag;
+
+        }
+        else
+        {
+            //create an action and add it to the focused unit's queue
+
+            Action action = new Action(unitData.preview, unitData.requiredTime, () => 
+            {
+                GameObject created = CreateUnit(who.gameObject, prefab);
+                created.tag = who.gameObject.tag;
+                hud.updateDelayedActions(selectedUnits.FocusedUnit);
+            });
+            DelayedActionQueue script = who.gameObject.GetComponentOrEnd<DelayedActionQueue>();
+
+            script.Enqueue(action);
+
+            if(who.gameObject.tag=="Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
+            
+        }
+        
+     }
+
+    public void addSelectedPrefab(GameObject go)
+    {
+        GameObject selectedProj = Instantiate(selectedPrefab, go.transform.position + new Vector3(0,5,0), Quaternion.identity) as GameObject;
+        //selectedProj.transform.Rotate(90, 0, 0);
+        selectedProj.name = "Selected";
+        selectedProj.SetActive(false);
+        selectedProj.transform.SetParent(go.transform);
+        selectedProj.transform.up = new Vector3(0,0,1);
+        SelectionCircle script = selectedProj.GetComponent<SelectionCircle>();
+        if (script != null) script.init();
+
+    }
+
+    public void addSelectedPrefabstoCurrentUnits()
+    {
+        GameObject[] allies = GameObject.FindGameObjectsWithTag("Ally");
+        foreach( GameObject ally in allies )
+        {
+            addSelectedPrefab(ally);
+        }
+    }
+
+    public void OnSacrifice()
+    {
+        print("sacrifice");
+        GameController.Instance.hud.showMessageBox("Not implemented");
+    }
+
+    public void OnAttack()
+    {
+        print("attack");
+        GameController.Instance.hud.showMessageBox("Not implemented");
+    }
+
+
 }

@@ -8,6 +8,7 @@ public class TextToggle : MonoBehaviour {
 	private string label;
 
 	[SerializeField] private bool toggleActive = false;
+	[SerializeField] private string value = "";
 
 	// Use this for initialization
 	void Start () {
@@ -27,5 +28,13 @@ public class TextToggle : MonoBehaviour {
 			text.text = label + " √";
 		else
 			text.text = label;
+	}
+
+	public bool isActive(){
+		return toggleActive;
+	}
+
+	public string getValue(){
+		return value;
 	}
 }

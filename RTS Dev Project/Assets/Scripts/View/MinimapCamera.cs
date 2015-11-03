@@ -3,9 +3,8 @@ using System.Collections;
 
 public class MinimapCamera : MonoBehaviour {
 
-	[SerializeField] private GameObject ground;
+	public GameObject ground;
 	private Camera minimapCamera;
-	[SerializeField] private Camera mainCamera;
 	[SerializeField] private LayerMask minimapLookAtMask = -1;
 
 	[SerializeField] private float edgeSize = 0.3f;
@@ -20,15 +19,14 @@ public class MinimapCamera : MonoBehaviour {
 
 	[SerializeField] private RectTransform minimapPanelRectTransform;
 
-	// Use this for initialization
-	void Start () {
-
-        mainCamera = Camera.main;
-        //mainCamera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
-        mainCameraController = mainCamera.gameObject.GetComponent<CameraController> ();
-
+	void Awake () {
 		minimapCamera = GetComponent<Camera> ();
 		mouseClicked = false;
+	}
+
+	// Use this for initialization
+	void Start () {
+        mainCameraController = Camera.main.gameObject.GetComponent<CameraController> ();
 
 		updateViewport(((float) Screen.width) / Screen.height); // pass it screen aspect
 		updateCameraAttributes ();
@@ -36,7 +34,7 @@ public class MinimapCamera : MonoBehaviour {
 		minimapCamera.enabled = true; // show minimap
 
 		// Get mainCameraOffset - vector from point in the ground where camera is looking and camera position
-		Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+		Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
 		RaycastHit hit;
 		
 		if (Physics.Raycast (
@@ -45,7 +43,7 @@ public class MinimapCamera : MonoBehaviour {
 			minimapLookAtMask.value
 		)
 		    ) {
-			mainCameraOffset = mainCamera.transform.position - hit.point;
+			mainCameraOffset = Camera.main.transform.position - hit.point;
 			currentLookAtPoint = hit.point;
 		} else {
 			throw new UnityException("MainCamera isn't looking at ground!");
@@ -123,7 +121,7 @@ public class MinimapCamera : MonoBehaviour {
 
 	public void mainCameraTransformUpdate(){
 		// Get position of where we clicked on the minimap
-		Ray ray = new Ray (mainCamera.transform.position, mainCamera.transform.forward);
+		Ray ray = new Ray (Camera.main.transform.position, Camera.main.transform.forward);
 		RaycastHit hit;
 		
 		// Where is that point in the ground?
@@ -136,7 +134,7 @@ public class MinimapCamera : MonoBehaviour {
 		}
 	}
 
-	private void updateCameraAttributes(){
+	public void updateCameraAttributes(){
 		// Updates orthographicSize so minimap can display whole ground
 		// Based on answer in http://answers.unity3d.com/questions/185141/ortographic-camera-show-all-of-the-object.html
 
@@ -151,6 +149,8 @@ public class MinimapCamera : MonoBehaviour {
 		}
 
 		minimapCamera.orthographicSize = orthographicSize;// * 1.15f; // also add extra size to display objects at border
+
+		minimapCamera.transform.position = ground.transform.position + new Vector3(bounds.extents.x, 500, bounds.extents.z);
 
 //		Vector3 bounds = ground.GetComponent<MeshRenderer> ().bounds.size / 2f;
 //		print (bounds.x);
@@ -194,7 +194,7 @@ public class MinimapCamera : MonoBehaviour {
 
 		Vector2 size = minimapCamera.rect.size;
 		float sqSize = Mathf.Min (size.x * Screen.width, size.y * Screen.height);
-		sqSize *= mainCamera.fieldOfView / 200f;
+		sqSize *= Camera.main.fieldOfView / 200f;
 
 		size = new Vector2 (sqSize, sqSize);
 		position -= size / 2f;

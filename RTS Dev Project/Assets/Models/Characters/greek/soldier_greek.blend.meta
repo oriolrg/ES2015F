@@ -47,6 +47,8 @@ ModelImporter:
     100078: upper_ring_R
     100080: upper_thumb_L
     100082: upper_thumb_R
+    100084: foot_rotation_L
+    100086: foot_rotation_R
     400000: Armature
     400002: chest
     400004: foot_L
@@ -89,6 +91,8 @@ ModelImporter:
     400078: upper_ring_R
     400080: upper_thumb_L
     400082: upper_thumb_R
+    400084: foot_rotation_L
+    400086: foot_rotation_R
     2300000: human
     3300000: human
     4300000: human
@@ -352,7 +356,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -572,7 +576,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0

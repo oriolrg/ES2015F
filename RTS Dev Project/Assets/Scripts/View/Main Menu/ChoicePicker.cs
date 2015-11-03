@@ -9,20 +9,21 @@ public class ChoicePicker : MonoBehaviour {
 
 	// State variables
 	[SerializeField] private string variableName;
-	[SerializeField] private List<string> options;
-	[SerializeField] private string defaultOption;
-	private int defaultOptionIndex;
 
-	private int currentOption;
+	[SerializeField] private List<string> options = new List<string>();
+	[SerializeField] private string defaultOption;
+
+	public int currentOption { get; private set; }
 
 	[SerializeField] private List<ChoicePickerChangeStateListener> listeners;
 
 	// Use this for initialization
 	void Start () {
+		int defaultOptionIndex = 0;
+
 		// Initialize variables
 		label = GetComponent<Text>();
 
-		defaultOptionIndex = 0;
 		foreach (string s in options) {
 			if (s.Equals (defaultOption))
 				break;
@@ -35,6 +36,22 @@ public class ChoicePicker : MonoBehaviour {
 		else {
 			ChangeState (defaultOptionIndex);
 		}
+	}
+	
+	public string GetCurrentOption(){
+		return this.options [this.currentOption];
+	}
+	
+	public List<string> getOptions(){
+		return options;
+	}
+
+	public void SetOptions(List<string> options){
+		if (options.Count == 0)
+			throw new UnityException("Trying to set options in ChoicePicker wit no options");
+
+		this.options = options;
+		ChangeState(0);
 	}
 
 	public void ChangeState(){
@@ -52,6 +69,18 @@ public class ChoicePicker : MonoBehaviour {
 
 		foreach (ChoicePickerChangeStateListener listener in listeners) {
 			listener.OnChangeState(options[currentOption]);
+		}
+	}
+
+	void OnEnable(){
+		foreach (ChoicePickerChangeStateListener listener in listeners) {
+			listener.OnChangeActive(gameObject.activeInHierarchy);
+		}
+	}
+
+	void OnDisable(){
+		foreach (ChoicePickerChangeStateListener listener in listeners) {
+			listener.OnChangeActive(gameObject.activeInHierarchy);
 		}
 	}
 }

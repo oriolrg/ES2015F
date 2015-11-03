@@ -25,12 +25,14 @@ ModelImporter:
     2300006: roof2
     2300008: Rest_001
     2300010: Rest_004
+    2300012: //RootNode
     3300000: Door
     3300002: Rest
     3300004: roof1
     3300006: roof2
     3300008: Rest_001
     3300010: Rest_004
+    3300012: //RootNode
     4300000: roof2
     4300002: roof1
     4300004: Door
@@ -95,8 +97,10 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
