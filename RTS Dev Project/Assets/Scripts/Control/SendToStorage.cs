@@ -6,7 +6,7 @@ public class SendToStorage : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Collider[] hitColliders = Physics.OverlapSphere(transform.position,10);
+		Collider[] hitColliders = Physics.OverlapSphere(transform.position,5);
 		foreach(Collider c in hitColliders){
             if (c.tag == "Ally" || c.tag == "Enemy")
             {

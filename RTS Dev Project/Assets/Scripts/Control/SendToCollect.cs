@@ -10,14 +10,14 @@ public class SendToCollect : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Collider[] hitColliders = Physics.OverlapSphere(transform.position,15);
+		Collider[] hitColliders = Physics.OverlapSphere(transform.position,10);
 		foreach(Collider c in hitColliders){
             if (c.tag == "Enemy"||c.tag=="Ally")
             {
-                CollectResources collect = c.GetComponentInParent<CollectResources>();
-                if (collect == null) return;
+                CollectResources collect = c.GetComponent<CollectResources>();
+                if (collect == null) { }
                 else if (collect.hasCollected & c.tag == gameObject.tag) storeResource(c.gameObject);
-                else if (!collect.goingToCollect & c.tag == "Enemy" & gameObject.tag == "Enemy")  AI.Instance.reassignResourceToCivilian(c.gameObject);
+                else if (!collect.goingToCollect & c.tag == "Enemy" & gameObject.tag == "Enemy") AI.Instance.reassignResourceToCivilian(c.gameObject);
 
             }
 			
