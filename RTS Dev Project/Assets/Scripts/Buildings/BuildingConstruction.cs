@@ -65,6 +65,12 @@ public class BuildingConstruction : MonoBehaviour {
 
     public void startConstruction(GameObject unit)
     {
+
+		updateGrid upG = GetComponent<updateGrid>();
+		
+		if(upG != null){
+			upG.isBuildingPlaced = true;
+		}
         //Change the mesh of the building to the initialMesh 
         GetComponent<MeshFilter>().mesh = initialMesh.GetComponent<MeshFilter>().sharedMesh;
 
