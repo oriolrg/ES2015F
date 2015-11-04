@@ -262,6 +262,16 @@ public class GameController : MonoBehaviour
                 //createCubeTestingGrid();
 			}
 
+            if(Input.GetKeyDown(KeyCode.M))
+            {
+                for (int i = allAllyUnits.Count - 1; i >= 0; i--)
+                {
+                    print(allAllyUnits[i].name);
+                    allAllyUnits[i].GetComponent<Health>().die();
+                }
+                hud.showMessageBox("MM");
+            }
+
         }
     }
 

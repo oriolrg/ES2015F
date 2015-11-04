@@ -28,5 +28,7 @@ public class Identity : MonoBehaviour
         if (unitType == UnitType.TownCenter) AI.Instance.addTownCenter(gameObject);
         if (unitType == UnitType.Civilian) AI.Instance.assignCivilian(gameObject);
 
+        GameController.Instance.addUnit(gameObject);
+
     }
 }

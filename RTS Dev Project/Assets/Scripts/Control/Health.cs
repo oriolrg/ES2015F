@@ -39,8 +39,18 @@ public class Health : MonoBehaviour
     public void die()
     {
         GameController.Instance.removeUnit(gameObject);
-        Animator ani = GetComponent<Animator>();
-        if (ani != null) ani.SetBool("die", true);
-        Destroy(gameObject, 3);
+
+        if (GetComponent<Identity>().unitType.isBuilding())
+            Destroy(gameObject);
+        else
+        {
+
+            Animator ani = GetComponent<Animator>();
+            if (ani != null)
+            {
+                ani.SetBool("die", true);
+                Destroy(gameObject, 3);
+            }
+        }
     }
 }
