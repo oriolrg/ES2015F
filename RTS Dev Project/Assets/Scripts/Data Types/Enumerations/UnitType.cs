@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEditor;
 
 [Serializable]
 public enum UnitType
@@ -36,7 +35,7 @@ public static class UnitExtensions
         if (result == null)
         {
             Debug.LogError("Required component not found in " + go.name + ". Aborting");
-            EditorApplication.isPlaying = false;
+            //EditorApplication.isPlaying = false;
             Application.Quit();
         }
 
