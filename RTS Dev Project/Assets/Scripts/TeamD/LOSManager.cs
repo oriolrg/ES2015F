@@ -51,7 +51,7 @@ public class LOSManager : MonoBehaviour {
     public bool AllowOwnTeamHeightBlockers { get { return HeightBlockers.AllowOwnTeamBlockers; } }
 
     // List of entities that interact with LOS
-    [HideInInspector]
+    //[HideInInspector]
     public List<LOSEntity> Entities = new List<LOSEntity>();
     // List of entities currently animating their LOS
     [HideInInspector]
