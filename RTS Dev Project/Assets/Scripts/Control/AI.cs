@@ -1,41 +1,72 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 
 public class AI : MonoBehaviour {
+    public delegate void Method();
+    private List<Task> tasks;
+    public List<string> resources;
     private List<GameObject> resourcesFood;
+    private List<GameObject> resourcesMetal;
+    private List<GameObject> resourcesWood;
     private List<GameObject> allCPUUnits;
     private List<GameObject> civilians;
+    private List<GameObject> civiliansCPU;
     private List<GameObject> townCentersCPU;
     private List<GameObject> townCentersPlayer;
+    private ResourceValueDictionary resourcesCPU;
     public static AI Instance { get; private set; }
+   
+
     // Use this for initialization
     
     void Start () {
+        
+        elaborateStrategy();
+    }
+
+    private void elaborateStrategy()
+    {
+        Task t = new Task(new Method(createCivilian));
+        tasks.AddRange(Enumerable.Repeat(t, 3));
+        t = new Task(new Method(createWonder));
+    }
+
+    void Awake()
+    {
+        tasks = new List<Task>();
+        resources = new List<string>(new string[] { "Food", "Metal", "Wood" });
         allCPUUnits = new List<GameObject>();
         civilians = new List<GameObject>();
+        civiliansCPU = new List<GameObject>();
         townCentersCPU = new List< GameObject > ();
         townCentersPlayer = new List<GameObject>();
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addCPUUnit(go);
         resourcesFood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Food"));
-        //resourcesFood.Sort((v1, v2) => (v1.transform.position - townCentersCPU[0].transform.position).sqrMagnitude.CompareTo((v2.transform.position - townCentersCPU[0].transform.position).sqrMagnitude));
-        Invoke("createCivilian", 2);
-        Invoke("createCivilian", 4);
-        Invoke("createCivilian", 6);
-        Invoke("createCivilian", 8);
-        Invoke("createCivilian", 10);
-
-
-
-    }  
-
-    void Awake()
-    {
+        resourcesMetal = new List<GameObject>(GameObject.FindGameObjectsWithTag("Metal"));
+        resourcesWood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Wood"));
+        resourcesCPU = new ResourceValueDictionary();
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
+
         Instance = this;
+
+        resourcesCPU[Resource.Food] = 1000;
+        resourcesCPU[Resource.Wood] = 1000;
+        resourcesCPU[Resource.Metal] = 1000;
+        resourcesCPU[Resource.Population] = 10;
+    }
+    void Update()
+    {
+        if (tasks.Count > 0)
+        {
+            //tasks[0].method();
+            tasks.RemoveAt(0);
+        }
     }
     
     public void addCPUUnit(GameObject u)
@@ -52,7 +83,6 @@ public class AI : MonoBehaviour {
         else if (t.tag == "Enemy")
         {
             townCentersCPU.Add(t);
-            resourcesFood.Sort((v1, v2) => (v1.transform.position - townCentersCPU[0].transform.position).sqrMagnitude.CompareTo((v2.transform.position - townCentersCPU[0].transform.position).sqrMagnitude));
         }
 
     }
@@ -102,54 +132,101 @@ public class AI : MonoBehaviour {
         }
         else { return null; }
     }
-    public GameObject getClosestFood(GameObject c){
+    public GameObject getClosestResource(GameObject c, string r){
+        List<GameObject> resourcesX;
+        if (r == "Food") resourcesX = resourcesFood;
+        else if (r == "Metal") resourcesX = resourcesMetal;
+        else if (r == "Wood") resourcesX = resourcesWood;
+        else resourcesX = resourcesFood;
+        
         float aux;
-        float minDistance = (resourcesFood[0].transform.position - c.transform.position).magnitude;
-        GameObject closestFood = resourcesFood[0];
+        float minDistance = (resourcesX[0].transform.position - c.transform.position).magnitude;
+        GameObject closestResource = resourcesX[0];
 
-        for (int i = 0; i < resourcesFood.Count - 1; i++)
+        for (int i = 0; i < resourcesX.Count; i++)
         {
-            aux = (resourcesFood[i].transform.position - c.transform.position).magnitude;
+            aux = (resourcesX[i].transform.position - c.transform.position).magnitude;
             if (aux < minDistance)
             {
                 minDistance = aux;
-                closestFood = resourcesFood[i];
+                closestResource = resourcesX[i];
             }
         }
-        return closestFood;
+        return closestResource;
 
     }
 
     public void assignCivilian(GameObject v)
     {
-        allCPUUnits.Add(v);
-        civilians.Add(v);        
-        //CollectResources c = v.GetComponentInParent<CollectResources>();
-        //c.targetToCollect = resourcesFood[0];
-        //c.startMovingToCollect(resourcesFood[0]);  
+        civilians.Add(v);
+        if (v.tag == "Enemy") civiliansCPU.Add(v);    
+
        
     }
 
     private void createCivilian()
     {
-        
-        townCentersCPU[0].GetComponentInParent<TownCenter>().CreateCivilian();
-          
+        if (townCentersCPU.Count > 0)
+        {
+            GameController.Instance.OnCreate(townCentersCPU[0].GetComponent<Identity>(), UnitType.Civilian);
+        }
     }
-    public void deleteResourceFood(GameObject r)
+    private void createWonder()
+    {
+        if (civiliansCPU.Count > 0)
+        {
+            GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 20), new Troop(civiliansCPU));
+            //GameController.Instance.OnCreate(civiliansCPU[0].GetComponent<Identity>(),);
+        }
+
+
+    }
+    public void deleteResource(GameObject r)
     {
         resourcesFood.Remove(r);
-        foreach (GameObject vil in civilians) if (vil.GetComponent<CollectResources>().targetToCollect == r) reassignResourceToCivilian(vil);
+        resourcesMetal.Remove(r);
+        resourcesWood.Remove(r);
+        //foreach (GameObject vil in civilians) if (vil.GetComponent<CollectResources>().targetToCollect == r) reassignResourceToCivilian(vil);
        
 
     }
     public void reassignResourceToCivilian(GameObject v)
     {
-        CollectResources collect = v.GetComponentInParent<CollectResources>();
-        collect.targetToCollect = getClosestFood(v);
-        if (!collect.hasCollected)
+        CollectResources collect = v.GetComponent<CollectResources>();
+        if (collect.targetToCollect != null) collect.targetToCollect = getClosestResource(v, collect.targetToCollect.tag);
+        ///PLEASE CHECK THIS IS AI WORK
+        else collect.targetToCollect = getClosestResource(v, "Metal");
+
+        collect.startMovingToCollect(collect.targetToCollect);
+
+    }
+
+    public bool checkResources(ResourceValueDictionary resourceCosts)
+    {
+        bool check = true;
+        foreach (KeyValuePair<Resource, int> kv in resourceCosts)
         {
-            collect.startMovingToCollect(collect.targetToCollect);
+            if (resourcesCPU[kv.Key] - kv.Value < 0)
+            {
+                //Here goes stuff that happens when there aren't enough resources to perform the action.
+                //i.e. text pop-up, sound warning.
+                check = false;
+            }
+        }        
+        return check;
+    }
+    public void updateResource(Resource res, int value)
+    {
+        resourcesCPU[res] -= value;
+    }
+
+    public class Task
+    {
+        public Method method;
+        public Task(Method m)
+        {
+            method = m;
         }
+
     }
 }

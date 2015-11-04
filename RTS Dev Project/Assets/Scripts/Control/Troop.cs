@@ -34,7 +34,9 @@ public class Troop
     {
         foreach( GameObject unit in units )
         {
-            if (unit.GetComponent<MobileUnit>() != null)
+            Identity identity = unit.GetComponentOrEnd<Identity>();
+
+            if (!identity.unitType.isBuilding())
                 return true;
         }
         return false;

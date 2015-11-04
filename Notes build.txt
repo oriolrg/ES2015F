@@ -1,1 +1,0 @@
-El build de l'sprint 1 es pot trobar a Team-C/builds/

@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class BuildingPlacer : MonoBehaviour {
 
 	private Color originalColor;
     private Color transparentColor;
 	private Color red = new Color(1f, 0f, 0f, 0.5f);
+    private List<Material> originalMaterials;
 
     private bool collision;//indicates if there is a collision
 	private int counterCollision;//indicates how many different collisions there are
@@ -13,36 +14,61 @@ public class BuildingPlacer : MonoBehaviour {
 
 	void Start()
 	{
-		originalColor = gameObject.GetComponent<Renderer> ().material.color;
-        transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.3f);
-        
-        //Make the gameObject a bit transparent
-        gameObject.GetComponent<Renderer> ().material.color = transparentColor;
 
+		originalColor = gameObject.GetComponent<Renderer> ().material.color;
+        transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
+        gameObject.GetComponent<LOSEntity>().IsRevealer = false;
+        //Make the gameObject a bit transparent. Hacky hacky
+        originalMaterials = new List<Material>();
+        foreach (Material material in GetComponent<Renderer>().materials)
+        {
+            Material originalMaterial = new Material(material);
+            originalMaterials.Add(originalMaterial);
+
+            material.SetFloat("_Mode", 2);
+            material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            material.SetInt("_ZWrite", 0);
+            material.DisableKeyword("_ALPHATEST_ON");
+            material.EnableKeyword("_ALPHABLEND_ON");
+            material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            material.renderQueue = 3000;
+            material.color = transparentColor;
+        }
         collision = false;
 		counterCollision = 0;
     }
 
     void OnTriggerEnter(Collider col)
     {
-		counterCollision++;
-        collision = true;
+        Debug.Log(col.gameObject.name);
+        if(col.gameObject.name != "Terrain-Mountain")
+        {
+            counterCollision++;
+            collision = true;
+
+        }
+		
 
     }
 
     void OnTriggerExit(Collider col)
     {
-
-		counterCollision--;
-		if (counterCollision == 0) {
-			collision = false;
-		}
+        if (col.gameObject.name != "Terrain-Mountain")
+        {
+            counterCollision--;
+            if (counterCollision == 0)
+            {
+                collision = false;
+            }
+        }
 
     }
 	
 
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 
         //Cancel the building creation with mouse right button
         if (Input.GetKeyDown(KeyCode.Mouse1))
@@ -85,8 +111,11 @@ public class BuildingPlacer : MonoBehaviour {
             if(collision)
             {
                 // Change the gameObject color to red, indicating that it is not posible to create the building there
-
-                gameObject.GetComponent<Renderer> ().material.color = red;
+                foreach(Material material in GetComponent<Renderer>().materials)
+                {
+                    material.color = red;
+                }
+                
 
 			} 
 			else if(Input.GetKeyUp (KeyCode.Mouse0))  
@@ -95,17 +124,29 @@ public class BuildingPlacer : MonoBehaviour {
 
                 gameObject.GetComponent<Renderer> ().material.color = transparentColor;
 
-                //GameController.Instance.enabled = true;
+                //GameObject original color with transparency
+                int i = 0;
+                foreach (Material material in GetComponent<Renderer>().materials)
+                {
+                    material.CopyPropertiesFromMaterial(originalMaterials[i]);
 
-                GameController.Instance.buildingConstruction(gameObject.transform.position);
+                    i++;
+                }
 
+                Troop t = new Troop(GameController.Instance.getSelectedUnits().units);
+                GameController.Instance.buildingConstruction(gameObject.transform.position,t);
+                gameObject.GetComponent<LOSEntity>().IsRevealer = true;
                 enabled = false;
 				Destroy (this);
 				
 			} else {
-                //GameObject original color with transparency
 
-				gameObject.GetComponent<Renderer> ().material.color = transparentColor;
+                // Change the gameObject color to transparent color, indicating that it is posible to create the building there
+                foreach (Material material in GetComponent<Renderer>().materials)
+                {
+                    material.color = transparentColor;
+                }
+                
 			}
 		}
 	
