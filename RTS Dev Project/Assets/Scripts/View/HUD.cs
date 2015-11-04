@@ -103,37 +103,37 @@ public class HUD : MonoBehaviour
         {
             // Get focused unit of the troop
             Identity identity = troop.FocusedUnit.GetComponent<Identity>();
-            
-			if (identity == null) return;
 
-			UnitData unitData = DataManager.Instance.unitDatas[identity.unitType];
+            if (identity == null) return;
+
+            UnitData unitData = DataManager.Instance.unitDatas[identity.unitType];
             // Update preview image and name
             previewImage.sprite = unitData.preview;
-			nameText.text = identity.name;
+            nameText.text = identity.name;
 
 
 
             // Update Action buttons
-			UnitType unitType = identity.unitType;
+            UnitType unitType = identity.unitType;
 
             List<UnitType> creations = actionsData.creationPermissions[unitType];
-            for( int i = 0; i < creations.Count; i++ )
+            for (int i = 0; i < creations.Count; i++)
             {
                 UnitType type = creations[i];
                 // get the unit data of the unit that can be created
-				UnitData creationData = DataManager.Instance.unitDatas[type];
+                UnitData creationData = DataManager.Instance.unitDatas[type];
 
                 // Create a block prefab with the image of the action
-				addBlock(createPanel, creationData.preview, () => { GameController.Instance.OnCreate(identity,type);  });
-               
-                
+                addBlock(createPanel, creationData.preview, () => { GameController.Instance.OnCreate(identity, type); });
+
+
             }
 
             // if the unittype is mobile add move actons
-            if( !unitType.isBuilding() )
+            if (!unitType.isBuilding())
             {
                 List<MoveData> movements = actionsData.movements;
-                for( int i = 0; i < movements.Count; i++ )
+                for (int i = 0; i < movements.Count; i++)
                 {
                     MoveData movement = movements[i];
                     addBlock(movePanel, movement.preview, () => { movement.codeToExecute.Invoke(); });
@@ -142,19 +142,33 @@ public class HUD : MonoBehaviour
 
             }
 
-            // Add sacrifice action
-            List<SpecialData> specials = actionsData.specials;
-            for (int i = 0; i < specials.Count; i++)
+            // Add sacrifice action if it is not an objective
+            Objective objective = focusedUnit.GetComponent<Objective>();
+            if (objective == null)
             {
-                SpecialData special = specials[i];
-                addBlock(specialPanel, special.preview, () => { special.codeToExecute.Invoke(); });
+                List<SpecialData> specials = actionsData.specials;
+                for (int i = 0; i < specials.Count; i++)
+                {
+                    SpecialData special = specials[i];
+                    addBlock(specialPanel, special.preview, () => { special.codeToExecute.Invoke(); });
+                }
+
+                updateInteractable(focusedUnit);
+
+                updateControl(focusedUnit);
+                updateHealth(focusedUnit);
+                updateDelayedActions(focusedUnit);
+
+                previewImage.color = Color.white;
+
             }
+            else
+            {
+                // Add controller color to preview if its an objective
+                Civilization civilization = objective.Controller;
 
-            updateInteractable(focusedUnit);
-
-            updateControl(focusedUnit);
-            updateHealth(focusedUnit);
-            updateDelayedActions(focusedUnit);
+                previewImage.color = DataManager.Instance.civilizationDatas[civilization].color;
+            }
         }
     }
 

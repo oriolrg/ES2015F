@@ -49,6 +49,7 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
         if (GUI.Button(buttonRect, new GUIContent("X", "Clear dictionary"), EditorStyles.miniButtonRight))
         {
             ClearDictionary();
+            EditorUtility.SetDirty(property.serializedObject.targetObject);
         }
 
         if (!_Foldout)
@@ -97,6 +98,7 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
             if (GUI.Button(removeRect, new GUIContent("x", "Remove item"), EditorStyles.miniButtonRight))
             {
                 RemoveItem(key);
+                EditorUtility.SetDirty(property.serializedObject.targetObject);
                 break;
             }
         }

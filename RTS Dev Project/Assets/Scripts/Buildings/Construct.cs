@@ -42,12 +42,13 @@ public class Construct : MonoBehaviour {
             }
         }
         if (inConstruction)
-            GetComponentInParent<Animator>().SetBool("running", false);
+            GetComponentInParent<Animator>().SetBool("chop", true);
         if (inConstruction == false && usingDust != null)
         {
             
             Destroy(usingDust);
             usingDust = null;
+            GetComponentInParent<Animator>().SetBool("chop", false);
         }
 
     }

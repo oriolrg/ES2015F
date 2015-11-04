@@ -496,6 +496,7 @@ public class GameController : MonoBehaviour
 
     public void checkMapControl()
     {
+        hud.updateSelection(selectedUnits);
         Civilization possibleWinner = objectives[0].Controller;
         foreach(Objective objective in objectives)
         {
