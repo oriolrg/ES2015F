@@ -4,7 +4,7 @@ using System.Collections;
 public class CameraGoTo : MonoBehaviour {
 
 	[SerializeField] private Transform defaultTransform;
-	[SerializeField] private float goToSpeed = 1f;
+	[SerializeField] private float goToSpeed = 10f;
 
 	void Start() {
 		transform.position = defaultTransform.position;
@@ -33,7 +33,7 @@ public class CameraGoTo : MonoBehaviour {
 				yield break;
 			}*/
 				
-				if (timeSinceStarted >= 1f)
+				if (timeSinceStarted >= smoothTime)
 					yield break;
 			
 			// Otherwise, continue next frame

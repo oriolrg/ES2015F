@@ -42,6 +42,8 @@ ModelImporter:
     100068: Sphere_031
     100070: Sphere_032
     100072: Sphere_033
+    100074: Circle_MeshPart0
+    100076: Circle_MeshPart1
     400000: Circle
     400002: //RootNode
     400004: Plane
@@ -79,6 +81,8 @@ ModelImporter:
     400068: Sphere_031
     400070: Sphere_032
     400072: Sphere_033
+    400074: Circle_MeshPart0
+    400076: Circle_MeshPart1
     2300000: Circle
     2300002: Plane
     2300004: Sphere
@@ -115,6 +119,8 @@ ModelImporter:
     2300066: Sphere_031
     2300068: Sphere_032
     2300070: Sphere_033
+    2300072: Circle_MeshPart0
+    2300074: Circle_MeshPart1
     3300000: Circle
     3300002: Plane
     3300004: Sphere
@@ -151,6 +157,8 @@ ModelImporter:
     3300066: Sphere_031
     3300068: Sphere_032
     3300070: Sphere_033
+    3300072: Circle_MeshPart0
+    3300074: Circle_MeshPart1
     4300000: Sphere_033
     4300002: Sphere_032
     4300004: Sphere_031
@@ -187,6 +195,8 @@ ModelImporter:
     4300066: Plane
     4300068: Circle
     4300070: Sphere_014
+    4300072: Circle_MeshPart0
+    4300074: Circle_MeshPart1
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -245,8 +255,10 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

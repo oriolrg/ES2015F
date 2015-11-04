@@ -16,9 +16,11 @@ ModelImporter:
     2300000: columns
     2300002: house
     2300004: house_001
+    2300006: //RootNode
     3300000: columns
     3300002: house
     3300004: house_001
+    3300006: //RootNode
     4300000: columns
     4300002: house
     4300004: house_001
@@ -80,8 +82,10 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

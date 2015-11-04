@@ -18,48 +18,105 @@ public class CameraController : MonoBehaviour {
     //public float smoothTime = 0.005f; //Controls the velocity of the movement
     //public float deltaMovement = 0.1f; //Error margin for the movement final position
 
+
+    private Vector3 size;
+    private Vector3 origin;
+
+
     void Start(){
-        
+
         //goTo(2,-8);
+        size = GameObject.FindGameObjectWithTag("prova").GetComponent<Renderer>().bounds.size;
+        origin = GameObject.FindGameObjectWithTag("prova").transform.position;
+        
     }
 
 
     void Update(){
+
+        RaycastHit hit;
 		bool movement = false;
 
 		if ( (Input.mousePosition.x >= Screen.width - maxMarginDelta && Input.mousePosition.x <= Screen.width - minMarginDelta) || (Input.GetKey(KeyCode.RightArrow)) || (Input.GetKey(KeyCode.D)) )
         {
-            // Move the camera to the right
-            transform.position += mRightDirection * Time.deltaTime * speed;
-			movement = true;
+            
+            if (Physics.Raycast(transform.position, transform.forward, out hit))
+            {
+                //Debug.Log("Entrooooooooooooooooooo"+hit.collider.name);
+                //Debug.Log("origin"+hit.point);
+                //Debug.Log("if" + hit.point.x +"," origin.x + size.x / 2f + 4f);
+                if (hit.point.x < origin.x + size.x / 2f + 4f)
+                {
+                   
+                    transform.position += mRightDirection * Time.deltaTime * speed;
+                    movement = true;
+                }
+            }
+
+                // Move the camera to the right
+                //transform.position += mRightDirection * Time.deltaTime * speed;
+		        //movement = true;
         }
 
 
-		if ( (Input.mousePosition.x <= maxMarginDelta && Input.mousePosition.x >= minMarginDelta) || (Input.GetKey(KeyCode.LeftArrow)) || (Input.GetKey(KeyCode.A)) )
+        if ((Input.mousePosition.x <= maxMarginDelta && Input.mousePosition.x >= minMarginDelta) || (Input.GetKey(KeyCode.LeftArrow)) || (Input.GetKey(KeyCode.A)))
         {
-            // Move the camera to the left
-			transform.position += mLeftDirection * Time.deltaTime * speed;
-			movement = true;
+            
+            if (Physics.Raycast(transform.position, transform.forward, out hit))
+            {
+                if (hit.point.x > origin.x - size.x / 2f - 4f)
+                {
+                    
+                    transform.position += mLeftDirection * Time.deltaTime * speed;
+                    movement = true;
+                }
+
+                // Move the camera to the left
+                //transform.position += mLeftDirection * Time.deltaTime * speed;
+                //movement = true;
+            }
         }
 
 
-		if ( (Input.mousePosition.y >= Screen.height - maxMarginDelta && Input.mousePosition.y <= Screen.height - minMarginDelta) || (Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.W)) )
+        if ((Input.mousePosition.y >= Screen.height - maxMarginDelta && Input.mousePosition.y <= Screen.height - minMarginDelta) || (Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.W)))
         {
+           
             // Move the camera up
-			transform.position += mUpDirection * Time.deltaTime * speed;
-			movement = true;
+            if (Physics.Raycast(transform.position, transform.forward, out hit))
+            {
+                //Debug.Log(hit.point);
+                if (hit.point.z < origin.z + size.z / 2f + 4f)
+                {
+                   
+                    transform.position += mUpDirection * Time.deltaTime * speed;
+                    movement = true;
+                }
+
+                //transform.position += mUpDirection * Time.deltaTime * speed;
+                //movement = true;
+            }
         }
 
 
-		if ( (Input.mousePosition.y <= maxMarginDelta && Input.mousePosition.y >= minMarginDelta) || (Input.GetKey(KeyCode.DownArrow)) || (Input.GetKey(KeyCode.S)) )
+        if ((Input.mousePosition.y <= maxMarginDelta && Input.mousePosition.y >= minMarginDelta) || (Input.GetKey(KeyCode.DownArrow)) || (Input.GetKey(KeyCode.S)))
         {
+            
             // Move the camera down
-			transform.position += mDownDirection * Time.deltaTime * speed;
-			movement = true;
+            if (Physics.Raycast(transform.position, transform.forward, out hit))
+            {
+                if (hit.point.z > origin.z - size.z / 2f - 4f)
+                {
+                    
+                    transform.position += mDownDirection * Time.deltaTime * speed;
+                    movement = true;
+                }
+
+                //transform.position += mDownDirection * Time.deltaTime * speed;
+                //movement = true;
+            }
         }
 
-		if (movement)
-			minimapCamera.GetComponent<MinimapCamera>().mainCameraTransformUpdate();
+        if (movement) minimapCamera.GetComponent<MinimapCamera>().mainCameraTransformUpdate();
     }
 
 
