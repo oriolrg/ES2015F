@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEditor;
+
 [Serializable]
 public enum UnitType
 {
@@ -12,8 +13,9 @@ public enum UnitType
     TownCenter,
     Barracs,
     Stable,
-    Archery
-    
+    Archery,
+
+    Objective    
 }
 
 public static class UnitExtensions
@@ -24,16 +26,16 @@ public static class UnitExtensions
             unit == UnitType.TownCenter || 
             unit == UnitType.Barracs || 
             unit == UnitType.Stable || 
-            unit == UnitType.Archery;
+            unit == UnitType.Archery ||
+            unit == UnitType.Objective;
     }
-
-    public static T GetComponentOrEnd<T>( this GameObject go )
+    public static T GetComponentOrEnd<T>(this GameObject go)
     {
         T result = go.GetComponent<T>();
-        
-        if( result == null )
+
+        if (result == null)
         {
-            Debug.LogError("Required component not found in " + go.name +". Aborting");
+            Debug.LogError("Required component not found in " + go.name + ". Aborting");
             EditorApplication.isPlaying = false;
             Application.Quit();
         }

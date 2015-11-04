@@ -51,7 +51,7 @@ public class UnitMovement : MonoBehaviour {
 		targetPos = target.transform.position;
 		hasTarget = true;
         
-        if (animator != null) animator.SetBool("running", true);
+        if (animator != null) animator.SetBool("walk", true);
 
 		status = Status.running;
 	}
@@ -104,7 +104,7 @@ public class UnitMovement : MonoBehaviour {
 				}
 				hasTarget = false;
 				var animator = GetComponent<Animator>();
-				if (animator != null) animator.SetBool("running", false);
+				if (animator != null) animator.SetBool("walk", false);
 				status = Status.idle;
             }
 

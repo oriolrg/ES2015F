@@ -300,7 +300,7 @@ public class GameController : MonoBehaviour
             // Adjust to terrain hit
             Ray ray = new Ray(position, -Vector3.up);
             RaycastHit hitInfo = new RaycastHit();
-            Debug.DrawRay(position, -Vector3.up);
+
             if (Physics.Raycast(ray, out hitInfo))
             {
                 GameObject go = Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity) as GameObject;
@@ -503,8 +503,25 @@ public class GameController : MonoBehaviour
                 return;
         }
 
-        if( possibleWinner != Civilization.Neutral )
+        if (possibleWinner != Civilization.Neutral)
+        {
             hud.startCountdown(Victory.MapControl, possibleWinner);
+            InvokeRepeating("ensureWinner", 1, 1);
+        }
+    }
+
+    public void ensureWinner()
+    {
+        Civilization possibleWinner = objectives[0].Controller;
+        foreach (Objective objective in objectives)
+        {
+            if (objective.Controller != possibleWinner)
+            {
+                hud.stopCountdown(Victory.MapControl);
+                return;
+            }
+                
+        }
     }
     public void checkWin()
     {
@@ -555,7 +572,6 @@ public class GameController : MonoBehaviour
         spawner.initBounds();
         Vector3 spawningPoint = spawner.SpawningPoint;
         
-        print(spawningPoint);
         /* adjust spawning point
         Ray ray = new Ray(building.transform.position + 5 * building.transform.up + 10 * building.transform.forward, -Vector3.up);
         
@@ -579,7 +595,6 @@ public class GameController : MonoBehaviour
         GameObject newUnit = Instantiate(unit, spawningPoint, Quaternion.identity) as GameObject;
         addSelectedPrefab(newUnit);
         // Set unit as parent in hierarchy
-        print(newUnit.name);
         newUnit.transform.SetParent(unitsParent.transform);
         GameObject target = Instantiate(targetPrefab, spawner.RallyPoint, Quaternion.identity) as GameObject;
         target.transform.SetParent(targetsParent.transform);

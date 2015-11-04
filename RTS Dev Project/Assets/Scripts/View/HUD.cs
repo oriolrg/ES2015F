@@ -154,7 +154,7 @@ public class HUD : MonoBehaviour
 
             updateControl(focusedUnit);
             updateHealth(focusedUnit);
-            //updateDelayedActions(focusedUnit);
+            updateDelayedActions(focusedUnit);
         }
     }
 
@@ -241,7 +241,7 @@ public class HUD : MonoBehaviour
 
             CivilizationValueDictionary control = objective.control;
 
-            if (control.Max(x => x.Value) > .99f)
+            if ( control.Count > 0 && control.Max(x => x.Value) > .99f)
                 Invoke("DisappearControl", 3);
             else
             {

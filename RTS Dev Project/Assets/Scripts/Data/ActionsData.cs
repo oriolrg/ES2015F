@@ -17,7 +17,8 @@ public class ActionsData : ScriptableObject
         { UnitType.TownCenter, new List<UnitType>() {UnitType.Civilian } },
         { UnitType.Barracs, new List<UnitType>() { UnitType.Soldier } },
         { UnitType.Stable, new List<UnitType>() { UnitType.Knight } },
-        { UnitType.Archery, new List<UnitType>() {UnitType.Archer } }
+        { UnitType.Archery, new List<UnitType>() {UnitType.Archer } },
+        { UnitType.Objective, new List<UnitType>() { } }
     };
     public List<MoveData> movements;
     public List<SpecialData> specials;

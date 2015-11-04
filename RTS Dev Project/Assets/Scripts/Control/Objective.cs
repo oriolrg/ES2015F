@@ -24,22 +24,36 @@ public class Objective : MonoBehaviour
 		if (maximalCivilization != Civilization.Neutral) 
 		{
 			Civilization c = maximalCivilization;
-			if (control.ContainsKey (c)) {
+			if (control.ContainsKey (c))
+            {
 				control [c] = Mathf.Min (control [c] + tickValue, 1 + tickValue - control.Where (x => x.Key != c).Sum (x => x.Value));
 			} else {
 
 				control.Add (c, tickValue);
 			}
-			if (controlDistributed ()) {
+			if (controlDistributed ())
+            {
 				float toSubstract = substractValue ();
-				foreach (Civilization other in control.Keys.ToList()) {
+
+                List<Civilization> lostCivilizations = new List<Civilization>();
+
+				for( int i = 0; i < control.Count; i++ )
+                {
+                    Civilization otherCiv = control.Keys.ToList()[i];
 					// Substract control to the rest of the civilizations
-					if (other != c) {
-						control [other] = Mathf.Max (0, control [other] - toSubstract);
-						if (control [other] <= 0)
-							control.Remove (other);
+					if (otherCiv != c && control.ContainsKey(otherCiv))
+                    {
+                        control [otherCiv] = Mathf.Max (0, control [otherCiv] - toSubstract);
+                        
+                        if (control [otherCiv] <= 0)
+							lostCivilizations.Add (otherCiv);
 					}
 				}
+
+                for( int i = 0; i < lostCivilizations.Count; i++ )
+                {
+                    control.Remove(lostCivilizations[i]);
+                }
 
                 if (control.Count == 1)
                 {

@@ -13,7 +13,6 @@ public class Spawner : MonoBehaviour
 
     public void initBounds()
     {
-        print("in init");
         BoxCollider box = GetComponent<BoxCollider>();
 
         if (box != null)
@@ -25,6 +24,5 @@ public class Spawner : MonoBehaviour
             SpawningPoint = transform.position + transform.forward * 3;
         }
         RallyPoint = SpawningPoint + transform.forward * 5;
-        print(SpawningPoint);
     }
 }

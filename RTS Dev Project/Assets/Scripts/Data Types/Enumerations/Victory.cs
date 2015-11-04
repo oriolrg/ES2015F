@@ -10,7 +10,7 @@ public static class VictoryExtensions
 {
     public static int countdownTime( this Victory victory )
     {
-        return 5;
+        return 50;
     }
 
     public static string ToString( this Victory victory )

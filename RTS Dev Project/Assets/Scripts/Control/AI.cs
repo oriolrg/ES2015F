@@ -220,7 +220,7 @@ public class AI : MonoBehaviour {
         resourcesCPU[res] -= value;
     }
 
-    public class Task : MonoBehaviour
+    public class Task
     {
         public Method method;
         public Task(Method m)

@@ -25,7 +25,6 @@ public class Countdown : MonoBehaviour
 
     public void setTimer( int time, UnityAction callback )
     {
-        print("called");
         if (!counting)
         {
             counting = true;
