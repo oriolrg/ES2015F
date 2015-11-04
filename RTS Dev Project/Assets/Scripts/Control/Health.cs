@@ -36,11 +36,11 @@ public class Health : MonoBehaviour
         GameController.Instance.updateHealth(gameObject);
     }
 
-    private void die()
+    public void die()
     {
         GameController.Instance.removeUnit(gameObject);
         Animator ani = GetComponent<Animator>();
-        if (ani != null) ani.SetBool("dead", true);
+        if (ani != null) ani.SetBool("die", true);
         Destroy(gameObject, 3);
     }
 }

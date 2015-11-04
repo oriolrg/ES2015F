@@ -772,8 +772,17 @@ public class GameController : MonoBehaviour
 
     public void OnSacrifice()
     {
-        print("sacrifice");
-        GameController.Instance.hud.showMessageBox("Not implemented");
+        GameObject unit = GameController.Instance.selectedUnits.FocusedUnit;
+        Health health = unit.GetComponent<Health>();
+
+        if(health != null )
+        {
+            health.die();
+        }
+        else
+        {
+            GameController.Instance.hud.showMessageBox("Not implemented");
+        }
     }
 
     public void OnAttack()
