@@ -27,7 +27,7 @@ public class BuildingPlacer : MonoBehaviour {
     void OnTriggerEnter(Collider col)
     {
         Debug.Log(col.gameObject.name);
-        if(col.gameObject.name != "Terrain")
+        if(col.gameObject.name != "Terrain-Mountain")
         {
             counterCollision++;
             collision = true;
@@ -39,7 +39,7 @@ public class BuildingPlacer : MonoBehaviour {
 
     void OnTriggerExit(Collider col)
     {
-        if (col.gameObject.name != "Terrain")
+        if (col.gameObject.name != "Terrain-Mountain")
         {
             counterCollision--;
             if (counterCollision == 0)
