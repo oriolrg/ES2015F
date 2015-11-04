@@ -186,7 +186,7 @@ public class AI : MonoBehaviour {
         resourcesFood.Remove(r);
         resourcesMetal.Remove(r);
         resourcesWood.Remove(r);
-        foreach (GameObject vil in civilians) if (vil.GetComponent<CollectResources>().targetToCollect == r) reassignResourceToCivilian(vil);
+        //foreach (GameObject vil in civilians) if (vil.GetComponent<CollectResources>().targetToCollect == r) reassignResourceToCivilian(vil);
        
 
     }
