@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: a6e4d0ea120f70b45ae40549890f3e98
-timeCreated: 1446232201
+guid: 050d2969141822b459f99662c2ec5c9d
+timeCreated: 1447326526
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
@@ -9,8 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: wood
-    4300002: house
+    4300000: roof
     7400000: Default Take
     9500000: //RootNode
   materials:
