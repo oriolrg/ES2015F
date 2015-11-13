@@ -36,19 +36,24 @@ public class CameraController : MonoBehaviour {
 
         RaycastHit hit;
 		bool movement = false;
+        Vector3 n;
+        
 
-		if ( (Input.mousePosition.x >= Screen.width - maxMarginDelta && Input.mousePosition.x <= Screen.width - minMarginDelta) || (Input.GetKey(KeyCode.RightArrow)) || (Input.GetKey(KeyCode.D)) )
+        if ( (Input.mousePosition.x >= Screen.width - maxMarginDelta && Input.mousePosition.x <= Screen.width - minMarginDelta) || (Input.GetKey(KeyCode.RightArrow)) || (Input.GetKey(KeyCode.D)) )
         {
             
             if (Physics.Raycast(transform.position, transform.forward, out hit))
             {
                 //Debug.Log("Entrooooooooooooooooooo"+hit.collider.name);
-                //Debug.Log("origin"+hit.point);
+                Debug.Log("origin"+hit.point);
                 //Debug.Log("if" + hit.point.x +"," origin.x + size.x / 2f + 4f);
-                if (hit.point.x < origin.x + size.x / 2f + 4f)
+                if ((hit.point.x < origin.x + size.x / 2f + 4f))
                 {
-                   
-                    transform.position += mRightDirection * Time.deltaTime * speed;
+
+                    //transform.position += mRightDirection * Time.deltaTime * speed;
+                    //transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
+                    n = new Vector3(transform.right.x, 0, transform.right.z);
+                    transform.Translate(n * speed * Time.deltaTime, Space.World);
                     movement = true;
                 }
             }
@@ -64,10 +69,13 @@ public class CameraController : MonoBehaviour {
             
             if (Physics.Raycast(transform.position, transform.forward, out hit))
             {
-                if (hit.point.x > origin.x - size.x / 2f - 4f)
+                if ((hit.point.x > origin.x - size.x / 2f - 4f))
                 {
-                    
-                    transform.position += mLeftDirection * Time.deltaTime * speed;
+
+                    //transform.position += mLeftDirection * Time.deltaTime * speed;
+                    //transform.Translate(new Vector3(-speed * Time.deltaTime, 0, 0));
+                    n = new Vector3(transform.right.x, 0, transform.right.z);
+                    transform.Translate(-n * speed * Time.deltaTime, Space.World);
                     movement = true;
                 }
 
@@ -84,11 +92,14 @@ public class CameraController : MonoBehaviour {
             // Move the camera up
             if (Physics.Raycast(transform.position, transform.forward, out hit))
             {
-                //Debug.Log(hit.point);
-                if (hit.point.z < origin.z + size.z / 2f + 4f)
+                Debug.Log(hit.point);
+                if ((hit.point.z < origin.z + size.z / 2f + 4f))
                 {
-                   
-                    transform.position += mUpDirection * Time.deltaTime * speed;
+
+                    //transform.position += mUpDirection * Time.deltaTime * speed;
+                    //transform.Translate(new Vector3(0, speed * Time.deltaTime, speed * Time.deltaTime));
+                    n = new Vector3(transform.forward.x, 0, transform.forward.z);
+                    transform.Translate(n * speed * Time.deltaTime, Space.World);
                     movement = true;
                 }
 
@@ -104,10 +115,13 @@ public class CameraController : MonoBehaviour {
             // Move the camera down
             if (Physics.Raycast(transform.position, transform.forward, out hit))
             {
-                if (hit.point.z > origin.z - size.z / 2f - 4f)
+                if ((hit.point.z > origin.z - size.z / 2f - 4f))
                 {
-                    
-                    transform.position += mDownDirection * Time.deltaTime * speed;
+
+                    //transform.position += mDownDirection * Time.deltaTime * speed;
+                    //transform.Translate(new Vector3(0, -speed * Time.deltaTime, -speed * Time.deltaTime));
+                    n = new Vector3(transform.forward.x, 0, transform.forward.z);
+                    transform.Translate(-n * speed * Time.deltaTime, Space.World);
                     movement = true;
                 }
 

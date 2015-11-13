@@ -31,7 +31,7 @@ public class CameraRotation : MonoBehaviour {
             Debug.Log(target.transform.position);
             target.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
             Debug.Log(target.transform.position);
-            transform.LookAt(target.transform);
+            //transform.LookAt(target.transform);
         }
         //offset = target.transform.position - transform.position;
         offset = new Vector3(0,-9.5f,9.5f);
@@ -88,9 +88,9 @@ public class CameraRotation : MonoBehaviour {
                 Quaternion rotation = Quaternion.Euler(0, desiredAngle, 0);
                 Vector3 aux = target.transform.position - (rotation * offset);
                 transform.position = new Vector3(aux.x,transform.position.y,aux.z);
-                Debug.Log("ara"+transform.position);
+                Debug.Log("ara"+transform.rotation);
                 transform.LookAt(target.transform);
-                Debug.Log("despres" + transform.position);
+                Debug.Log("despres" + transform.rotation);
                 //transform.position = new Vector3(transform.position.x,20.9f,transform.position.z);
 
 
