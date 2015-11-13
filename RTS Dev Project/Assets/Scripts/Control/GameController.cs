@@ -24,6 +24,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private GameObject selectedPrefab;
     [SerializeField]
+    private GameObject teamCirclePrefab;
+    [SerializeField]
 	private GameObject targetPrefab;
 
     [SerializeField]
@@ -70,6 +72,7 @@ public class GameController : MonoBehaviour
         initResourceValues();
         spawnRandomObjectives();
         addSelectedPrefabstoCurrentUnits();
+        addTeamCirclePrefabstoCurrentUnits();
     }
 
     // Update is called once per frame
@@ -605,6 +608,7 @@ public class GameController : MonoBehaviour
 
         GameObject newUnit = Instantiate(unit, spawningPoint, Quaternion.identity) as GameObject;
         addSelectedPrefab(newUnit);
+        addTeamCirclePrefab(newUnit);
         // Set unit as parent in hierarchy
         newUnit.transform.SetParent(unitsParent.transform);
         GameObject target = Instantiate(targetPrefab, spawner.RallyPoint, Quaternion.identity) as GameObject;
@@ -629,7 +633,8 @@ public class GameController : MonoBehaviour
         building.tag = "Ally";
 
         addSelectedPrefab(building);
-        
+        addTeamCirclePrefab(building);
+
         building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
         
         updateInteractable();
@@ -668,6 +673,7 @@ public class GameController : MonoBehaviour
         GameObject building = Instantiate(prefab, position, gameObject.transform.rotation) as GameObject;
         building.tag = "Ally";
         addSelectedPrefab(building);
+        addTeamCirclePrefab(building);
 
         building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
 
@@ -768,7 +774,6 @@ public class GameController : MonoBehaviour
         selectedProj.transform.up = new Vector3(0,0,1);
         SelectionCircle script = selectedProj.GetComponent<SelectionCircle>();
         if (script != null) script.init();
-
     }
 
     public void addSelectedPrefabstoCurrentUnits()
@@ -777,6 +782,37 @@ public class GameController : MonoBehaviour
         foreach( GameObject ally in allies )
         {
             addSelectedPrefab(ally);
+        }
+    }
+
+    public void addTeamCirclePrefab(GameObject go)
+    {
+        Identity iden = go.GetComponent<Identity>();
+        GameObject teamProj = Instantiate(teamCirclePrefab, go.transform.position + new Vector3(0, 5, 0), Quaternion.identity) as GameObject;
+        //selectedProj.transform.Rotate(90, 0, 0);
+        teamProj.name = "TeamCircle";
+        teamProj.SetActive(true);
+        teamProj.transform.SetParent(go.transform);
+        teamProj.transform.up = new Vector3(0, 0, 1);
+        TeamCircleProjector script = teamProj.GetComponent<TeamCircleProjector>();
+        if (script != null)
+        {
+            if (iden != null) script.initWithTeamColor(iden);
+            else script.init();
+        }
+    }
+
+    public void addTeamCirclePrefabstoCurrentUnits()
+    {
+        GameObject[] allies = GameObject.FindGameObjectsWithTag("Ally");
+        foreach (GameObject ally in allies)
+        {
+            addTeamCirclePrefab(ally);
+        }
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            addTeamCirclePrefab(enemy);
         }
     }
 

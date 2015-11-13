@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class TeamCircleProjector : MonoBehaviour {
-
-    private GameObject projector;
+    private Bounds parentBounds;
+    private Projector projector;
 
     // Use this for initialization
     void Start()
@@ -37,7 +37,13 @@ public class TeamCircleProjector : MonoBehaviour {
 
         if (parentBounds != null && projector != null)
         {
-            projector.orthographicSize = Mathf.Max(parentBounds.extents.x, parentBounds.extents.z);
+            projector.orthographicSize = Mathf.Max(parentBounds.extents.x, parentBounds.extents.z)*1.5f;
         }
+    }
+
+    public void initWithTeamColor(Identity iden)
+    {
+        init();
+        projector.material.color = DataManager.Instance.civilizationDatas[iden.civilization].color;
     }
 }
