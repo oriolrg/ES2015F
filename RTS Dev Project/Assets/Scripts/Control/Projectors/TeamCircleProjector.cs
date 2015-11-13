@@ -37,13 +37,13 @@ public class TeamCircleProjector : MonoBehaviour {
 
         if (parentBounds != null && projector != null)
         {
-            projector.orthographicSize = Mathf.Max(parentBounds.extents.x, parentBounds.extents.z)*1.5f;
+            projector.orthographicSize = Mathf.Max(parentBounds.extents.x, parentBounds.extents.z)*2.5f;
         }
     }
 
     public void initWithTeamColor(Identity iden)
     {
         init();
-        projector.material.color = DataManager.Instance.civilizationDatas[iden.civilization].color;
+        projector.material = DataManager.Instance.civilizationDatas[iden.civilization].material;
     }
 }

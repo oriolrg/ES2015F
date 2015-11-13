@@ -70,9 +70,9 @@ public class GameController : MonoBehaviour
     {
         selectedUnits = new Troop();
         initResourceValues();
+        addTeamCirclePrefabstoCurrentUnits();
         spawnRandomObjectives();
         addSelectedPrefabstoCurrentUnits();
-        addTeamCirclePrefabstoCurrentUnits();
     }
 
     // Update is called once per frame
@@ -799,6 +799,7 @@ public class GameController : MonoBehaviour
         {
             if (iden != null) script.initWithTeamColor(iden);
             else script.init();
+            Debug.Log(iden.civilization);
         }
     }
 
@@ -807,11 +808,14 @@ public class GameController : MonoBehaviour
         GameObject[] allies = GameObject.FindGameObjectsWithTag("Ally");
         foreach (GameObject ally in allies)
         {
+            Debug.Log("Només he d'apareixer 4 vegades");
             addTeamCirclePrefab(ally);
         }
+
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemies)
         {
+            Debug.Log("Només he d'apareixer 1 vegades");
             addTeamCirclePrefab(enemy);
         }
     }
