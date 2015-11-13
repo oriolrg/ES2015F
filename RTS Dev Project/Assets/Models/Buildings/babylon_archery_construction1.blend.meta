@@ -1,27 +1,15 @@
 fileFormatVersion: 2
-guid: 3dbc97988d727ec4790d08bb65319f87
-timeCreated: 1444650543
+guid: aece984d0459c1d41989c2b567a8be88
+timeCreated: 1447407423
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: columns
-    100002: //RootNode
-    100004: ground
-    100006: house
-    400000: columns
-    400002: //RootNode
-    400004: ground
-    400006: house
-    2300000: columns
-    2300002: ground
-    2300004: house
-    3300000: columns
-    3300002: ground
-    3300004: house
-    4300000: ground
-    4300002: columns
-    4300004: house
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: house
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -80,8 +68,10 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
