@@ -1,23 +1,15 @@
 fileFormatVersion: 2
-guid: 7809125ba712fde4ab07921828ca10c5
+guid: 5a1fa23d3affb44428f51dc7e2acf283
+timeCreated: 1447518923
+licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: Circle_004
-    100002: //RootNode
-    100004: Plane
-    400000: Circle_004
-    400002: //RootNode
-    400004: Plane
-    2300000: Circle_004
-    2300002: Plane
-    2300004: //RootNode
-    3300000: Circle_004
-    3300002: Plane
-    3300004: //RootNode
-    4300000: Circle_004
-    4300002: Plane
-    4300004: horseshoe_escut
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: horseshoe_escut
     7400000: Default Take
     9500000: //RootNode
   materials:
