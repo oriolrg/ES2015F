@@ -29,6 +29,7 @@ public class CameraController : MonoBehaviour {
         //goTo(2,-8);
         //size = GameObject.FindGameObjectWithTag("prova").GetComponent<Renderer>().bounds.size;
         //origin = GameObject.FindGameObjectWithTag("prova").transform.position;
+        Debug.Log("start");
         
     }
 
@@ -39,7 +40,8 @@ public class CameraController : MonoBehaviour {
         RaycastHit[] hits;
         bool movement = false;
         Vector3 n;
-        
+        bool found = false;
+
 
         if ( (Input.mousePosition.x >= Screen.width - maxMarginDelta && Input.mousePosition.x <= Screen.width - minMarginDelta) || (Input.GetKey(KeyCode.RightArrow)) || (Input.GetKey(KeyCode.D)) )
         {
@@ -56,13 +58,17 @@ public class CameraController : MonoBehaviour {
 
             
             hits = Physics.RaycastAll(transform.position, transform.forward);
-            hit = hits[0];
+
             for (int i = 0; i < hits.Length; i++)
             {
                 hit = hits[i];
-                if (hit.collider.gameObject.tag == "prova") break;
+                if (hit.collider.gameObject.tag == "prova")
+                {
+                    found = true;
+                    break;
+                }
             }
-            if (hit.collider.gameObject.tag != "prova")
+            if (!found)
             //if (!(Physics.Raycast(transform.position, transform.forward, out hit)))
             {
                 //Debug.Log("Entrooooooooooooooooooo"+hit.collider.name);
@@ -98,13 +104,17 @@ public class CameraController : MonoBehaviour {
 
 
             hits = Physics.RaycastAll(transform.position, transform.forward);
-            hit = hits[0];
+
             for (int i = 0; i < hits.Length; i++)
             {
                 hit = hits[i];
-                if (hit.collider.gameObject.tag == "prova") break;
+                if (hit.collider.gameObject.tag == "prova")
+                {
+                    found = true;
+                    break;
+                }
             }
-            if (hit.collider.gameObject.tag != "prova")
+            if (!found)
             //if (!(Physics.Raycast(transform.position, transform.forward, out hit)))
             {
                 /*if ((hit.point.x > origin.x - size.x / 2f - 4f))
@@ -133,13 +143,17 @@ public class CameraController : MonoBehaviour {
             movement = true;
 
             hits = Physics.RaycastAll(transform.position, transform.forward);
-            hit = hits[0];
+
             for (int i = 0; i < hits.Length; i++)
             {
                 hit = hits[i];
-                if (hit.collider.gameObject.tag == "prova") break;
+                if (hit.collider.gameObject.tag == "prova")
+                {
+                    found = true;
+                    break;
+                }
             }
-            if (hit.collider.gameObject.tag != "prova")
+            if (!found)
             // Move the camera up
             //if (!(Physics.Raycast(transform.position, transform.forward, out hit)))
             {
@@ -172,14 +186,19 @@ public class CameraController : MonoBehaviour {
             transform.Translate(-n * speedV * Time.deltaTime, Space.World);
             movement = true;
 
+            
             hits = Physics.RaycastAll(transform.position, transform.forward);
-            hit = hits[0];
+                
             for (int i = 0; i < hits.Length; i++)
             {
                 hit = hits[i];
-                if (hit.collider.gameObject.tag == "prova") break;
+                if (hit.collider.gameObject.tag == "prova")
+                {
+                    found = true;
+                    break;
+                }
             }
-            if (hit.collider.gameObject.tag != "prova")
+            if (!found)
             //if (!(Physics.Raycast(transform.position, transform.forward, out hit)))
             {
                 /*if ((hit.point.z > origin.z - size.z / 2f - 4f))

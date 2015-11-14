@@ -14,6 +14,7 @@ public class CameraRotation : MonoBehaviour {
         RaycastHit[] hits;
         RaycastHit hit;
         Vector3 hitPoint;
+        bool found = false;
 
         if (Input.GetKey(KeyCode.Q))
         {
@@ -25,13 +26,17 @@ public class CameraRotation : MonoBehaviour {
                 transform.RotateAround(hitPoint, Vector3.up, speed * Time.deltaTime);
 
                 hits = Physics.RaycastAll(transform.position, transform.forward);
-                hit = hits[0];
+
                 for (int i = 0; i < hits.Length; i++)
                 {
                     hit = hits[i];
-                    if (hit.collider.gameObject.tag == "prova") break;
+                    if (hit.collider.gameObject.tag == "prova")
+                    {
+                        found = true;
+                        break;
+                    }
                 }
-                if (hit.collider.gameObject.tag != "prova")
+                if (!found)
                 {
                     transform.RotateAround(hitPoint, -Vector3.up, speed * Time.deltaTime);
                 }
@@ -47,13 +52,17 @@ public class CameraRotation : MonoBehaviour {
                 transform.RotateAround(hitPoint, -Vector3.up, speed * Time.deltaTime);
 
                 hits = Physics.RaycastAll(transform.position, transform.forward);
-                hit = hits[0];
+
                 for (int i = 0; i < hits.Length; i++)
                 {
                     hit = hits[i];
-                    if (hit.collider.gameObject.tag == "prova") break;
+                    if (hit.collider.gameObject.tag == "prova")
+                    {
+                        found = true;
+                        break;
+                    }
                 }
-                if (hit.collider.gameObject.tag != "prova")
+                if (!found)
                 {
 
                     transform.RotateAround(hitPoint, Vector3.up, speed * Time.deltaTime);
