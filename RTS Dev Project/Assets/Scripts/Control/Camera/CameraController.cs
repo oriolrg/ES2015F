@@ -6,8 +6,9 @@ public class CameraController : MonoBehaviour {
 
 	[SerializeField] float maxMarginDelta = 40; // Pixels. The width border at the edge in which the movement work
 	[SerializeField] float minMarginDelta = 1; // Pixels. The width border at the edge in which the movement work
-    
-    public float speed = 5; // Scale. Speed of the movement
+
+    [SerializeField] float speedH = 10; // Scale. Speed of the movement
+    [SerializeField] float speedV = 14;
 
     private Vector3 mRightDirection = Vector3.right; // Direction the camera should move when on the right edge
     private Vector3 mLeftDirection = Vector3.left; // Direction the camera should move when on the left edge
@@ -35,7 +36,8 @@ public class CameraController : MonoBehaviour {
     void Update(){
 
         RaycastHit hit;
-		bool movement = false;
+        RaycastHit[] hits;
+        bool movement = false;
         Vector3 n;
         
 
@@ -43,7 +45,7 @@ public class CameraController : MonoBehaviour {
         {
             //Vector3 auxpos = new Vector3(transform.position.x,transform.position.y,transform.position.z);
             n = new Vector3(transform.right.x, 0, transform.right.z);
-            transform.Translate(n * speed * Time.deltaTime, Space.World);
+            transform.Translate(n * speedH * Time.deltaTime, Space.World);
             movement = true;
             //Debug.Log("1pos" + auxpos);
             //Debug.Log("2transform"+transform.position);
@@ -51,7 +53,17 @@ public class CameraController : MonoBehaviour {
             //transform.Translate(-n * speed * Time.deltaTime, Space.World);
             //Debug.Log("3transform reverse"+transform.position);
 
-            if (!(Physics.Raycast(transform.position, transform.forward, out hit)))
+
+            
+            hits = Physics.RaycastAll(transform.position, transform.forward);
+            hit = hits[0];
+            for (int i = 0; i < hits.Length; i++)
+            {
+                hit = hits[i];
+                if (hit.collider.gameObject.tag == "prova") break;
+            }
+            if (hit.collider.gameObject.tag != "prova")
+            //if (!(Physics.Raycast(transform.position, transform.forward, out hit)))
             {
                 //Debug.Log("Entrooooooooooooooooooo"+hit.collider.name);
                 //Debug.Log("origin"+hit.point);
@@ -67,7 +79,7 @@ public class CameraController : MonoBehaviour {
                     transform.Translate(n * speed * Time.deltaTime, Space.World);
                     movement = true;*/
                 //}
-                transform.Translate(-n * speed * Time.deltaTime, Space.World);
+                transform.Translate(-n * speedH * Time.deltaTime, Space.World);
                 movement = false;
             }
            
@@ -81,10 +93,19 @@ public class CameraController : MonoBehaviour {
         if ((Input.mousePosition.x <= maxMarginDelta && Input.mousePosition.x >= minMarginDelta) || (Input.GetKey(KeyCode.LeftArrow)) || (Input.GetKey(KeyCode.A)))
         {
             n = new Vector3(transform.right.x, 0, transform.right.z);
-            transform.Translate(-n * speed * Time.deltaTime, Space.World);
+            transform.Translate(-n * speedH * Time.deltaTime, Space.World);
             movement = true;
 
-            if (!(Physics.Raycast(transform.position, transform.forward, out hit)))
+
+            hits = Physics.RaycastAll(transform.position, transform.forward);
+            hit = hits[0];
+            for (int i = 0; i < hits.Length; i++)
+            {
+                hit = hits[i];
+                if (hit.collider.gameObject.tag == "prova") break;
+            }
+            if (hit.collider.gameObject.tag != "prova")
+            //if (!(Physics.Raycast(transform.position, transform.forward, out hit)))
             {
                 /*if ((hit.point.x > origin.x - size.x / 2f - 4f))
                 {
@@ -99,7 +120,7 @@ public class CameraController : MonoBehaviour {
                 // Move the camera to the left
                 //transform.position += mLeftDirection * Time.deltaTime * speed;
                 //movement = true;
-                transform.Translate(n * speed * Time.deltaTime, Space.World);
+                transform.Translate(n * speedH * Time.deltaTime, Space.World);
                 movement = false;
             }
         }
@@ -108,11 +129,19 @@ public class CameraController : MonoBehaviour {
         if ((Input.mousePosition.y >= Screen.height - maxMarginDelta && Input.mousePosition.y <= Screen.height - minMarginDelta) || (Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.W)))
         {
             n = new Vector3(transform.forward.x, 0, transform.forward.z);
-            transform.Translate(n * speed * Time.deltaTime, Space.World);
+            transform.Translate(n * speedV * Time.deltaTime, Space.World);
             movement = true;
 
+            hits = Physics.RaycastAll(transform.position, transform.forward);
+            hit = hits[0];
+            for (int i = 0; i < hits.Length; i++)
+            {
+                hit = hits[i];
+                if (hit.collider.gameObject.tag == "prova") break;
+            }
+            if (hit.collider.gameObject.tag != "prova")
             // Move the camera up
-            if (!(Physics.Raycast(transform.position, transform.forward, out hit)))
+            //if (!(Physics.Raycast(transform.position, transform.forward, out hit)))
             {
                 /*Debug.Log(hit.point);
                 if ((hit.point.z < origin.z + size.z / 2f + 4f))
@@ -128,7 +157,7 @@ public class CameraController : MonoBehaviour {
                 //transform.position += mUpDirection * Time.deltaTime * speed;
                 //movement = true;
                 
-                transform.Translate(-n * speed * Time.deltaTime, Space.World);
+                transform.Translate(-n * speedV * Time.deltaTime, Space.World);
                 movement = false;
 
             }
@@ -140,9 +169,18 @@ public class CameraController : MonoBehaviour {
 
             // Move the camera down
             n = new Vector3(transform.forward.x, 0, transform.forward.z);
-            transform.Translate(-n * speed * Time.deltaTime, Space.World);
+            transform.Translate(-n * speedV * Time.deltaTime, Space.World);
             movement = true;
-            if (!(Physics.Raycast(transform.position, transform.forward, out hit)))
+
+            hits = Physics.RaycastAll(transform.position, transform.forward);
+            hit = hits[0];
+            for (int i = 0; i < hits.Length; i++)
+            {
+                hit = hits[i];
+                if (hit.collider.gameObject.tag == "prova") break;
+            }
+            if (hit.collider.gameObject.tag != "prova")
+            //if (!(Physics.Raycast(transform.position, transform.forward, out hit)))
             {
                 /*if ((hit.point.z > origin.z - size.z / 2f - 4f))
                 {
@@ -156,7 +194,7 @@ public class CameraController : MonoBehaviour {
 
                 //transform.position += mDownDirection * Time.deltaTime * speed;
                 //movement = true;
-                transform.Translate(n * speed * Time.deltaTime, Space.World);
+                transform.Translate(n * speedV * Time.deltaTime, Space.World);
                 movement = false;
             }
         }
