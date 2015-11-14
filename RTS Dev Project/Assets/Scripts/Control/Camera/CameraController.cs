@@ -7,8 +7,8 @@ public class CameraController : MonoBehaviour {
 	[SerializeField] float maxMarginDelta = 40; // Pixels. The width border at the edge in which the movement work
 	[SerializeField] float minMarginDelta = 1; // Pixels. The width border at the edge in which the movement work
 
-    [SerializeField] float speedH = 10; // Scale. Speed of the movement
-    [SerializeField] float speedV = 14;
+    [SerializeField] float speedH = 25; // Scale. Speed of the movement
+    [SerializeField] float speedV = 30;
 
     private Vector3 mRightDirection = Vector3.right; // Direction the camera should move when on the right edge
     private Vector3 mLeftDirection = Vector3.left; // Direction the camera should move when on the left edge

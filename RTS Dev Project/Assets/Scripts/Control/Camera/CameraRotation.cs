@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraRotation : MonoBehaviour {
 
-    [SerializeField] float speed=80;
+    [SerializeField] float speed=100;
 	// Use this for initialization
 	void Start () {
 	
