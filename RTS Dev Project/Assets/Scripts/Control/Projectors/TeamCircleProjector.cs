@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class TeamCircleProjector : MonoBehaviour {
     private Bounds parentBounds;
     private Projector projector;
+    private LOSEntity los;
+    public LOSEntity.RevealStates revealState;
 
     // Use this for initialization
     void Start()
@@ -14,7 +17,35 @@ public class TeamCircleProjector : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if (los == null)
+        {
+            los = GetComponentInParent<LOSEntity>();
+            if (los != null)
+            {
+                revealState = los.RevealState;
+                newState();
+            }
+        }
+        else
+        {
+            Debug.Log(los.RevealState);
+            if (revealState != los.RevealState)
+            {
+                revealState = los.RevealState;
+                newState();
+            }
+        }
+    }
 
+    private void newState()
+    {
+        Debug.Log("NewState");
+        if (revealState == LOSEntity.RevealStates.Hidden)
+            projector.enabled = false;
+        if (revealState == LOSEntity.RevealStates.Fogged)
+            projector.enabled = true;
+        if (revealState == LOSEntity.RevealStates.Unfogged)
+            projector.enabled = true;
     }
 
     public void init()
