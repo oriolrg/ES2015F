@@ -17,7 +17,9 @@ public class BuildingPlacer : MonoBehaviour {
 
 		originalColor = gameObject.GetComponent<Renderer> ().material.color;
         transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
-        gameObject.GetComponent<LOSEntity>().IsRevealer = false;
+
+		gameObject.GetComponent<LOSEntity>().enabled = false;
+
         //Make the gameObject a bit transparent. Hacky hacky
         originalMaterials = new List<Material>();
         foreach (Material material in GetComponent<Renderer>().materials)
@@ -42,7 +44,7 @@ public class BuildingPlacer : MonoBehaviour {
     void OnTriggerEnter(Collider col)
     {
         Debug.Log(col.gameObject.name);
-        if(col.gameObject.name != "Terrain-Mountain")
+        if(col.gameObject.tag != "Ground")
         {
             counterCollision++;
             collision = true;
@@ -54,7 +56,7 @@ public class BuildingPlacer : MonoBehaviour {
 
     void OnTriggerExit(Collider col)
     {
-        if (col.gameObject.name != "Terrain-Mountain")
+		if(col.gameObject.tag != "Ground")
         {
             counterCollision--;
             if (counterCollision == 0)
@@ -135,7 +137,8 @@ public class BuildingPlacer : MonoBehaviour {
 
                 Troop t = new Troop(GameController.Instance.getSelectedUnits().units);
                 GameController.Instance.buildingConstruction(gameObject.transform.position,t);
-                gameObject.GetComponent<LOSEntity>().IsRevealer = true;
+                //gameObject.GetComponent<LOSEntity>().IsRevealer = true;
+				gameObject.GetComponent<LOSEntity>().enabled = true;
                 enabled = false;
 				Destroy (this);
 				

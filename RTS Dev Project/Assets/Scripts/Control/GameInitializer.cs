@@ -7,8 +7,11 @@ public class GameInitializer : MonoBehaviour {
 	[SerializeField] private GameObject sceneMap; // Map that will be replaced by GameData.map
 	[SerializeField] private GameObject minimap; // To replace variable Ground
 	[SerializeField] private GameObject buildings;
+	[SerializeField] private GameObject units;
 
 	private LOSManager terrainLOSManager;
+	private GameObject createdMap;
+	private List<GameObject> townCenters;
 	private bool firstUpdate = true; // used to activate FoW when first Update
 
 	void Awake() {
@@ -43,33 +46,46 @@ public class GameInitializer : MonoBehaviour {
 		// Change scene map
 		Destroy(sceneMap);
 
+		// Deactive LOSManager before Instantiating
 		terrainLOSManager = GameData.map.GetComponent<LOSManager>();
 		terrainLOSManager.enabled = false;
 
-		GameObject map = (GameObject) Instantiate (
+		// Deactivate A* too
+		foreach (Transform t in GameData.map.transform){
+			if (t.gameObject.name.Equals ("A*"))
+				t.gameObject.SetActive(false);
+		}
+
+		createdMap = (GameObject) Instantiate (
 			GameData.map, 
 			Vector3.zero,
 			Quaternion.identity
 		);
 
-		MapInfo mapInfo = map.GetComponent<MapInfo>();
+		MapInfo mapInfo = createdMap.GetComponent<MapInfo>();
 
-		terrainLOSManager = map.GetComponent<LOSManager>();
+		terrainLOSManager = createdMap.GetComponent<LOSManager>();
 		// Remember to activate LOSManager when everything is set
 
 		// Change minimap settings
 		MinimapCamera minimapCamera = minimap.GetComponent<MinimapCamera>();
-		minimapCamera.ground = map;
+		minimapCamera.ground = createdMap;
 		minimapCamera.updateCameraAttributes();
 
 		// Replace current Town Centers by those detailed by GameData and GameData.map
 		// Delete old Town Centers
 		foreach (Transform t in buildings.transform) {
-			if (t.gameObject.name.Contains("TownCenter"))
-				Destroy(t.gameObject);
+			Destroy(t.gameObject);
+		}
+
+		// Delete old Units
+		foreach (Transform t in units.transform) {
+			Destroy(t.gameObject);
 		}
 
 		// Instantiate new Town Centers according to the number of players
+		LOSEntity townCenterLOSEntity;
+		townCenters = new List<GameObject>();
 
 		// Player
 		GameObject townCenterPrefab = DataManager.Instance.civilizationDatas[
@@ -87,6 +103,8 @@ public class GameInitializer : MonoBehaviour {
 
 		townCenter.tag = "Ally";
 		GameController.Instance.addSelectedPrefab(townCenter);
+
+		townCenters.Add(townCenter);
 
 		int cpus = 0;
 		Transform townCenterTransform;
@@ -114,12 +132,48 @@ public class GameInitializer : MonoBehaviour {
 
 			townCenter.name = "CPU" + cpus.ToString() + "TownCenter";
 			townCenter.transform.SetParent(buildings.transform);
+			
+			townCenters.Add(townCenter);
 		}
 	}
 
 	void Update() {
 		if (firstUpdate){
 			terrainLOSManager.enabled = true;
+
+			foreach (Transform t in createdMap.transform){
+				if (t.gameObject.name.Equals ("A*"))
+				    t.gameObject.SetActive(true);
+			}
+
+			bool townCenterPlayer = true;
+			LOSEntity townCenterLOSEntity;
+			foreach (GameObject townCenter in townCenters) {
+				if (townCenterPlayer){
+					townCenterLOSEntity = townCenter.GetComponent<LOSEntity>();
+					if (townCenterLOSEntity != null){
+						townCenterLOSEntity.IsRevealer = true;
+						townCenterLOSEntity.RevealState = LOSEntity.RevealStates.Unfogged;
+
+						// To apply those changes, we need to restart it
+						townCenterLOSEntity.enabled = false;
+						townCenterLOSEntity.enabled = true;
+					}
+
+					townCenterPlayer = false;
+				} else {
+					townCenterLOSEntity = townCenter.GetComponent<LOSEntity>();
+					if (townCenterLOSEntity != null){
+						townCenterLOSEntity.IsRevealer = false;
+						townCenterLOSEntity.RevealState = LOSEntity.RevealStates.Fogged;
+
+						// To apply those changes, we need to restart it
+						townCenterLOSEntity.enabled = false;
+						townCenterLOSEntity.enabled = true;
+					}
+				}
+			}
+
 			firstUpdate = false;
 		}
 	}
