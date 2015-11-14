@@ -21,7 +21,7 @@ public class Construct : MonoBehaviour {
         inConstruction = false;
         construct = false;
 
-        dist = 10f;
+        //dist = 10f;
 
     }
 	
@@ -32,6 +32,7 @@ public class Construct : MonoBehaviour {
         //If a unit has the order to construct and it is close enough to the building, start the construction
         if (construct)
         {
+
             if ((transform.position - buildingToConstruct.transform.position).magnitude < dist)
             {
                 buildingToConstruct.GetComponent<BuildingConstruction>().startConstruction(this.gameObject);
@@ -39,10 +40,21 @@ public class Construct : MonoBehaviour {
                 construct = false;
                 inConstruction = true;
                 if(usingDust == null) usingDust = Instantiate(dustPrefab, buildingToConstruct.transform.position, Quaternion.identity) as GameObject;
+
+                UnitMovement uM = gameObject.GetComponent<UnitMovement>();
+                if (uM != null)
+                {
+                    uM.hasTarget = false;
+                    Animator a = GetComponentInParent<Animator>();
+                    a.SetBool("walk", false);
+                    //uM.status = Status.idle;
+                }
             }
+
         }
         if (inConstruction)
             GetComponentInParent<Animator>().SetBool("chop", true);
+
         if (inConstruction == false && usingDust != null)
         {
             
@@ -67,6 +79,12 @@ public class Construct : MonoBehaviour {
     public void SetBuildingToConstruct(GameObject b)
     {
         buildingToConstruct = b;
+
+        Collider c = buildingToConstruct.GetComponent<Collider>();
+        if (c != null)
+        {
+            dist = c.bounds.extents.magnitude;//.size.magnitude / 2;
+        }
     }
 
 
