@@ -19,7 +19,10 @@ public class GameController : MonoBehaviour
 
     //Keeps track of the resources the player has.
     [SerializeField]
-    private ResourceValueDictionary resourceDict;
+    private ResourceValueDictionary playerResources;
+
+    [SerializeField]
+    private ResourceValueDictionary cpuResources;
 
     [SerializeField]
     private GameObject selectedPrefab;
@@ -445,14 +448,14 @@ public class GameController : MonoBehaviour
     //Set starting resource values.
     public void initResourceValues()
     {
-        resourceDict[Resource.Food] = 1000;
-        resourceDict[Resource.Wood] = 1000;
-        resourceDict[Resource.Metal] = 1000;
-        resourceDict[Resource.Population] = 10;
-        hud.updateResource(Resource.Food, resourceDict[Resource.Food]);
-        hud.updateResource(Resource.Wood, resourceDict[Resource.Wood]);
-        hud.updateResource(Resource.Metal, resourceDict[Resource.Metal]);
-        hud.updateResource(Resource.Population, resourceDict[Resource.Population]);
+        playerResources[Resource.Food] = 1000;
+        playerResources[Resource.Wood] = 1000;
+        playerResources[Resource.Metal] = 1000;
+        playerResources[Resource.Population] = 100;
+        hud.updateResource(Resource.Food, playerResources[Resource.Food]);
+        hud.updateResource(Resource.Wood, playerResources[Resource.Wood]);
+        hud.updateResource(Resource.Metal, playerResources[Resource.Metal]);
+        hud.updateResource(Resource.Population, playerResources[Resource.Population]);
     }
 
     //Called to check whether there are enough resources to perform an action.
@@ -464,7 +467,7 @@ public class GameController : MonoBehaviour
         bool check = true;
         foreach (KeyValuePair<Resource, int> kv in resourceCosts)
         {
-            if (resourceDict[kv.Key] - kv.Value < 0)
+            if (playerResources[kv.Key] - kv.Value < 0)
             {
                 //Here goes stuff that happens when there aren't enough resources to perform the action.
                 //i.e. text pop-up, sound warning.
@@ -483,8 +486,8 @@ public class GameController : MonoBehaviour
 
     public void updateResource(Resource res, int value)
     {
-        resourceDict[res] -= value;
-        hud.updateResource(res, resourceDict[res]); //- value);  Per què es mostra un resource que no és el que hi ha?
+        playerResources[res] -= value;
+        hud.updateResource(res, playerResources[res]); //- value);  Per què es mostra un resource que no és el que hi ha?
     }
 
     public void updateInteractable()
@@ -740,20 +743,22 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            //create an action and add it to the focused unit's queue
-
-            Action action = new Action(unitData.preview, unitData.requiredTime, () => 
+            Action action = new Action(unitData.preview, unitData.requiredTime, () =>
             {
                 GameObject created = CreateUnit(who.gameObject, prefab);
                 created.tag = who.gameObject.tag;
                 hud.updateDelayedActions(selectedUnits.FocusedUnit);
             });
-            DelayedActionQueue script = who.gameObject.GetComponentOrEnd<DelayedActionQueue>();
+            //create an action and add it to the focused unit's queue
+            if (who.gameObject.GetComponentOrEnd<DelayedActionQueue>().Enqueue(action)) {
+                if (checkResources(DataManager.Instance.unitDatas[what].resourceCost))
+                {
+                    //DelayedActionQueue script = who.gameObject.GetComponentOrEnd<DelayedActionQueue>();
+                    //script.Enqueue(action);
 
-            script.Enqueue(action);
-
-            if(who.gameObject.tag=="Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
-            
+                    if (who.gameObject.tag == "Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
+                }
+            }
         }
         
      }
