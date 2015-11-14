@@ -20,20 +20,15 @@ public class CameraZoom : MonoBehaviour {
 	void Update () {
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            //Debug.Log("forward" + transform.localPosition.y + "," + minFov);
-            //Camera.main.orthographicSize--;
+
             //transform.Translate(new Vector3(0, speed * Time.deltaTime, 0));
-            if (transform.localPosition.y > min)
-            {
-                //Debug.Log("holaa"+ transform.position.y+","+minFov);
-                transform.position += transform.forward * Time.deltaTime * speed;
-            }
+            if (transform.localPosition.y > min) transform.position += transform.forward * Time.deltaTime * speed;
+            
         }
 
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            //Debug.Log("back"+ transform.position + "," + maxFov);
-            //Camera.main.orthographicSize++;
+
             //transform.Translate(new Vector3(0, -speed * Time.deltaTime, 0));
             if (transform.localPosition.y < max) transform.position += -transform.forward * Time.deltaTime * speed;
         }
