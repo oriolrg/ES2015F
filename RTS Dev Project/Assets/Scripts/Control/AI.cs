@@ -220,6 +220,12 @@ public class AI : MonoBehaviour {
         resourcesCPU[res] -= value;
     }
 
+	public bool compareArmy(){
+
+		return true;
+		//return GameController.Instance.getAllEnemyArmy().Count > GameController.Instance.getAllAllyArmy().Count ;
+
+	}
     public class Task
     {
         public Method method;
