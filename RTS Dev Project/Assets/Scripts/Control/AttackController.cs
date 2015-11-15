@@ -1,54 +1,76 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class AttackController : MonoBehaviour {
 
-	GameObject attacking_target;
+	[SerializeField]
+	private GameObject targetPrefab;
+
+	public GameObject attacking_target;
+	public GameObject attacking_enemy;
 	public double range;
-	UnitMovement um;
+
+	private Vector3 enemy_last_pos;
+	private UnitMovement um;
 	// Use this for initialization
 	void Start () {
-		range = 30.0;
+		if (range == 0 || range == null) {
+			range = 5.0;
+		}
 		um = gameObject.GetComponent<UnitMovement> ();
 	}
 
 	public void attack(GameObject enemy){
-		attacking_target = enemy;
+		this.attacking_enemy = enemy ;
 
-		//Crear nou metode moveUnit
-		//Crear interficie de atac!!!!!!!!!!!!!
-
-		
 		Vector3 myPos = this.gameObject.transform.position;
 		Vector3 enemyPos = enemy.gameObject.transform.position;
 		
 		double d = Vector3.Distance(myPos,enemyPos);
+
+		if (d >= range) {
+			um.status = Status.running;
 		
-		Vector3 vec = enemyPos - myPos;
+			Vector3 vec = enemyPos - myPos;
 		
-		vec = vec.normalized;
+			vec = vec.normalized;
 		
-		double r = this.range;
+			double r = this.range;
 		
-		Debug.Log(r);
-		
-		double alpha =  d-(r/2.0);
-		
-		
-		vec.x *= (float) alpha;
-		vec.z *= (float) alpha;
-		
-		Vector3 targetPos = myPos + vec;
+			double alpha = d - (r / 2.0);
 		
 		
-		GameObject target = Instantiate(targetPrefab, targetPos, Quaternion.identity) as GameObject;
-		moveUnits(target);
+			Debug.Log ("Move to enemy!");
+
+			vec.x *= (float)alpha;
+			vec.z *= (float)alpha;
+		
+			Vector3 targetPos = myPos + vec;
+		
+		
+			attacking_target = Instantiate (targetPrefab, targetPos, Quaternion.identity) as GameObject; //Instanciar prefab target
+			um.startMoving (attacking_target);
+			this.enemy_last_pos = attacking_enemy.transform.position;
+		} else {
+			um.status = Status.attacking;
+			Debug.Log("Die madafaka!");
+		}
 
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (um.status == Status.attacking) {
+		if (this.attacking_enemy != null) { //check if position has changed, and follow if so
+
+			Vector3 enemyPos = attacking_enemy.transform.position;
+
+			if(Vector3.Distance(enemy_last_pos,enemyPos) > this.range/2.0){
+				this.attack (attacking_enemy);
+			}
+
+
+
 
 		}
 	}
