@@ -132,11 +132,11 @@ public class GameController : MonoBehaviour
                 if (hit)
                 {
                     if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))  
-			        moveUnits(hitInfo.transform.gameObject);                    
+			        moveUnits(hitInfo.transform.gameObject);
+
                     else if(hitInfo.transform.gameObject.tag == "Enemy")
                     {
 						GameObject enemy = hitInfo.transform.gameObject;
-						Debug.Log ("Attacking");
 						Troop troop = new Troop(selectedUnits.units);
 						if(troop.units.Count != 0){
 							AttackController atkController;
@@ -148,6 +148,7 @@ public class GameController : MonoBehaviour
                     } 
 		            else if(hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction>().getConstructionOnGoing())
                     {
+						noAttack();
                         Debug.Log("vaig a construir");
 
                         Troop troop = new Troop(selectedUnits.units);
@@ -174,6 +175,7 @@ public class GameController : MonoBehaviour
                     }
 		            else 
 		            {
+						noAttack ();
 			            target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
                         target.transform.SetParent(targetsParent.transform);
 			            moveUnits(target);
@@ -774,6 +776,19 @@ public class GameController : MonoBehaviour
         print("attack");
         GameController.Instance.hud.showMessageBox("Not implemented");
     }
+
+	public void noAttack(){
+		Troop troop = new Troop(selectedUnits.units);
+		if(troop.units.Count != 0){
+			AttackController atkController;
+			foreach(var unit in troop.units){
+				atkController = unit.GetComponent<AttackController>();
+				atkController.attacking_enemy = null;
+				atkController.attacking_target = null;
+			}
+		}
+	
+	}
 
 
 }
