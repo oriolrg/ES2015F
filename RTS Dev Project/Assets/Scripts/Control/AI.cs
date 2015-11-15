@@ -31,7 +31,12 @@ public class AI : MonoBehaviour {
     {
         Task t = new Task(new Method(createCivilian));
         tasks.AddRange(Enumerable.Repeat(t, 3));
-        t = new Task(new Method(createWonder));
+        //t = new Task(new Method(createWonder));
+		Task t = new Task(new Method(createBarrac));
+		tasks.Add(t);
+		Task t = new Task(new Method(createSoldier));
+		tasks.AddRange(Enumerable.Repeat(t, 3));
+
     }
 
     void Awake()
@@ -132,6 +137,7 @@ public class AI : MonoBehaviour {
         }
         else { return null; }
     }
+
     public GameObject getClosestResource(GameObject c, string r){
         List<GameObject> resourcesX;
         if (r == "Food") resourcesX = resourcesFood;
@@ -222,10 +228,36 @@ public class AI : MonoBehaviour {
 
 	public bool compareArmy(){
 
-		return true;
-		//return GameController.Instance.getAllEnemyArmy().Count > GameController.Instance.getAllAllyArmy().Count ;
+		//return true;
+		return GameController.Instance.getAllEnemyArmy().Count > GameController.Instance.getAllAllyArmy().Count ;
 
 	}
+
+	public void createSoldier()
+	{
+		bool done = false;
+		int i = 0;
+		List<GameObject> buildings = GameController.Instance.getAllEnemyBuildings();
+		
+		while(!done)
+		{
+			GameObject o = buildings[i];
+			if(o.GetComponent<Identity>().unitType == UnitType.Barracs){
+				GameController.Instance.OnCreate(o.GetComponent<Identity>(), UnitType.Soldier);
+				done = true;
+			}
+			i = i  + 1; 
+		}
+
+
+		//GameController.Instance.hud.getActionsData().creationPermissions[UnitType.Soldier]);
+	}
+
+	private void createBarrac()
+	{//UnitType.Civilian
+		//GameController.Instance.OnCreate(o.GetComponent<Identity>(), UnitType.Barracs);
+	}
+
     public class Task
     {
         public Method method;
