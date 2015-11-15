@@ -135,42 +135,16 @@ public class GameController : MonoBehaviour
 			        moveUnits(hitInfo.transform.gameObject);                    
                     else if(hitInfo.transform.gameObject.tag == "Enemy")
                     {
-						/*
 						GameObject enemy = hitInfo.transform.gameObject;
-						//Crear nou metode moveUnit
-						//Crear interficie de atac!!!!!!!!!!!!!
-						foreach(var ally in selectedUnits.units){
-							ally.GetComponent<UnitMovement>();
+						Debug.Log ("Attacking");
+						Troop troop = new Troop(selectedUnits.units);
+						if(troop.units.Count != 0){
+							AttackController atkController;
+							foreach(var unit in troop.units){
+								atkController = unit.GetComponent<AttackController>();
+								atkController.attack(enemy);
+							}
 						}
-
-
-						GameObject allyUnit = selectedUnits.units[0];
-
-						Vector3 allyPos = allyUnit.transform.position;
-
-						double d = Vector3.Distance(allyPos,enemyPos);
-
-						Vector3 vec =- allyPos + enemyPos;
-
-						vec = vec.normalized;
-
-						double r = allyUnit.GetComponent<attack_controller>().range;
-
-						Debug.Log(r);
-
-						double alpha =  d-(r/2.0);
-
-
-						vec.x *= (float) alpha;
-						vec.z *= (float) alpha;
-
-						Vector3 targetPos = vec + allyPos;
-
-
-                        target = Instantiate(targetPrefab, targetPos, Quaternion.identity) as GameObject;
-                        moveUnits(target);
-                        */
-
                     } 
 		            else if(hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction>().getConstructionOnGoing())
                     {
