@@ -17,6 +17,14 @@ public class GameController : MonoBehaviour
     private List<GameObject> allAllyUnits;
     private List<GameObject> allEnemyUnits;
 
+    private List<GameObject> allAllyArmy;
+    private List<GameObject> allAllyBuildings;
+    private List<GameObject> allAllyCivilians;
+
+    private List<GameObject> allEnemyArmy;
+    private List<GameObject> allEnemyBuildings;
+    private List<GameObject> allEnemyCivilians;
+
     //Keeps track of the resources the player has.
     [SerializeField]
     private ResourceValueDictionary playerResources;
@@ -62,6 +70,12 @@ public class GameController : MonoBehaviour
 
         allAllyUnits = new List<GameObject>();
         allEnemyUnits = new List<GameObject>();
+        allAllyArmy = new List<GameObject>();
+        allAllyBuildings = new List<GameObject>();
+        allAllyCivilians = new List<GameObject>();
+        allEnemyArmy = new List<GameObject>();
+        allEnemyBuildings = new List<GameObject>();
+        allEnemyCivilians = new List<GameObject>();
         selectedUnits = new Troop();
         selectedUnits.units = new List<GameObject>();
     }
@@ -421,14 +435,88 @@ public class GameController : MonoBehaviour
 
     public void addUnit(GameObject u)
     {
-        if (u.tag == "Ally") allAllyUnits.Add(u);
-        if (u.tag == "Enemy") allEnemyUnits.Add(u);
+        if (u.tag == "Ally")
+        {
+            if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Civilian)
+            {
+                allAllyCivilians.Add(u);
+            } else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter
+                || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Barracs
+                || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archery
+                || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Stable)
+            {
+                allAllyBuildings.Add(u);
+            } else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Soldier
+                || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archer
+                || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Knight)
+            {
+                allAllyArmy.Add(u);
+            }
+        }
+        if (u.tag == "Enemy")
+        {
+            if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Civilian)
+            {
+                allEnemyCivilians.Add(u);
+            }
+            else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Barracs
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archery
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Stable)
+            {
+                allEnemyBuildings.Add(u);
+            }
+            else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Soldier
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archer
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Knight)
+            {
+                allEnemyArmy.Add(u);
+            }
+        }
     }
 
     public void removeUnit(GameObject u)
     {
-        if (u.tag == "Ally") allAllyUnits.Remove(u);
-        if (u.tag == "Enemy") allEnemyUnits.Remove(u);
+        if (u.tag == "Ally")
+        {
+            if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Civilian)
+            {
+                allAllyCivilians.Remove(u);
+            }
+            else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Barracs
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archery
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Stable)
+            {
+                allAllyBuildings.Remove(u);
+            }
+            else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Soldier
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archer
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Knight)
+            {
+                allAllyArmy.Remove(u);
+            }
+        }
+        if (u.tag == "Enemy")
+        {
+            if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Civilian)
+            {
+                allEnemyCivilians.Remove(u);
+            }
+            else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Barracs
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archery
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Stable)
+            {
+                allEnemyBuildings.Remove(u);
+            }
+            else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Soldier
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archer
+              || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Knight)
+            {
+                allEnemyArmy.Remove(u);
+            }
+        }
         checkWin();
         checkLose();
 
@@ -452,6 +540,10 @@ public class GameController : MonoBehaviour
         playerResources[Resource.Wood] = 1000;
         playerResources[Resource.Metal] = 1000;
         playerResources[Resource.Population] = 100;
+        cpuResources[Resource.Food] = 1000;
+        cpuResources[Resource.Wood] = 1000;
+        cpuResources[Resource.Metal] = 1000;
+        cpuResources[Resource.Population] = 100;
         hud.updateResource(Resource.Food, playerResources[Resource.Food]);
         hud.updateResource(Resource.Wood, playerResources[Resource.Wood]);
         hud.updateResource(Resource.Metal, playerResources[Resource.Metal]);
@@ -462,26 +554,39 @@ public class GameController : MonoBehaviour
     //Params: resource type, amount (to subtract).
     //Returns true if there are enough, and updates the resource type.
     //Returns false if there aren't enough, and displays warnings.
-    public bool checkResources(ResourceValueDictionary resourceCosts)
+    public bool checkResources(ResourceValueDictionary resourceCosts, String player)
     {
+        ResourceValueDictionary resDict;
+        if (player == "player") resDict = playerResources;
+        else resDict = cpuResources;
         bool check = true;
         foreach (KeyValuePair<Resource, int> kv in resourceCosts)
         {
-            if (playerResources[kv.Key] - kv.Value < 0)
+            if (resDict[kv.Key] - kv.Value < 0)
             {
                 //Here goes stuff that happens when there aren't enough resources to perform the action.
                 //i.e. text pop-up, sound warning.
                 check = false;
             }
         }
-        if (check)
-        {
-            foreach (KeyValuePair<Resource, int> kv in resourceCosts)
-            {
-                updateResource(kv.Key, kv.Value);
-            }
-        }
         return check;
+    }
+
+    public void updateResource(ResourceValueDictionary resourceCosts, String player)
+    {
+        foreach (KeyValuePair<Resource, int> kv in resourceCosts)
+        {
+            updateResource(kv.Key, kv.Value, player);
+        }
+    }
+
+    public void updateResource(Resource res, int value, String player)
+    {
+        ResourceValueDictionary resDict;
+        if (player == "player") resDict = playerResources;
+        else resDict = cpuResources;
+        playerResources[res] -= value;
+        hud.updateResource(res, resDict[res]); //- value);  Per què es mostra un resource que no és el que hi ha?
     }
 
     public void updateResource(Resource res, int value)
@@ -626,7 +731,6 @@ public class GameController : MonoBehaviour
     public GameObject createBuilding(GameObject prefab)
 	{
         //Instantiate the building and start the positioning of the building
-        
         GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
         building.tag = "Ally";
@@ -659,7 +763,7 @@ public class GameController : MonoBehaviour
         building.AddComponent<BuildingPlacer> ();
 
         enabled = false;
-
+    
         return building;  
 
         //createBuilding(prefab, new Vector3(213, -5, 141));   
@@ -735,11 +839,15 @@ public class GameController : MonoBehaviour
 
         if (what.isBuilding())
         {
-            //Create the building
-            GameObject created = createBuilding(prefab);
-            created.tag = who.gameObject.tag;
-            Spawner spa = created.GetComponent<Spawner>();
-            if (spa != null) spa.initBounds(); 
+            if (checkResources(unitData.resourceCost, "player"))
+            {
+                //Create the building
+                GameObject created = createBuilding(prefab);
+                created.tag = who.gameObject.tag;
+                Spawner spa = created.GetComponent<Spawner>();
+                if (spa != null) spa.initBounds();
+                updateResource(unitData.resourceCost, "player");
+            }
         }
         else
         {
@@ -751,11 +859,11 @@ public class GameController : MonoBehaviour
             });
             //create an action and add it to the focused unit's queue
             if (who.gameObject.GetComponentOrEnd<DelayedActionQueue>().Enqueue(action)) {
-                if (checkResources(DataManager.Instance.unitDatas[what].resourceCost))
+                if (checkResources(unitData.resourceCost, "player"))
                 {
                     //DelayedActionQueue script = who.gameObject.GetComponentOrEnd<DelayedActionQueue>();
                     //script.Enqueue(action);
-
+                    updateResource(unitData.resourceCost, "player");
                     if (who.gameObject.tag == "Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
                 }
             }
@@ -806,5 +914,37 @@ public class GameController : MonoBehaviour
         GameController.Instance.hud.showMessageBox("Not implemented");
     }
 
+    public List<GameObject> getAllAllyArmy()
+    {
+        return allAllyArmy;
+    }
+    public List<GameObject> getAllAllyBuildings()
+    {
+        return allAllyBuildings;
+    }
+    public List<GameObject> getAllAllyCivilians()
+    {
+        return allAllyCivilians;
+    }
+    public List<GameObject> getAllEnemyArmy()
+    {
+        return allEnemyArmy;
+    }
+    public List<GameObject> getAllEnemyBuildings()
+    {
+        return allEnemyBuildings;
+    }
+    public List<GameObject> getAllEnemyCivilians()
+    {
+        return allEnemyCivilians;
+    }
+    public ResourceValueDictionary getPlayerResources()
+    {
+        return playerResources;
+    }
+    public ResourceValueDictionary getCPUResources()
+    {
+        return cpuResources;
+    }
 
 }
