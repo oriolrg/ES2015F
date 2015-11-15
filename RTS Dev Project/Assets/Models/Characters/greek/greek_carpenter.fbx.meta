@@ -1,0 +1,257 @@
+fileFormatVersion: 2
+guid: 5a02137abe1733c4abe3294bd7a85b88
+timeCreated: 1447583747
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Armature
+    100002: chest
+    100004: foot rotation.L
+    100006: foot rotation.R
+    100008: foot.L
+    100010: foot.R
+    100012: //RootNode
+    100014: hand.L
+    100016: hand.R
+    100018: head
+    100020: head_end
+    100022: herramienta
+    100024: human
+    100026: human_MeshPart0
+    100028: human_MeshPart1
+    100030: leg control.L
+    100032: leg control.R
+    100034: leg ik.L
+    100036: leg ik.L_end
+    100038: leg ik.R
+    100040: leg ik.R_end
+    100042: leg pole target.L
+    100044: leg pole target.L_end
+    100046: leg pole target.R
+    100048: leg pole target.R_end
+    100050: lower arm ik.L
+    100052: lower arm ik.L_end
+    100054: lower arm ik.R
+    100056: lower arm ik.R_end
+    100058: lower arm.L
+    100060: lower arm.R
+    100062: lower index.L
+    100064: lower index.L_end
+    100066: lower index.R
+    100068: lower index.R_end
+    100070: lower leg.L
+    100072: lower leg.R
+    100074: lower middle.L
+    100076: lower middle.L_end
+    100078: lower middle.R
+    100080: lower middle.R_end
+    100082: lower pinky.L
+    100084: lower pinky.L_end
+    100086: lower pinky.R
+    100088: lower pinky.R_end
+    100090: lower ring.L
+    100092: lower ring.L_end
+    100094: lower ring.R
+    100096: lower ring.R_end
+    100098: lower thumb.L
+    100100: lower thumb.L_end
+    100102: lower thumb.R
+    100104: lower thumb.R_end
+    100106: neck
+    100108: roba
+    100110: roba1
+    100112: root
+    100114: toes.L
+    100116: toes.L_end
+    100118: toes.R
+    100120: toes.R_end
+    100122: torso
+    100124: upper arm ik.L
+    100126: upper arm ik.L_end
+    100128: upper arm ik.R
+    100130: upper arm ik.R_end
+    100132: upper arm.L
+    100134: upper arm.R
+    100136: upper index.L
+    100138: upper index.R
+    100140: upper leg.L
+    100142: upper leg.R
+    100144: upper middle.L
+    100146: upper middle.R
+    100148: upper pinky.L
+    100150: upper pinky.R
+    100152: upper ring.L
+    100154: upper ring.R
+    100156: upper thumb.L
+    100158: upper thumb.R
+    400000: Armature
+    400002: chest
+    400004: foot rotation.L
+    400006: foot rotation.R
+    400008: foot.L
+    400010: foot.R
+    400012: //RootNode
+    400014: hand.L
+    400016: hand.R
+    400018: head
+    400020: head_end
+    400022: herramienta
+    400024: human
+    400026: human_MeshPart0
+    400028: human_MeshPart1
+    400030: leg control.L
+    400032: leg control.R
+    400034: leg ik.L
+    400036: leg ik.L_end
+    400038: leg ik.R
+    400040: leg ik.R_end
+    400042: leg pole target.L
+    400044: leg pole target.L_end
+    400046: leg pole target.R
+    400048: leg pole target.R_end
+    400050: lower arm ik.L
+    400052: lower arm ik.L_end
+    400054: lower arm ik.R
+    400056: lower arm ik.R_end
+    400058: lower arm.L
+    400060: lower arm.R
+    400062: lower index.L
+    400064: lower index.L_end
+    400066: lower index.R
+    400068: lower index.R_end
+    400070: lower leg.L
+    400072: lower leg.R
+    400074: lower middle.L
+    400076: lower middle.L_end
+    400078: lower middle.R
+    400080: lower middle.R_end
+    400082: lower pinky.L
+    400084: lower pinky.L_end
+    400086: lower pinky.R
+    400088: lower pinky.R_end
+    400090: lower ring.L
+    400092: lower ring.L_end
+    400094: lower ring.R
+    400096: lower ring.R_end
+    400098: lower thumb.L
+    400100: lower thumb.L_end
+    400102: lower thumb.R
+    400104: lower thumb.R_end
+    400106: neck
+    400108: roba
+    400110: roba1
+    400112: root
+    400114: toes.L
+    400116: toes.L_end
+    400118: toes.R
+    400120: toes.R_end
+    400122: torso
+    400124: upper arm ik.L
+    400126: upper arm ik.L_end
+    400128: upper arm ik.R
+    400130: upper arm ik.R_end
+    400132: upper arm.L
+    400134: upper arm.R
+    400136: upper index.L
+    400138: upper index.R
+    400140: upper leg.L
+    400142: upper leg.R
+    400144: upper middle.L
+    400146: upper middle.R
+    400148: upper pinky.L
+    400150: upper pinky.R
+    400152: upper ring.L
+    400154: upper ring.R
+    400156: upper thumb.L
+    400158: upper thumb.R
+    2300000: herramienta
+    3300000: herramienta
+    4300000: herramienta
+    4300002: roba
+    4300004: roba1
+    4300006: human_MeshPart0
+    4300008: human_MeshPart1
+    7400000: Armature|chop
+    7400002: Armature|cultivate
+    7400004: Armature|cut
+    7400006: Armature|die
+    7400008: Armature|stand by
+    7400010: Armature|walk
+    7400012: herramienta|cultivate
+    7400014: herramienta|cut
+    7400016: roba|cultivate
+    7400018: roba|stand by
+    7400020: roba1|cultivate
+    7400022: roba1|cut
+    7400024: human|cultivate
+    7400026: human|walk
+    9500000: //RootNode
+    13700000: human_MeshPart0
+    13700002: human_MeshPart1
+    13700004: roba
+    13700006: roba1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
