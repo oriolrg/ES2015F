@@ -209,10 +209,13 @@ public class LOSManager : MonoBehaviour {
                             }
                         }
                         foreach (var entity in Entities) {
-                            var bounds = entity.Bounds;
-                            if (entity.EnableAO && AOIntensity > 0) AddAO(bounds, entity.Height);
-                            if (EnableHeightBlockers && (AllowOwnTeamHeightBlockers || !entity.IsRevealer))
-                                AddHeightBlocker(bounds, entity.transform.position.y + entity.Height);
+                            if (!entity.Equals(null))
+                            {
+                                var bounds = entity.Bounds;
+                                if (entity.EnableAO && AOIntensity > 0) AddAO(bounds, entity.Height);
+                                if (EnableHeightBlockers && (AllowOwnTeamHeightBlockers || !entity.IsRevealer))
+                                    AddHeightBlocker(bounds, entity.transform.position.y + entity.Height);
+                            }
                         }
                     }
                 }
