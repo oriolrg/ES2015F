@@ -1,24 +1,15 @@
 fileFormatVersion: 2
-guid: 73ff794e0019bc445afdcdbcac87e9a5
-timeCreated: 1445074596
+guid: 5c2682e7718f09d4ba0f34d13539c66f
+timeCreated: 1447528152
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
-    100002: house
-    100004: woods
     400000: //RootNode
-    400002: house
-    400004: woods
-    2300000: house
-    2300002: woods
-    2300004: //RootNode
-    3300000: house
-    3300002: woods
-    3300004: //RootNode
-    4300000: woods
-    4300002: house
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: sostre
     7400000: Default Take
     9500000: //RootNode
   materials:
