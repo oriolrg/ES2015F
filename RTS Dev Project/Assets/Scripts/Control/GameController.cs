@@ -281,22 +281,12 @@ public class GameController : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.B))
 			{
-                //Pobre Sergiot
                 //createCubeTestingGrid();
 			}
-
-            if(Input.GetKeyDown(KeyCode.M))
+            if(Input.GetKeyDown(KeyCode.K))
             {
-                for (int i = allAllyUnits.Count - 1; i >= 0; i--)
-                {
-                    print(allAllyUnits[i].name);
-                    allAllyUnits[i].GetComponent<Health>().die();
-                }
-                hud.showMessageBox("MM");
-            }
-            if(Input.GetKeyDown(KeyCode.A))
-            {
-                selectedUnits.FocusedUnit.GetComponent<AttackController>().attack(selectedUnits.FocusedUnit);
+                if( selectedUnits.FocusedUnit != null )
+                    selectedUnits.FocusedUnit.GetComponent<AttackController>().attack(selectedUnits.FocusedUnit);
             }
 
         }
