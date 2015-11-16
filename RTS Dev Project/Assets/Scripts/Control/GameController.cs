@@ -594,8 +594,22 @@ public class GameController : MonoBehaviour
                 print(hitInfo.transform.gameObject);
                 if (hitInfo.transform.tag == "Ground")
                 {
-                    print(hitInfo.point);
-                    freeSpaceFound = true;
+                    // check if there is someone going ther
+                    bool someoneElse = false;
+                    foreach(Transform target in targetsParent.transform)
+                    {
+                        if (target.position == hitInfo.point)
+                            someoneElse = true;
+                    }
+                    if (someoneElse)
+                    {
+                        ray.origin += Vector3.right * multiplier;
+                        multiplier = (int)-Mathf.Sign(multiplier) * (Mathf.Abs(multiplier) + 2);
+                    }
+                    else
+                    {
+                        freeSpaceFound = true;
+                    }
                 }
                 else
                 {
