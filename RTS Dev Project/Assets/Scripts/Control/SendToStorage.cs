@@ -11,7 +11,6 @@ public class SendToStorage : MonoBehaviour
     };
     
     Resource myResource;
-    GameObject collector;
 
     void Start()
     {
@@ -19,18 +18,12 @@ public class SendToStorage : MonoBehaviour
             myResource = (Resource)System.Enum.Parse(typeof(Resource), this.tag);
     }
 
-    public void stopAnimations()
-    {
-        // Stop the gathering animation
-        collector.GetComponent<Animator>().SetBool(gatheringAnimationBools[myResource], false);
-    }
-
     void OnTriggerEnter(Collider c)
     {
         // Get the unit we collide with
         GameObject unit = c.gameObject;
 
-        print("collecting");
+        print("collecting with " + unit.name);
 
         // Check that the unit is going to collect this resource
         CollectResources collect = unit.GetComponentInParent<CollectResources>();
@@ -38,9 +31,8 @@ public class SendToStorage : MonoBehaviour
 
         if( collect != null && d != null && collect.goingToCollect && collect.targetToCollect == gameObject )
         {
-            // Set this unit as collector
-            collector = unit;
-
+            // Stop the unit
+            unit.GetComponent<UnitMovement>().enabled = false;
             // Collect 10 resources
             d.amount -= 10;
             collect.resourceCollected = myResource;
@@ -52,7 +44,6 @@ public class SendToStorage : MonoBehaviour
             animator.SetBool(gatheringAnimationBools[myResource], true);
 
             // Call stop animations and start moving to storage after 5 seconds
-            Invoke("stopAnimations", 5);
             collect.Invoke("startMovingToStorage", 5);
         }
     }

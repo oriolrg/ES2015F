@@ -277,6 +277,10 @@ public class GameController : MonoBehaviour
                 }
                 hud.showMessageBox("MM");
             }
+            if(Input.GetKeyDown(KeyCode.A))
+            {
+                selectedUnits.FocusedUnit.GetComponent<AttackController>().attack(selectedUnits.FocusedUnit);
+            }
 
         }
     }

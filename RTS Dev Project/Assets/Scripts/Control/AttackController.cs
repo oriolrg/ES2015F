@@ -6,14 +6,21 @@ public class AttackController : MonoBehaviour {
 	GameObject attacking_target;
 	public double range;
 	UnitMovement um;
-	// Use this for initialization
+    Animator animator;
+    
+    // Use this for initialization
 	void Start () {
 		range = 30.0;
 		um = gameObject.GetComponent<UnitMovement> ();
+        animator = GetComponent<Animator>();
 	}
 
-	void attack(GameObject enemy){
-		attacking_target = enemy;
+	public void attack(GameObject enemy)
+    {
+        if( animator != null )
+            animator.SetBool("attack", true);
+
+        attacking_target = enemy;
 	}
 
 	// Update is called once per frame

@@ -22,8 +22,6 @@ public class UnitMovement : MonoBehaviour {
 	AttackController attack;
 
 	public float dis;
-	
-    public AnimationClip runAnimation;
 
 	public bool hasTarget;
 
@@ -50,10 +48,18 @@ public class UnitMovement : MonoBehaviour {
         
 		targetPos = target.transform.position;
 		hasTarget = true;
-        
-        if (animator != null) animator.SetBool("walk", true);
 
+        // Cancel all animations and play walk
+        if (animator != null)
+        {
+            foreach(AnimatorControllerParameter param in animator.parameters)
+            {
+                animator.SetBool(param.name, false);
+            }
+            animator.SetBool("walk", true);
+        }
 		status = Status.running;
+        enabled = true;
 	}
 
 
