@@ -88,7 +88,10 @@ public class GameController : MonoBehaviour
         selectedUnits = new Troop();
         initResourceValues();
         addTeamCirclePrefabstoCurrentUnits();
-        spawnRandomObjectives();
+        if (!GameData.sceneFromMenu)
+        {
+            spawnRandomObjectives();
+        }
         addSelectedPrefabstoCurrentUnits();
     }
 
@@ -282,6 +285,20 @@ public class GameController : MonoBehaviour
                 //createCubeTestingGrid();
 			}
 
+            if(Input.GetKeyDown(KeyCode.M))
+            {
+                for (int i = allAllyUnits.Count - 1; i >= 0; i--)
+                {
+                    print(allAllyUnits[i].name);
+                    allAllyUnits[i].GetComponent<Health>().die();
+                }
+                hud.showMessageBox("MM");
+            }
+            if(Input.GetKeyDown(KeyCode.A))
+            {
+                selectedUnits.FocusedUnit.GetComponent<AttackController>().attack(selectedUnits.FocusedUnit);
+            }
+
         }
     }
 
@@ -300,11 +317,11 @@ public class GameController : MonoBehaviour
         }
 	}
 
-    private void spawnRandomObjectives()
+    public void spawnRandomObjectives()
     {
         objectives = new List<Objective>();
 
-        int ammount = UnityEngine.Random.Range(3, 5);
+        int ammount = UnityEngine.Random.Range(2, 5);
         GameObject ground = GameObject.FindGameObjectWithTag("Ground");
         Bounds bounds = ground.GetComponent<TerrainCollider>().bounds;
 
@@ -313,7 +330,7 @@ public class GameController : MonoBehaviour
             Vector3 position = new Vector3
             (
                 bounds.center.x + UnityEngine.Random.Range(-bounds.extents.x / 2, bounds.extents.x / 2),
-                bounds.center.y + bounds.extents.y / 2 + 1,
+                500,
                 bounds.center.z + UnityEngine.Random.Range(-bounds.extents.z / 2, bounds.extents.z / 2)
             );
 
@@ -324,6 +341,11 @@ public class GameController : MonoBehaviour
             if (Physics.Raycast(ray, out hitInfo))
             {
                 GameObject go = Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity) as GameObject;
+
+                LOSEntity script = go.GetComponent<LOSEntity>();
+                script.enabled = false;
+                script.enabled = true;
+
                 objectives.Add(go.GetComponentOrEnd<Objective>());
                 go.transform.SetParent(objectivesParent.transform);
             }
