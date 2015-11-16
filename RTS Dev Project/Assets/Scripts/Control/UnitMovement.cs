@@ -97,7 +97,7 @@ public class UnitMovement : MonoBehaviour {
 			Vector3 v = new Vector3(1.0f,transform.localScale.y/2.0f,1.0f);
 			dis = (Vector3.Distance(transform.position,Vector3.Scale(targetPos,v)));
 
-			if(dis < 4.5){
+			if(dis < .5){
 				timerDeath timer = target.GetComponent<timerDeath>();
 				if(timer != null){
 					timer.UnitLostTarget(gameObject);

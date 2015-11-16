@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    /*
     public Vector3 SpawningPoint { get; private set; }
     [HideInInspector] public Vector3 RallyPoint { get; set; }
+    */
+    public Vector3 SpawningPoint;
+    public Vector3 RallyPoint;
 
     void Start()
     {
@@ -23,6 +27,6 @@ public class Spawner : MonoBehaviour
         {
             SpawningPoint = transform.position + transform.forward * 3;
         }
-        RallyPoint = SpawningPoint + transform.forward * 5;
+        RallyPoint = SpawningPoint;
     }
 }

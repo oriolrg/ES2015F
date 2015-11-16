@@ -152,7 +152,7 @@ public class GameController : MonoBehaviour
                 if (hit)
                 {
                     if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))  
-			        moveUnits(hitInfo.transform.gameObject);                    
+			            moveUnits(hitInfo.transform.gameObject);                    
                     else if(hitInfo.transform.gameObject.tag == "Enemy")
                     {
 						/*
@@ -282,16 +282,6 @@ public class GameController : MonoBehaviour
                 //createCubeTestingGrid();
 			}
 
-            if(Input.GetKeyDown(KeyCode.M))
-            {
-                for (int i = allAllyUnits.Count - 1; i >= 0; i--)
-                {
-                    print(allAllyUnits[i].name);
-                    allAllyUnits[i].GetComponent<Health>().die();
-                }
-                hud.showMessageBox("MM");
-            }
-
         }
     }
 
@@ -380,12 +370,14 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            print("rally");
             foreach (var unit in selectedUnits.units)
             {
                 Spawner script = unit.GetComponentInParent<Spawner>();
                 if (script != null)
                 {
-                    script.RallyPoint = target.transform.position;
+                    print("rally");
+                    script.RallyPoint = target.transform.position + Vector3.zero;
                 }
             }
             Destroy(target.gameObject);
@@ -691,44 +683,80 @@ public class GameController : MonoBehaviour
     public GameObject CreateUnit(GameObject building, GameObject unit)
     {
         Spawner spawner = building.GetComponentOrEnd<Spawner>();
-        spawner.initBounds();
+
         Vector3 spawningPoint = spawner.SpawningPoint;
+        Vector3 rallyPoint = spawner.RallyPoint;
         
-        /* adjust spawning point
-        Ray ray = new Ray(building.transform.position + 5 * building.transform.up + 10 * building.transform.forward, -Vector3.up);
-        
+        Ray ray = new Ray(rallyPoint + new Vector3(0, 10, 0), -Vector3.up);
+
         bool freeSpaceFound = false;
 
         RaycastHit hitInfo = new RaycastHit();
+
+        int multiplier = 2;
 
         while (!freeSpaceFound)
         {
             if (Physics.Raycast(ray, out hitInfo))
             {
-                if (hitInfo.transform.tag != "Ground")
+                print(hitInfo.transform.gameObject);
+                if (hitInfo.transform.tag == "Ground")
                 {
-                    ray.origin = ray.origin + Vector3.right * 2;
+                    // check if there is someone going ther
+                    bool someoneElse = false;
+                    foreach(Transform target in targetsParent.transform)
+                    {
+                        if (target.position == hitInfo.point)
+                            someoneElse = true;
+                    }
+                    if (someoneElse)
+                    {
+                        ray.origin += Vector3.right * multiplier;
+                        multiplier = (int)-Mathf.Sign(multiplier) * (Mathf.Abs(multiplier) + 2);
+                    }
+                    else
+                    {
+                        freeSpaceFound = true;
+                    }
                 }
-                else freeSpaceFound = true;
+                else
+                {
+                    ray.origin += Vector3.right * multiplier;
+                    multiplier = (int)-Mathf.Sign(multiplier) * (Mathf.Abs(multiplier) + 2);
+                }
             }
-        }*/
-
-
-        GameObject newUnit = Instantiate(unit, spawningPoint, Quaternion.identity) as GameObject;
-        addSelectedPrefab(newUnit);
-        addTeamCirclePrefab(newUnit);
-        // Set unit as parent in hierarchy
-        newUnit.transform.SetParent(unitsParent.transform);
-        GameObject target = Instantiate(targetPrefab, spawner.RallyPoint, Quaternion.identity) as GameObject;
-        target.transform.SetParent(targetsParent.transform);
-
-        UnitMovement script = newUnit.GetComponent<UnitMovement>();
-        if (script != null)
-        {
-            script.startMoving(target);
-            target.GetComponent<timerDeath>().AddUnit(newUnit);
+            else
+            {
+                break;
+            }
         }
-        return newUnit;
+
+        if (freeSpaceFound)
+        {
+
+
+            GameObject newUnit = Instantiate(unit, spawner.SpawningPoint, Quaternion.identity) as GameObject;
+            addSelectedPrefab(newUnit);
+            addTeamCirclePrefab(newUnit);
+
+            // Set unit as parent in hierarchy
+            newUnit.transform.SetParent(unitsParent.transform);
+            GameObject target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+            target.transform.SetParent(targetsParent.transform);
+
+            UnitMovement script = newUnit.GetComponent<UnitMovement>();
+            if (script != null)
+            {
+                script.startMoving(target);
+                print(target.transform.position);
+                target.GetComponent<timerDeath>().AddUnit(newUnit);
+            }
+            return newUnit;
+        }
+        else
+        {
+            return null;
+        }
     }
     
 
