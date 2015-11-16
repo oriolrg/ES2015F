@@ -9,6 +9,23 @@ namespace Pathfinding {
 	/** Base class for all path types */
 	public abstract class Path {
 
+#if ASTAR_POOL_DEBUG
+		private string pathTraceInfo = "";
+		private List<string> claimInfo = new List<string>();
+		~Path() {
+			Debug.Log ("Destroying " + GetType().Name + " instance");
+			if (claimed.Count > 0) {
+				Debug.LogWarning ("Pool Is Leaking. See list of claims:\n" +
+					"Each message below will list what objects are currently claiming the path." +
+					" These objects have removed their reference to the path object but has not called .Release on it (which is bad).\n" + pathTraceInfo+"\n");
+				for (int i=0;i<claimed.Count;i++) {
+					Debug.LogWarning ("- Claim "+ (i+1) + " is by a " + claimed[i].GetType().Name + "\n"+claimInfo[i]);
+				}
+			} else {
+				Debug.Log ("Some scripts are not using pooling.\n" + pathTraceInfo + "\n");
+			}
+		}
+#endif
 
 		/** Data for the thread calculating this path */
 		public PathHandler pathHandler {get; private set;}
@@ -25,8 +42,12 @@ namespace Pathfinding {
 		*/
 		public OnPathDelegate immediateCallback;
 
+#if !ASTAR_LOCK_FREE_PATH_STATE
 		PathState state;
 		System.Object stateLock = new object();
+#else
+		int state;
+#endif
 
 		/** Current state of the path.
 		 * \see #CompleteState
@@ -217,14 +238,17 @@ yield return StartCoroutine (p.WaitForPath ());
 
 		public uint CalculateHScore (GraphNode node) {
 			uint v1;
+			uint v2;
 			switch (heuristic) {
 			case Heuristic.Euclidean:
 				v1 = (uint)(((GetHTarget () - node.position).costMagnitude)*heuristicScale);
-				return v1;
+				v2 = hTargetNode != null ? AstarPath.active.euclideanEmbedding.GetHeuristic ( node.NodeIndex, hTargetNode.NodeIndex ) : 0;
+				return System.Math.Max (v1,v2);
 			case Heuristic.Manhattan:
 				Int3 p2 = node.position;
 				v1 = (uint)((System.Math.Abs (hTarget.x-p2.x) + System.Math.Abs (hTarget.y-p2.y) + System.Math.Abs (hTarget.z-p2.z))*heuristicScale);
-				return v1;
+				v2 = hTargetNode != null ? AstarPath.active.euclideanEmbedding.GetHeuristic ( node.NodeIndex, hTargetNode.NodeIndex ) : 0;
+				return System.Math.Max (v1,v2);
 			case Heuristic.DiagonalManhattan:
 				Int3 p = GetHTarget () - node.position;
 				p.x = System.Math.Abs (p.x);
@@ -233,7 +257,8 @@ yield return StartCoroutine (p.WaitForPath ());
 				int diag = System.Math.Min (p.x,p.z);
 				int diag2 = System.Math.Max (p.x,p.z);
 				v1 = (uint)((((14*diag)/10) + (diag2-diag) + p.y) * heuristicScale);
-				return v1;
+				v2 = hTargetNode != null ? AstarPath.active.euclideanEmbedding.GetHeuristic ( node.NodeIndex, hTargetNode.NodeIndex ) : 0;
+				return System.Math.Max (v1,v2);
 			}
 			return 0U;
 		}
@@ -256,11 +281,7 @@ yield return StartCoroutine (p.WaitForPath ());
 		}
 
 		public uint GetTraversalCost (GraphNode node) {
-#if ASTAR_NO_TRAVERSAL_COST
-			return 0;
-#else
 			unchecked { return GetTagPenalty ((int)node.Tag ) + node.Penalty ; }
-#endif
 		}
 
 		/** May be called by graph nodes to get a special cost for some connections.
@@ -298,12 +319,18 @@ yield return StartCoroutine (p.WaitForPath ());
 		}
 
 		/** Threadsafe increment of the state */
+#if !ASTAR_LOCK_FREE_PATH_STATE
 		public void AdvanceState (PathState s) {
 
 			lock (stateLock) {
 				state = (PathState)System.Math.Max ((int)state, (int)s);
 			}
 		}
+#else
+		public void AdvanceState () {
+			System.Threading.Interlocked.Increment (ref state);
+		}
+#endif
 
 		/** Returns the state of the path in the pathfinding pipeline */
 		public PathState GetState () {
@@ -318,6 +345,9 @@ yield return StartCoroutine (p.WaitForPath ());
 // What it does is that it disables the LogError function if ASTAR_NO_LOGGING is enabled
 // since the DISABLED define will never be enabled
 // Ugly way of writing Conditional("!ASTAR_NO_LOGGING")
+#if ASTAR_NO_LOGGING
+		[System.Diagnostics.Conditional("DISABLED")]
+#endif
 		public void LogError (string msg) {
 			// Optimize for release builds
 			if (!(!AstarPath.isEditor && AstarPath.active.logPathResults == PathLog.None)) {
@@ -397,6 +427,10 @@ yield return StartCoroutine (p.WaitForPath ());
 		 * \warning This function should not be called manually.
 		  */
 		public virtual void Reset () {
+#if ASTAR_POOL_DEBUG
+			pathTraceInfo = "This path was got from the pool or created from here (stacktrace):\n";
+			pathTraceInfo += System.Environment.StackTrace;
+#endif
 
 			if (System.Object.ReferenceEquals (AstarPath.active, null))
 				throw new System.NullReferenceException ("No AstarPath object found in the scene. " +
@@ -476,17 +510,8 @@ public override void Recycle () {
 		 * If you are using a path, you will want to claim it when you first get it and then release it when you will not
 		 * use it anymore. When there are no claims on the path, it will be recycled and put in a pool.
 		 *
-		 * This is essentially just reference counting.
-		 *
-		 * The object passed to this method is merely used as a way to more easily detect when pooling is not done correctly.
-		 * It can be any object, when used from a movement script you can just pass "this". This class will throw an exception
-		 * if you try to call Claim on the same path twice with the same object (which is usually not what you want) or
-		 * if you try to call Release with an object that has not been used in a Claim call for that path.
-		 * The object passed to the Claim method needs to be the same as the one you pass to this method.
-		 *
 		 * \see Release
 		 * \see Recycle
-		 * \see \ref pooling
 		 */
 		public void Claim (System.Object o) {
 			if (System.Object.ReferenceEquals (o, null)) throw new System.ArgumentNullException ("o");
@@ -498,6 +523,9 @@ public override void Recycle () {
 			}
 
 			claimed.Add (o);
+#if ASTAR_POOL_DEBUG
+			claimInfo.Add (o.ToString () + "\n\nClaimed from:\n" + System.Environment.StackTrace);
+#endif
 		}
 
 		/** Releases the path silently.
@@ -513,6 +541,9 @@ public override void Recycle () {
 				// Need to use ReferenceEquals because it might be called from another thread
 				if (System.Object.ReferenceEquals (claimed[i], o)) {
 					claimed.RemoveAt (i);
+#if ASTAR_POOL_DEBUG
+					claimInfo.RemoveAt (i);
+#endif
 					if (releasedNotSilent && claimed.Count == 0) {
 						Recycle ();
 					}
@@ -540,6 +571,9 @@ public override void Recycle () {
 				// Need to use ReferenceEquals because it might be called from another thread
 				if (System.Object.ReferenceEquals (claimed[i], o)) {
 					claimed.RemoveAt (i);
+#if ASTAR_POOL_DEBUG
+					claimInfo.RemoveAt (i);
+#endif
 					releasedNotSilent = true;
 					if (claimed.Count == 0) {
 						Recycle ();
@@ -567,13 +601,13 @@ public override void Recycle () {
 			while (c != null) {
 				c = c.parent;
 				count++;
-				if (count > 2048) {
-					Debug.LogWarning ("Infinite loop? >2048 node path. Remove this message if you really have that long paths (Path.cs, Trace method)");
+				if (count > 1024) {
+					Debug.LogWarning ("Inifinity loop? >1024 node path. Remove this message if you really have that long paths (Path.cs, Trace function)");
 					break;
 				}
 			}
 
-			// Ensure capacities for lists
+			//Ensure capacities for lists
 			AstarProfiler.StartProfile ("Check List Capacities");
 
 			if (path.Capacity < count) path.Capacity = count;
