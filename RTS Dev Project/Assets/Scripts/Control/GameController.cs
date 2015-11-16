@@ -157,46 +157,21 @@ public class GameController : MonoBehaviour
                     if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))  
 			            moveUnits(hitInfo.transform.gameObject);                    
                     else if(hitInfo.transform.gameObject.tag == "Enemy")
-                    {
-						/*
+					{
 						GameObject enemy = hitInfo.transform.gameObject;
-						//Crear nou metode moveUnit
-						//Crear interficie de atac!!!!!!!!!!!!!
-						foreach(var ally in selectedUnits.units){
-							ally.GetComponent<UnitMovement>();
+						Troop troop = new Troop(selectedUnits.units);
+						if(troop.units.Count != 0){
+							AttackController atkController;
+							foreach(var unit in troop.units){
+								atkController = unit.GetComponent<AttackController>();
+								atkController.attack(enemy);
+							}
 						}
-
-
-						GameObject allyUnit = selectedUnits.units[0];
-
-						Vector3 allyPos = allyUnit.transform.position;
-
-						double d = Vector3.Distance(allyPos,enemyPos);
-
-						Vector3 vec =- allyPos + enemyPos;
-
-						vec = vec.normalized;
-
-						double r = allyUnit.GetComponent<attack_controller>().range;
-
-						Debug.Log(r);
-
-						double alpha =  d-(r/2.0);
-
-
-						vec.x *= (float) alpha;
-						vec.z *= (float) alpha;
-
-						Vector3 targetPos = vec + allyPos;
-
-
-                        target = Instantiate(targetPrefab, targetPos, Quaternion.identity) as GameObject;
-                        moveUnits(target);
-                        */
-
-                    } 
+					} 
+                     
 		            else if(hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction>().getConstructionOnGoing())
                     {
+						noAttack();
                         Debug.Log("vaig a construir");
 
                         Troop troop = new Troop(selectedUnits.units);
@@ -223,6 +198,7 @@ public class GameController : MonoBehaviour
                     }
 		            else 
 		            {
+						noAttack ();
 			            target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
                         target.transform.SetParent(targetsParent.transform);
 			            moveUnits(target);
@@ -382,14 +358,12 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            print("rally");
             foreach (var unit in selectedUnits.units)
             {
                 Spawner script = unit.GetComponentInParent<Spawner>();
                 if (script != null)
                 {
-                    print("rally");
-                    script.RallyPoint = target.transform.position + Vector3.zero;
+                    script.RallyPoint = target.transform.position;
                 }
             }
             Destroy(target.gameObject);
@@ -900,9 +874,10 @@ public class GameController : MonoBehaviour
             Action action = new Action(unitData.preview, unitData.requiredTime, () =>
             {
                 GameObject created = CreateUnit(who.gameObject, prefab);
-                created.tag = who.gameObject.tag;
-                hud.updateDelayedActions(selectedUnits.FocusedUnit);
+				created.tag = who.gameObject.tag;
+                if (who.tag=="Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
             });
+
             //create an action and add it to the focused unit's queue
             if (who.gameObject.GetComponentOrEnd<DelayedActionQueue>().Enqueue(action)) {
                 if (checkResources(unitData.resourceCost, "player"))
@@ -991,6 +966,19 @@ public class GameController : MonoBehaviour
         GameController.Instance.hud.showMessageBox("Not implemented");
     }
 
+	public void noAttack(){
+		Troop troop = new Troop(selectedUnits.units);
+		if(troop.units.Count != 0){
+			AttackController atkController;
+			foreach(var unit in troop.units){
+				atkController = unit.GetComponent<AttackController>();
+				atkController.attacking_enemy = null;
+				atkController.attacking_target = null;
+			}
+		}
+		
+	}
+
     public List<GameObject> getAllAllyArmy()
     {
         return allAllyArmy;
@@ -1007,6 +995,7 @@ public class GameController : MonoBehaviour
     {
         return allEnemyArmy;
     }
+
     public List<GameObject> getAllEnemyBuildings()
     {
         return allEnemyBuildings;

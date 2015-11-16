@@ -7,7 +7,9 @@ namespace Pathfinding {
 	public static class PathPool<T> where T : Path, new() {
 		private static readonly Stack<T> pool;
 
+#if !ASTAR_NO_POOLING
 		private static int totalCreated;
+#endif
 
 		static PathPool () {
 			pool = new Stack<T>();
@@ -17,6 +19,7 @@ namespace Pathfinding {
 		 * This function should not be used directly. Instead use the Path.Claim and Path.Release functions.
 		 */
 		public static void Recycle (T path) {
+#if !ASTAR_NO_POOLING
 			lock (pool) {
 #if UNITY_EDITOR
 				// I am trusting the developer that it at least 1 time tests the game in the editor
@@ -31,6 +34,7 @@ namespace Pathfinding {
 				path.OnEnterPool ();
 				pool.Push (path);
 			}
+#endif
 		}
 		
 		/** Warms up path, node list and vector list pools.
@@ -47,7 +51,11 @@ namespace Pathfinding {
 		}
 		
 		public static int GetTotalCreated () {
+#if !ASTAR_NO_POOLING
 			return totalCreated;
+#else
+			return 0;
+#endif
 		}
 		
 		public static int GetSize () {
@@ -55,6 +63,11 @@ namespace Pathfinding {
 		}
 		
 		public static T GetPath () {
+#if ASTAR_NO_POOLING
+			T result = new T ();
+			result.Reset();
+			return result;
+#else
 			lock (pool) {
 				T result;
 				if (pool.Count > 0) {
@@ -69,6 +82,7 @@ namespace Pathfinding {
 				return result;
 			}
 			
+#endif
 		}
 	}
 }

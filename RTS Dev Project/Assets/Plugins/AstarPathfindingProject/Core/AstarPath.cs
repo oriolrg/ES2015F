@@ -25,7 +25,7 @@ public class AstarPath : MonoBehaviour {
 	 */
 	public static System.Version Version {
 		get {
-			return new System.Version (3,7,4);
+			return new System.Version (3,7);
 		}
 	}
 
@@ -33,18 +33,18 @@ public class AstarPath : MonoBehaviour {
 	public enum AstarDistribution { WebsiteDownload, AssetStore };
 
 	/** Used by the editor to guide the user to the correct place to download updates */
-	public static readonly AstarDistribution Distribution = AstarDistribution.WebsiteDownload;
+	public static readonly AstarDistribution Distribution = AstarDistribution.AssetStore;
 
 	/** Which branch of the A* %Pathfinding Project is this release.
 	 * Used when checking for updates so that
 	 * users of the development versions can get notifications of development
 	 * updates.
 	 */
-	public static readonly string Branch = "master_Free";
+	public static readonly string Branch = "master_Pro";
 
 	/** Used by the editor to show some Pro specific stuff.
 	 * Note that setting this to true will not grant you any additional features */
-	public static readonly bool HasPro = false;
+	public static readonly bool HasPro = true;
 
 	/** See Pathfinding.AstarData
 	 * \deprecated
@@ -246,7 +246,7 @@ public class AstarPath : MonoBehaviour {
 	 * threads, it will not calculate individual paths any faster.
 	 *
 	 * Note that if you are modifying the pathfinding core scripts or if you are directly modifying graph data without using any of the
-	 * safe wrappers (like RegisterSafeUpdate) multithreading can cause strange errors and pathfinding stopping to work if you are not careful.
+	 * safe wrappers (like RegisterSafeUpdate) multithreading can cause strange errors and pathfinding stopping to work if you are not carefull.
 	 * For basic usage (not modding the pathfinding core) it should be safe.\n
 	 *
 	 * \note WebGL does not support threads at all (since javascript is single-threaded)
@@ -296,6 +296,10 @@ public class AstarPath : MonoBehaviour {
 	 */
 	public static int PathsCompleted = 0;
 
+#if ProfileAstar
+	public static System.Int64 				TotalSearchedNodes = 0;
+	public static System.Int64			 	TotalSearchTime = 0;
+#endif
 
 	/** The time it took for the last call to Scan() to complete.
 	 * Used to prevent automatically rescanning the graphs too often (editor only)
@@ -430,10 +434,10 @@ public class AstarPath : MonoBehaviour {
 	/** Called for each graph after they have been scanned. All other graphs might not have been scanned yet. */
 	public static OnGraphDelegate OnGraphPostScan;
 
-	/** Called for each path before searching. Be careful when using multithreading since this will be called from a different thread. */
+	/** Called for each path before searching. Be carefull when using multithreading since this will be called from a different thread. */
 	public static OnPathDelegate OnPathPreSearch;
 
-	/** Called for each path after searching. Be careful when using multithreading since this will be called from a different thread. */
+	/** Called for each path after searching. Be carefull when using multithreading since this will be called from a different thread. */
 	public static OnPathDelegate OnPathPostSearch;
 
 	/** Called before starting the scanning */
@@ -658,6 +662,7 @@ public class AstarPath : MonoBehaviour {
 		return nextFreePathID++;
 	}
 
+#if !PhotonImplementation
 
 	/** Calls OnDrawGizmos on graph generators and also #OnDrawGizmosCallback */
 	private void OnDrawGizmos () {
@@ -756,6 +761,7 @@ public class AstarPath : MonoBehaviour {
 		return true;
 	}
 
+	#if !ASTAR_NO_GUI
 	/** Draws the InGame debugging (if enabled), also shows the fps if 'L' is pressed down.
 	 * \see #logPathResults PathLog
 	 */
@@ -774,6 +780,8 @@ public class AstarPath : MonoBehaviour {
 		}*/
 
 	}
+	#endif
+#endif
 
 #line hidden
 	/** Logs a string while taking into account #logPathResults */
@@ -784,6 +792,7 @@ public class AstarPath : MonoBehaviour {
 		}
 
 		if (active.logPathResults != PathLog.None && active.logPathResults != PathLog.OnlyErrors) {
+			Debug.Log (s);
 		}
 	}
 
@@ -816,7 +825,7 @@ public class AstarPath : MonoBehaviour {
 		if (logPathResults == PathLog.InGame) {
 			inGameDebugPath = debug;
 		} else {
-			// Debug.Log (debug);
+			Debug.Log (debug);
 		}
 	}
 
@@ -859,6 +868,7 @@ public class AstarPath : MonoBehaviour {
 		if (threadEnumerator != null) {
 			try {
 				threadEnumerator.MoveNext ();
+
 			} catch (System.Exception e) {
 				//This will kill pathfinding
 				threadEnumerator = null;
@@ -1216,7 +1226,7 @@ public class AstarPath : MonoBehaviour {
 
 			GraphUpdateThreading threading = s.order == GraphUpdateOrder.FloodFill ? GraphUpdateThreading.SeparateThread : s.graph.CanUpdateAsync(s.obj);
 
-#if !UNITY_WEBGL
+			#if !UNITY_WEBGL
 			bool forceUnityThread = force;
 
 			// When not playing or when not using a graph update thread (or if it has crashed), everything runs in the Unity thread
@@ -1369,6 +1379,18 @@ public class AstarPath : MonoBehaviour {
 		PerformBlockingActions();
 	}
 
+#if !PhotonImplementation && !AstarRelease
+	[ContextMenu("Log Profiler")]
+	public void LogProfiler () {
+		AstarProfiler.PrintFastResults ();
+
+	}
+
+	[ContextMenu("Reset Profiler")]
+	public void ResetProfiler () {
+		AstarProfiler.Reset ();
+	}
+#endif
 
 	/** Calculates number of threads to use.
 	 * If \a count is not Automatic, simply returns \a count casted to an int.
@@ -1385,6 +1407,10 @@ public class AstarPath : MonoBehaviour {
 		return 0;
 #else
 		if (count == ThreadCount.AutomaticLowLoad || count == ThreadCount.AutomaticHighLoad) {
+#if ASTARDEBUG
+			Debug.Log (SystemInfo.systemMemorySize + " " + SystemInfo.processorCount + " " + SystemInfo.processorType);
+#endif
+
 			int logicalCores = Mathf.Max (1,SystemInfo.processorCount);
 			int memory = SystemInfo.systemMemorySize;
 
@@ -1393,12 +1419,28 @@ public class AstarPath : MonoBehaviour {
 				memory = 1024;
 			}
 
-			if ( logicalCores <= 1) return 0;
-			if ( memory <= 512) return 0;
+			if (logicalCores <= 1) return 0;
 
-			return 1;
+			if (memory <= 512) return 0;
+
+			if (count == ThreadCount.AutomaticHighLoad) {
+				if (memory <= 1024) logicalCores = System.Math.Min (logicalCores,2);
+			} else {
+				//Always run at at most processorCount-1 threads (one core reserved for unity thread).
+				// Many computers use hyperthreading, so dividing by two is used to remove the hyperthreading cores, pathfinding
+				// doesn't scale well past the number of physical cores anyway
+				logicalCores /= 2;
+				logicalCores = Mathf.Max (1, logicalCores);
+
+				if (memory <= 1024) logicalCores = System.Math.Min (logicalCores,2);
+
+				logicalCores = System.Math.Min (logicalCores,6);
+			}
+
+			return logicalCores;
 		} else {
-			return (int)count > 0 ? 1 : 0;
+			int val = (int)count;
+			return val;
 		}
 #endif
 	}
@@ -1432,11 +1474,6 @@ public class AstarPath : MonoBehaviour {
 
 		int numThreads = CalculateThreadCount (threadCount);
 
-		// Trying to prevent simple modding to add support for more than one thread
-		if ( numThreads > 1 ) {
-			threadCount = ThreadCount.One;
-			numThreads = 1;
-		}
 
 		threads = new Thread[numThreads];
 
@@ -1486,6 +1523,7 @@ public class AstarPath : MonoBehaviour {
 
 		Initialize ();
 
+#if !PhotonImplementation
 
 		// Flush work items, possibly added in initialize to load graph data
 		FlushWorkItems();
@@ -1498,6 +1536,7 @@ public class AstarPath : MonoBehaviour {
 			}
 		}
 
+#endif
 	}
 
 	/** Does simple error checking.
@@ -1596,6 +1635,10 @@ public class AstarPath : MonoBehaviour {
 
 		if ( active != this ) return;
 
+#if ASTARDEBUG
+		System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch ();
+		watch.Start ();
+#endif
 
 		BlockUntilPathQueueBlocked();
 
@@ -1722,6 +1765,9 @@ public class AstarPath : MonoBehaviour {
 	public void FloodFill () {
 		queuedWorkItemFloodFill = false;
 
+#if ASTARDEBUG
+		System.DateTime startTime = System.DateTime.UtcNow;
+#endif
 
 		if (astarData.graphs == null) {
 			return;
@@ -1831,6 +1877,9 @@ public class AstarPath : MonoBehaviour {
 
 		Pathfinding.Util.ListPool<GraphNode>.Release ( smallAreaList );
 
+#if ASTARDEBUG
+		Debug.Log ("Flood fill complete, "+area+" area"+(area > 1 ? "s" : "")+" found - "+((System.DateTime.UtcNow.Ticks-startTime.Ticks)*0.0001).ToString ("0.00")+" ms");
+#endif
 	}
 
 	/** Returns a new global node index.
@@ -1908,6 +1957,12 @@ public class AstarPath : MonoBehaviour {
 	  */
 	public void Scan () {
 
+#if ASTARDEBUG
+		OnScanStatus info = delegate (Progress p) {
+			Debug.Log ("+++ " + p.description);
+		};
+		ScanLoop (info);
+#endif
 		ScanLoop (null);
 	}
 
@@ -2252,6 +2307,37 @@ AstarPath.RegisterSafeUpdate (delegate () {
 		}
 	}
 
+#if PhotonImplementation
+	/** Replacement for UnityEngine's StartCoroutine */
+	public void StartCoroutine (IEnumerator update) {
+		if (activeThread != null && activeThread.IsAlive) {
+			Debug.Log ("Can only start one coroutine at a time, please end the current running thread first (activeThread)");
+			return;
+		}
+
+		//Execute to the first yield
+		if (!update.MoveNext ()) {
+			return;
+		}
+
+		activeThread = new Thread (StartCoroutineInternal);
+		activeThread.Start (update);
+	}
+
+	/** Replacement for UnityEngine's StartCoroutine */
+	private void StartCoroutineInternal (System.Object updateOb) {
+
+		IEnumerator update = (IEnumerator)updateOb;
+
+		if (update == null) {
+			return;
+		}
+
+		while (update.MoveNext ()) {
+			Thread.Sleep(1);
+		}
+	}
+#endif
 
 	/** Terminates pathfinding threads when the application quits.
 	 */
@@ -2352,7 +2438,9 @@ AstarPath.RegisterSafeUpdate (delegate () {
 
 		AstarPath astar = threadInfo.astar;
 
+#if !ASTAR_FAST_BUT_NO_EXCEPTIONS
 		try {
+#endif
 
 			//Initialize memory for this thread
 			PathHandler runData = threadInfo.runData;
@@ -2373,10 +2461,6 @@ AstarPath.RegisterSafeUpdate (delegate () {
 				//One tick is 1/10000 of a millisecond
 				maxTicks = (long)(astar.maxFrameTime*10000);
 
-				//Trying to prevent simple modding to allow more than one thread
-				if ( threadInfo.threadIndex > 0 ) {
-					throw new System.Exception ("Thread Error");
-				}
 
 				AstarProfiler.StartFastProfile (0);
 				p.PrepareBase (runData);
@@ -2443,6 +2527,11 @@ AstarPath.RegisterSafeUpdate (delegate () {
 					totalTicks += System.DateTime.UtcNow.Ticks-startTicks;
 					p.duration = totalTicks*0.0001F;
 
+#if ProfileAstar
+					System.Threading.Interlocked.Increment (ref PathsCompleted);
+					System.Threading.Interlocked.Add (ref TotalSearchedNodes, p.searchedNodes);
+					System.Threading.Interlocked.Add (ref TotalSearchTime, totalTicks);
+#endif
 				}
 
 				// Cleans up node tagging and other things
@@ -2474,6 +2563,7 @@ AstarPath.RegisterSafeUpdate (delegate () {
 					targetTick = System.DateTime.UtcNow.Ticks + maxTicks;
 				}
 			}
+#if !ASTAR_FAST_BUT_NO_EXCEPTIONS
 		} catch (System.Exception e) {
 #if !NETFX_CORE
 			if (e is System.Threading.ThreadAbortException || e is ThreadControlQueue.QueueTerminationException)
@@ -2490,6 +2580,7 @@ AstarPath.RegisterSafeUpdate (delegate () {
 			//Unhandled exception, kill pathfinding
 			astar.pathQueue.TerminateReceivers();
 		}
+#endif
 
 		Debug.LogError ("Error : This part should never be reached.");
 		astar.pathQueue.ReceiverTerminated ();
@@ -2641,6 +2732,10 @@ AstarPath.RegisterSafeUpdate (delegate () {
 				totalTicks += System.DateTime.UtcNow.Ticks-startTicks;
 				p.duration = totalTicks*0.0001F;
 
+#if ProfileAstar
+				System.Threading.Interlocked.Increment (ref PathsCompleted);
+				System.Threading.Interlocked.Add (ref TotalSearchedNodes, p.searchedNodes);
+#endif
 			}
 
 			// Cleans up node tagging and other things
@@ -2787,6 +2882,7 @@ AstarPath.RegisterSafeUpdate (delegate () {
 		return nearestNode;
 	}
 
+#if !PhotonImplementation
 	/** Returns the node closest to the ray (slow).
 	  * \warning This function is brute-force and very slow, it can barely be used once per frame
 	  */
@@ -2829,4 +2925,5 @@ AstarPath.RegisterSafeUpdate (delegate () {
 
 		return nearestNode;
 	}
+#endif
 }

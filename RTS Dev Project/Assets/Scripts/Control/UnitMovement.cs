@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Pathfinding; 
 
@@ -100,31 +100,21 @@ public class UnitMovement : MonoBehaviour {
 				currentWaypoint++;
 			}
 
-			Vector3 v = new Vector3(1.0f,transform.localScale.y/2.0f,1.0f);
-			dis = (Vector3.Distance(transform.position,Vector3.Scale(targetPos,v)));
-
-			if(dis < .5){
-				timerDeath timer = target.GetComponent<timerDeath>();
-				if(timer != null){
-					timer.UnitLostTarget(gameObject);
+			if(status != Status.attacking){
+				Vector3 v = new Vector3(1.0f,transform.localScale.y/2.0f,1.0f);
+				dis = (Vector3.Distance(transform.position,Vector3.Scale(targetPos,v)));
+				
+				if(dis < 4.5){
+					timerDeath timer = target.GetComponent<timerDeath>();
+					if(timer != null){
+						timer.UnitLostTarget(gameObject);
+					}
+					hasTarget = false;
+					var animator = GetComponent<Animator>();
+					if (animator != null) animator.SetBool("walk", false);
+					status = Status.idle;
 				}
-				hasTarget = false;
-				var animator = GetComponent<Animator>();
-				if (animator != null) animator.SetBool("walk", false);
-				status = Status.idle;
-            }
-
+			} 
 		}
 	}
-
-	/*
-	void OnTriggerEnter(Collider collider) {	
-		print (gameObject.name + "|" + collider.name);
-		if (!collider.gameObject.Equals (gameObject) && collider.gameObject.tag=="Ally"){//collider.gameObject.GetComponent<UnitMovement>() != null){
-			print (gameObject.name + "|" + collider.name);
-			//gameObject.transform.position += gameObject.transform.right * GetComponent<BoxCollider> ().size.magnitude;
-			print ("adios");
-		}
-			
-	}*/
 }
