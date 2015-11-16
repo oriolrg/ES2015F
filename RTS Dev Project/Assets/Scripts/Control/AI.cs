@@ -146,19 +146,24 @@ public class AI : MonoBehaviour {
         else resourcesX = resourcesFood;
         
         float aux;
-        float minDistance = (resourcesX[0].transform.position - c.transform.position).magnitude;
-        GameObject closestResource = resourcesX[0];
 
-        for (int i = 0; i < resourcesX.Count; i++)
-        {
-            aux = (resourcesX[i].transform.position - c.transform.position).magnitude;
-            if (aux < minDistance)
-            {
-                minDistance = aux;
-                closestResource = resourcesX[i];
-            }
-        }
-        return closestResource;
+		if(resourcesX.Count > 0){
+			float minDistance = (resourcesX[0].transform.position - c.transform.position).magnitude;
+			GameObject closestResource = resourcesX[0];
+			for (int i = 0; i < resourcesX.Count; i++)
+			{
+				aux = (resourcesX[i].transform.position - c.transform.position).magnitude;
+				if (aux < minDistance)
+				{
+					minDistance = aux;
+					closestResource = resourcesX[i];
+				}
+			}
+			return closestResource;
+		}
+        
+		return null;
+        
 
     }
 
@@ -183,8 +188,8 @@ public class AI : MonoBehaviour {
         if (civiliansCPU.Count > 0)
         {
 
-            GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 20), new Troop(civiliansCPU));
-			//GameController.Instance.OnCreate(civiliansCPU[0].GetComponent<Identity>(),UnitType.TownCenter);
+            //GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 20), new Troop(civiliansCPU));
+			GameController.Instance.OnCreate(civiliansCPU[0].GetComponent<Identity>(),UnitType.TownCenter);
         }
 
 
@@ -202,10 +207,8 @@ public class AI : MonoBehaviour {
     {
         CollectResources collect = v.GetComponent<CollectResources>();
         if (collect.targetToCollect != null) collect.targetToCollect = getClosestResource(v, collect.targetToCollect.tag);
-        ///PLEASE CHECK THIS IS AI WORK
-        else collect.targetToCollect = getClosestResource(v, "Wood");
-
-        collect.startMovingToCollect(collect.targetToCollect);
+        else collect.targetToCollect = getClosestResource(v, "Food");
+		if(collect.targetToCollect!=null) collect.startMovingToCollect(collect.targetToCollect);
 
     }
 

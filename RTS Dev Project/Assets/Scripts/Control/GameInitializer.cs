@@ -132,7 +132,7 @@ public class GameInitializer : MonoBehaviour {
 
 			townCenter.name = "CPU" + cpus.ToString() + "TownCenter";
 			townCenter.transform.SetParent(buildings.transform);
-			
+			townCenter.tag = "Enemy";
 			townCenters.Add(townCenter);
 		}
     }
