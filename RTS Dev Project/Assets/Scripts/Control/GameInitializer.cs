@@ -135,7 +135,7 @@ public class GameInitializer : MonoBehaviour {
 			
 			townCenters.Add(townCenter);
 		}
-	}
+    }
 
 	void Update() {
 		if (firstUpdate){
@@ -174,7 +174,10 @@ public class GameInitializer : MonoBehaviour {
 				}
 			}
 
-			firstUpdate = false;
-		}
+            GameController.Instance.spawnRandomObjectives();
+
+            firstUpdate = false;
+
+        }
 	}
 }
