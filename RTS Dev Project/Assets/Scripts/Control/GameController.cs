@@ -353,12 +353,14 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            print("rally");
             foreach (var unit in selectedUnits.units)
             {
                 Spawner script = unit.GetComponentInParent<Spawner>();
                 if (script != null)
                 {
-                    script.RallyPoint = target.transform.position;
+                    print("rally");
+                    script.RallyPoint = target.transform.position + Vector3.zero;
                 }
             }
             Destroy(target.gameObject);
@@ -573,7 +575,7 @@ public class GameController : MonoBehaviour
     public GameObject CreateUnit(GameObject building, GameObject unit)
     {
         Spawner spawner = building.GetComponentOrEnd<Spawner>();
-        spawner.initBounds();
+
         Vector3 spawningPoint = spawner.SpawningPoint;
         Vector3 rallyPoint = spawner.RallyPoint;
         
@@ -621,8 +623,8 @@ public class GameController : MonoBehaviour
             UnitMovement script = newUnit.GetComponent<UnitMovement>();
             if (script != null)
             {
-                //script.startMoving(target);
-                //target.GetComponent<timerDeath>().AddUnit(newUnit);
+                script.startMoving(target);
+                target.GetComponent<timerDeath>().AddUnit(newUnit);
             }
             return newUnit;
         }
