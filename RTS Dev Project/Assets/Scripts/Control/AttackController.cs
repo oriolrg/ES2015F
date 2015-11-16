@@ -41,7 +41,7 @@ public class AttackController : MonoBehaviour {
 			um.status = Status.running;
 			Vector3 vec = enemyPos - myPos;
 			vec = vec.normalized;
-			double alpha = d - (r / 3.0);
+			double alpha = d - (r / 2.0);
 		
 			vec.x *= (float)alpha;
 			vec.z *= (float)alpha;
@@ -60,18 +60,15 @@ public class AttackController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (this.attacking_enemy != null) { //check if position has changed, and follow if so
-
 			Vector3 enemyPos = attacking_enemy.transform.position;
 
-			if(this.attacking_enemy.layer == 11 && (Vector3.Distance(enemyPos,this.gameObject.transform.position) <= range*2 + 7)){
-				attacking_enemy.GetComponent<Health>().loseHP(1);
-			}
-			else if(Vector3.Distance(enemyPos, this.gameObject.transform.position)<=this.range*2){
-				attacking_enemy.GetComponent<Health>().loseHP(1);
-			
+			if (this.attacking_enemy.layer == 11 && (Vector3.Distance (enemyPos, this.gameObject.transform.position) <= range * 2 + 7)) {
+				attacking_enemy.GetComponent<Health> ().loseHP (1);
+			} else if (Vector3.Distance (enemyPos, this.gameObject.transform.position) <= this.range * 2) {
+				attacking_enemy.GetComponent<Health> ().loseHP (1);
 			}
 
-			if(Vector3.Distance(enemy_last_pos,enemyPos) > this.range){
+			if (Vector3.Distance (enemy_last_pos, enemyPos) > this.range) {
 				this.attack (attacking_enemy);
 			}
 		}

@@ -23,6 +23,9 @@ public class NavMeshRenderer : MonoBehaviour {
 		}
 		
 		if (lastLevel != EditorApplication.currentScene) {
+#if ASTARDEBUG
+			Debug.Log ("Level change "+lastLevel+" --> "+EditorApplication.currentScene);
+#endif
 			DestroyImmediate (gameObject);
 		}
 		#endif
