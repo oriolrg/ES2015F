@@ -579,13 +579,13 @@ public class GameController : MonoBehaviour
         Vector3 spawningPoint = spawner.SpawningPoint;
         Vector3 rallyPoint = spawner.RallyPoint;
         
-        Ray ray = new Ray(rallyPoint + new Vector3(0, 100, 0), -Vector3.up);
+        Ray ray = new Ray(rallyPoint + new Vector3(0, 10, 0), -Vector3.up);
 
         bool freeSpaceFound = false;
 
         RaycastHit hitInfo = new RaycastHit();
 
-        int multiplier = 1;
+        int multiplier = 2;
 
         while (!freeSpaceFound)
         {
@@ -594,12 +594,13 @@ public class GameController : MonoBehaviour
                 print(hitInfo.transform.gameObject);
                 if (hitInfo.transform.tag == "Ground")
                 {
+                    print(hitInfo.point);
                     freeSpaceFound = true;
                 }
                 else
                 {
                     ray.origin += Vector3.right * multiplier;
-                    multiplier = (int)-Mathf.Sign(multiplier) * (Mathf.Abs(multiplier) + 1);
+                    multiplier = (int)-Mathf.Sign(multiplier) * (Mathf.Abs(multiplier) + 2);
                 }
             }
             else
@@ -612,9 +613,10 @@ public class GameController : MonoBehaviour
         {
 
 
-            GameObject newUnit = Instantiate(unit, hitInfo.point, Quaternion.identity) as GameObject;
+            GameObject newUnit = Instantiate(unit, spawner.SpawningPoint, Quaternion.identity) as GameObject;
             addSelectedPrefab(newUnit);
             addTeamCirclePrefab(newUnit);
+
             // Set unit as parent in hierarchy
             newUnit.transform.SetParent(unitsParent.transform);
             GameObject target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
@@ -624,6 +626,7 @@ public class GameController : MonoBehaviour
             if (script != null)
             {
                 script.startMoving(target);
+                print(target.transform.position);
                 target.GetComponent<timerDeath>().AddUnit(newUnit);
             }
             return newUnit;
