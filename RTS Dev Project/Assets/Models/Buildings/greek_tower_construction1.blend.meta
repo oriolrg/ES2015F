@@ -1,24 +1,15 @@
 fileFormatVersion: 2
-guid: 802b7ec57fe51ad4690e1fb784c749b9
-timeCreated: 1446194758
+guid: 89e66c3a945ae084a9916810f71c73f6
+timeCreated: 1447528234
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
-    100002: sostre
-    100004: sostre_001
     400000: //RootNode
-    400002: sostre
-    400004: sostre_001
-    2300000: sostre
-    2300002: sostre_001
-    2300004: //RootNode
-    3300000: sostre
-    3300002: sostre_001
-    3300004: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
     4300000: sostre_001
-    4300002: sostre
     7400000: Default Take
     9500000: //RootNode
   materials:

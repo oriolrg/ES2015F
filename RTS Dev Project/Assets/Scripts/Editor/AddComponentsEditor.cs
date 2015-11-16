@@ -36,11 +36,14 @@ public class AddComponentsEditor : MonoBehaviour
     public static List<Type> buildingTypes = new List<Type>()
     {
         typeof(BoxCollider),
+        typeof(Animator),
         typeof(updateGrid),
         typeof(BuildingConstruction),
         typeof(Identity),
         typeof(DelayedActionQueue),
-        typeof(Spawner)
+        typeof(Spawner),
+        typeof(Health),
+        typeof(LOSEntity)
     };
 
 
@@ -48,7 +51,7 @@ public class AddComponentsEditor : MonoBehaviour
     public static void AddComponentsBuilding()
     {
         GameObject selected = Selection.activeGameObject;
-        foreach (Type type in unitsTypes)
+        foreach (Type type in buildingTypes)
         {
             if (selected.GetComponent(type) == null)
             {
