@@ -1,49 +1,69 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class SendToStorage : MonoBehaviour
 {
-
-    CollectResources r;
-    GameObject choque;
-
-    public void moveToStorageAfterCut()
+    public static Dictionary<Resource, string> gatheringAnimationBools = new Dictionary<Resource, string>()
     {
-        CancelInvoke("moveToStorageAfterCut");
-        choque.GetComponent<Animator>().SetBool("cut", false);
-        r.startMovingToStorage(AI.Instance.getClosestTownCenter(choque.gameObject));
-    }
-	
-	void Start()
+        {Resource.Food, "cultivate" },
+        {Resource.Wood, "cut" },
+        {Resource.Metal, "chop" }
+    };
+    
+    Resource myResource;
+    GameObject collector;
+
+    void Start()
     {
-        InvokeRepeating("check", 1, 1);
+        if (tag != "Untagged")
+            myResource = (Resource)System.Enum.Parse(typeof(Resource), this.tag);
     }
-	// Update is called once per frame
-	void check () {
-		Collider[] hitColliders = Physics.OverlapSphere(transform.position,5);
-		foreach(Collider c in hitColliders){
-            if (c.tag == "Ally" || c.tag == "Enemy")
-            {
-                CollectResources collect = c.gameObject.GetComponentInParent<CollectResources>();
-		        if(collect!=null && collect.goingToCollect == true){
-                    if (collect.targetToCollect == gameObject){
-                        DestroyOnExpend d = gameObject.GetComponent<DestroyOnExpend>();
-				        if(collect.hasCollected != true){
-					        d.amount--;
-                            collect.resourceCollected = (Resource)System.Enum.Parse(typeof(Resource), this.tag);
-                            collect.quantityCollected++;
-                            c.GetComponent<Animator>().SetBool("cut", true);
-                            choque = c.gameObject;
-                            r = collect;
-                            //moveToStorageAfterCut();
-                            Invoke("moveToStorageAfterCut", 5);
-                        }
-			        }
-		        }
-            }
-            
-		}
-	}
+
+    public void stopAnimations()
+    {
+        // Stop the gathering animation
+        collector.GetComponent<Animator>().SetBool(gatheringAnimationBools[myResource], false);
+    }
+
+    void OnTriggerEnter(Collider c)
+    {
+        // Get the unit we collide with
+        GameObject unit = c.gameObject;
+
+        print("collecting");
+
+        // Check that the unit is going to collect this resource
+        CollectResources collect = unit.GetComponentInParent<CollectResources>();
+        DestroyOnExpend d = GetComponent<DestroyOnExpend>();
+
+        if( collect != null && d != null && collect.goingToCollect && collect.targetToCollect == gameObject )
+        {
+            // Set this unit as collector
+            collector = unit;
+
+            // Collect 10 resources
+            d.amount -= 10;
+            collect.resourceCollected = myResource;
+            collect.quantityCollected += 10;
+
+            // Animate during 5 seconds
+            Animator animator = unit.GetComponent<Animator>();
+
+            animator.SetBool(gatheringAnimationBools[myResource], true);
+
+            // Call stop animations and start moving to storage after 5 seconds
+            Invoke("stopAnimations", 5);
+            collect.Invoke("startMovingToStorage", 5);
+        }
+    }
+
+    void OnTriggerExit(Collider c)
+    {
+        // Get the unit we collide with
+        GameObject unit = c.gameObject;
+        unit.GetComponent<Animator>().SetBool(gatheringAnimationBools[myResource], false);
+        unit.GetComponent<CollectResources>().CancelInvoke("startMovingToStorage");
+    }
 	
 	
 }
