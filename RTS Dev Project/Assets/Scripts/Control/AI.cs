@@ -30,8 +30,9 @@ public class AI : MonoBehaviour {
     private void elaborateStrategy()
     {
         Task t = new Task(new Method(createCivilian));
-        tasks.AddRange(Enumerable.Repeat(t, 3));
+        tasks.AddRange(Enumerable.Repeat(t,6));
         t = new Task(new Method(createWonder));
+		tasks.Add (t);
     }
 
     void Awake()
@@ -62,9 +63,11 @@ public class AI : MonoBehaviour {
     }
     void Update()
     {
+
         if (tasks.Count > 0)
         {
-            //tasks[0].method();
+			print (tasks[0].method.Method.Name);
+            tasks[0].method();
             tasks.RemoveAt(0);
         }
     }
@@ -168,15 +171,17 @@ public class AI : MonoBehaviour {
     {
         if (townCentersCPU.Count > 0)
         {
-            GameController.Instance.OnCreate(townCentersCPU[0].GetComponent<Identity>(), UnitType.Civilian);
+			GameController.Instance.OnCreate(townCentersCPU[0].GetComponent<Identity>(),UnitType.Civilian);
+			//GameController.Instance.CreateUnit(townCentersCPU[0], DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Civilian]);
         }
     }
     private void createWonder()
     {
         if (civiliansCPU.Count > 0)
         {
+
             GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 20), new Troop(civiliansCPU));
-            //GameController.Instance.OnCreate(civiliansCPU[0].GetComponent<Identity>(),);
+			//GameController.Instance.OnCreate(civiliansCPU[0].GetComponent<Identity>(),UnitType.TownCenter);
         }
 
 
@@ -186,7 +191,7 @@ public class AI : MonoBehaviour {
         resourcesFood.Remove(r);
         resourcesMetal.Remove(r);
         resourcesWood.Remove(r);
-        //foreach (GameObject vil in civilians) if (vil.GetComponent<CollectResources>().targetToCollect == r) reassignResourceToCivilian(vil);
+        foreach (GameObject vil in civilians) if (vil.GetComponent<CollectResources>().targetToCollect == r) reassignResourceToCivilian(vil);
        
 
     }
@@ -195,7 +200,7 @@ public class AI : MonoBehaviour {
         CollectResources collect = v.GetComponent<CollectResources>();
         if (collect.targetToCollect != null) collect.targetToCollect = getClosestResource(v, collect.targetToCollect.tag);
         ///PLEASE CHECK THIS IS AI WORK
-        else collect.targetToCollect = getClosestResource(v, "Metal");
+        else collect.targetToCollect = getClosestResource(v, "Wood");
 
         collect.startMovingToCollect(collect.targetToCollect);
 

@@ -580,6 +580,7 @@ public class GameController : MonoBehaviour
 
 
         GameObject newUnit = Instantiate(unit, spawningPoint, Quaternion.identity) as GameObject;
+		newUnit.tag = building.tag;
         addSelectedPrefab(newUnit);
         // Set unit as parent in hierarchy
         newUnit.transform.SetParent(unitsParent.transform);
@@ -644,7 +645,6 @@ public class GameController : MonoBehaviour
         GameObject building = Instantiate(prefab, position, gameObject.transform.rotation) as GameObject;
         building.tag = "Ally";
         addSelectedPrefab(building);
-
         building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
 
         foreach (var unit in t.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
@@ -721,15 +721,15 @@ public class GameController : MonoBehaviour
             Action action = new Action(unitData.preview, unitData.requiredTime, () => 
             {
                 GameObject created = CreateUnit(who.gameObject, prefab);
-                created.tag = who.gameObject.tag;
-                hud.updateDelayedActions(selectedUnits.FocusedUnit);
+				created.tag = who.gameObject.tag;
+                if (who.tag=="Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
             });
             DelayedActionQueue script = who.gameObject.GetComponentOrEnd<DelayedActionQueue>();
 
             script.Enqueue(action);
 
             if(who.gameObject.tag=="Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
-            
+
         }
         
      }
