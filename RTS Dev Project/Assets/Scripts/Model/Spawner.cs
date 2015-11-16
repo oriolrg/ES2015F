@@ -23,6 +23,6 @@ public class Spawner : MonoBehaviour
         {
             SpawningPoint = transform.position + transform.forward * 3;
         }
-        RallyPoint = SpawningPoint + transform.forward * 5;
+        RallyPoint = SpawningPoint + transform.forward;
     }
 }
