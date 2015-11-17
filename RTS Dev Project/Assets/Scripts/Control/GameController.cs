@@ -652,12 +652,12 @@ public class GameController : MonoBehaviour
     }
     public void checkWin()
     {
-        if (allEnemyUnits.Count == 0) winCondition();
+		if (allEnemyBuildings.Count == 0) winCondition();
     }
 
     public void checkLose()
     {
-        if (allAllyUnits.Count == 0) loseCondition();
+		if (allAllyBuildings.Count == 0) loseCondition();
     }
 
     //Ends the game.

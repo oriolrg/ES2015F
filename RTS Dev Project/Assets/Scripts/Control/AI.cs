@@ -35,7 +35,7 @@ public class AI : MonoBehaviour {
 		tasks.Add (new Task(new Method(createBarrac)));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier)),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),3));
-		tasks.Add (new Task(new Method(createWonder)));
+		//tasks.Add (new Task(new Method(createWonder)));
 
     }
 
@@ -74,9 +74,20 @@ public class AI : MonoBehaviour {
 			}
         }
 
-		if(GameController.Instance.getAllEnemyArmy()[0].GetComponent<AttackController>().attacking_enemy == null) {
-			compareArmy();
-		}
+
+		compareArmy();
+		/*List<GameObject> lo = GameController.Instance.getAllEnemyArmy ();
+		if(lo != null){
+			GameObject o = lo[0];
+			if(o != null){
+				AttackController a = o.GetComponent<AttackController> ();
+				if(a != null) {
+					if(a.attacking_enemy == null) {
+
+					}
+				}
+			}
+		}*/
 
     }
     
