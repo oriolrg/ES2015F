@@ -664,12 +664,17 @@ public class GameController : MonoBehaviour
     //Ends the game.
     public void winCondition()
 	{
-        hud.ShowWinMessage();
+        //hud.ShowWinMessage();
+
+        hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(true);
     }
 
     public void loseCondition()
     {
-        hud.ShowLoseMessage();
+        //hud.ShowLoseMessage();
+
+
+        hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(false);
     }
 
     public void reloadLevel()
