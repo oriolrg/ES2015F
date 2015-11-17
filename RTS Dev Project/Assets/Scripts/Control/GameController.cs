@@ -700,7 +700,7 @@ public class GameController : MonoBehaviour
         Vector3 spawningPoint = spawner.SpawningPoint;
         Vector3 rallyPoint = spawner.RallyPoint;
         
-        Ray ray = new Ray(rallyPoint + new Vector3(0, 10, 0), -Vector3.up);
+        Ray ray = new Ray(rallyPoint + new Vector3(0, 100, 0), -Vector3.up);
 
         bool freeSpaceFound = false;
 
@@ -708,39 +708,40 @@ public class GameController : MonoBehaviour
 
         int multiplier = 2;
 
-        while (!freeSpaceFound)
+        while (!freeSpaceFound && Physics.Raycast(ray, out hitInfo))
         {
-            if (Physics.Raycast(ray, out hitInfo))
+            if (hitInfo.collider.transform.tag == "Ground")
             {
-                if (hitInfo.transform.tag == "Ground")
+                //Noone there
+                print("noone there" + ray.origin + hitInfo.point);
+
+                bool someoneElse = false;
+                foreach (Transform target in targetsParent.transform)
                 {
-                    // check if there is someone going ther
-                    bool someoneElse = false;
-                    foreach(Transform target in targetsParent.transform)
-                    {
-                        if (target.position == hitInfo.point)
-                            someoneElse = true;
-                    }
-                    if (someoneElse)
-                    {
-                        ray.origin += Vector3.right * multiplier;
-                        multiplier = (int)-Mathf.Sign(multiplier) * (Mathf.Abs(multiplier) + 2);
-                    }
-                    else
-                    {
-                        freeSpaceFound = true;
-                    }
+                    if (target.position == hitInfo.point)
+                        someoneElse = true;
+                }
+
+                if (someoneElse)
+                {
+                    print("someone going");
+                    ray.origin += Vector3.right * multiplier;
+                    multiplier = (int)-Mathf.Sign(multiplier) * (Mathf.Abs(multiplier) + 2);
+
                 }
                 else
                 {
-                    ray.origin += Vector3.right * multiplier;
-                    multiplier = (int)-Mathf.Sign(multiplier) * (Mathf.Abs(multiplier) + 2);
+                    print("free space");
+                    freeSpaceFound = true;
                 }
             }
             else
             {
-                break;
+                print("hit other");
+                ray.origin += Vector3.right * multiplier;
+                multiplier = (int)-Mathf.Sign(multiplier) * (Mathf.Abs(multiplier) + 2);
             }
+
         }
 
         if (freeSpaceFound)

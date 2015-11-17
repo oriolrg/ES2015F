@@ -186,6 +186,8 @@ public class UnitMovement : MonoBehaviour {
             float targetDiagonal = new Vector2(targetExtents.x, targetExtents.z).magnitude;
             float myDiagonal = new Vector2(myExtents.x, myExtents.z).magnitude;
 
+            if (targetDiagonal == 0) myDiagonal = 0.1f;
+
             return distanceToTarget < targetDiagonal + myDiagonal;
         }
         else
