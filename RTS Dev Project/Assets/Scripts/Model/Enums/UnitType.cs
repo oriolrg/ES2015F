@@ -14,7 +14,8 @@ public enum UnitType
     Stable,
     Archery,
 
-    Objective    
+    Objective,
+    Wonder 
 }
 
 public static class UnitExtensions
@@ -26,7 +27,8 @@ public static class UnitExtensions
             unit == UnitType.Barracs || 
             unit == UnitType.Stable || 
             unit == UnitType.Archery ||
-            unit == UnitType.Objective;
+            unit == UnitType.Objective ||
+            unit == UnitType.Wonder;
     }
     public static T GetComponentOrEnd<T>(this GameObject go)
     {
