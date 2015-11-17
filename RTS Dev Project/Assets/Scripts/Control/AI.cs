@@ -30,7 +30,7 @@ public class AI : MonoBehaviour {
     private void elaborateStrategy()
     {
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),10));
-		tasks.Add (new Task(new Method(createWonder)));
+		tasks.Add (new Task(new Method(createTownCenter)));
 		tasks.Add (new Task(new Method(createBarrac)));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier)),10));
 
@@ -193,9 +193,16 @@ public class AI : MonoBehaviour {
 			return true;
         }
 		return false;
-
-
     }
+	private bool createTownCenter()
+	{
+		if (civiliansCPU.Count > 0)
+		{
+			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 0), new Troop(civiliansCPU));			
+			return true;
+		}
+		return false;
+	}
     public void deleteResource(GameObject r)
     {
         resourcesFood.Remove(r);
@@ -269,7 +276,7 @@ public class AI : MonoBehaviour {
 	{
 		if (civiliansCPU.Count > 4)
 		{
-			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(0, 0, -20), new Troop((List<GameObject>)civiliansCPU.GetRange(0,3) ));
+			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(0, 0, -20), new Troop((List<GameObject>)civiliansCPU.GetRange(0,1) ));
 			return true;
 		}
 		return false;
