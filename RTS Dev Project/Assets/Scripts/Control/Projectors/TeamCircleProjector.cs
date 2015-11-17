@@ -41,7 +41,7 @@ public class TeamCircleProjector : MonoBehaviour {
         if (revealState == LOSEntity.RevealStates.Hidden)
             projector.enabled = false;
         if (revealState == LOSEntity.RevealStates.Fogged)
-            projector.enabled = true;
+            projector.enabled = false;
         if (revealState == LOSEntity.RevealStates.Unfogged)
             projector.enabled = true;
     }

@@ -87,12 +87,10 @@ public class GameController : MonoBehaviour
     {
         selectedUnits = new Troop();
         initResourceValues();
-        addTeamCirclePrefabstoCurrentUnits();
         if (!GameData.sceneFromMenu)
         {
             spawnRandomObjectives();
         }
-        addSelectedPrefabstoCurrentUnits();
     }
 
     // Update is called once per frame
