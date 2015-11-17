@@ -87,12 +87,10 @@ public class GameController : MonoBehaviour
     {
         selectedUnits = new Troop();
         initResourceValues();
-        addTeamCirclePrefabstoCurrentUnits();
         if (!GameData.sceneFromMenu)
         {
             spawnRandomObjectives();
         }
-        addSelectedPrefabstoCurrentUnits();
     }
 
     // Update is called once per frame
@@ -120,11 +118,11 @@ public class GameController : MonoBehaviour
                 bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
                 if (hit)
                 {
-                    
+
                     GameObject selectedGO = hitInfo.transform.gameObject;
                     if (hitInfo.transform.gameObject.tag == "Ally")
                     {
-                       
+
                         if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
 
                         if (!selectedUnits.units.Contains(selectedGO)) selectedUnits.units.Add(selectedGO);
@@ -135,12 +133,15 @@ public class GameController : MonoBehaviour
                             projector.gameObject.SetActive(true);
                         hud.updateSelection(selectedUnits);
 
-						Identity hitUnit = hitInfo.transform.GetComponent<Identity>();
-						if(hitUnit!=null && hitUnit.unitType.Equals(UnitType.Civilian)){
-							hud.updateRightPanel(selectedGO);
-						} else {
-							hud.hideRightPanel();
-						}
+                        Identity hitUnit = hitInfo.transform.GetComponent<Identity>();
+                        if (hitUnit != null && hitUnit.unitType.Equals(UnitType.Civilian))
+                        {
+                            hud.updateRightPanel(selectedGO);
+                        }
+                        else
+                        {
+                            hud.hideRightPanel();
+                        }
 
                     }
                     else
@@ -162,24 +163,17 @@ public class GameController : MonoBehaviour
                 GameObject target;
                 if (hit)
                 {
-                    if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))  
-			            moveUnits(hitInfo.transform.gameObject);                    
-                    else if(hitInfo.transform.gameObject.tag == "Enemy")
-					{
-						GameObject enemy = hitInfo.transform.gameObject;
-						Troop troop = new Troop(selectedUnits.units);
-						if(troop.units.Count != 0){
-							AttackController atkController;
-							foreach(var unit in troop.units){
-								atkController = unit.GetComponent<AttackController>();
-								atkController.attack(enemy);
-							}
-						}
-					} 
-                     
-		            else if(hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction>().getConstructionOnGoing())
+                    if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))
+                        moveUnits(hitInfo.transform.gameObject);
+                    else if (hitInfo.transform.gameObject.tag == "Enemy")
                     {
-						noAttack();
+                        GameObject enemy = hitInfo.transform.gameObject;
+                        attack(enemy);
+                    }
+
+                    else if (hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction>().getConstructionOnGoing())
+                    {
+                        noAttack();
                         Debug.Log("vaig a construir");
 
                         Troop troop = new Troop(selectedUnits.units);
@@ -188,7 +182,8 @@ public class GameController : MonoBehaviour
                         {
                             Construct scriptConstruct = unit.GetComponent<Construct>();
 
-                            if (scriptConstruct != null) {
+                            if (scriptConstruct != null)
+                            {
 
                                 if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
                                 {
@@ -202,10 +197,10 @@ public class GameController : MonoBehaviour
                         }
 
                         buildingConstruction(hitInfo.transform.gameObject.transform.position, troop);
-                        
+
                     }
-		            else
-		            {
+                    else
+                    {
                         Identity identity = hitInfo.transform.GetComponent<Identity>();
                         if (identity != null && identity.unitType.isBuilding())
                         {
@@ -213,77 +208,77 @@ public class GameController : MonoBehaviour
                             moveUnits(identity.gameObject);
                         }
                         else
-                        { 
+                        {
                             // We hit the ground
                             noAttack();
                             target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
                             target.transform.SetParent(targetsParent.transform);
                             moveUnits(target);
                         }
-		            }
+                    }
                 }
                 else
                 {
                     // Debug.Log("No hit");
                 }
             }
+        }
 
-            //End of click
-            if (Input.GetMouseButtonUp(0))
+        //End of click
+        if (Input.GetMouseButtonUp(0))
+        {
+
+            if (isSelecting)
             {
+                isSelecting = false;
 
-                if (isSelecting)
+                //We impose a size of 5 to detect a box.
+                //Box Selection
+                Vector3 maxVector = new Vector3(Input.mousePosition.x, Mathf.Max(Input.mousePosition.y, UIheight * Screen.height), Input.mousePosition.z);
+                if ((mPos - maxVector).magnitude > 5)
                 {
-                    isSelecting = false;
+                    var camera = Camera.main;
+                    var viewportBounds = RectDrawer.GetViewportBounds(camera, mPos, maxVector);
 
-                    //We impose a size of 5 to detect a box.
-                    //Box Selection
-                    Vector3 maxVector = new Vector3(Input.mousePosition.x, Mathf.Max(Input.mousePosition.y, UIheight * Screen.height), Input.mousePosition.z);
-                    if ((mPos - maxVector).magnitude > 5)
+                    //Deselecting
+                    if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
+
+                    //Selecting
+                    foreach (var unit in FindObjectsOfType<GameObject>())
                     {
-                        var camera = Camera.main;
-                        var viewportBounds = RectDrawer.GetViewportBounds(camera, mPos, maxVector);
-
-                        //Deselecting
-                        if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
-
-                        //Selecting
-                        foreach (var unit in FindObjectsOfType<GameObject>())
+                        //Units inside the rect get selected.
+                        if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position)) & unit.tag == "Ally" & !selectedUnits.units.Contains(unit))
                         {
-                            //Units inside the rect get selected.
-                            if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position)) & unit.tag == "Ally" & !selectedUnits.units.Contains(unit))
-                            {
-                                selectedUnits.units.Add(unit);
-                                Transform projector = unit.transform.FindChild("Selected");
-                                if (projector != null)
-                                    projector.gameObject.SetActive(true);
-                            }
-
+                            selectedUnits.units.Add(unit);
+                            Transform projector = unit.transform.FindChild("Selected");
+                            if (projector != null)
+                                projector.gameObject.SetActive(true);
                         }
-                        if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0];
-                        hud.updateSelection(selectedUnits);
+
                     }
+                    if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0];
+                    hud.updateSelection(selectedUnits);
                 }
-
-            }
-
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                selectedUnits.focusNext();
-                hud.updateSelection(selectedUnits); // There will exist an updateFocus method            
-            }
-
-			if (Input.GetKeyDown(KeyCode.B))
-			{
-                //createCubeTestingGrid();
-			}
-            if(Input.GetKeyDown(KeyCode.K))
-            {
-                if( selectedUnits.FocusedUnit != null )
-                    selectedUnits.FocusedUnit.GetComponent<AttackController>().attack(selectedUnits.FocusedUnit);
             }
 
         }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            selectedUnits.focusNext();
+            hud.updateSelection(selectedUnits); // There will exist an updateFocus method            
+        }
+
+		if (Input.GetKeyDown(KeyCode.B))
+		{
+            //createCubeTestingGrid();
+		}
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            if( selectedUnits.FocusedUnit != null )
+                selectedUnits.FocusedUnit.GetComponent<AttackController>().attack(selectedUnits.FocusedUnit);
+        }
+
     }
 
 
@@ -1017,8 +1012,9 @@ public class GameController : MonoBehaviour
 
 	public void noAttack(){
 		Troop troop = new Troop(selectedUnits.units);
-		if(troop.units.Count != 0){
-			AttackController atkController;
+        if (troop.units.Count != 0)
+        {
+            AttackController atkController;
             foreach (var unit in troop.units)
             {
                 atkController = unit.GetComponent<AttackController>();
@@ -1028,9 +1024,22 @@ public class GameController : MonoBehaviour
                     atkController.attacking_target = null;
                 }
             }
-		}
-		
+        }
 	}
+
+    public void attack(GameObject enemy)
+    {
+        Troop troop = new Troop(selectedUnits.units);
+        if (troop.units.Count != 0)
+        {
+            AttackController atkController;
+            foreach (var unit in troop.units)
+            {
+                atkController = unit.GetComponent<AttackController>();
+                atkController.attack(enemy);
+            }
+        }
+    }
 
     public List<GameObject> getAllAllyArmy()
     {

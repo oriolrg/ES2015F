@@ -136,6 +136,9 @@ public class GameInitializer : MonoBehaviour {
 			townCenters.Add(townCenter);
 		}
 		GameController.Instance.hud.hideRightPanel();
+        GameController.Instance.addSelectedPrefabstoCurrentUnits();
+        GameController.Instance.addTeamCirclePrefabstoCurrentUnits();
+
     }
 
 	void Update() {
