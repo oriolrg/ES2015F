@@ -1,67 +1,96 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class CollectResources : MonoBehaviour {
-    
-	public GameObject targetToCollect;
-	public bool hasCollected;
-	public bool goingToCollect;
-	public UnitMovement u;
+public delegate void VoidMethod();
+
+public class CollectResources : MonoBehaviour
+{
+	public UnitMovement unitMovement;
     public Resource resourceCollected;
     public int quantityCollected;
-	
-	// Use this for initialization
+    public GameObject targetObject;
+
+    public static Dictionary<Resource, string> gatheringAnimationBools = new Dictionary<Resource, string>()
+    {
+        {Resource.Food, "cultivate" },
+        {Resource.Wood, "cut" },
+        {Resource.Metal, "chop" }
+    };
+
     void Awake()
     {
         quantityCollected = 0;
-        u = GetComponent<UnitMovement>();
-		hasCollected = false;
-		goingToCollect = false;
+        unitMovement = GetComponent<UnitMovement>();
     }
 
-	// Update is called once per frame
-	void Update () {
-		Collider[] hitColliders = Physics.OverlapSphere(transform.position, GetComponent<BoxCollider>().bounds.extents.x * 3);
-		foreach(Collider c in hitColliders){
-			if (System.Enum.IsDefined(typeof(Resource), c.tag))
-			{}
-			Identity id = c.gameObject.GetComponent<Identity>();
-			if(id!=null){
-				if(id.unitType==UnitType.TownCenter){
-					print (name);
-					if (hasCollected & c.tag == gameObject.tag){
-						storeResource();
-					}
-					else if (!goingToCollect & tag == "Enemy" & c.tag == "Enemy") AI.Instance.reassignResourceToCivilian(gameObject);
-				}
-			}
-			
-		}
-
-	}
-
-	public void startMovingToStorage()
+    public void startMovingToCollect(GameObject targetResource)
     {
-        GameObject t = AI.Instance.getClosestTownCenter(gameObject);
-        hasCollected = true;
-        goingToCollect = false;
-		u.startMoving(t);
+        targetObject = targetResource;
+        print("voy");
+        unitMovement.startMoving( targetObject, collect);
+    }
+
+    
+
+    public void collect()
+    {
+        print("collecting");
+
+        DestroyOnExpend destroyOnExpend = targetObject.GetComponent<DestroyOnExpend>();
+
+        if( destroyOnExpend != null )
+        {
+            destroyOnExpend.amount -= 10;
+
+            resourceCollected = (Resource)System.Enum.Parse(typeof(Resource), targetObject.tag);
+
+            quantityCollected += 10;
+
+            // Animate during 5 seconds
+            Animator animator = GetComponent<Animator>();
+
+            if( animator != null )
+            {
+                animator.SetBool(gatheringAnimationBools[resourceCollected], true);
+                // Call stop animations and start moving to storage after 5 seconds
+                
+            }
+
+            Invoke("startMovingToStorage", 5);
+
+        }
+        else
+        {
+            Debug.LogError("No destroyOnExpend script found in target object");
+        }
+
+
+        
+    }
+
+    public void startMovingToStorage()
+    {
+        GameObject targetTownCenter = AI.Instance.getClosestTownCenter(gameObject);
+
+		unitMovement.startMoving( targetTownCenter, store );
 	}
 
-	public void startMovingToCollect(){
-        hasCollected = false;        
-        goingToCollect = true;
-        u.startMoving(targetToCollect);
-	}
+    public void store()
+    {
+        print("he arrivat");
 
+        if( tag == "Ally" )
+        {
+            GameController.Instance.updateResource(resourceCollected, - quantityCollected);
+        }
+        else if( tag == "Enemy" )
+        {
+            AI.Instance.updateResource(resourceCollected, - quantityCollected);
+        }
 
+        quantityCollected = 0;
 
-	private void storeResource()
-	{
-		if (gameObject.tag == "Ally") GameController.Instance.updateResource(resourceCollected, -quantityCollected);
-		else if(gameObject.tag == "Enemy") AI.Instance.updateResource(resourceCollected, -quantityCollected);
-		quantityCollected = 0;
-		hasCollected = false;
-		if (targetToCollect != null) startMovingToCollect();
-	}
+        startMovingToCollect(targetObject);
+    }
 }

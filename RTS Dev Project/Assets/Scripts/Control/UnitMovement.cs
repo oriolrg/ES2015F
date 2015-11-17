@@ -27,6 +27,8 @@ public class UnitMovement : MonoBehaviour {
 
 	public Status status;
 
+    public VoidMethod callback;
+
 	// Use this for initialization
 	void Awake ()
     {
@@ -36,13 +38,14 @@ public class UnitMovement : MonoBehaviour {
         animator = GetComponent<Animator>();
         hasTarget = false;
 		status = Status.idle;
-
+        callback = null;
 	}
 
-	public void startMoving( GameObject target )
+	public void startMoving( GameObject target, VoidMethod callback = null )
 	{
+        this.callback = callback;
         CollectResources collect = gameObject.GetComponent<CollectResources>();
-        if (!AI.Instance.resources.Contains(target.tag) & collect != null) if (collect.goingToCollect) collect.goingToCollect = false;
+        //if (!AI.Instance.resources.Contains(target.tag) & collect != null) if (collect.goingToCollect) collect.goingToCollect = false;
 		this.target = target.transform;
         if ( seeker != null ) seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
         
@@ -59,7 +62,6 @@ public class UnitMovement : MonoBehaviour {
             animator.SetBool("walk", true);
         }
 		status = Status.running;
-        enabled = true;
 	}
 
 
@@ -112,6 +114,8 @@ public class UnitMovement : MonoBehaviour {
                     {
                         if (dis < 4.5)
                         {
+
+
                             timerDeath timer = target.GetComponent<timerDeath>();
                             if (timer != null)
                             {
@@ -124,6 +128,10 @@ public class UnitMovement : MonoBehaviour {
                                 animator.SetBool("walk", false);
                             }
                             status = Status.idle;
+
+                            // If there is any callback, call it
+                            if (callback != null)
+                                callback();
                         }
                     }
                 }
