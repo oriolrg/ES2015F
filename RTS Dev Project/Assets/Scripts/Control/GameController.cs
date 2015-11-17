@@ -888,8 +888,9 @@ public class GameController : MonoBehaviour
         GameController.Instance.hud.showMessageBox("Not implemented");
     }
 
-    public void OnCreate( Identity who, UnitType what )
+    public bool OnCreate( Identity who, UnitType what )
     {
+		bool done = false;
         // get the unit data and the prefab of the unit that can be created
         GameObject prefab = DataManager.Instance.civilizationDatas[who.civilization].units[what];
         UnitData unitData = DataManager.Instance.unitDatas[what];
@@ -924,9 +925,11 @@ public class GameController : MonoBehaviour
                     //script.Enqueue(action);
                     updateResource(unitData.resourceCost, "player");
                     if (who.gameObject.tag == "Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
+					done=true;
                 }
             }
         }
+		return done;
         
      }
 

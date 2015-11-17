@@ -29,11 +29,10 @@ public class AI : MonoBehaviour {
 
     private void elaborateStrategy()
     {
-        Task t = new Task(new Method(createCivilian));
-        tasks.AddRange(Enumerable.Repeat(t,5));
-        t = new Task(new Method(createWonder));
-
-		tasks.Add (t);
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),10));
+		tasks.Add (new Task(new Method(createWonder)));
+		tasks.Add (new Task(new Method(createBarrac)));
+		tasks.AddRange(Enumerable.Repeat(t,new Task(new Method(createSoldier))));
 
     }
 
@@ -137,11 +136,11 @@ public class AI : MonoBehaviour {
         else { return null; }
     }
 
-    public GameObject getClosestResource(GameObject c, string r){
+    public GameObject getClosestResource(GameObject c, Resource r){
         List<GameObject> resourcesX;
-        if (r == "Food") resourcesX = resourcesFood;
-        else if (r == "Metal") resourcesX = resourcesMetal;
-        else if (r == "Wood") resourcesX = resourcesWood;
+        if (r == Resource.Food) resourcesX = resourcesFood;
+        else if (r == Resource.Metal) resourcesX = resourcesMetal;
+        else if (r == Resource.Wood) resourcesX = resourcesWood;
         else resourcesX = resourcesFood;
         
         float aux;
@@ -169,7 +168,10 @@ public class AI : MonoBehaviour {
     public void assignCivilian(GameObject v)
     {
         civilians.Add(v);
-        if (v.tag == "Enemy") civiliansCPU.Add(v);    
+        if (v.tag == "Enemy") {
+			civiliansCPU.Add (v);
+			reassignResourceToCivilian(v);
+		}
 
        
     }
@@ -178,15 +180,13 @@ public class AI : MonoBehaviour {
     {
         if (townCentersCPU.Count > 0)
         {
-			GameController.Instance.OnCreate(townCentersCPU[0].GetComponent<Identity>(),UnitType.Civilian);
-			//GameController.Instance.CreateUnit(townCentersCPU[0], DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Civilian]);
-			return true;
+			if(GameController.Instance.OnCreate(townCentersCPU[0].GetComponent<Identity>(),UnitType.Civilian)) return true;
 		}
 		return false; 
     }
     private bool createWonder()
     {
-        if (civiliansCPU.Count > 1)
+        if (civiliansCPU.Count > 0)
         {
             GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 0), new Troop(civiliansCPU));
 
@@ -208,8 +208,10 @@ public class AI : MonoBehaviour {
     public void reassignResourceToCivilian(GameObject v)
     {
         CollectResources collect = v.GetComponent<CollectResources>();
-        if (collect.targetObject != null) collect.targetObject = getClosestResource(v, collect.targetObject.tag);
-        else collect.targetObject = getClosestResource(v, "Food");
+        if (collect.targetObject != null)
+			collect.targetObject = getClosestResource (v, (Resource)System.Enum.Parse(typeof(Resource), collect.targetObject.tag));
+		else
+			collect.targetObject = getClosestResource (v, (Resource)Enum.GetValues(typeof(Resource)).GetValue((new System.Random()).Next(Enum.GetValues(typeof(Resource)).Length)));
 		Construct construct = v.GetComponent<Construct> ();
 		if (construct != null) {
 			if (!construct.getInConstruction ()) {
@@ -254,8 +256,7 @@ public class AI : MonoBehaviour {
 		
 		foreach (GameObject b in buildings){
 			if(b.GetComponent<Identity>().unitType == UnitType.Barracs & b.tag=="Enemy"){
-				GameController.Instance.OnCreate(b.GetComponent<Identity>(), UnitType.Soldier);
-				return true;
+				if(GameController.Instance.OnCreate(b.GetComponent<Identity>(), UnitType.Soldier)) return true;
 			}
 		}
 		return false;
@@ -266,9 +267,9 @@ public class AI : MonoBehaviour {
 
 	private bool createBarrac()
 	{
-		if (civiliansCPU.Count > 1)
+		if (civiliansCPU.Count > 4)
 		{
-			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(20, 0, 0), new Troop(civiliansCPU));
+			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(0, 0, -20), new Troop((List<GameObject>)civiliansCPU.GetRange(0,3) ));
 			return true;
 		}
 		return false;

@@ -34,7 +34,6 @@ public class CollectResources : MonoBehaviour
     public void startMovingToCollect(GameObject targetResource)
     {
         targetObject = targetResource;
-        print("voy");
         unitMovement.startMoving( targetObject, collect);
     }
 
@@ -89,8 +88,6 @@ public class CollectResources : MonoBehaviour
 
     public void store()
     {
-        print("he arrivat");
-
         if( tag == "Ally" )
         {
             foreach( KeyValuePair<Resource, int> kv in resourceBank )
