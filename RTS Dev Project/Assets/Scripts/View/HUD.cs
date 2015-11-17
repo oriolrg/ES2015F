@@ -32,6 +32,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private Text victoryCondition;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
+    [SerializeField] public GameObject gameMenu;
 
     private Sprite panelSprite;
 
@@ -432,10 +433,11 @@ public class HUD : MonoBehaviour
 			}
 		}
 	}
+    /*
 	public void ShowWinMessage(){
 		winPanel.SetActive(true);
 	}
 	public void ShowLoseMessage(){
 		losePanel.SetActive(true);
-	}
+	}*/
 }

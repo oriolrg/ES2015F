@@ -664,12 +664,17 @@ public class GameController : MonoBehaviour
     //Ends the game.
     public void winCondition()
 	{
-        hud.ShowWinMessage();
+        //hud.ShowWinMessage();
+
+        hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(true);
     }
 
     public void loseCondition()
     {
-        hud.ShowLoseMessage();
+        //hud.ShowLoseMessage();
+
+
+        hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(false);
     }
 
     public void reloadLevel()
@@ -714,7 +719,6 @@ public class GameController : MonoBehaviour
             if (hitInfo.collider.transform.tag == "Ground")
             {
                 //Noone there
-                print("noone there" + ray.origin + hitInfo.point);
 
                 bool someoneElse = false;
                 foreach (Transform target in targetsParent.transform)
@@ -725,20 +729,17 @@ public class GameController : MonoBehaviour
 
                 if (someoneElse)
                 {
-                    print("someone going");
                     ray.origin += Vector3.right * multiplier;
                     multiplier = (int)-Mathf.Sign(multiplier) * (Mathf.Abs(multiplier) + 2);
 
                 }
                 else
                 {
-                    print("free space");
                     freeSpaceFound = true;
                 }
             }
             else
             {
-                print("hit other");
                 ray.origin += Vector3.right * multiplier;
                 multiplier = (int)-Mathf.Sign(multiplier) * (Mathf.Abs(multiplier) + 2);
             }

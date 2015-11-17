@@ -38,6 +38,10 @@ public class Identity : MonoBehaviour
 				GameController.Instance.addUnit (gameObject);
 			}
 		}
+        else
+        {
+            GameController.Instance.addUnit(gameObject);
+        }
 
     }
 }
