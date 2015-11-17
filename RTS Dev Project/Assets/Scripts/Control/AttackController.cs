@@ -26,6 +26,7 @@ public class AttackController : MonoBehaviour {
 	void Start () {
 		this.identity = this.gameObject.GetComponent<Identity> ();
 		this.range = DataManager.Instance.unitDatas [identity.unitType].stats [Stat.Range];
+		this.atkDmg = DataManager.Instance.unitDatas [identity.unitType].stats [Stat.Attack];
 		um = gameObject.GetComponent<UnitMovement> ();
         animator = GetComponent<Animator>();
 	}
@@ -72,9 +73,9 @@ public class AttackController : MonoBehaviour {
 			Vector3 enemyPos = attacking_enemy.transform.position;
 
 			if (this.attacking_enemy.layer == 11 && (Vector3.Distance (enemyPos, this.gameObject.transform.position) <= range * 2 + 7)) {
-				attacking_enemy.GetComponent<Health> ().loseHP (1);
+				attacking_enemy.GetComponent<Health> ().loseHP ((int)this.atkDmg);
 			} else if (Vector3.Distance (enemyPos, this.gameObject.transform.position) <= this.range * 2) {
-				attacking_enemy.GetComponent<Health> ().loseHP (1);
+				attacking_enemy.GetComponent<Health> ().loseHP ((int)this.atkDmg);
 			}
 
 			if (Vector3.Distance (enemy_last_pos, enemyPos) > this.range) {
