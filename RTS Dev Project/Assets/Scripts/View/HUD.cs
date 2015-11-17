@@ -41,16 +41,11 @@ public class HUD : MonoBehaviour
 
     void Start()
     {
-        setCivilization(Civilization.Greeks);
-
 		civilizationColors = new Dictionary<Civilization,Color> ();
 
 		foreach (KeyValuePair<Civilization, CivilizationData> kv in DataManager.Instance.civilizationDatas) {
             civilizationColors.Add(kv.Key, kv.Value.color);
 		}
-
-       
-
     }
 
     // Changes the UI depending on the chosen civilization

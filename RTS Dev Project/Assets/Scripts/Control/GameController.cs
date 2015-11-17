@@ -557,7 +557,7 @@ public class GameController : MonoBehaviour
     public bool checkResources(ResourceValueDictionary resourceCosts, String player)
     {
         ResourceValueDictionary resDict;
-        if (player == "player") resDict = playerResources;
+        if (player == "Ally") resDict = playerResources;
         else resDict = cpuResources;
         bool check = true;
         foreach (KeyValuePair<Resource, int> kv in resourceCosts)
@@ -583,16 +583,17 @@ public class GameController : MonoBehaviour
     public void updateResource(Resource res, int value, String player)
     {
         ResourceValueDictionary resDict;
-        if (player == "player") resDict = playerResources;
+        if (player == "Ally") resDict = playerResources;
         else resDict = cpuResources;
-        playerResources[res] -= value;
-        hud.updateResource(res, resDict[res]); //- value);  Per què es mostra un resource que no és el que hi ha?
+        resDict[res] -= value;
+        if (player=="Ally")hud.updateResource(res, resDict[res]); 
     }
 
     public void updateResource(Resource res, int value)
     {
         playerResources[res] -= value;
-        hud.updateResource(res, playerResources[res]); //- value);  Per què es mostra un resource que no és el que hi ha?
+        hud.updateResource(res, playerResources[res]); 
+		print ("alone");
     }
 
     public void updateInteractable()
@@ -808,10 +809,12 @@ public class GameController : MonoBehaviour
         building.AddComponent<BuildingPlacer> ();
 
         enabled = false;
-    
+        
+        
+        //createBuilding(prefab, new Vector3(52.8f, 0, 42.7f),selectedUnits);   
         return building;  
 
-        //createBuilding(prefab, new Vector3(213, -5, 141));   
+        
 	}
 
 
@@ -822,7 +825,20 @@ public class GameController : MonoBehaviour
         addSelectedPrefab(building);
         addTeamCirclePrefab(building);
 
-        building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
+        BuildingConstruction build = building.GetComponent<BuildingConstruction>();
+
+        if (build != null)
+        {
+            build.setFinalMesh();
+
+            building.GetComponent<MeshFilter>().mesh = build.getInitialMesh().GetComponent<MeshFilter>().sharedMesh;
+
+            build.setConstructionOnGoing(true);
+
+        }
+
+
+        //building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
 
         foreach (var unit in t.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
 
@@ -893,14 +909,15 @@ public class GameController : MonoBehaviour
 
         if (what.isBuilding())
         {
-            if (checkResources(unitData.resourceCost, "player"))
+
+            if (checkResources(unitData.resourceCost, who.tag))
             {
                 //Create the building
                 GameObject created = createBuilding(prefab);
                 created.tag = who.gameObject.tag;
                 Spawner spa = created.GetComponent<Spawner>();
                 if (spa != null) spa.initBounds();
-                updateResource(unitData.resourceCost, "player");
+                updateResource(unitData.resourceCost, who.tag);
             }
         }
         else
@@ -914,11 +931,11 @@ public class GameController : MonoBehaviour
 
             //create an action and add it to the focused unit's queue
             if (who.gameObject.GetComponentOrEnd<DelayedActionQueue>().Enqueue(action)) {
-                if (checkResources(unitData.resourceCost, "player"))
+                if (checkResources(unitData.resourceCost, who.tag))
                 {
                     //DelayedActionQueue script = who.gameObject.GetComponentOrEnd<DelayedActionQueue>();
                     //script.Enqueue(action);
-                    updateResource(unitData.resourceCost, "player");
+                    updateResource(unitData.resourceCost, who.tag);
                     if (who.gameObject.tag == "Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
 					done=true;
                 }
