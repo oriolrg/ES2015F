@@ -9,6 +9,8 @@ public class GameInitializer : MonoBehaviour {
 	[SerializeField] private GameObject buildings;
 	[SerializeField] private GameObject units;
 
+	[SerializeField] private HUD hud;
+
 	private LOSManager terrainLOSManager;
 	private GameObject createdMap;
 	private List<GameObject> townCenters;
@@ -44,7 +46,8 @@ public class GameInitializer : MonoBehaviour {
 		// throw new UnityException("GameInitializer not implemented yet"); // TODO: Delete this
 
 		// Change scene map
-		Destroy(sceneMap);
+		if (sceneMap != null)
+			Destroy(sceneMap);
 
 		// Deactive LOSManager before Instantiating
 		terrainLOSManager = GameData.map.GetComponent<LOSManager>();
@@ -88,10 +91,15 @@ public class GameInitializer : MonoBehaviour {
 		townCenters = new List<GameObject>();
 
 		// Player
+		Civilization playerCiv = Utils.GetEnumValue<Civilization>(GameData.player.civ.ToString());
+
 		GameObject townCenterPrefab = DataManager.Instance.civilizationDatas[
-			Utils.GetEnumValue<Civilization>(GameData.player.civ.ToString())
+			playerCiv
 		].units[UnitType.TownCenter];
 
+		hud.setCivilization(playerCiv);
+
+		// Instantiate player town Center
 		GameObject townCenter = (GameObject) Instantiate (
 			townCenterPrefab, 
 			mapInfo.towncenter1.transform.position,
@@ -138,7 +146,6 @@ public class GameInitializer : MonoBehaviour {
 		GameController.Instance.hud.hideRightPanel();
         GameController.Instance.addSelectedPrefabstoCurrentUnits();
         GameController.Instance.addTeamCirclePrefabstoCurrentUnits();
-
     }
 
 	void Update() {

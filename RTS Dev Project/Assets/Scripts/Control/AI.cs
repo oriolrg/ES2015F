@@ -16,7 +16,6 @@ public class AI : MonoBehaviour {
     private List<GameObject> civiliansCPU;
     private List<GameObject> townCentersCPU;
     private List<GameObject> townCentersPlayer;
-    private ResourceValueDictionary resourcesCPU;
     public static AI Instance { get; private set; }
    
 
@@ -29,7 +28,7 @@ public class AI : MonoBehaviour {
 
     private void elaborateStrategy()
     {
-        /*
+        
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),6));
 		tasks.Add (new Task(new Method(createTownCenter)));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),5));
@@ -37,7 +36,7 @@ public class AI : MonoBehaviour {
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier)),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),3));
 		//tasks.Add (new Task(new Method(createWonder)));
-        */
+        
     }
 
     void Awake()
@@ -59,11 +58,7 @@ public class AI : MonoBehaviour {
         resourcesFood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Food"));
         resourcesMetal = new List<GameObject>(GameObject.FindGameObjectsWithTag("Metal"));
         resourcesWood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Wood"));
-        resourcesCPU = new ResourceValueDictionary();
-        resourcesCPU[Resource.Food] = 1000;
-        resourcesCPU[Resource.Wood] = 1000;
-        resourcesCPU[Resource.Metal] = 1000;
-        resourcesCPU[Resource.Population] = 10;
+        
     }
     void Update()
     {
@@ -278,24 +273,8 @@ public class AI : MonoBehaviour {
 
     }
 
-    public bool checkResources(ResourceValueDictionary resourceCosts)
-    {
-        bool check = true;
-        foreach (KeyValuePair<Resource, int> kv in resourceCosts)
-        {
-            if (resourcesCPU[kv.Key] - kv.Value < 0)
-            {
-                //Here goes stuff that happens when there aren't enough resources to perform the action.
-                //i.e. text pop-up, sound warning.
-                check = false;
-            }
-        }        
-        return check;
-    }
-    public void updateResource(Resource res, int value)
-    {
-        resourcesCPU[res] -= value;
-    }
+    
+   
 
 	public void compareArmy(){
 
