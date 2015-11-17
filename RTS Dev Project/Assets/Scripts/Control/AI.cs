@@ -33,6 +33,7 @@ public class AI : MonoBehaviour {
 		tasks.Add (new Task(new Method(createTownCenter)));
 		tasks.Add (new Task(new Method(createBarrac)));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier)),10));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),3));
 
     }
 
