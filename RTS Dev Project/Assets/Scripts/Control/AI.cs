@@ -261,8 +261,10 @@ public class AI : MonoBehaviour {
         CollectResources collect = v.GetComponent<CollectResources>();
         if (collect.targetObject != null)
 			collect.targetObject = getClosestResource (v, (Resource)System.Enum.Parse(typeof(Resource), collect.targetObject.tag));
-		else
+		else{
 			collect.targetObject = getClosestResource (v, (Resource)Enum.GetValues(typeof(Resource)).GetValue((new System.Random()).Next(Enum.GetValues(typeof(Resource)).Length)));
+			if(v.tag.Equals("Enemy")) collect.goingToCollect=true;
+		}
 		Construct construct = v.GetComponent<Construct> ();
 		if (construct != null) {
 
