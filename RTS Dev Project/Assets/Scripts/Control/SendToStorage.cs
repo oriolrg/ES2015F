@@ -31,7 +31,6 @@ public class SendToStorage : MonoBehaviour
             if (c.isTrigger && !collectors.Contains(c.gameObject) )
             {
                 process(c);
-                print(c.name);
             }
         }
 
@@ -64,11 +63,9 @@ public class SendToStorage : MonoBehaviour
             Animator animator = unit.GetComponent<Animator>();
 
             animator.SetBool(gatheringAnimationBools[myResource], true);
-
             // Call stop animations and start moving to storage after 5 seconds
             collect.Invoke("startMovingToStorage", 5);
         }
     }
-	
 	
 }

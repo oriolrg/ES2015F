@@ -344,8 +344,9 @@ public class GameController : MonoBehaviour
                     CollectResources collect = unit.GetComponent<CollectResources>();
                     if (collect != null && AI.Instance.resources.Contains(target.tag))
                     {
-                        collect.startMovingToCollect(target);
+                        
                         collect.targetToCollect = target;
+						collect.startMovingToCollect();
                     }
                     else
                     {
