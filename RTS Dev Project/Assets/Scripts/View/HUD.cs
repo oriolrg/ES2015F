@@ -49,6 +49,8 @@ public class HUD : MonoBehaviour
             civilizationColors.Add(kv.Key, kv.Value.color);
 		}
 
+        resourceCosts[Resource.Food].text = "9";
+
     }
 
     // Changes the UI depending on the chosen civilization
@@ -376,6 +378,7 @@ public class HUD : MonoBehaviour
 	{
 		controlPanel.gameObject.SetActive (false);
 	}
+
     private GameObject addBlock( Transform parent, Sprite image, UnityAction callback)
     {
         GameObject block = Instantiate(data.blockPrefab) as GameObject;
@@ -419,5 +422,10 @@ public class HUD : MonoBehaviour
     {
         countdownPanel.gameObject.SetActive(false);
         countdownText.stop();
+    }
+
+    internal void updateRightPanel(GameObject go)
+    {
+        // pipa!
     }
 }

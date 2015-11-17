@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public delegate void VoidMethod();
 
 public class CollectResources : MonoBehaviour
 {
 	public UnitMovement unitMovement;
-    public Resource resourceCollected;
-    public int quantityCollected;
+    public ResourceValueDictionary resourceBank;
+    
     public GameObject targetObject;
+    public Animator animator;
 
     public static Dictionary<Resource, string> gatheringAnimationBools = new Dictionary<Resource, string>()
     {
@@ -20,8 +22,13 @@ public class CollectResources : MonoBehaviour
 
     void Awake()
     {
-        quantityCollected = 0;
         unitMovement = GetComponent<UnitMovement>();
+        animator = GetComponent<Animator>();
+        resourceBank = new ResourceValueDictionary();
+        foreach( Resource resource in Enum.GetValues(typeof(Resource)))
+        {
+            resourceBank.Add(resource, 0);
+        }
     }
 
     public void startMovingToCollect(GameObject targetResource)
@@ -31,46 +38,50 @@ public class CollectResources : MonoBehaviour
         unitMovement.startMoving( targetObject, collect);
     }
 
+    private void addResource()
+    {
+        DestroyOnExpend destroyOnExpend = targetObject.GetComponent<DestroyOnExpend>();
+
+        if (destroyOnExpend != null)
+        {
+            destroyOnExpend.amount -= 2;
+
+            Resource resourceCollected = (Resource)System.Enum.Parse(typeof(Resource), targetObject.tag);
+
+            resourceBank[resourceCollected] += 2;
+        }
+        else
+        {
+            Debug.LogError("No destroyOnExpend script found in target object");
+        }
+    }
+
     
 
     public void collect()
     {
         print("collecting");
 
-        DestroyOnExpend destroyOnExpend = targetObject.GetComponent<DestroyOnExpend>();
+        InvokeRepeating("addResource", 1, 1);
 
-        if( destroyOnExpend != null )
+
+        // Animate during 5 seconds
+
+        if( animator != null )
         {
-            destroyOnExpend.amount -= 10;
+            Resource resourceCollected = (Resource)System.Enum.Parse(typeof(Resource), targetObject.tag);
 
-            resourceCollected = (Resource)System.Enum.Parse(typeof(Resource), targetObject.tag);
-
-            quantityCollected += 10;
-
-            // Animate during 5 seconds
-            Animator animator = GetComponent<Animator>();
-
-            if( animator != null )
-            {
-                animator.SetBool(gatheringAnimationBools[resourceCollected], true);
-                // Call stop animations and start moving to storage after 5 seconds
-                
-            }
-
-            Invoke("startMovingToStorage", 5);
-
-        }
-        else
-        {
-            Debug.LogError("No destroyOnExpend script found in target object");
+            animator.SetBool(gatheringAnimationBools[resourceCollected], true);
         }
 
-
+        Invoke("startMovingToStorage", 5.1f);
         
     }
 
     public void startMovingToStorage()
     {
+        CancelInvoke("addResource");
+
         GameObject targetTownCenter = AI.Instance.getClosestTownCenter(gameObject);
 
 		unitMovement.startMoving( targetTownCenter, store );
@@ -82,15 +93,47 @@ public class CollectResources : MonoBehaviour
 
         if( tag == "Ally" )
         {
-            GameController.Instance.updateResource(resourceCollected, - quantityCollected);
+            foreach( KeyValuePair<Resource, int> kv in resourceBank )
+            {
+                GameController.Instance.updateResource(kv.Key, -kv.Value);
+            }
+            
         }
         else if( tag == "Enemy" )
         {
-            AI.Instance.updateResource(resourceCollected, - quantityCollected);
+            foreach (KeyValuePair<Resource, int> kv in resourceBank)
+            {
+                AI.Instance.updateResource(kv.Key, -kv.Value);
+            }
         }
 
-        quantityCollected = 0;
+        foreach( Resource key in resourceBank.Keys)
+        {
+            resourceBank[key] = 0;
+        }
 
+        if (animator != null)
+        {
+            animator.SetBool("cultivate", true);
+        }
+
+        Invoke("returnToCollect", 1);
+
+    }
+
+    public void returnToCollect()
+    {
         startMovingToCollect(targetObject);
+    }
+
+    public int totalCollected()
+    {
+        int res = 0;
+        foreach(int value in resourceBank.Values)
+        {
+            res += value;
+        }
+
+        return res;
     }
 }

@@ -196,12 +196,22 @@ public class GameController : MonoBehaviour
                         buildingConstruction(hitInfo.transform.gameObject.transform.position, troop);
                         
                     }
-		            else 
+		            else
 		            {
-						noAttack ();
-			            target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
-                        target.transform.SetParent(targetsParent.transform);
-			            moveUnits(target);
+                        Identity identity = hitInfo.transform.GetComponent<Identity>();
+                        if (identity != null && identity.unitType.isBuilding())
+                        {
+                            // We hit a building
+                            moveUnits(identity.gameObject);
+                        }
+                        else
+                        { 
+                            // We hit the ground
+                            noAttack();
+                            target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+                            target.transform.SetParent(targetsParent.transform);
+                            moveUnits(target);
+                        }
 		            }
                 }
                 else
@@ -324,34 +334,48 @@ public class GameController : MonoBehaviour
         {
             foreach (var unit in selectedUnits.units)
             {
+                // Special case: a civilian moves towards a town center and has resources to store
+                Identity identity = unit.GetComponent<Identity>();
+                Identity targetIdentity = target.GetComponent<Identity>();
+                CollectResources collect = unit.GetComponent<CollectResources>();
 
-                Construct scriptConstruct = unit.GetComponent<Construct>();
-
-                if (scriptConstruct != null)
+                if ( identity != null && identity.unitType == UnitType.Civilian && targetIdentity != null && targetIdentity.unitType == UnitType.TownCenter && collect != null && collect.totalCollected() > 0)
                 {
-
-                    if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
-                    {
-                        scriptConstruct.setConstruct(false);
-                        scriptConstruct.SetInConstruction(false);
-                        scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
-                    }
+                    unit.GetComponent<UnitMovement>().startMoving(target, unit.GetComponent<CollectResources>().store);
                 }
-
-                UnitMovement script = unit.GetComponentInParent<UnitMovement>();
-                if (script != null)
+                else
                 {
-                    CollectResources collect = unit.GetComponent<CollectResources>();
-                    if (collect != null && AI.Instance.resources.Contains(target.tag))
+
+                    Construct scriptConstruct = unit.GetComponent<Construct>();
+
+                    if (scriptConstruct != null)
                     {
-                        
-                        collect.targetObject = target;
-						collect.startMovingToCollect( collect.targetObject );
+
+                        if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
+                        {
+                            scriptConstruct.setConstruct(false);
+                            scriptConstruct.SetInConstruction(false);
+                            scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                        }
                     }
-                    else
+
+                    UnitMovement script = unit.GetComponentInParent<UnitMovement>();
+                    if (script != null)
                     {
-			            script.startMoving(target);
-                        target.GetComponent<timerDeath>().AddUnit(unit);
+                        collect = unit.GetComponent<CollectResources>();
+                        if (collect != null && AI.Instance.resources.Contains(target.tag))
+                        {
+
+                            collect.targetObject = target;
+                            collect.startMovingToCollect(collect.targetObject);
+                        }
+                        else
+                        {
+                            script.startMoving(target);
+                            timerDeath groundTarget = target.GetComponent<timerDeath>();
+                            if( groundTarget != null )
+                                groundTarget.AddUnit(unit);
+                        }
                     }
                 }
             }
@@ -592,6 +616,14 @@ public class GameController : MonoBehaviour
     {
         if (go == selectedUnits.FocusedUnit)
             hud.updateHealth(go);
+    }
+
+    public void updateRightPanel( GameObject go )
+    {
+        if( go == selectedUnits.FocusedUnit )
+        {
+            hud.updateRightPanel(go);
+        }
     }
 
     public void checkMapControl()
