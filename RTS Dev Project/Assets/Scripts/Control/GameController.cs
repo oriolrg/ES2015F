@@ -808,10 +808,12 @@ public class GameController : MonoBehaviour
         building.AddComponent<BuildingPlacer> ();
 
         enabled = false;
-    
+        
+        
+        //createBuilding(prefab, new Vector3(52.8f, 0, 42.7f),selectedUnits);   
         return building;  
 
-        //createBuilding(prefab, new Vector3(213, -5, 141));   
+        
 	}
 
 
@@ -822,7 +824,20 @@ public class GameController : MonoBehaviour
         addSelectedPrefab(building);
         addTeamCirclePrefab(building);
 
-        building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
+        BuildingConstruction build = building.GetComponent<BuildingConstruction>();
+
+        if (build != null)
+        {
+            build.setFinalMesh();
+
+            building.GetComponent<MeshFilter>().mesh = build.getInitialMesh().GetComponent<MeshFilter>().sharedMesh;
+
+            build.setConstructionOnGoing(true);
+
+        }
+
+
+        //building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
 
         foreach (var unit in t.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
 

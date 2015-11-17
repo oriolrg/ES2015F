@@ -20,7 +20,7 @@ public class BuildingConstruction : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        finalMesh = GetComponent<MeshFilter>().mesh;
+        //finalMesh = GetComponent<MeshFilter>().mesh;
 
         constructingUnits = new List<GameObject>();
         
@@ -102,8 +102,18 @@ public class BuildingConstruction : MonoBehaviour {
     {
         return constructionOnGoing;
     }
+
+    public void setFinalMesh()
+    {
+        finalMesh = GetComponent<MeshFilter>().mesh;
+    }
+
+    public GameObject getInitialMesh()
+    {
+        return initialMesh;
+    }
 	public int getPhase(){
 		return phase;
 	}
-
 }
+
