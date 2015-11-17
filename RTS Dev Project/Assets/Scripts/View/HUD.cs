@@ -426,13 +426,14 @@ public class HUD : MonoBehaviour
 
 	public void updateRightPanel(GameObject go)
 	{
-		rightPanel.gameObject.SetActive(true);
-
-		CollectResources collectResources = go.GetComponent<CollectResources>();
-		if(collectResources!=null){
-			foreach( Resource resource in Enum.GetValues(typeof(Resource)))
-			{
-				resourceCosts[resource].text = collectResources.resourceBank[resource].ToString();
+		if(go.tag != "Enemy"){
+			rightPanel.gameObject.SetActive(true);
+			CollectResources collectResources = go.GetComponent<CollectResources>();
+			if(collectResources!=null){
+				foreach( Resource resource in Enum.GetValues(typeof(Resource)))
+				{
+					resourceCosts[resource].text = collectResources.resourceBank[resource].ToString();
+				}
 			}
 		}
 	}
