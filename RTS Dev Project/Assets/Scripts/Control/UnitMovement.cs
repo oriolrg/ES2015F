@@ -10,6 +10,7 @@ public class UnitMovement : MonoBehaviour {
 
 	public float repathRate = 0.5f;
 	private float lastRepath = -9999;
+	private float nextWaypointDistance = 3;
 
 	[SerializeField] private float speed = 10;
 
@@ -71,9 +72,19 @@ public class UnitMovement : MonoBehaviour {
 
 
 	
-	public void OnPathComplete(Path p) {
-		path = p;
-		currentWaypoint = 0;
+	public void OnPathComplete (Path p) {
+		p.Claim (this);
+		if (!p.error) {
+			if (path != null) path.Release (this);
+			path = p;
+			//Reset the waypoint counter
+			currentWaypoint = 0;
+		} else {
+			p.Release (this);
+			Debug.Log ("Oh noes, the target was not reachable: "+p.errorLog);
+		}
+		
+		//seeker.StartPath (transform.position,targetPosition, OnPathComplete);
 	}
 
 
@@ -84,25 +95,27 @@ public class UnitMovement : MonoBehaviour {
 				lastRepath = Time.time+ Random.value*repathRate*0.5f;
 				seeker.StartPath (transform.position,target.position, OnPathComplete);
 			}
-			/*
-			if (Vector3.Distance (targetPos, target.position) > 0) {
-				targetPos = target.position;
-				seeker.StartPath (transform.position, target.position, OnPathComplete);
-			}
-			*/
+			
 			if (path == null) {
+				//We have no path to move after yet
 				return;
 			}
-			if (currentWaypoint >= path.vectorPath.Count) {
+			
+			if (currentWaypoint > path.vectorPath.Count) return; 
+			if (currentWaypoint == path.vectorPath.Count) {
+				Debug.Log ("End Of Path Reached");
+				currentWaypoint++;
 				return;
 			}
-
-			Vector3 dir = (path.vectorPath [currentWaypoint] - transform.position).normalized * speed;
+			
+			//Direction to the next waypoint
+			Vector3 dir = (path.vectorPath[currentWaypoint]-transform.position).normalized;
+			dir *= speed;// * Time.deltaTime;
+			//transform.Translate (dir);
 			characterController.SimpleMove (dir);
-
-            transform.LookAt(path.vectorPath[currentWaypoint]);
-
-			if (Vector3.Distance (transform.position, path.vectorPath [currentWaypoint]) < 1.5f) {
+			
+			//if (Vector3.Distance (transform.position,path.vectorPath[currentWaypoint]) < nextWaypointDistance) {
+			if ( (transform.position-path.vectorPath[currentWaypoint]).sqrMagnitude < nextWaypointDistance*nextWaypointDistance) {
 				currentWaypoint++;
 			}
 
@@ -156,23 +169,6 @@ public class UnitMovement : MonoBehaviour {
                         status = Status.idle;
                     }
                 }
-
-
-                /*
-                if (targetReached()){
-					timerDeath timer = target.GetComponent<timerDeath>();
-					if(timer != null){
-						timer.UnitLostTarget(gameObject);
-					}
-					hasTarget = false;
-					var animator = GetComponent<Animator>();
-                    if (animator != null)
-                    {
-                        Debug.Log("Estas aqui???????????????????????????");
-                        animator.SetBool("walk", false); 
-                    }
-					status = Status.idle;
-				}*/
             }
         }
 	}
