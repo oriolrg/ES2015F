@@ -49,6 +49,8 @@ public class CollectResources : MonoBehaviour
             Resource resourceCollected = (Resource)System.Enum.Parse(typeof(Resource), targetObject.tag);
 
             resourceBank[resourceCollected] += 2;
+
+
         }
         else
         {
