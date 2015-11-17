@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 
 public class AI : MonoBehaviour {
-    public delegate void Method();
+    public delegate bool Method();
     private List<Task> tasks;
     public List<string> resources;
     private List<GameObject> resourcesFood;
@@ -39,6 +39,12 @@ public class AI : MonoBehaviour {
 
     void Awake()
     {
+		if (Instance != null && Instance != this)
+		{
+			Destroy(gameObject);
+		}
+		
+		Instance = this;
         tasks = new List<Task>();
         resources = new List<string>(new string[] { "Food", "Metal", "Wood" });
         allCPUUnits = new List<GameObject>();
@@ -51,13 +57,6 @@ public class AI : MonoBehaviour {
         resourcesMetal = new List<GameObject>(GameObject.FindGameObjectsWithTag("Metal"));
         resourcesWood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Wood"));
         resourcesCPU = new ResourceValueDictionary();
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-
-        Instance = this;
-
         resourcesCPU[Resource.Food] = 1000;
         resourcesCPU[Resource.Wood] = 1000;
         resourcesCPU[Resource.Metal] = 1000;
@@ -68,9 +67,10 @@ public class AI : MonoBehaviour {
 
         if (tasks.Count > 0)
         {
-			print (tasks[0].method.Method.Name);
-            tasks[0].method();
-            tasks.RemoveAt(0);
+            if(tasks[0].method()){
+				print (tasks[0].method.Method.Name);
+            	tasks.RemoveAt(0);
+			}
         }
     }
     
@@ -175,22 +175,25 @@ public class AI : MonoBehaviour {
        
     }
 
-    private void createCivilian()
+    private bool createCivilian()
     {
         if (townCentersCPU.Count > 0)
         {
 			GameController.Instance.OnCreate(townCentersCPU[0].GetComponent<Identity>(),UnitType.Civilian);
 			//GameController.Instance.CreateUnit(townCentersCPU[0], DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Civilian]);
-        }
+			return true;
+		}
+		return false; 
     }
-    private void createWonder()
+    private bool createWonder()
     {
-        if (civiliansCPU.Count > 0)
+        if (civiliansCPU.Count > 1)
         {
+            GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(20, 0, 0), new Troop(civiliansCPU));
 
-            //GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 20), new Troop(civiliansCPU));
-			GameController.Instance.OnCreate(civiliansCPU[0].GetComponent<Identity>(),UnitType.TownCenter);
+			return true;
         }
+		return false;
 
 
     }
@@ -208,7 +211,13 @@ public class AI : MonoBehaviour {
         CollectResources collect = v.GetComponent<CollectResources>();
         if (collect.targetToCollect != null) collect.targetToCollect = getClosestResource(v, collect.targetToCollect.tag);
         else collect.targetToCollect = getClosestResource(v, "Food");
-		if(collect.targetToCollect!=null) collect.startMovingToCollect(collect.targetToCollect);
+		Construct construct = v.GetComponent<Construct> ();
+		if (construct != null) {
+			if (!construct.getInConstruction ()) {
+				if(collect.targetToCollect!=null) collect.startMovingToCollect(collect.targetToCollect);
+			}
+		}else if(collect.targetToCollect!=null) collect.startMovingToCollect(collect.targetToCollect);
+
 
     }
 

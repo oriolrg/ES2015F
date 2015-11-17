@@ -3,13 +3,13 @@ using System.Collections;
 
 public class Construct : MonoBehaviour {
 
-    private bool inConstruction; //Indicates if a unit is constructing a building
+	[SerializeField]private bool inConstruction; //Indicates if a unit is constructing a building
 
-    private bool construct; //Indicates if a unit has the order to construct a building
+	[SerializeField]private bool construct; //Indicates if a unit has the order to construct a building
     
     private GameObject buildingToConstruct;
 
-    [SerializeField] private float dist;
+	private float dist;
 
     public GameObject dustPrefab;
     public GameObject usingDust;
@@ -35,6 +35,7 @@ public class Construct : MonoBehaviour {
 
             if ((transform.position - buildingToConstruct.transform.position).magnitude < dist)
             {
+			
                 buildingToConstruct.GetComponent<BuildingConstruction>().startConstruction(this.gameObject);
                 
                 construct = false;

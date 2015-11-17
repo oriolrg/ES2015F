@@ -28,7 +28,6 @@ public class TeamCircleProjector : MonoBehaviour {
         }
         else
         {
-            Debug.Log(los.RevealState);
             if (revealState != los.RevealState)
             {
                 revealState = los.RevealState;

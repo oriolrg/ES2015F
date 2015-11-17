@@ -685,7 +685,6 @@ public class GameController : MonoBehaviour
         {
             if (Physics.Raycast(ray, out hitInfo))
             {
-                print(hitInfo.transform.gameObject);
                 if (hitInfo.transform.tag == "Ground")
                 {
                     // check if there is someone going ther
@@ -734,7 +733,6 @@ public class GameController : MonoBehaviour
             if (script != null)
             {
                 script.startMoving(target);
-                print(target.transform.position);
                 target.GetComponent<timerDeath>().AddUnit(newUnit);
             }
             return newUnit;
@@ -810,7 +808,7 @@ public class GameController : MonoBehaviour
         GameObject target = Instantiate(targetPrefab, position, Quaternion.identity) as GameObject;
         target.transform.SetParent(targetsParent.transform);
         moveUnits(target, t);
-
+		print (target.transform.position);
         //Order that the unit has to construct
         foreach (var unit in t.units) unit.GetComponent<Construct>().setConstruct(true);
 
