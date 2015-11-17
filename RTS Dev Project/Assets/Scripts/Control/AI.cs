@@ -31,6 +31,7 @@ public class AI : MonoBehaviour {
     {
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),5));
 		tasks.Add (new Task(new Method(createTownCenter)));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),3));
 		tasks.Add (new Task(new Method(createBarrac)));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier)),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),3));
@@ -204,6 +205,30 @@ public class AI : MonoBehaviour {
 		}
 		return false;
 	}
+	public bool createSoldier()
+	{
+		bool done = false;
+		int i = 0;
+		List<GameObject> buildings = GameController.Instance.getAllEnemyBuildings();
+		
+		foreach (GameObject b in buildings){
+			if(b.GetComponent<Identity>().unitType == UnitType.Barracs & b.tag=="Enemy"){
+				if(GameController.Instance.OnCreate(b.GetComponent<Identity>(), UnitType.Soldier)) return true;
+			}
+		}
+		return false;
+	}
+	
+	private bool createBarrac()
+	{
+		if (civiliansCPU.Count > 0)
+		{
+			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(0, 0, -20), new Troop((List<GameObject>)civiliansCPU.GetRange(0,1) ));
+			return true;
+		}
+		return false;
+		
+	}
     public void deleteResource(GameObject r)
     {
         resourcesFood.Remove(r);
@@ -215,6 +240,7 @@ public class AI : MonoBehaviour {
     }
     public void reassignResourceToCivilian(GameObject v)
     {
+		print (1);
         CollectResources collect = v.GetComponent<CollectResources>();
         if (collect.targetObject != null)
 			collect.targetObject = getClosestResource (v, (Resource)System.Enum.Parse(typeof(Resource), collect.targetObject.tag));
@@ -222,7 +248,9 @@ public class AI : MonoBehaviour {
 			collect.targetObject = getClosestResource (v, (Resource)Enum.GetValues(typeof(Resource)).GetValue((new System.Random()).Next(Enum.GetValues(typeof(Resource)).Length)));
 		Construct construct = v.GetComponent<Construct> ();
 		if (construct != null) {
+			print (2);
 			if (!construct.getInConstruction ()) {
+				print (3);
 				if(collect.targetObject!=null) collect.startMovingToCollect( collect.targetObject );
 			}
 		}else if(collect.targetObject!=null) collect.startMovingToCollect( collect.targetObject );
@@ -256,33 +284,7 @@ public class AI : MonoBehaviour {
 
 	}
 
-	public bool createSoldier()
-	{
-		bool done = false;
-		int i = 0;
-		List<GameObject> buildings = GameController.Instance.getAllEnemyBuildings();
-		
-		foreach (GameObject b in buildings){
-			if(b.GetComponent<Identity>().unitType == UnitType.Barracs & b.tag=="Enemy"){
-				if(GameController.Instance.OnCreate(b.GetComponent<Identity>(), UnitType.Soldier)) return true;
-			}
-		}
-		return false;
 
-
-		//GameController.Instance.hud.getActionsData().creationPermissions[UnitType.Soldier]);
-	}
-
-	private bool createBarrac()
-	{
-		if (civiliansCPU.Count > 0)
-		{
-			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(0, 0, -20), new Troop((List<GameObject>)civiliansCPU.GetRange(0,1) ));
-			return true;
-		}
-		return false;
-
-	}
 
     public class Task
     {

@@ -71,14 +71,11 @@ public class Construct : MonoBehaviour {
 
     public void SetInConstruction(bool b)
     {
-		print (b);
-		if(!b & GetComponent<Identity>().unitType.Equals(UnitType.Civilian) & inConstruction){
-			print("going home");
-			AI.Instance.reassignResourceToCivilian(gameObject); 
-
-
-		}
 		inConstruction = b;
+		if(!b & GetComponent<Identity>().unitType.Equals(UnitType.Civilian)){
+			AI.Instance.reassignResourceToCivilian(gameObject); 
+		}
+
 			
         //Debug.Log(b);
     }
