@@ -32,10 +32,13 @@ public class Construct : MonoBehaviour {
         //If a unit has the order to construct and it is close enough to the building, start the construction
         if (construct)
         {
+            //Debug.Log("Posicio unit "+transform.position);
+            //Debug.Log("Posicio building " + buildingToConstruct.transform.position);
+            //Debug.Log("Distancia que ha de parar " + dist + "magnitud resta " + (transform.position - buildingToConstruct.transform.position).magnitude);
 
             if ((transform.position - buildingToConstruct.transform.position).magnitude < dist)
             {
-			
+                
                 buildingToConstruct.GetComponent<BuildingConstruction>().startConstruction(this.gameObject);
                 
                 construct = false;
@@ -69,11 +72,12 @@ public class Construct : MonoBehaviour {
     public void SetInConstruction(bool b)
     {
         inConstruction = b;
-        Debug.Log(b);
+        //Debug.Log(b);
     }
 
     public void setConstruct(bool b)
     {
+        //Debug.Log("seter construct "+b);
         construct = b;
     }
 

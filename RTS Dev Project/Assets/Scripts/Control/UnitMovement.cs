@@ -101,20 +101,67 @@ public class UnitMovement : MonoBehaviour {
 				currentWaypoint++;
 			}
 
+
 			if(status != Status.attacking){
 				Vector3 v = new Vector3(1.0f,transform.localScale.y/2.0f,1.0f);
 				dis = (Vector3.Distance(transform.position,Vector3.Scale(targetPos,v)));
-				
-				if(dis < 4.5){
+
+                Construct construct = GetComponent<Construct>();
+                if (construct != null)
+                {
+                    if (!construct.getConstruct())
+                    {
+                        if (dis < 4.5)
+                        {
+                            timerDeath timer = target.GetComponent<timerDeath>();
+                            if (timer != null)
+                            {
+                                timer.UnitLostTarget(gameObject);
+                            }
+                            hasTarget = false;
+                            var animator = GetComponent<Animator>();
+                            if (animator != null)
+                            {
+                                animator.SetBool("walk", false);
+                            }
+                            status = Status.idle;
+                        }
+                    }
+                }
+                else {
+                    if (dis < 4.5)
+                    {
+                        timerDeath timer = target.GetComponent<timerDeath>();
+                        if (timer != null)
+                        {
+                            timer.UnitLostTarget(gameObject);
+                        }
+                        hasTarget = false;
+                        var animator = GetComponent<Animator>();
+                        if (animator != null)
+                        {
+                            animator.SetBool("walk", false);
+                        }
+                        status = Status.idle;
+                    }
+                }
+
+
+                /*
+                if (dis < 4.5){
 					timerDeath timer = target.GetComponent<timerDeath>();
 					if(timer != null){
 						timer.UnitLostTarget(gameObject);
 					}
 					hasTarget = false;
 					var animator = GetComponent<Animator>();
-					if (animator != null) animator.SetBool("walk", false);
+                    if (animator != null)
+                    {
+                        Debug.Log("Estas aqui???????????????????????????");
+                        animator.SetBool("walk", false); 
+                    }
 					status = Status.idle;
-				}
+				}*/
 			} 
 		}
 	}

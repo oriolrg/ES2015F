@@ -749,7 +749,7 @@ public class GameController : MonoBehaviour
         //Instantiate the building and start the positioning of the building
         GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
-        building.tag = "Ally";
+        building.tag = selectedUnits.units[0].gameObject.tag;
 
         addSelectedPrefab(building);
         addTeamCirclePrefab(building);
@@ -790,7 +790,7 @@ public class GameController : MonoBehaviour
     public void createBuilding(GameObject prefab, Vector3 position, Troop t)
     {
         GameObject building = Instantiate(prefab, position, gameObject.transform.rotation) as GameObject;
-        building.tag = "Ally";
+        building.tag = t.units[0].gameObject.tag;
         addSelectedPrefab(building);
         addTeamCirclePrefab(building);
 
@@ -804,10 +804,18 @@ public class GameController : MonoBehaviour
 
     public void buildingConstruction(Vector3 position, Troop t)
     {
+        //Debug.Log("tag dintre building construction" + t.units[0].GetComponent<Construct>().getBuildingToConstruct().tag);
+
+        foreach (var unit in t.units)
+        {
+            if (unit.tag != unit.GetComponent<Construct>().getBuildingToConstruct().tag) t.units.Remove(unit);
+        }
+
         //Move the units that are selected to construct to the building position
         GameObject target = Instantiate(targetPrefab, position, Quaternion.identity) as GameObject;
         target.transform.SetParent(targetsParent.transform);
         moveUnits(target, t);
+
         //Order that the unit has to construct
         foreach (var unit in t.units) unit.GetComponent<Construct>().setConstruct(true);
 

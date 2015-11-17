@@ -43,8 +43,10 @@ public class BuildingPlacer : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        Debug.Log(col.gameObject.name);
-        if(col.gameObject.tag != "Ground")
+        //Debug.Log("name gameobject "+gameObject.name);
+        //Debug.Log("Name colisionnnnnnnnnnn: "+col.gameObject.name+" taaag "+col.gameObject.tag);
+
+        if(col.gameObject.tag != "Ground" && gameObject.name != col.gameObject.name)
         {
             counterCollision++;
             collision = true;
@@ -56,7 +58,7 @@ public class BuildingPlacer : MonoBehaviour {
 
     void OnTriggerExit(Collider col)
     {
-		if(col.gameObject.tag != "Ground")
+		if(col.gameObject.tag != "Ground" && gameObject.name != col.gameObject.name)
         {
             counterCollision--;
             if (counterCollision == 0)
@@ -136,6 +138,7 @@ public class BuildingPlacer : MonoBehaviour {
                 }
 
                 Troop t = new Troop(GameController.Instance.getSelectedUnits().units);
+                gameObject.tag = t.units[0].tag;
                 GameController.Instance.buildingConstruction(gameObject.transform.position,t);
                 //gameObject.GetComponent<LOSEntity>().IsRevealer = true;
 				gameObject.GetComponent<LOSEntity>().enabled = true;
