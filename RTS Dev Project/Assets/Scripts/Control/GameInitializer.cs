@@ -135,6 +135,7 @@ public class GameInitializer : MonoBehaviour {
 			townCenter.tag = "Enemy";
 			townCenters.Add(townCenter);
 		}
+		GameController.Instance.hud.hideRightPanel();
     }
 
 	void Update() {
