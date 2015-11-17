@@ -73,6 +73,11 @@ public class AI : MonoBehaviour {
             	tasks.RemoveAt(0);
 			}
         }
+
+		if(GameController.Instance.getAllEnemyArmy()[0].GetComponent<AttackController>().attacking_enemy == null) {
+			compareArmy();
+		}
+
     }
     
     public void addCPUUnit(GameObject u)
@@ -278,12 +283,27 @@ public class AI : MonoBehaviour {
         resourcesCPU[res] -= value;
     }
 
-	public bool compareArmy(){
+	public void compareArmy(){
 
-		//return true;
-		return GameController.Instance.getAllEnemyArmy().Count > GameController.Instance.getAllAllyArmy().Count ;
+		if(GameController.Instance.getAllEnemyArmy().Count >= GameController.Instance.getAllAllyArmy().Count + 5){
+			attack();
+		}
 
 	}
+
+
+	public void attack(){
+
+		foreach (GameObject o in GameController.Instance.getAllEnemyArmy()) {
+		
+			AttackController a = o.GetComponent<AttackController> ();
+			if (a != null) {
+				a.attack (GameController.Instance.getAllAllyBuildings()[0]);
+			}
+		}
+
+	}
+
 
 
 
