@@ -436,4 +436,10 @@ public class HUD : MonoBehaviour
 			}
 		}
 	}
+	public void ShowWinMessage(){
+		winPanel.SetActive(true);
+	}
+	public void ShowLoseMessage(){
+		losePanel.SetActive(true);
+	}
 }

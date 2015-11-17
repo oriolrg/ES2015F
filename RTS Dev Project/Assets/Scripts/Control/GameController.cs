@@ -96,15 +96,6 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-
-        //Win Condition
-        var wonder = GameObject.FindGameObjectWithTag("Wonder");
-        if (wonder != null)
-        {
-            winCondition();
-        }
-
         if (Input.mousePosition.y > Screen.height * UIheight)
         {
             //Left Click Manager
@@ -670,14 +661,14 @@ public class GameController : MonoBehaviour
     }
 
     //Ends the game.
-    private void winCondition()
+    public void winCondition()
 	{
-        //!!!hud.ShowWinMessage();
+        hud.ShowWinMessage();
     }
 
-    private void loseCondition()
+    public void loseCondition()
     {
-        //!!!hud.ShowLoseMessage();
+        hud.ShowLoseMessage();
     }
 
     public void reloadLevel()
