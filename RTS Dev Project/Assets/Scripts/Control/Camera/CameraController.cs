@@ -29,7 +29,6 @@ public class CameraController : MonoBehaviour {
         //goTo(2,-8);
         //size = GameObject.FindGameObjectWithTag("prova").GetComponent<Renderer>().bounds.size;
         //origin = GameObject.FindGameObjectWithTag("prova").transform.position;
-        Debug.Log("start");
         
     }
 

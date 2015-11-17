@@ -30,10 +30,10 @@ public class AI : MonoBehaviour {
     private void elaborateStrategy()
     {
         Task t = new Task(new Method(createCivilian));
-        tasks.AddRange(Enumerable.Repeat(t,6));
+        //tasks.AddRange(Enumerable.Repeat(t,5));
         t = new Task(new Method(createWonder));
 
-		tasks.Add (t);
+		//tasks.Add (t);
 
     }
 
@@ -68,7 +68,6 @@ public class AI : MonoBehaviour {
         if (tasks.Count > 0)
         {
             if(tasks[0].method()){
-				print (tasks[0].method.Method.Name);
             	tasks.RemoveAt(0);
 			}
         }

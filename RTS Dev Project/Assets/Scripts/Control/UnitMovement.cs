@@ -44,6 +44,7 @@ public class UnitMovement : MonoBehaviour {
         CollectResources collect = gameObject.GetComponent<CollectResources>();
         //if (!AI.Instance.resources.Contains(target.tag) & collect != null) if (collect.goingToCollect) collect.goingToCollect = false;
 		this.target = target.transform;
+        print(name + " target is " + target);
         if ( seeker != null ) seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
         
 		targetPos = target.transform.position;

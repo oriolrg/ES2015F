@@ -38,7 +38,6 @@ public class TeamCircleProjector : MonoBehaviour {
 
     private void newState()
     {
-        Debug.Log("NewState");
         if (revealState == LOSEntity.RevealStates.Hidden)
             projector.enabled = false;
         if (revealState == LOSEntity.RevealStates.Fogged)

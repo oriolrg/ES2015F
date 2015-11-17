@@ -27,8 +27,11 @@ public class CollectResources : MonoBehaviour {
 	public void startMovingToStorage()
     {
         GameObject t = AI.Instance.getClosestTownCenter(gameObject);
+
+        print(name + "is moving to " + t);
         hasCollected = true;
         goingToCollect = false;
+        u.enabled = true;
 		u.startMoving(t);
 	}
 

@@ -808,7 +808,6 @@ public class GameController : MonoBehaviour
         GameObject target = Instantiate(targetPrefab, position, Quaternion.identity) as GameObject;
         target.transform.SetParent(targetsParent.transform);
         moveUnits(target, t);
-		print (target.transform.position);
         //Order that the unit has to construct
         foreach (var unit in t.units) unit.GetComponent<Construct>().setConstruct(true);
 
@@ -968,11 +967,15 @@ public class GameController : MonoBehaviour
 		Troop troop = new Troop(selectedUnits.units);
 		if(troop.units.Count != 0){
 			AttackController atkController;
-			foreach(var unit in troop.units){
-				atkController = unit.GetComponent<AttackController>();
-				atkController.attacking_enemy = null;
-				atkController.attacking_target = null;
-			}
+            foreach (var unit in troop.units)
+            {
+                atkController = unit.GetComponent<AttackController>();
+                if (atkController != null)
+                {
+                    atkController.attacking_enemy = null;
+                    atkController.attacking_target = null;
+                }
+            }
 		}
 		
 	}
