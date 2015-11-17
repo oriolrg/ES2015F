@@ -135,8 +135,10 @@ public class GameInitializer : MonoBehaviour {
 			townCenter.tag = "Enemy";
 			townCenters.Add(townCenter);
 		}
+		GameController.Instance.hud.hideRightPanel();
         GameController.Instance.addSelectedPrefabstoCurrentUnits();
         GameController.Instance.addTeamCirclePrefabstoCurrentUnits();
+
     }
 
 	void Update() {

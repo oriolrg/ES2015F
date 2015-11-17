@@ -240,7 +240,7 @@ public class AI : MonoBehaviour {
     }
     public void reassignResourceToCivilian(GameObject v)
     {
-		print (1);
+
         CollectResources collect = v.GetComponent<CollectResources>();
         if (collect.targetObject != null)
 			collect.targetObject = getClosestResource (v, (Resource)System.Enum.Parse(typeof(Resource), collect.targetObject.tag));
@@ -248,9 +248,9 @@ public class AI : MonoBehaviour {
 			collect.targetObject = getClosestResource (v, (Resource)Enum.GetValues(typeof(Resource)).GetValue((new System.Random()).Next(Enum.GetValues(typeof(Resource)).Length)));
 		Construct construct = v.GetComponent<Construct> ();
 		if (construct != null) {
-			print (2);
+
 			if (!construct.getInConstruction ()) {
-				print (3);
+
 				if(collect.targetObject!=null) collect.startMovingToCollect( collect.targetObject );
 			}
 		}else if(collect.targetObject!=null) collect.startMovingToCollect( collect.targetObject );

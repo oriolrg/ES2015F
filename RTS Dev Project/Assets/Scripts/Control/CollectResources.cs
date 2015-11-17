@@ -49,6 +49,8 @@ public class CollectResources : MonoBehaviour
 
             resourceBank[resourceCollected] += 2;
 
+			GameController.Instance.hud.updateRightPanel(gameObject);
+
 
         }
         else
@@ -122,6 +124,7 @@ public class CollectResources : MonoBehaviour
 
     public void returnToCollect()
     {
+		GameController.Instance.hud.updateRightPanel(gameObject);
         startMovingToCollect(targetObject);
     }
 
