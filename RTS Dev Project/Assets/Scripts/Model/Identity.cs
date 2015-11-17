@@ -16,7 +16,12 @@ public class Identity : MonoBehaviour
 
         // Create random name
         List<string> adjectives = DataManager.Instance.adjectives;
-
+		if(unitType.Equals(UnitType.Wonder)){
+			if(gameObject.tag=="Ally") 
+				GameController.Instance.winCondition();
+			else if(gameObject.tag=="Enemy") 
+				GameController.Instance.loseCondition();
+		}
         if (unitType.isBuilding())
             name = string.Format("The {0} {1}", adjectives[Random.Range(0, adjectives.Count)], unitType.ToString() );
         else

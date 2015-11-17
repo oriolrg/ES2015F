@@ -29,12 +29,13 @@ public class AI : MonoBehaviour {
 
     private void elaborateStrategy()
     {
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),5));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),6));
 		tasks.Add (new Task(new Method(createTownCenter)));
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),3));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),5));
 		tasks.Add (new Task(new Method(createBarrac)));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier)),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),3));
+		tasks.Add (new Task(new Method(createWonder)));
 
     }
 
@@ -190,7 +191,7 @@ public class AI : MonoBehaviour {
     {
         if (civiliansCPU.Count > 0)
         {
-            GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 0), new Troop(civiliansCPU));
+            GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Wonder], townCentersCPU[0].transform.position + new Vector3(20, 0,-20), new Troop(civiliansCPU));
 
 			return true;
         }
@@ -200,7 +201,7 @@ public class AI : MonoBehaviour {
 	{
 		if (civiliansCPU.Count > 0)
 		{
-			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 0),  new Troop((List<GameObject>)civiliansCPU.GetRange(1,2)));			
+			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 0),  new Troop((List<GameObject>)civiliansCPU.GetRange(0,1)));			
 			return true;
 		}
 		return false;
@@ -223,7 +224,7 @@ public class AI : MonoBehaviour {
 	{
 		if (civiliansCPU.Count > 0)
 		{
-			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(0, 0, -20), new Troop((List<GameObject>)civiliansCPU.GetRange(0,1) ));
+			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(0, 0, -20), new Troop((List<GameObject>)civiliansCPU.GetRange(1,1) ));
 			return true;
 		}
 		return false;
