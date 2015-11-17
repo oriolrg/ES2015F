@@ -238,7 +238,7 @@ public class AI : MonoBehaviour {
 	
 	private bool createBarrac()
 	{
-		if (civiliansCPU.Count > 0)
+		if (civiliansCPU.Count > 1)
 		{
 			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(0, 0, -20), new Troop((List<GameObject>)civiliansCPU.GetRange(1,1) ));
 			return true;
@@ -268,7 +268,7 @@ public class AI : MonoBehaviour {
 
 			if (!construct.getInConstruction ()) {
 
-				if(collect.targetObject!=null) collect.startMovingToCollect( collect.targetObject );
+				if(collect.targetObject!=null & collect.goingToCollect) collect.startMovingToCollect( collect.targetObject );
 			}
 		}else if(collect.targetObject!=null) collect.startMovingToCollect( collect.targetObject );
 

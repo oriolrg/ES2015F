@@ -12,6 +12,7 @@ public class CollectResources : MonoBehaviour
     
     public GameObject targetObject;
     public Animator animator;
+	public bool goingToCollect;
 
     public static Dictionary<Resource, string> gatheringAnimationBools = new Dictionary<Resource, string>()
     {
@@ -22,6 +23,7 @@ public class CollectResources : MonoBehaviour
 
     void Awake()
     {
+		goingToCollect = false;
         unitMovement = GetComponent<UnitMovement>();
         animator = GetComponent<Animator>();
         resourceBank = new ResourceValueDictionary();
@@ -33,6 +35,7 @@ public class CollectResources : MonoBehaviour
 
     public void startMovingToCollect(GameObject targetResource)
     {
+		goingToCollect = true;
         targetObject = targetResource;
         unitMovement.startMoving( targetObject, collect);
     }
@@ -83,6 +86,7 @@ public class CollectResources : MonoBehaviour
 
     public void startMovingToStorage()
     {
+		goingToCollect = false;
         CancelInvoke("addResource");
 
         GameObject targetTownCenter = AI.Instance.getClosestTownCenter(gameObject);
