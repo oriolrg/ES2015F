@@ -43,6 +43,10 @@ public class UnitMovement : MonoBehaviour {
 
 	public void startMoving( GameObject target, VoidMethod callback = null )
 	{
+        CollectResources collecting = GetComponent<CollectResources>();
+        if( collecting != null )
+            collecting.CancelInvoke();
+
         this.callback = callback;
         CollectResources collect = gameObject.GetComponent<CollectResources>();
         //if (!AI.Instance.resources.Contains(target.tag) & collect != null) if (collect.goingToCollect) collect.goingToCollect = false;
@@ -112,7 +116,7 @@ public class UnitMovement : MonoBehaviour {
                 {
                     if (!construct.getConstruct())
                     {
-                        if (dis < 4.5)
+                        if (targetReached( dis ))
                         {
 
 
@@ -136,7 +140,7 @@ public class UnitMovement : MonoBehaviour {
                     }
                 }
                 else {
-                    if (dis < 4.5)
+                    if (targetReached( dis ))
                     {
                         timerDeath timer = target.GetComponent<timerDeath>();
                         if (timer != null)
@@ -155,7 +159,7 @@ public class UnitMovement : MonoBehaviour {
 
 
                 /*
-                if (dis < 4.5){
+                if (targetReached()){
 					timerDeath timer = target.GetComponent<timerDeath>();
 					if(timer != null){
 						timer.UnitLostTarget(gameObject);
@@ -169,7 +173,30 @@ public class UnitMovement : MonoBehaviour {
                     }
 					status = Status.idle;
 				}*/
-			} 
-		}
+            }
+        }
 	}
+
+    private bool targetReached( float distanceToTarget )
+    {
+        BoxCollider targetCollider = target.GetComponent<BoxCollider>();
+        BoxCollider myCollider = this.GetComponent<BoxCollider>();
+
+        if( targetCollider != null && myCollider != null )
+        {
+            Vector3 targetExtents = targetCollider.bounds.extents;
+            Vector3 myExtents = myCollider.bounds.extents;
+
+            float targetDiagonal = new Vector2(targetExtents.x, targetExtents.z).magnitude;
+            float myDiagonal = new Vector2(myExtents.x, myExtents.z).magnitude;
+
+            return distanceToTarget < targetDiagonal + myDiagonal;
+        }
+        else
+        {
+            Debug.LogError("No collider found in " + target.name + " or in " + name);
+        }
+
+        return false;
+    }
 }
