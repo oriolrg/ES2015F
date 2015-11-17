@@ -201,21 +201,21 @@ public class AI : MonoBehaviour {
         resourcesFood.Remove(r);
         resourcesMetal.Remove(r);
         resourcesWood.Remove(r);
-        foreach (GameObject vil in civilians) if (vil.GetComponent<CollectResources>().targetToCollect == r) reassignResourceToCivilian(vil);
+        foreach (GameObject vil in civilians) if (vil.GetComponent<CollectResources>().targetObject == r) reassignResourceToCivilian(vil);
        
 
     }
     public void reassignResourceToCivilian(GameObject v)
     {
         CollectResources collect = v.GetComponent<CollectResources>();
-        if (collect.targetToCollect != null) collect.targetToCollect = getClosestResource(v, collect.targetToCollect.tag);
-        else collect.targetToCollect = getClosestResource(v, "Food");
+        if (collect.targetObject != null) collect.targetObject = getClosestResource(v, collect.targetObject.tag);
+        else collect.targetObject = getClosestResource(v, "Food");
 		Construct construct = v.GetComponent<Construct> ();
 		if (construct != null) {
 			if (!construct.getInConstruction ()) {
-				if(collect.targetToCollect!=null) collect.startMovingToCollect();
+				if(collect.targetObject!=null) collect.startMovingToCollect( collect.targetObject );
 			}
-		}else if(collect.targetToCollect!=null) collect.startMovingToCollect();
+		}else if(collect.targetObject!=null) collect.startMovingToCollect( collect.targetObject );
 
 
     }
