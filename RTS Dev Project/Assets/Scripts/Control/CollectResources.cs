@@ -96,21 +96,13 @@ public class CollectResources : MonoBehaviour
 
     public void store()
     {
-        if( tag == "Ally" )
+        
+        foreach( KeyValuePair<Resource, int> kv in resourceBank )
         {
-            foreach( KeyValuePair<Resource, int> kv in resourceBank )
-            {
-                GameController.Instance.updateResource(kv.Key, -kv.Value);
-            }
+            GameController.Instance.updateResource(kv.Key, -kv.Value,tag);
+        }
             
-        }
-        else if( tag == "Enemy" )
-        {
-            foreach (KeyValuePair<Resource, int> kv in resourceBank)
-            {
-                AI.Instance.updateResource(kv.Key, -kv.Value);
-            }
-        }
+       
 
         foreach( Resource key in resourceBank.Keys)
         {

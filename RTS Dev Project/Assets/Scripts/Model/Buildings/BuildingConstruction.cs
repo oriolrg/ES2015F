@@ -11,7 +11,7 @@ public class BuildingConstruction : MonoBehaviour {
 
     //private bool inConstruction;
     public float timer; //Timer that changes the mesh
-    private int phase; //Phase of the construction
+	private int phase; //Phase of the construction
     private List<GameObject> constructingUnits; //Units that are constructing the building
 
 
@@ -48,12 +48,14 @@ public class BuildingConstruction : MonoBehaviour {
 
             if(timer<=0 && phase == 1)
             {
+				phase=2;
                 GetComponent<MeshFilter>().mesh = finalMesh;
                 foreach (var unit in constructingUnits) unit.GetComponent<Construct>().SetInConstruction(false);
                 constructingUnits.Clear();
                 //GetComponent<Unit>().SetInConstruction(false);
                 constructionOnGoing = false;
                 GameController.Instance.updateInteractable();
+				GameController.Instance.addUnit(gameObject);
 
             }
         //}
@@ -110,4 +112,8 @@ public class BuildingConstruction : MonoBehaviour {
     {
         return initialMesh;
     }
+	public int getPhase(){
+		return phase;
+	}
 }
+
