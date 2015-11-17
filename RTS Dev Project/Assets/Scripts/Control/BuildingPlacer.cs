@@ -137,6 +137,17 @@ public class BuildingPlacer : MonoBehaviour {
                     i++;
                 }
 
+                BuildingConstruction build = GetComponent<BuildingConstruction>();
+
+                if (build != null)
+                {
+                    build.setFinalMesh();
+
+                    GetComponent<MeshFilter>().mesh = build.getInitialMesh().GetComponent<MeshFilter>().sharedMesh;
+
+                }
+                
+
                 Troop t = new Troop(GameController.Instance.getSelectedUnits().units);
                 gameObject.tag = t.units[0].tag;
                 GameController.Instance.buildingConstruction(gameObject.transform.position,t);
