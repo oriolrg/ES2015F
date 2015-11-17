@@ -6,12 +6,17 @@ public class AttackController : MonoBehaviour {
 
 	[SerializeField]
 	private GameObject targetPrefab;
+	private Identity identity;
 
 	public GameObject attacking_target;
 	public GameObject attacking_enemy;
+
 	public double range;
+	public double atkDmg;
+
 	private Vector3 enemy_last_pos;
 	private UnitMovement um;
+
     Animator animator;
     
     // Use this for initialization
@@ -19,9 +24,8 @@ public class AttackController : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		if (range == 0 || range == null) {
-			range = 5.0;
-		}
+		this.identity = this.gameObject.GetComponent<Identity> ();
+		this.range = DataManager.Instance.unitDatas [identity.unitType].stats [Stat.Range];
 		um = gameObject.GetComponent<UnitMovement> ();
         animator = GetComponent<Animator>();
 	}
