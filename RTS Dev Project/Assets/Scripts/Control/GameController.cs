@@ -134,6 +134,7 @@ public class GameController : MonoBehaviour
                         if (projector != null)
                             projector.gameObject.SetActive(true);
                         hud.updateSelection(selectedUnits);
+						hud.updateRightPanel(selectedGO);
                     }
                     else
                     {

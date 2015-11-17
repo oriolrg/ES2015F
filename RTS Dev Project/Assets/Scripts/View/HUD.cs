@@ -49,7 +49,7 @@ public class HUD : MonoBehaviour
             civilizationColors.Add(kv.Key, kv.Value.color);
 		}
 
-        resourceCosts[Resource.Food].text = "9";
+       
 
     }
 
@@ -424,8 +424,16 @@ public class HUD : MonoBehaviour
         countdownText.stop();
     }
 
-    internal void updateRightPanel(GameObject go)
-    {
-        // pipa!
-    }
+	public void updateRightPanel(GameObject go)
+	{
+		rightPanel.gameObject.SetActive(true);
+
+		CollectResources collectResources = go.GetComponent<CollectResources>();
+		if(collectResources!=null){
+			foreach( Resource resource in Enum.GetValues(typeof(Resource)))
+			{
+				resourceCosts[resource].text = collectResources.resourceBank[resource].ToString();
+			}
+		}
+	}
 }
