@@ -18,15 +18,18 @@ public class EndGameMenu : MonoBehaviour {
 	void Update () {
 	
 	}
-
+	/*
 	void OnEnable(){
+		print ("HELLOOOOOOO");
 		string message;
+
 
 		if (victory)
 			message = victoryText;
+
 		else
 			message = defeatText;
-
+		print (message);
 		foreach (Transform t in transform) {
 			if (t.gameObject.name.Equals ("Text")){
 				t.gameObject.GetComponent<Text>().text = message;
@@ -34,10 +37,28 @@ public class EndGameMenu : MonoBehaviour {
 			}
 		}
 
-		gameObject.SetActive(true);
+		
 
 		Time.timeScale = 0;
 	}
+*/
+	public void endGame(bool victory){
+		gameObject.SetActive (true);
+		this.victory = victory;
+		string message;		
+		if (victory)
+			message = victoryText;
+		
+		else
+			message = defeatText;
+		foreach (Transform t in transform) {
+			if (t.gameObject.name.Equals ("Text")){
+				t.gameObject.GetComponent<Text>().text = message;
+				break;
+			}
+		}
+		Time.timeScale = 0;
 
+	}
 	void OnDisable() { Time.timeScale = 1; }
 }

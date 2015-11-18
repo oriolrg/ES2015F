@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GameMenuBehaviour : MonoBehaviour {
 
-	public string mainMenuSceneName = "Main Menu";
+	public string mainMenuSceneName = "Menu";
 
 	[SerializeField] private GameObject escGameMenu;
 	[SerializeField] private GameObject endGameMenu;
@@ -22,11 +22,12 @@ public class GameMenuBehaviour : MonoBehaviour {
 	}
 
 	public void ToMainMenu(){
-		Application.LoadLevel (mainMenuSceneName);
+		Application.LoadLevel ("Menu");
 	}
 
 	public void EndGameMenu(bool victory){
-		endGameMenu.GetComponent<EndGameMenu>().victory = victory;
-		endGameMenu.SetActive(true);
+		ToMainMenu ();
+		//endGameMenu.GetComponent<EndGameMenu> ().endGame (victory);//.victory = victory;
+		//endGameMenu.SetActive (true);
 	}
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Health : MonoBehaviour
@@ -32,7 +32,6 @@ public class Health : MonoBehaviour
         {
             die();
         }
-
         GameController.Instance.updateHealth(gameObject);
     }
 
