@@ -72,9 +72,11 @@ namespace Pathfinding {
 
 			if ( EndTransform == null || StartTransform == null ) return;
 
+#if !ASTAR_NO_POINT_GRAPH
 			if ( AstarPath.active.astarData.pointGraph == null ) {
 				AstarPath.active.astarData.AddGraph ( new PointGraph () );
 			}
+#endif
 
 
 			if ( startNode != null) {
@@ -87,9 +89,13 @@ namespace Pathfinding {
 				if (reference.TryGetValue (endNode, out tmp) && tmp == this) reference.Remove (endNode);
 			}
 	
+#if !ASTAR_NO_POINT_GRAPH	
 			//Get nearest nodes from the first point graph, assuming both start and end transforms are nodes
 			startNode = AstarPath.active.astarData.pointGraph.AddNode ( (Int3)StartTransform.position );//AstarPath.active.astarData.pointGraph.GetNearest(StartTransform.position).node as PointNode;
 			endNode = AstarPath.active.astarData.pointGraph.AddNode ( (Int3)EndTransform.position ); //AstarPath.active.astarData.pointGraph.GetNearest(EndTransform.position).node as PointNode;
+#else
+			throw new System.Exception ("Point graph is not included. Check your A* optimization settings.");
+#endif
 
 			connectedNode1 = null;
 			connectedNode2 = null;
@@ -130,9 +136,11 @@ namespace Pathfinding {
 		protected override void OnEnable () {
 			base.OnEnable();
 			
+#if !ASTAR_NO_POINT_GRAPH
 			if (AstarPath.active != null && AstarPath.active.astarData != null && AstarPath.active.astarData.pointGraph != null) {
 				OnGraphsPostUpdate ();
 			}
+#endif
 		}
 		
 		protected override void OnDisable () {

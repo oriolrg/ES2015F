@@ -32,6 +32,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private Text victoryCondition;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
+    [SerializeField] public GameObject gameMenu;
 
     private Sprite panelSprite;
 
@@ -41,14 +42,11 @@ public class HUD : MonoBehaviour
 
     void Start()
     {
-        setCivilization(Civilization.Greeks);
-
 		civilizationColors = new Dictionary<Civilization,Color> ();
 
 		foreach (KeyValuePair<Civilization, CivilizationData> kv in DataManager.Instance.civilizationDatas) {
             civilizationColors.Add(kv.Key, kv.Value.color);
 		}
-
     }
 
     // Changes the UI depending on the chosen civilization
@@ -376,6 +374,7 @@ public class HUD : MonoBehaviour
 	{
 		controlPanel.gameObject.SetActive (false);
 	}
+
     private GameObject addBlock( Transform parent, Sprite image, UnityAction callback)
     {
         GameObject block = Instantiate(data.blockPrefab) as GameObject;
@@ -420,4 +419,25 @@ public class HUD : MonoBehaviour
         countdownPanel.gameObject.SetActive(false);
         countdownText.stop();
     }
+
+	public void updateRightPanel(GameObject go)
+	{
+		if(go.tag != "Enemy"){
+			rightPanel.gameObject.SetActive(true);
+			CollectResources collectResources = go.GetComponent<CollectResources>();
+			if(collectResources!=null){
+				foreach( Resource resource in Enum.GetValues(typeof(Resource)))
+				{
+					resourceCosts[resource].text = collectResources.resourceBank[resource].ToString();
+				}
+			}
+		}
+	}
+    /*
+	public void ShowWinMessage(){
+		winPanel.SetActive(true);
+	}
+	public void ShowLoseMessage(){
+		losePanel.SetActive(true);
+	}*/
 }

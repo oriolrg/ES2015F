@@ -11,7 +11,7 @@ public class DestroyOnExpend : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (amount < 0) {
+		if (amount <= 0) {
             AI.Instance.deleteResource(this.gameObject);
 			Destroy (this.gameObject);
 		}

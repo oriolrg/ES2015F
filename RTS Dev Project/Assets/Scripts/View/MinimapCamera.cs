@@ -52,15 +52,8 @@ public class MinimapCamera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update (){
-//		float aspect = ((float) Screen.width) / Screen.height;
-//
-//		if (aspect != ScreenAspect) {
-//			updateViewport(aspect);
-//		}
-
-		if (!minimapCamera.enabled) {
-			return; // Don't allow to interact with the minimap if it isn't enabled
-		}
+		if (Time.timeScale == 0)
+			return; // game paused, don't interact
 
 		// Move mainCamera if minimapCamera is clicked or was clicked and now is dragged
 		if (Input.GetMouseButtonDown (0)) { // is left-button clicked?
@@ -186,7 +179,10 @@ public class MinimapCamera : MonoBehaviour {
 	}
 	
 	void OnGUI(){
-		//minimapCamera.Render (); // To display on top of GUI
+		// minimapCamera.Render (); // To display on top of GUI
+
+		if (Time.timeScale == 0)
+			return; // game paused: don't interact
 
 		// Draw a rect in the minimap to show the visible area
 		Vector2 position = minimapCamera.WorldToScreenPoint(currentLookAtPoint);

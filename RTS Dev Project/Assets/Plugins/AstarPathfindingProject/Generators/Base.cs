@@ -297,6 +297,7 @@ namespace Pathfinding {
 		 * \version Since 3.6.1 this method will not handle null nodes
 		 */
 		public virtual Color NodeColor (GraphNode node, PathHandler data) {
+	#if !PhotonImplementation
 			Color c = AstarColor.NodeConnection;
 
 			switch (AstarPath.active.debugMode) {
@@ -330,6 +331,9 @@ namespace Pathfinding {
 
 			c.a *= 0.5F;
 			return c;
+	#else
+			return new Color (1,1,1);
+	#endif
 
 		}
 
@@ -487,11 +491,28 @@ namespace Pathfinding {
 		 */
 		public bool use2D;
 
+#if !PhotonImplementation
 		/** Toggle collision check */
 		public bool collisionCheck = true;
 
 		/** Toggle height check. If false, the grid will be flat */
 		public bool heightCheck = true;
+#else
+		//No height or collision checks can be done outside of Unity
+		public bool collisionCheck {
+			get {
+				return false;
+			}
+			set {}
+		}
+
+		public bool heightCheck {
+			get {
+				return false;
+			}
+			set {}
+		}
+#endif
 
 		/** Direction to use as \a UP.
 		 * \see Initialize */
@@ -588,14 +609,14 @@ namespace Pathfinding {
 					return AstarMath.NearestPoint (ray.origin,ray.origin+ray.direction,hit.point);
 				}
 
-				walkable &= !unwalkableWhenNoGround;
+				walkable &= unwalkableWhenNoGround;
 			} else {
 				// Cast a ray from above downwards to try to find the ground
 				if (Physics.Raycast (position+up*fromHeight, -up,out hit, fromHeight+0.005F, heightMask)) {
 					return hit.point;
 				}
 
-				walkable &= !unwalkableWhenNoGround;
+				walkable &= unwalkableWhenNoGround;
 			}
 			return position;
 		}
@@ -617,13 +638,13 @@ namespace Pathfinding {
 					return AstarMath.NearestPoint (ray.origin,ray.origin+ray.direction,hit.point);
 				}
 
-				walkable &= !unwalkableWhenNoGround;
+				walkable &= unwalkableWhenNoGround;
 			} else {
 				if (Physics.Raycast (origin, -up,out hit, fromHeight+0.005F, heightMask)) {
 					return hit.point;
 				}
 
-				walkable &= !unwalkableWhenNoGround;
+				walkable &= unwalkableWhenNoGround;
 			}
 			return origin -up*fromHeight;
 		}

@@ -1,4 +1,4 @@
-﻿
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,11 +28,17 @@ public class DelayedActionQueue : MonoBehaviour
         }
     }
 
-    public void Enqueue(Action action)
-    {
-        if (Queue.Count >= maxQueueLength)
-            Debug.LogWarning("Queue maximum length reached.");
-        else
-            Queue.Enqueue(action);
-    }
+	public bool Enqueue(Action action)
+	{
+		if (Queue.Count >= maxQueueLength)
+		{
+			Debug.LogWarning("Queue maximum length reached.");
+			return false;
+		}
+		else
+		{
+			Queue.Enqueue(action);
+			return true;
+		}
+	}
 }
