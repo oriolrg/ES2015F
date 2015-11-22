@@ -804,7 +804,7 @@ public class GameController : MonoBehaviour
                     scriptConstruct.SetInConstruction(false);
                     scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
                 }
-                unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+                scriptConstruct.SetBuildingToConstruct(building);
 
 
             }
@@ -850,7 +850,26 @@ public class GameController : MonoBehaviour
 
         //building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
 
-        foreach (var unit in t.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+        //foreach (var unit in t.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+
+        foreach (var unit in t.units)
+        {
+            Construct scriptConstruct = unit.GetComponent<Construct>();
+
+            if (scriptConstruct != null)
+            {
+
+                if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
+                {
+                    scriptConstruct.setConstruct(false);
+                    scriptConstruct.SetInConstruction(false);
+                    scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                }
+                scriptConstruct.SetBuildingToConstruct(building);
+
+
+            }
+        }
 
         buildingConstruction(position, t);
 

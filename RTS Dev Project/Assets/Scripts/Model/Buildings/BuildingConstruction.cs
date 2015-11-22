@@ -128,5 +128,10 @@ public class BuildingConstruction : MonoBehaviour {
 	public int getPhase(){
 		return phase;
 	}
+
+    public List<GameObject> getConstructingUnits()
+    {
+        return constructingUnits;
+    }
 }
 
