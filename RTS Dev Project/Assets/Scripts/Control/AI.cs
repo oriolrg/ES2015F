@@ -70,8 +70,8 @@ public class AI : MonoBehaviour {
 			}
         }
 
-
-		compareArmy();
+		counterattack ();
+		//compareArmy();
 		/*List<GameObject> lo = GameController.Instance.getAllEnemyArmy ();
 		if(lo != null){
 			GameObject o = lo[0];
@@ -297,7 +297,102 @@ public class AI : MonoBehaviour {
 
 	}
 
+	public void counterattack(){
 
+		List<GameObject> allyAtacking = getAllyAtacking();
+		if(allyAtacking.Count != 0){
+			List<GameObject> enemiesNoAtacking = getEnemiesNoAtacking();
+
+
+			print ("Enemies"+ enemiesNoAtacking.Count);
+
+			print ("Player" + allyAtacking.Count);
+			
+			//int numEnemiesPerPlayer = enemiesNoAtacking.Count/allyAtacking.Count;
+			int numEnemiesPerPlayer = 2;
+			print ("Total" + numEnemiesPerPlayer*allyAtacking.Count);
+
+			int count = 0;
+			int playerUnit = 0;
+			for(int i = 0; i < numEnemiesPerPlayer*allyAtacking.Count; i++){
+			//foreach (GameObject o in enemiesNoAtacking) {
+				GameObject o = enemiesNoAtacking[i];
+
+				AttackController a = o.GetComponent<AttackController> ();
+				if (a != null) {
+					a.attack(allyAtacking[playerUnit]);
+				}
+				if(count == numEnemiesPerPlayer){
+					playerUnit += 1;
+					count = 0;
+				}else{
+					count += 1;
+				}
+			}
+		}
+
+	}
+
+	public List<GameObject> getAllyAtacking(){
+
+		List<GameObject> allyAtacking = new List<GameObject>();
+
+		foreach (GameObject o in GameController.Instance.getAllAllyArmy()) {
+
+			AttackController a = o.GetComponent<AttackController> ();
+			if (a != null) {
+				if(a.attacking_enemy != null){
+					allyAtacking.Add(o);
+
+				}
+			}
+		}
+
+		foreach (GameObject o in GameController.Instance.getAllAllyCivilians()) {
+			
+			AttackController a = o.GetComponent<AttackController> ();
+			if (a != null) {
+				if(a.attacking_enemy != null){
+					allyAtacking.Add(o);
+					
+				}
+			}
+		}
+
+		return allyAtacking;
+	}
+
+
+	public List<GameObject> getEnemiesNoAtacking(){
+
+		
+		List<GameObject> enemiesNoAtacking = new List<GameObject>();
+		
+		foreach (GameObject o in GameController.Instance.getAllEnemyArmy()) {
+			
+			AttackController a = o.GetComponent<AttackController> ();
+			if (a != null) {
+				if(a.attacking_enemy == null){
+					enemiesNoAtacking.Add(o);
+					
+				}
+			}
+		}
+		if (enemiesNoAtacking.Count == 0) {
+			foreach (GameObject o in GameController.Instance.getAllEnemyCivilians()) {
+				
+				AttackController a = o.GetComponent<AttackController> ();
+				if (a != null) {
+					if(a.attacking_enemy == null){
+						enemiesNoAtacking.Add(o);
+						
+					}
+				}
+			}
+		}
+
+		return enemiesNoAtacking;
+	}
 
 
     public class Task
