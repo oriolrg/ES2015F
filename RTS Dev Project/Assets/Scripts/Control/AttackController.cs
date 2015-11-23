@@ -18,6 +18,10 @@ public class AttackController : MonoBehaviour {
 	private UnitMovement um;
 
     Animator animator;
+
+    public GameObject dustPrefab;
+    public GameObject usingDust;
+    [SerializeField] private bool attacking = false;
     
     // Use this for initialization
 
@@ -69,19 +73,60 @@ public class AttackController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (this.attacking_enemy != null) { //check if position has changed, and follow if so
-			Vector3 enemyPos = attacking_enemy.transform.position;
+        if (this.attacking_enemy != null)
+        { //check if position has changed, and follow if so
+            Vector3 enemyPos = attacking_enemy.transform.position;
 
-			if (this.attacking_enemy.layer == 11 && (Vector3.Distance (enemyPos, this.gameObject.transform.position) <= range * 2 + 7)) {
-				attacking_enemy.GetComponent<Health> ().loseHP ((int)this.atkDmg);
-			} else if (Vector3.Distance (enemyPos, this.gameObject.transform.position) <= this.range * 2) {
-				attacking_enemy.GetComponent<Health> ().loseHP ((int)this.atkDmg);
-			}
+            if (this.attacking_enemy.layer == 11 && (Vector3.Distance(enemyPos, this.gameObject.transform.position) <= range * 2 + 7))
+            {
+                attacking_enemy.GetComponent<Health>().loseHP((int)this.atkDmg);
+                attacking = true;
+            }
+            else if (Vector3.Distance(enemyPos, this.gameObject.transform.position) <= this.range * 2)
+            {
+                attacking_enemy.GetComponent<Health>().loseHP((int)this.atkDmg);
+                attacking = true;
+            }
 
-			if (Vector3.Distance (enemy_last_pos, enemyPos) > this.range) {
-				this.attack (attacking_enemy);
-			}
-		}
+            if (Vector3.Distance(enemy_last_pos, enemyPos) > this.range)
+            {
+                this.attack(attacking_enemy);
+                attacking = false;
+            }
+
+            if (attacking)
+            {
+                if (attacking_enemy.GetComponent<Identity>().unitType.isBuilding())
+                {
+                    if (usingDust == null) usingDust = Instantiate(dustPrefab, attacking_enemy.transform.position, Quaternion.identity) as GameObject;
+
+                    else if (!usingDust.transform.position.Equals(attacking_enemy.transform.position))
+                    {
+                        Destroy(usingDust);
+                        usingDust = null;
+                    }
+
+                    }
+            }
+            else
+            {
+                if (usingDust != null)
+                {
+                    Destroy(usingDust);
+                    usingDust = null;
+                }
+            }
+        }
+        else
+        {
+            attacking = false;
+            if (usingDust != null)
+            {
+                Destroy(usingDust);
+                usingDust = null;
+            }
+
+        }
 	}
 }
 
