@@ -106,6 +106,9 @@ public class GameInitializer : MonoBehaviour {
 			mapInfo.towncenter1.transform.rotation
 		);
 
+        Identity iden = townCenter.GetComponent<Identity>();
+        if (iden != null) iden.player = Player.Player;
+
 		townCenter.name = "PlayerTownCenter";
 		townCenter.transform.SetParent(buildings.transform);
 
@@ -116,21 +119,32 @@ public class GameInitializer : MonoBehaviour {
 
 		int cpus = 0;
 		Transform townCenterTransform;
-		foreach (GameData.CPUData cpu in GameData.cpus) {
+        Player player;
+        Identity idenCPU;
+        foreach (GameData.CPUData cpu in GameData.cpus) {
 			cpus++;
 
 			townCenterPrefab = DataManager.Instance.civilizationDatas[
 				Utils.GetEnumValue<Civilization>(cpu.civ.ToString())
 			].units[UnitType.TownCenter];
 
-			if (cpus == 1)
-				townCenterTransform = mapInfo.towncenter2.transform;
-			else if (cpus == 2)
-				townCenterTransform = mapInfo.towncenter3.transform;
-			else if (cpus == 3)
-				townCenterTransform = mapInfo.towncenter4.transform;
-			else
-				continue;
+            if (cpus == 1)
+            {
+                townCenterTransform = mapInfo.towncenter2.transform;
+                player = Player.CPU1;
+            }
+            else if (cpus == 2)
+            {
+                townCenterTransform = mapInfo.towncenter3.transform;
+                player = Player.CPU2;
+            }
+            else if (cpus == 3)
+            {
+                townCenterTransform = mapInfo.towncenter4.transform;
+                player = Player.CPU3;
+            }
+            else
+                continue;
 
 			townCenter = (GameObject) Instantiate (
 				townCenterPrefab, 
@@ -138,7 +152,13 @@ public class GameInitializer : MonoBehaviour {
 				townCenterTransform.rotation
 			);
 
-			townCenter.name = "CPU" + cpus.ToString() + "TownCenter";
+            idenCPU = townCenter.GetComponent<Identity>();
+            if (idenCPU != null)
+            {
+                idenCPU.player = player;
+            }
+
+            townCenter.name = "CPU" + cpus.ToString() + "TownCenter";
 			townCenter.transform.SetParent(buildings.transform);
 			townCenter.tag = "Enemy";
 			townCenters.Add(townCenter);

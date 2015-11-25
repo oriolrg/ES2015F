@@ -674,7 +674,6 @@ public class GameController : MonoBehaviour
     {
         //hud.ShowLoseMessage();
 
-
         hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(false);
     }
 
@@ -704,6 +703,7 @@ public class GameController : MonoBehaviour
     {
         Spawner spawner = building.GetComponentOrEnd<Spawner>();
 
+        spawner.initBounds();
         Vector3 spawningPoint = spawner.SpawningPoint;
         Vector3 rallyPoint = spawner.RallyPoint;
         
@@ -911,7 +911,6 @@ public class GameController : MonoBehaviour
 
         if (what.isBuilding())
         {
-
             if (checkResources(unitData.resourceCost, who.tag))
             {
                 //Create the building

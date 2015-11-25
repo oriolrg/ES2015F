@@ -8,6 +8,9 @@ public class Identity : MonoBehaviour
     public Civilization civilization;
 
     [SerializeField]
+    public Player player;
+
+    [SerializeField]
     public UnitType unitType;
     
 
