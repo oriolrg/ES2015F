@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -36,7 +36,7 @@ public class AI : MonoBehaviour {
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier)),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),3));
 		//tasks.Add (new Task(new Method(createWonder)));
-        
+
     }
 
     void Awake()
@@ -70,7 +70,7 @@ public class AI : MonoBehaviour {
 			}
         }
 
-		counterattack ();
+		//counterattack ();
 		//compareArmy();
 		/*List<GameObject> lo = GameController.Instance.getAllEnemyArmy ();
 		if(lo != null){
@@ -242,6 +242,20 @@ public class AI : MonoBehaviour {
 		return false;
 		
 	}
+
+	//borrar
+	private bool createBarrac2()
+	{
+		if (civiliansCPU.Count > 1)
+		{
+			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(20, 0, 0), new Troop((List<GameObject>)civiliansCPU.GetRange(1,1) ));
+			return true;
+		}
+		return false;
+		
+	}
+
+
     public void deleteResource(GameObject r)
     {
         resourcesFood.Remove(r);
@@ -297,7 +311,77 @@ public class AI : MonoBehaviour {
 
 	}
 
-	public void counterattack(){
+	public void counterattack(GameObject target){
+	
+		List<GameObject> allyAtacking = whoIsAttacking (target);
+		List<GameObject> enemiesNoAtacking = getEnemiesNoAtacking(allyAtacking.Count);
+		
+		
+		print ("Enemies noAttacking "+ enemiesNoAtacking.Count);
+		
+		print ("Player " + allyAtacking.Count);
+
+		/*int numEnemiesPerPlayer = 1;
+		 
+		if (enemiesNoAtacking.Count == allyAtacking.Count) {
+			numEnemiesPerPlayer = 1;
+		} else if ((enemiesNoAtacking.Count) >= (allyAtacking.Count) * 2) {
+			numEnemiesPerPlayer = 2;
+		} else if ( (allyAtacking.Count) <  (enemiesNoAtacking.Count) < (allyAtacking.Count) * 2) {
+			numEnemiesPerPlayer = 1;
+		}*/
+
+		int count = 0;
+		int playerUnit = 0;
+		for(int i = 0; i < Math.Min (allyAtacking.Count + 1, enemiesNoAtacking.Count) ; i++){
+		//foreach (GameObject o in enemiesNoAtacking) {
+			GameObject o = enemiesNoAtacking[i];
+			
+			AttackController a = o.GetComponent<AttackController> ();
+			if (a != null) {
+				if(i < allyAtacking.Count){
+					a.attack(allyAtacking[i]);
+				}else{
+					a.attack(allyAtacking[0]);
+				}
+			}
+		
+		}
+	}
+
+
+
+	public List<GameObject>  whoIsAttacking(GameObject target){
+
+		List<GameObject> lo = new List<GameObject>();
+
+		foreach (GameObject o in GameController.Instance.getAllAllyArmy()) {
+			
+			AttackController a = o.GetComponent<AttackController> ();
+			if (a != null) {
+				if(a.attacking_enemy == target){
+					lo.Add(o);
+					
+				}
+			}
+		}
+		
+		foreach (GameObject o in GameController.Instance.getAllAllyCivilians()) {
+			
+			AttackController a = o.GetComponent<AttackController> ();
+			if (a != null) {
+				if (a.attacking_enemy == target) {
+					lo.Add (o);
+					
+				}
+			}
+		}
+
+		return lo;
+
+	}
+
+	/*public void counterattack(){
 
 		List<GameObject> allyAtacking = getAllyAtacking();
 		if(allyAtacking.Count != 0){
@@ -331,9 +415,9 @@ public class AI : MonoBehaviour {
 			}
 		}
 
-	}
+	}*/
 
-	public List<GameObject> getAllyAtacking(){
+	/*public List<GameObject> getAllyAtacking(){
 
 		List<GameObject> allyAtacking = new List<GameObject>();
 
@@ -360,38 +444,56 @@ public class AI : MonoBehaviour {
 		}
 
 		return allyAtacking;
-	}
+	}*/
 
 
-	public List<GameObject> getEnemiesNoAtacking(){
+	public List<GameObject> getEnemiesNoAtacking(int numTargets){
 
 		
-		List<GameObject> enemiesNoAtacking = new List<GameObject>();
-		
+		List<GameObject> enemiesNotBusy = new List<GameObject>();
+		bool noAttacking = true;
+		bool noRecollecting = true;
 		foreach (GameObject o in GameController.Instance.getAllEnemyArmy()) {
 			
 			AttackController a = o.GetComponent<AttackController> ();
+
 			if (a != null) {
-				if(a.attacking_enemy == null){
-					enemiesNoAtacking.Add(o);
+				if(a.attacking_enemy  == null){
+	
+					enemiesNotBusy.Add(o);
 					
 				}
 			}
 		}
-		if (enemiesNoAtacking.Count == 0) {
+		print (enemiesNotBusy.Count + "  " + numTargets);
+		if (enemiesNotBusy.Count < numTargets) {
+			print ("Me defiendo con los civilians");
 			foreach (GameObject o in GameController.Instance.getAllEnemyCivilians()) {
-				
+				noAttacking = true;
+				noRecollecting = true;
+		
 				AttackController a = o.GetComponent<AttackController> ();
 				if (a != null) {
 					if(a.attacking_enemy == null){
-						enemiesNoAtacking.Add(o);
+						noAttacking = false;
 						
 					}
 				}
+				UnitMovement uM = o.GetComponent<UnitMovement> (); 
+				if(uM != null){
+					if(uM.status == Status.collecting){
+						noRecollecting = false;
+					}
+				}
+				if(noAttacking && noRecollecting){
+					print("Voy a atacar");
+					enemiesNotBusy.Add(o);
+				}
+
 			}
 		}
 
-		return enemiesNoAtacking;
+		return enemiesNotBusy;
 	}
 
 
