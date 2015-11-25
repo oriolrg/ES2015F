@@ -6,10 +6,19 @@ ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
+    100002: aspes
+    100004: moli
     400000: //RootNode
+    400002: aspes
+    400004: moli
     2300000: //RootNode
+    2300002: aspes
+    2300004: moli
     3300000: //RootNode
+    3300002: aspes
+    3300004: moli
     4300000: moli
+    4300002: aspes
     7400000: Default Take
     9500000: //RootNode
   materials:
