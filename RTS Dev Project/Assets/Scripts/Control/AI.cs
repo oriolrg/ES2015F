@@ -309,4 +309,45 @@ public class AI : MonoBehaviour {
         }
 
     }
+
+
+	public void constuir(){
+
+		int numTownCenter = 0;
+		int numBarracks = 0;
+		int numStable = 0;
+		int numArchery = 0;
+		foreach (GameObject o in GameController.Instance.getAllEnemyArmy()) {
+			switch (o.GetComponent<Identity>().unitType ){
+			case UnitType.TownCenter:
+				numTownCenter += 1;
+				break;
+			
+			case UnitType.Barracs:
+				numBarracks += 1;
+				break;
+
+			case UnitType.Stable:
+				numStable += 1;
+				break;
+
+			case UnitType.Archery:
+				numArchery += 1;
+				break;
+			default:
+				print (o.GetComponent<Identity>().unitType );
+				break;
+			}
+			
+		}
+
+		if (numTownCenter < 2) {
+			createTownCenter();
+		}
+		
+	
+	}
+
+
+
 }
