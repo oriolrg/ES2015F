@@ -752,8 +752,7 @@ public class GameController : MonoBehaviour
 
 
             GameObject newUnit = Instantiate(unit, spawner.SpawningPoint, Quaternion.identity) as GameObject;
-            addSelectedPrefab(newUnit);
-            addTeamCirclePrefab(newUnit);
+
 
             // Set unit as parent in hierarchy
             newUnit.transform.SetParent(unitsParent.transform);
@@ -781,6 +780,9 @@ public class GameController : MonoBehaviour
         GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
         building.tag = selectedUnits.units[0].gameObject.tag;
+
+        Identity newIden = building.GetComponent<Identity>();
+        if (newIden != null) newIden.player = selectedUnits.units[0].GetComponent<Identity>().player;
 
         addSelectedPrefab(building);
         addTeamCirclePrefab(building);
@@ -824,6 +826,10 @@ public class GameController : MonoBehaviour
     {
         GameObject building = Instantiate(prefab, position, gameObject.transform.rotation) as GameObject;
         building.tag = t.units[0].gameObject.tag;
+
+        Identity newIden = building.GetComponent<Identity>();
+        if (newIden != null) newIden.player = t.units[0].GetComponent<Identity>().player;
+
         addSelectedPrefab(building);
         addTeamCirclePrefab(building);
 
@@ -916,6 +922,13 @@ public class GameController : MonoBehaviour
                 //Create the building
                 GameObject created = createBuilding(prefab);
                 created.tag = who.gameObject.tag;
+
+                Identity newIden = created.GetComponent<Identity>();
+                if (newIden != null) newIden.player = who.player;
+
+                if (who.tag == "Ally") addSelectedPrefab(created);
+                addTeamCirclePrefab(created);
+
                 Spawner spa = created.GetComponent<Spawner>();
                 if (spa != null) spa.initBounds();
                 updateResource(unitData.resourceCost, who.tag);
@@ -927,7 +940,16 @@ public class GameController : MonoBehaviour
             {
                 GameObject created = CreateUnit(who.gameObject, prefab);
 				created.tag = who.gameObject.tag;
-                if (who.tag=="Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
+
+                Identity newIden = created.GetComponent<Identity>();
+                if (newIden != null) newIden.player = who.player;
+
+                if (who.tag == "Ally")
+                {
+                    addSelectedPrefab(created);
+                    hud.updateDelayedActions(selectedUnits.FocusedUnit);
+                }
+                addTeamCirclePrefab(created);
             });
 
             //create an action and add it to the focused unit's queue
@@ -948,14 +970,17 @@ public class GameController : MonoBehaviour
 
     public void addSelectedPrefab(GameObject go)
     {
-        GameObject selectedProj = Instantiate(selectedPrefab, go.transform.position + new Vector3(0,5,0), Quaternion.identity) as GameObject;
-        //selectedProj.transform.Rotate(90, 0, 0);
-        selectedProj.name = "Selected";
-        selectedProj.SetActive(false);
-        selectedProj.transform.SetParent(go.transform);
-        selectedProj.transform.up = new Vector3(0,0,1);
-        SelectionCircle script = selectedProj.GetComponent<SelectionCircle>();
-        if (script != null) script.init();
+        if (go.transform.FindChild("Selected") == null)
+        {
+            GameObject selectedProj = Instantiate(selectedPrefab, go.transform.position + new Vector3(0, 5, 0), Quaternion.identity) as GameObject;
+            //selectedProj.transform.Rotate(90, 0, 0);
+            selectedProj.name = "Selected";
+            selectedProj.SetActive(false);
+            selectedProj.transform.SetParent(go.transform);
+            selectedProj.transform.up = new Vector3(0, 0, 1);
+            SelectionCircle script = selectedProj.GetComponent<SelectionCircle>();
+            if (script != null) script.init();
+        }
     }
 
     public void addSelectedPrefabstoCurrentUnits()
@@ -969,18 +994,21 @@ public class GameController : MonoBehaviour
 
     public void addTeamCirclePrefab(GameObject go)
     {
-        Identity iden = go.GetComponent<Identity>();
-        GameObject teamProj = Instantiate(teamCirclePrefab, go.transform.position + new Vector3(0, 5, 0), Quaternion.identity) as GameObject;
-        //selectedProj.transform.Rotate(90, 0, 0);
-        teamProj.name = "TeamCircle";
-        teamProj.SetActive(true);
-        teamProj.transform.SetParent(go.transform);
-        teamProj.transform.up = new Vector3(0, 0, 1);
-        TeamCircleProjector script = teamProj.GetComponent<TeamCircleProjector>();
-        if (script != null)
+        if (go.transform.FindChild("TeamCircle") == null)
         {
-            if (iden != null) script.initWithTeamColor(iden);
-            else script.init();
+            Identity iden = go.GetComponent<Identity>();
+            GameObject teamProj = Instantiate(teamCirclePrefab, go.transform.position + new Vector3(0, 5, 0), Quaternion.identity) as GameObject;
+            //selectedProj.transform.Rotate(90, 0, 0);
+            teamProj.name = "TeamCircle";
+            teamProj.SetActive(true);
+            teamProj.transform.SetParent(go.transform);
+            teamProj.transform.up = new Vector3(0, 0, 1);
+            TeamCircleProjector script = teamProj.GetComponent<TeamCircleProjector>();
+            if (script != null)
+            {
+                if (iden != null) script.initWithTeamColor(iden);
+                else script.init();
+            }
         }
     }
 

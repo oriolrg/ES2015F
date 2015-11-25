@@ -5,6 +5,7 @@ using System;
 
 [Serializable]
 public class StatSpriteDictionary : SerializableDictionary<Stat, Sprite> { }
+
 [Serializable]
 public class CivilizationDataDictionary : SerializableDictionary<Civilization, CivilizationData> { }
 
@@ -29,3 +30,5 @@ public class UnitPrefabDictionary : SerializableDictionary<UnitType, GameObject>
 [Serializable]
 public class CivilizationValueDictionary : SerializableDictionary<Civilization, float> { }
 
+[Serializable]
+public class PlayersDataDictionary : SerializableDictionary<Player, PlayerData> { }

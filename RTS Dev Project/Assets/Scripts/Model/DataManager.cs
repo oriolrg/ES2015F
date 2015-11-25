@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
+    public PlayerData player;
+    public PlayerData CPU1;
+    public PlayerData CPU2;
+    public PlayerData CPU3;
+
     public CivilizationDataDictionary civilizationDatas;
+    public PlayersDataDictionary playerDatas;
     public UnitDataDictionary unitDatas;
 
     public Dictionary<Civilization, List<string>> names = new Dictionary<Civilization, List<string>>()
@@ -17,9 +23,6 @@ public class DataManager : MonoBehaviour
 
     public List<string> adjectives = new List<string>() { "Important", "Lazy", "Popular", "Historical", "Scared", "Old", "Traditional", "Strong", "Helpful", "Competitive", "Legal", "Obvious" };
 
-
-
-
     public static DataManager Instance { get; private set; }
 
     void Awake()
@@ -28,5 +31,10 @@ public class DataManager : MonoBehaviour
             Destroy(this);
         else
             Instance = this;
+
+        playerDatas.Add(Player.Player, player);
+        playerDatas.Add(Player.CPU1, CPU1);
+        playerDatas.Add(Player.CPU2, CPU2);
+        playerDatas.Add(Player.CPU3, CPU3);
     }
 }

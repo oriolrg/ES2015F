@@ -73,6 +73,7 @@ public class TeamCircleProjector : MonoBehaviour {
     public void initWithTeamColor(Identity iden)
     {
         init();
-        projector.material = DataManager.Instance.civilizationDatas[iden.civilization].material;
+        Debug.Log(iden.player);
+        projector.material = DataManager.Instance.playerDatas[iden.player].material;
     }
 }
