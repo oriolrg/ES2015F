@@ -39,8 +39,7 @@ public class GameController : MonoBehaviour
     [SerializeField]
 	private GameObject targetPrefab;
 
-    [SerializeField]
-    private float UIheight;
+    public float UIheight;
 
     public HUD hud;
 
