@@ -36,7 +36,7 @@ public class Construct : MonoBehaviour {
             //Debug.Log("Posicio building " + buildingToConstruct.transform.position);
             //Debug.Log("Distancia que ha de parar " + dist + "magnitud resta " + (transform.position - buildingToConstruct.transform.position).magnitude);
 
-            if ((transform.position - buildingToConstruct.transform.position).magnitude < dist)
+            if ((transform.position - buildingToConstruct.transform.position).magnitude < dist + 1)
             {
                 
                 buildingToConstruct.GetComponent<BuildingConstruction>().startConstruction(this.gameObject);
