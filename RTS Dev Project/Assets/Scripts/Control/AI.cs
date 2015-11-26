@@ -70,8 +70,8 @@ public class AI : MonoBehaviour {
 			}
         }
 
-
-		compareArmy();
+		constuir ();
+		//compareArmy();
 		/*List<GameObject> lo = GameController.Instance.getAllEnemyArmy ();
 		if(lo != null){
 			GameObject o = lo[0];
@@ -317,7 +317,7 @@ public class AI : MonoBehaviour {
 		int numBarracks = 0;
 		int numStable = 0;
 		int numArchery = 0;
-		foreach (GameObject o in GameController.Instance.getAllEnemyArmy()) {
+		foreach (GameObject o in GameController.Instance.getAllEnemyBuildings()) {
 			switch (o.GetComponent<Identity>().unitType ){
 			case UnitType.TownCenter:
 				numTownCenter += 1;
@@ -341,8 +341,14 @@ public class AI : MonoBehaviour {
 			
 		}
 
-		if (numTownCenter < 2) {
-			createTownCenter();
+		if(numTownCenter < 2) {
+			GameController.Instance.hud.showMessageBox("CPU must to create a townCenter");
+		}else if(numBarracks< 2){
+			GameController.Instance.hud.showMessageBox("CPU must to create a Barrack");
+		}else if(numStable< 2){
+			GameController.Instance.hud.showMessageBox("CPU must to create a Stable");
+		}else if(numArchery< 2){
+			GameController.Instance.hud.showMessageBox("CPU must to create a Archery");
 		}
 		
 	
