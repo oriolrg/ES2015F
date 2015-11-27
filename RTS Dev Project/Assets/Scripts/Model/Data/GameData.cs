@@ -9,8 +9,7 @@ public class GameData : MonoBehaviour {
 	public enum DifficultyEnum { Easy, Medium, Hard, None };
 	public static DifficultyEnum diff = DifficultyEnum.Medium;
 
-	public enum WinConditionEnum { Wonder, Domination, Time20 };
-	public static List<WinConditionEnum> winConditions = new List<WinConditionEnum>(3);
+	public static List<Victory> winConditions = new List<Victory>(3);
 
 	public static PlayerData player;
 	public static List<CPUData> cpus = new List<CPUData>(maxCPUPlayers);
@@ -25,17 +24,6 @@ public class GameData : MonoBehaviour {
 			throw new GameConditionsException ("No win condition selected!");
 		else if (cpus.Count < 1)
 			throw new GameConditionsException ("No CPU selected!");
-		else if (
-			(cpus.Count > 1 && cpus[0].civ.Equals(cpus[1].civ)) ||
-			(cpus.Count == 3 && (
-				cpus[0].civ.Equals (cpus[2].civ) ||
-				cpus[1].civ.Equals (cpus[2].civ)
-			)) ||
-			(cpus.Count >= 1 && cpus[0].civ.Equals (player.civ)) ||
-			(cpus.Count >= 2 && cpus[1].civ.Equals (player.civ)) ||
-			(cpus.Count == 3 && cpus[2].civ.Equals (player.civ))
-		)
-			throw new GameConditionsException ("There can't be two identical civilizations!");
 		else
 			return true;
 	}

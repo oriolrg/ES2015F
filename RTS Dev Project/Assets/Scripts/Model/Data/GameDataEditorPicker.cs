@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class GameDataEditorPicker : MonoBehaviour {
 
 	public GameData.DifficultyEnum diff = GameData.DifficultyEnum.Medium;
-	public GameData.WinConditionEnum winCondition = GameData.WinConditionEnum.Domination;
+	public Victory winCondition = Victory.MapControl;
 
 	public GameData.PlayerData.CivilizationEnum playerCiv;
 
