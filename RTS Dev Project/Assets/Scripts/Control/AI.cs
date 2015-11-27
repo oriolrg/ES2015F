@@ -64,7 +64,7 @@ public class AI : MonoBehaviour {
         }
 
 
-		compareArmy();
+		counterAttackWonder (); 
 		/*List<GameObject> lo = GameController.Instance.getAllEnemyArmy ();
 		if(lo != null){
 			GameObject o = lo[0];
@@ -265,4 +265,45 @@ public class AI : MonoBehaviour {
         }
 
     }
+
+
+	public void counterAttackWonder(){
+
+		GameObject wonder = isPlayerBuildingWonder ();
+		if(wonder != null){
+			for(int i = 0; i < 5; i++){
+				GameObject o = GameController.Instance.getAllEnemyArmy()[i];
+					
+				AttackController a = o.GetComponent<AttackController> ();
+				if (a != null) {
+					a.attack (wonder);
+				}
+			}
+
+		}
+
+	}
+
+	public GameObject isPlayerBuildingWonder (){
+
+		GameObject wonder = null;
+		int i = 0;
+		while(wonder == null){
+			GameObject o = GameController.Instance.getAllAllyCivilians()[i];
+			Construct c = o.GetComponent<Construct> (); 
+			if(c != null){
+				if(c.getInConstruction()){
+					GameObject build = c.getBuildingToConstruct();
+					if(build.GetComponentOrEnd<Identity>().unitType == UnitType.Wonder){
+						wonder = build;
+					}
+				}
+			}
+			i += 1;
+					
+		}
+		return wonder;
+	}
+	
+	
 }
