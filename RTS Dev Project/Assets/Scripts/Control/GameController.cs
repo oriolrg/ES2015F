@@ -19,10 +19,12 @@ public class GameController : MonoBehaviour
 
     private List<GameObject> allAllyArmy;
     private List<GameObject> allAllyBuildings;
+	private List<GameObject> allAllyTownCentres;
     private List<GameObject> allAllyCivilians;
 
     private List<GameObject> allEnemyArmy;
     private List<GameObject> allEnemyBuildings;
+	private List<GameObject> allEnemyTownCentres;
     private List<GameObject> allEnemyCivilians;
 
     //Keeps track of the resources the player has.
@@ -74,9 +76,11 @@ public class GameController : MonoBehaviour
         allEnemyUnits = new List<GameObject>();
         allAllyArmy = new List<GameObject>();
         allAllyBuildings = new List<GameObject>();
+		allAllyTownCentres = new List<GameObject>();
         allAllyCivilians = new List<GameObject>();
         allEnemyArmy = new List<GameObject>();
         allEnemyBuildings = new List<GameObject>();
+		allEnemyTownCentres = new List<GameObject>();
         allEnemyCivilians = new List<GameObject>();
         selectedUnits = new Troop();
         selectedUnits.units = new List<GameObject>();
@@ -447,6 +451,7 @@ public class GameController : MonoBehaviour
                 || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Stable)
             {
                 allAllyBuildings.Add(u);
+				if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter) allAllyTownCentres.Add (u);
             } else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Soldier
                 || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archer
                 || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Knight)
@@ -466,6 +471,7 @@ public class GameController : MonoBehaviour
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Stable)
             {
                 allEnemyBuildings.Add(u);
+				if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter) allEnemyTownCentres.Add (u);
             }
             else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Soldier
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archer
@@ -490,6 +496,7 @@ public class GameController : MonoBehaviour
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Stable)
             {
                 allAllyBuildings.Remove(u);
+				if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter) allAllyTownCentres.Remove(u);
             }
             else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Soldier
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archer
@@ -510,6 +517,7 @@ public class GameController : MonoBehaviour
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Stable)
             {
                 allEnemyBuildings.Remove(u);
+				if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter) allEnemyTownCentres.Remove(u);
             }
             else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Soldier
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archer
@@ -1060,6 +1068,10 @@ public class GameController : MonoBehaviour
     {
         return allAllyBuildings;
     }
+	public List<GameObject> getAllAllyTownCentres()
+	{
+		return allAllyTownCentres;
+	}
     public List<GameObject> getAllAllyCivilians()
     {
         return allAllyCivilians;
@@ -1068,6 +1080,10 @@ public class GameController : MonoBehaviour
     {
         return allEnemyArmy;
     }
+	public List<GameObject> getAllEnemyTownCentres()
+	{
+		return allEnemyTownCentres;
+	}
 
     public List<GameObject> getAllEnemyBuildings()
     {
