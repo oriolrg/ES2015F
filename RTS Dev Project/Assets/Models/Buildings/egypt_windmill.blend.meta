@@ -9,21 +9,41 @@ ModelImporter:
     100002: aspes
     100004: moli
     100006: Aspes
+    100008: Plane
+    100010: Plane_001
+    100012: Plane_000
+    100014: Plane_002
     400000: //RootNode
     400002: aspes
     400004: moli
     400006: Aspes
+    400008: Plane
+    400010: Plane_001
+    400012: Plane_000
+    400014: Plane_002
     2300000: //RootNode
     2300002: aspes
     2300004: moli
     2300006: Aspes
+    2300008: Plane
+    2300010: Plane_001
+    2300012: Plane_000
+    2300014: Plane_002
     3300000: //RootNode
     3300002: aspes
     3300004: moli
     3300006: Aspes
+    3300008: Plane
+    3300010: Plane_001
+    3300012: Plane_000
+    3300014: Plane_002
     4300000: moli
     4300002: aspes
     4300004: Aspes
+    4300006: Plane_001
+    4300008: Plane
+    4300010: Plane_002
+    4300012: Plane_000
     7400000: Default Take
     9500000: //RootNode
   materials:
