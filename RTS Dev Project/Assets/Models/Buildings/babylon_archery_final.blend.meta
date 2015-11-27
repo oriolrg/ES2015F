@@ -1,15 +1,51 @@
 fileFormatVersion: 2
-guid: 5570f551a2864244ba52963ef4bb5936
-timeCreated: 1447407419
+guid: 58ecef7098d215042be0652d531bcee4
+timeCreated: 1448580442
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
+    100002: escala_MeshPart0
+    100004: escala_MeshPart1
+    100006: escala_MeshPart2
+    100008: arquero_001
+    100010: Cylinder
+    100012: escala
+    100014: Field
+    100016: arquero_000
     400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: house
+    400002: escala_MeshPart0
+    400004: escala_MeshPart1
+    400006: escala_MeshPart2
+    400008: arquero_001
+    400010: Cylinder
+    400012: escala
+    400014: Field
+    400016: arquero_000
+    2300000: escala_MeshPart0
+    2300002: escala_MeshPart1
+    2300004: escala_MeshPart2
+    2300006: //RootNode
+    2300008: arquero_001
+    2300010: Cylinder
+    2300012: escala
+    2300014: arquero_000
+    3300000: escala_MeshPart0
+    3300002: escala_MeshPart1
+    3300004: escala_MeshPart2
+    3300006: //RootNode
+    3300008: arquero_001
+    3300010: Cylinder
+    3300012: escala
+    3300014: arquero_000
+    4300000: escala_MeshPart0
+    4300002: escala_MeshPart1
+    4300004: escala_MeshPart2
+    4300006: escala
+    4300008: Cylinder
+    4300010: arquero_001
+    4300012: arquero_000
     7400000: Default Take
     9500000: //RootNode
   materials:
