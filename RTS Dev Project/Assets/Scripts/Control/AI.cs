@@ -11,11 +11,7 @@ public class AI : MonoBehaviour {
     private List<GameObject> resourcesFood;
     private List<GameObject> resourcesMetal;
     private List<GameObject> resourcesWood;
-    private List<GameObject> allCPUUnits;
-    private List<GameObject> civilians;
-    private List<GameObject> civiliansCPU;
-    private List<GameObject> townCentersCPU;
-    private List<GameObject> townCentersPlayer;
+	
     public static AI Instance { get; private set; }
    
 
@@ -49,12 +45,9 @@ public class AI : MonoBehaviour {
 		Instance = this;
         tasks = new List<Task>();
         resources = new List<string>(new string[] { "Food", "Metal", "Wood" });
-        allCPUUnits = new List<GameObject>();
-        civilians = new List<GameObject>();
-        civiliansCPU = new List<GameObject>();
-        townCentersCPU = new List< GameObject > ();
-        townCentersPlayer = new List<GameObject>();
-        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Ally")) addCPUUnit(go);
+
+
+
         resourcesFood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Food"));
         resourcesMetal = new List<GameObject>(GameObject.FindGameObjectsWithTag("Metal"));
         resourcesWood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Wood"));
@@ -87,68 +80,37 @@ public class AI : MonoBehaviour {
 
     }
     
-    public void addCPUUnit(GameObject u)
-    {
-        allCPUUnits.Add(u);
-        
-    }
-    public void addTownCenter(GameObject t)
-    {
-        if (t.tag == "Ally")
-        {
-            townCentersPlayer.Add(t);
-        }
-        else if (t.tag == "Enemy")
-        {
-            townCentersCPU.Add(t);
-        }
 
-    }
+
     public GameObject getClosestTownCenter(GameObject c)
-    {
+    { 
+
         float aux;
-        /*
-        GameObject[] auxList = new GameObject[100];
-        if (c.tag == "Ally")
-        {
-            townCentersPlayer.CopyTo(auxList);
-        }
-        else if (c.tag == "Enemy")
-        {
-            townCentersCPU.CopyTo(auxList);
-        }*/
-        if (c.tag == "Enemy")
-        {
-            float minDistance = (townCentersCPU[0].transform.position - c.transform.position).magnitude;
-            GameObject closestTown = townCentersCPU[0];
+		List<GameObject> towncentresX;
+		if (c.tag == "Ally") towncentresX = GameController.Instance.getAllAllyTownCentres();
+		else if (c.tag == "Enemy") towncentresX = GameController.Instance.getAllEnemyTownCentres();
+		else return null;
+        
+        
+		float minDistance = 100000;
+		GameObject closestTown = new GameObject();
 
-            for (int i = 0; i < townCentersCPU.Count - 1; i++)
-            {
-                aux = (townCentersCPU[i].transform.position - c.transform.position).magnitude;
-                if (aux < minDistance)
-                {
-                    minDistance = aux;
-                    closestTown = townCentersCPU[i];
-                }
-            }
-            return closestTown;
-        } else if(c.tag == "Ally")
+		for (int i = 0; i < towncentresX.Count; i++)
         {
-            float minDistance = (townCentersPlayer[0].transform.position - c.transform.position).magnitude;
-            GameObject closestTown = townCentersPlayer[0];
+			aux = (towncentresX[i].transform.position - c.transform.position).magnitude;
 
-            for (int i = 0; i < townCentersPlayer.Count - 1; i++)
+
+            if (aux < minDistance)
             {
-                aux = (townCentersPlayer[i].transform.position - c.transform.position).magnitude;
-                if (aux < minDistance)
-                {
-                    minDistance = aux;
-                    closestTown = townCentersPlayer[i];
-                }
+                minDistance = aux;
+				closestTown = towncentresX[i];
             }
-            return closestTown;
         }
-        else { return null; }
+
+        return closestTown;
+        
+        
+
     }
 
     public GameObject getClosestResource(GameObject c, Resource r){
@@ -156,7 +118,7 @@ public class AI : MonoBehaviour {
         if (r == Resource.Food) resourcesX = resourcesFood;
         else if (r == Resource.Metal) resourcesX = resourcesMetal;
         else if (r == Resource.Wood) resourcesX = resourcesWood;
-        else resourcesX = resourcesFood;
+        else return null;
         
         float aux;
 
@@ -180,40 +142,31 @@ public class AI : MonoBehaviour {
 
     }
 
-    public void assignCivilian(GameObject v)
-    {
-        civilians.Add(v);
-        if (v.tag == "Enemy") {
-			civiliansCPU.Add (v);
-			reassignResourceToCivilian(v);
-		}
-
-       
-    }
+ 
 
     private bool createCivilian()
     {
-        if (townCentersCPU.Count > 0)
+        if (GameController.Instance.getAllAllyBuildings().Count > 0)
         {
-			if(GameController.Instance.OnCreate(townCentersCPU[0].GetComponent<Identity>(),UnitType.Civilian)) return true;
+			if(GameController.Instance.OnCreate(GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>(),UnitType.Civilian)) return true;
 		}
 		return false; 
     }
     private bool createWonder()
     {
-        if (civiliansCPU.Count > 0)
-        {
-            GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Wonder], townCentersCPU[0].transform.position + new Vector3(20, 0,-20), new Troop(civiliansCPU));
 
+		if (GameController.Instance.getAllEnemyCivilians().Count>0)
+        {
+			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>().civilization].units[UnitType.Wonder], GameController.Instance.getAllEnemyTownCentres()[0].transform.position + new Vector3(20, 0,-20), new Troop(GameController.Instance.getAllEnemyCivilians()));
 			return true;
         }
 		return false;
     }
 	private bool createTownCenter()
 	{
-		if (civiliansCPU.Count > 0)
+		if (GameController.Instance.getAllEnemyCivilians().Count > 0)
 		{
-			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], townCentersCPU[0].transform.position + new Vector3(20, 0, 0),  new Troop((List<GameObject>)civiliansCPU.GetRange(0,1)));			
+			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], GameController.Instance.getAllEnemyTownCentres()[0].transform.position + new Vector3(20, 0, 0),  new Troop((List<GameObject>)GameController.Instance.getAllEnemyCivilians().GetRange(0,1)));			
 			return true;
 		}
 		return false;
@@ -234,9 +187,9 @@ public class AI : MonoBehaviour {
 	
 	private bool createBarrac()
 	{
-		if (civiliansCPU.Count > 1)
+		if (GameController.Instance.getAllEnemyCivilians().Count > 1)
 		{
-			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(0, 0, -20), new Troop((List<GameObject>)civiliansCPU.GetRange(1,1) ));
+			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], GameController.Instance.getAllEnemyTownCentres()[0].transform.position + new Vector3(0, 0, -20), new Troop((List<GameObject>)GameController.Instance.getAllEnemyCivilians().GetRange(1,1) ));
 			return true;
 		}
 		return false;
@@ -247,6 +200,9 @@ public class AI : MonoBehaviour {
         resourcesFood.Remove(r);
         resourcesMetal.Remove(r);
         resourcesWood.Remove(r);
+		List<GameObject> civilians = new List<GameObject> ();
+		civilians.AddRange(GameController.Instance.getAllAllyCivilians());
+		civilians.AddRange(GameController.Instance.getAllEnemyCivilians());
         foreach (GameObject vil in civilians) if (vil.GetComponent<CollectResources>().targetObject == r) reassignResourceToCivilian(vil);
        
 
