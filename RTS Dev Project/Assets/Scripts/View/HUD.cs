@@ -114,6 +114,8 @@ public class HUD : MonoBehaviour
             // Update Action buttons
             UnitType unitType = identity.unitType;
 
+            if (actionsData == null) print("bad");
+
             List<UnitType> creations = actionsData.creationPermissions[unitType];
             for (int i = 0; i < creations.Count; i++)
             {

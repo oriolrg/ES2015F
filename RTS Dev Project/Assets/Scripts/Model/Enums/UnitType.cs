@@ -20,6 +20,7 @@ public enum UnitType
     Carpentry,
     Farm,
     Academy,
+    Tower,
 
     Objective,
     Wonder 

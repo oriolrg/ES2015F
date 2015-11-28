@@ -26,6 +26,7 @@ public class ActionsData : ScriptableObject
         { UnitType.Academy, new List<UnitType>() { } },
         { UnitType.Minery, new List<UnitType>() { } },
         { UnitType.Windmill, new List<UnitType>() { } },
+        { UnitType.Tower, new List<UnitType>() { UnitType.Soldier, UnitType.Knight } },
 
         { UnitType.Objective, new List<UnitType>() { } },
         {UnitType.Wonder, new List<UnitType>() { } }
