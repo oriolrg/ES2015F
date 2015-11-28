@@ -309,4 +309,27 @@ public class AI : MonoBehaviour {
         }
 
     }
+
+
+
+	public void counterAttackMapControl(){
+
+		GameObject target = new GameObject ();
+		foreach(Objective o in GameController.Instance.objectives){
+			/*if (o.Controller != Player)
+                return;
+        	}*/
+
+			target.transform.position = o.transform.position;
+		
+		}
+		/*foreach(GameObject o in getEnemiesNoAtacking(GameController.Instance.getAllEnemyArmy().Count + GameController.Instance.getAllEnemyCivilians().Count)){
+
+			o.GetComponent<UnitMovement>().startMoving(target);
+		 }*/
+
+
+		//miro quin objectiu està més aprop
+		       
+	}
 }
