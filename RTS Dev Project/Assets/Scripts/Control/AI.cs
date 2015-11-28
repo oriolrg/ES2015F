@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -11,6 +11,7 @@ public class AI : MonoBehaviour {
     private List<GameObject> resourcesFood;
     private List<GameObject> resourcesMetal;
     private List<GameObject> resourcesWood;
+	private float inf = 99999999;
 	
     public static AI Instance { get; private set; }
    
@@ -32,7 +33,7 @@ public class AI : MonoBehaviour {
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier)),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),3));
 		//tasks.Add (new Task(new Method(createWonder)));
-        
+
     }
 	private void elaborateStrategyObjectives()
 	{
@@ -46,7 +47,8 @@ public class AI : MonoBehaviour {
 	}
 	private void elaborateStrategyWonder()
 	{
-
+		tasks = new List<Task>();
+		tasks.Add (new Task(new Method(createWonder)));
 	}
     void Awake()
     {
@@ -68,9 +70,10 @@ public class AI : MonoBehaviour {
     }
     void Update()
     {
+
 		if (evaluateWinByObjectives () > evaluateWinByWonder())
 			elaborateStrategyObjectives ();
-		else
+		else if (evaluateWinByWonder()<1000)
 			elaborateStrategyWonder ();
         if (tasks.Count > 0)
         {
@@ -79,20 +82,91 @@ public class AI : MonoBehaviour {
 			}
         }
 
+		//counterattack ();
+		//compareArmy();
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
-		compareArmy();
-		/*List<GameObject> lo = GameController.Instance.getAllEnemyArmy ();
-		if(lo != null){
-			GameObject o = lo[0];
-			if(o != null){
-				AttackController a = o.GetComponent<AttackController> ();
-				if(a != null) {
-					if(a.attacking_enemy == null) {
+public class AI : MonoBehaviour {
+    public delegate bool Method();
+    private List<Task> tasks;
+    public List<string> resources;
+    private List<GameObject> resourcesFood;
+    private List<GameObject> resourcesMetal;
+    private List<GameObject> resourcesWood;
+	private float inf = 99999999;
+	
+    public static AI Instance { get; private set; }
+   
 
-					}
-				}
+    // Use this for initialization
+    
+    void Start () {
+        
+        elaborateStrategy();
+    }
+
+    private void elaborateStrategy()
+    {
+        
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),2));
+		tasks.Add (new Task(new Method(createTownCenter)));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),5));
+		tasks.Add (new Task(new Method(createBarrac)));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier)),10));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),3));
+		//tasks.Add (new Task(new Method(createWonder)));
+
+    }
+	private void elaborateStrategyObjectives()
+	{
+		List<GameObject> civ = GameController.Instance.getAllEnemyCivilians ();
+		for (int i = 0; i<civ.Count; i++) {
+			Boolean isbusy=false;
+			foreach(Objective obj in GameController.Instance.objectives) if(civ[i].GetComponent<UnitMovement>().target == obj.transform) isbusy=true;
+			if(!isbusy)
+				civ[i].GetComponent<UnitMovement>().startMoving(GameController.Instance.objectives[i%GameController.Instance.objectives.Count].gameObject);
+		}
+	}
+	private void elaborateStrategyWonder()
+	{
+		tasks = new List<Task>();
+		tasks.Add (new Task(new Method(createWonder)));
+	}
+    void Awake()
+    {
+		if (Instance != null && Instance != this)
+		{
+			Destroy(gameObject);
+		}
+		
+		Instance = this;
+        tasks = new List<Task>();
+        resources = new List<string>(new string[] { "Food", "Metal", "Wood" });
+
+
+
+        resourcesFood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Food"));
+        resourcesMetal = new List<GameObject>(GameObject.FindGameObjectsWithTag("Metal"));
+        resourcesWood = new List<GameObject>(GameObject.FindGameObjectsWithTag("Wood"));
+        
+    }
+    void Update()
+    {
+
+		if (evaluateWinByObjectives () > evaluateWinByWonder())
+			elaborateStrategyObjectives ();
+		else if (evaluateWinByWonder()<1000)
+			elaborateStrategyWonder ();
+        if (tasks.Count > 0)
+        {
+            if(tasks[0].method()){
+            	tasks.RemoveAt(0);
 			}
-		}*/
+        }
 
     }
     
@@ -211,6 +285,20 @@ public class AI : MonoBehaviour {
 		return false;
 		
 	}
+
+	//borrar
+	private bool createBarrac2()
+	{
+		if (civiliansCPU.Count > 1)
+		{
+			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[townCentersCPU[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], townCentersCPU[0].transform.position + new Vector3(20, 0, 0), new Troop((List<GameObject>)civiliansCPU.GetRange(1,1) ));
+			return true;
+		}
+		return false;
+		
+	}
+
+
     public void deleteResource(GameObject r)
     {
         resourcesFood.Remove(r);
@@ -269,34 +357,126 @@ public class AI : MonoBehaviour {
 
 	}
 
-	public float evaluateWinByObjectives(){
-		List<Objective> obs = GameController.Instance.objectives;
-		float time = 99999999;
-		if (obs.Count > 0) {
-			time=0;
-			float meanDistancesObjectives=0;
-			foreach (Objective objective in obs){
-				meanDistancesObjectives+=(GameController.Instance.getAllEnemyTownCentres()[0].transform.position - objective.transform.position).magnitude;
-			}
-			meanDistancesObjectives/=obs.Count;
-			time += Math.Min(1,obs.Count-GameController.Instance.getAllEnemyCivilians().Count)*meanDistancesObjectives/DataManager.Instance.unitDatas[UnitType.Civilian].stats[Stat.Speed];
+	public void counterattack(GameObject target){
+	
+		List<GameObject> allyAtacking = whoIsAttacking (target);
+		List<GameObject> enemiesNoAtacking = getEnemiesNoAtacking(allyAtacking.Count);
+		
+		
+		print ("Enemies noAttacking "+ enemiesNoAtacking.Count);
+		
+		print ("Player " + allyAtacking.Count);
 
-		} 
-		return time;
-	} 
-	public float evaluateWinByWonder(){
-		float time = 0;
-		time += DataManager.Instance.unitDatas[UnitType.Wonder].requiredTime;
-		float resourcesNeeded = 0;
-		foreach (KeyValuePair<Resource, int> kv in DataManager.Instance.unitDatas[UnitType.Wonder].resourceCost)
-		{
-			resourcesNeeded+= Math.Min (0, kv.Value-GameController.Instance.getCPUResources()[kv.Key]) ;
+		/*int numEnemiesPerPlayer = 1;
+		 
+		if (enemiesNoAtacking.Count == allyAtacking.Count) {
+			numEnemiesPerPlayer = 1;
+		} else if ((enemiesNoAtacking.Count) >= (allyAtacking.Count) * 2) {
+			numEnemiesPerPlayer = 2;
+		} else if ( (allyAtacking.Count) <  (enemiesNoAtacking.Count) < (allyAtacking.Count) * 2) {
+			numEnemiesPerPlayer = 1;
+		}*/
+
+		int count = 0;
+		int playerUnit = 0;
+		for(int i = 0; i < Math.Min (allyAtacking.Count + 1, enemiesNoAtacking.Count) ; i++){
+		//foreach (GameObject o in enemiesNoAtacking) {
+			GameObject o = enemiesNoAtacking[i];
+			
+			AttackController a = o.GetComponent<AttackController> ();
+			if (a != null) {
+				if(i < allyAtacking.Count){
+					a.attack(allyAtacking[i]);
+				}else{
+					a.attack(allyAtacking[0]);
+				}
+			}
+		
 		}
-		time = resourcesNeeded * 3;//Now make a way to go from number of resources needed to time it takes to harvest it
-		return time;
 	}
 
 
+
+	public List<GameObject>  whoIsAttacking(GameObject target){
+
+		List<GameObject> lo = new List<GameObject>();
+
+		foreach (GameObject o in GameController.Instance.getAllAllyArmy()) {
+			
+			AttackController a = o.GetComponent<AttackController> ();
+			if (a != null) {
+				if(a.attacking_enemy == target){
+					lo.Add(o);
+					
+				}
+			}
+		}
+		
+		foreach (GameObject o in GameController.Instance.getAllAllyCivilians()) {
+			
+			AttackController a = o.GetComponent<AttackController> ();
+			if (a != null) {
+				if (a.attacking_enemy == target) {
+					lo.Add (o);
+					
+				}
+			}
+		}
+
+		return lo;
+
+	}
+
+	
+
+	public List<GameObject> getEnemiesNoAtacking(int numTargets){
+
+		
+		List<GameObject> enemiesNotBusy = new List<GameObject>();
+		bool noAttacking = true;
+		bool noRecollecting = true;
+		foreach (GameObject o in GameController.Instance.getAllEnemyArmy()) {
+			
+			AttackController a = o.GetComponent<AttackController> ();
+
+			if (a != null) {
+				if(a.attacking_enemy  == null){
+	
+					enemiesNotBusy.Add(o);
+					
+				}
+			}
+		}
+		print (enemiesNotBusy.Count + "  " + numTargets);
+		if (enemiesNotBusy.Count < numTargets) {
+			print ("Me defiendo con los civilians");
+			foreach (GameObject o in GameController.Instance.getAllEnemyCivilians()) {
+				noAttacking = true;
+				noRecollecting = true;
+		
+				AttackController a = o.GetComponent<AttackController> ();
+				if (a != null) {
+					if(a.attacking_enemy == null){
+						noAttacking = false;
+						
+					}
+				}
+				UnitMovement uM = o.GetComponent<UnitMovement> (); 
+				if(uM != null){
+					if(uM.status == Status.collecting){
+						noRecollecting = false;
+					}
+				}
+				if(noAttacking && noRecollecting){
+					print("Voy a atacar");
+					enemiesNotBusy.Add(o);
+				}
+
+			}
+		}
+
+		return enemiesNotBusy;
+	}
 
 
     public class Task
@@ -307,4 +487,95 @@ public class AI : MonoBehaviour {
         }
 
     }
+
+
+<<<<<<< HEAD
+	public void counterAttackWonder(){
+
+		GameObject wonder = isPlayerBuildingWonder ();
+		if(wonder != null){
+			for(int i = 0; i < 5; i++){
+				GameObject o = GameController.Instance.getAllEnemyArmy()[i];
+					
+				AttackController a = o.GetComponent<AttackController> ();
+				if (a != null) {
+					a.attack (wonder);
+				}
+			}
+
+		}
+
+	}
+
+	public GameObject isPlayerBuildingWonder (){
+
+		GameObject wonder = null;
+		int i = 0;
+		while(wonder == null && i < GameController.Instance.getAllAllyCivilians().Count){
+
+			GameObject o = GameController.Instance.getAllAllyCivilians()[i];
+			Construct c = o.GetComponent<Construct> (); 
+			if(c != null){
+				if(c.getInConstruction()){
+					GameObject build = c.getBuildingToConstruct();
+					if(build.GetComponentOrEnd<Identity>().unitType == UnitType.Wonder){
+						wonder = build;
+					}
+				}
+			}
+			i += 1;
+					
+		}
+		return wonder;
+	}
+	
+	
+=======
+	public void counterAttackAnnihilation(){
+
+		int numTownCenter = 0;
+		int numBarracks = 0;
+		int numStable = 0;
+		int numArchery = 0;
+		foreach (GameObject o in GameController.Instance.getAllEnemyBuildings()) {
+			switch (o.GetComponent<Identity>().unitType ){
+			case UnitType.TownCenter:
+				numTownCenter += 1;
+				break;
+			
+			case UnitType.Barracs:
+				numBarracks += 1;
+				break;
+
+			case UnitType.Stable:
+				numStable += 1;
+				break;
+
+			case UnitType.Archery:
+				numArchery += 1;
+				break;
+			default:
+				print (o.GetComponent<Identity>().unitType );
+				break;
+			}
+			
+		}
+
+		if(numTownCenter < 2) {
+			GameController.Instance.hud.showMessageBox("CPU must to create a townCenter");
+		}else if(numBarracks< 2){
+			GameController.Instance.hud.showMessageBox("CPU must to create a Barrack");
+		}else if(numStable< 2){
+			GameController.Instance.hud.showMessageBox("CPU must to create a Stable");
+		}else if(numArchery< 2){
+			GameController.Instance.hud.showMessageBox("CPU must to create a Archery");
+		}
+		
+	
+	}
+
+
+
+>>>>>>> issue-313
 }
+
