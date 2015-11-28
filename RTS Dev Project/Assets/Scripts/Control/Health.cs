@@ -40,7 +40,15 @@ public class Health : MonoBehaviour
         GameController.Instance.removeUnit(gameObject);
 
         if (GetComponent<Identity>().unitType.isBuilding())
+        {
+            BuildingConstruction b = GetComponent<BuildingConstruction>();
+            if (b != null && b.getConstructionOnGoing())
+            {
+                foreach (var unit in b.getConstructingUnits()) unit.GetComponent<Construct>().SetInConstruction(false);
+            }
+
             Destroy(gameObject);
+        }
         else
         {
 

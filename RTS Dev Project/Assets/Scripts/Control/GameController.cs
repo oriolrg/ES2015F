@@ -39,8 +39,7 @@ public class GameController : MonoBehaviour
     [SerializeField]
 	private GameObject targetPrefab;
 
-    [SerializeField]
-    private float UIheight;
+    public float UIheight;
 
     public HUD hud;
 
@@ -51,7 +50,7 @@ public class GameController : MonoBehaviour
 
     public List<Objective> objectives;
 
-
+    public bool placing;
 
     // Static singleton property
     public static GameController Instance { get; private set; }
@@ -91,6 +90,8 @@ public class GameController : MonoBehaviour
         {
             spawnRandomObjectives();
         }
+
+        placing = false;
     }
 
     // Update is called once per frame
@@ -804,13 +805,15 @@ public class GameController : MonoBehaviour
                     scriptConstruct.SetInConstruction(false);
                     scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
                 }
-                unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+                scriptConstruct.SetBuildingToConstruct(building);
 
 
             }
         }
         
         building.AddComponent<BuildingPlacer> ();
+
+        placing = true;
 
         enabled = false;
         
@@ -830,6 +833,9 @@ public class GameController : MonoBehaviour
         Identity newIden = building.GetComponent<Identity>();
         if (newIden != null) newIden.player = t.units[0].GetComponent<Identity>().player;
 
+	LOSEntity fow = building.GetComponent<LOSEntity>();
+        if (fow != null) fow.IsRevealer = false;
+
         addSelectedPrefab(building);
         addTeamCirclePrefab(building);
 
@@ -848,7 +854,26 @@ public class GameController : MonoBehaviour
 
         //building.GetComponent<BuildingConstruction>().setConstructionOnGoing(true);
 
-        foreach (var unit in t.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+        //foreach (var unit in t.units) unit.GetComponent<Construct>().SetBuildingToConstruct(building);
+
+        foreach (var unit in t.units)
+        {
+            Construct scriptConstruct = unit.GetComponent<Construct>();
+
+            if (scriptConstruct != null)
+            {
+
+                if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
+                {
+                    scriptConstruct.setConstruct(false);
+                    scriptConstruct.SetInConstruction(false);
+                    scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                }
+                scriptConstruct.SetBuildingToConstruct(building);
+
+
+            }
+        }
 
         buildingConstruction(position, t);
 
@@ -856,7 +881,12 @@ public class GameController : MonoBehaviour
 
     public void buildingConstruction(Vector3 position, Troop t)
     {
+        placing = false;
         //Debug.Log("tag dintre building construction" + t.units[0].GetComponent<Construct>().getBuildingToConstruct().tag);
+
+        
+        //LOSEntity fow = t.units[0].GetComponent<Construct>().getBuildingToConstruct().GetComponent<LOSEntity>();
+        //if (fow != null) fow.IsRevealer = false;
 
         foreach (var unit in t.units)
         {
@@ -910,10 +940,13 @@ public class GameController : MonoBehaviour
     public bool OnCreate( Identity who, UnitType what )
     {
 		bool done = false;
-        // get the unit data and the prefab of the unit that can be created
-        GameObject prefab = DataManager.Instance.civilizationDatas[who.civilization].units[what];
-        UnitData unitData = DataManager.Instance.unitDatas[what];
-        //print("Creating " + unitData.description);
+
+        if (!placing)
+        {
+            // get the unit data and the prefab of the unit that can be created
+            GameObject prefab = DataManager.Instance.civilizationDatas[who.civilization].units[what];
+            UnitData unitData = DataManager.Instance.unitDatas[what];
+            //print("Creating " + unitData.description);
 
         if (what.isBuilding())
         {
@@ -952,20 +985,23 @@ public class GameController : MonoBehaviour
                 addTeamCirclePrefab(created);
             });
 
-            //create an action and add it to the focused unit's queue
-            if (who.gameObject.GetComponentOrEnd<DelayedActionQueue>().Enqueue(action)) {
-                if (checkResources(unitData.resourceCost, who.tag))
+                //create an action and add it to the focused unit's queue
+                if (who.gameObject.GetComponentOrEnd<DelayedActionQueue>().Enqueue(action))
                 {
-                    //DelayedActionQueue script = who.gameObject.GetComponentOrEnd<DelayedActionQueue>();
-                    //script.Enqueue(action);
-                    updateResource(unitData.resourceCost, who.tag);
-                    if (who.gameObject.tag == "Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
-					done=true;
+                    if (checkResources(unitData.resourceCost, who.tag))
+                    {
+                        //DelayedActionQueue script = who.gameObject.GetComponentOrEnd<DelayedActionQueue>();
+                        //script.Enqueue(action);
+                        updateResource(unitData.resourceCost, who.tag);
+                        if (who.gameObject.tag == "Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
+                        done = true;
+                    }
                 }
             }
         }
-		return done;
-        
+
+        return done;
+
      }
 
     public void addSelectedPrefab(GameObject go)
@@ -1029,16 +1065,34 @@ public class GameController : MonoBehaviour
 
     public void OnSacrifice()
     {
-        GameObject unit = GameController.Instance.selectedUnits.FocusedUnit;
-        Health health = unit.GetComponent<Health>();
+        if (!placing)
+        {
+            GameObject unit = GameController.Instance.selectedUnits.FocusedUnit;
+            Health health = unit.GetComponent<Health>();
 
-        if(health != null )
-        {
-            health.die();
-        }
-        else
-        {
-            GameController.Instance.hud.showMessageBox("Not implemented");
+            //Reset construction
+            Construct scriptConstruct = unit.GetComponent<Construct>();
+
+            if (scriptConstruct != null)
+            {
+
+                if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
+                {
+                    scriptConstruct.setConstruct(false);
+                    scriptConstruct.SetInConstruction(false);
+                    scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                }
+            }
+
+
+            if (health != null)
+            {
+                health.die();
+            }
+            else
+            {
+                GameController.Instance.hud.showMessageBox("Not implemented");
+            }
         }
     }
 
@@ -1073,6 +1127,20 @@ public class GameController : MonoBehaviour
             AttackController atkController;
             foreach (var unit in troop.units)
             {
+                //Reset construction
+                Construct scriptConstruct = unit.GetComponent<Construct>();
+
+                if (scriptConstruct != null)
+                {
+
+                    if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
+                    {
+                        scriptConstruct.setConstruct(false);
+                        scriptConstruct.SetInConstruction(false);
+                        scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
+                    }
+                }
+
                 atkController = unit.GetComponent<AttackController>();
                 atkController.attack(enemy);
             }

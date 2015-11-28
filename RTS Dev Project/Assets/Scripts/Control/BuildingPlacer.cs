@@ -68,104 +68,110 @@ public class BuildingPlacer : MonoBehaviour {
         }
 
     }
-	
 
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
-
-        //Cancel the building creation with mouse right button
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.mousePosition.y > Screen.height * GameController.Instance.UIheight)
         {
-            Destroy(gameObject);
-            
-            GameController.Instance.enabled = true;
 
-            enabled = false;
-
-            Destroy(this);
-        }
-
-
-        //Create a ray and look for all collisions and keep the ground collision
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		
-		RaycastHit[] hits;
-		hits = Physics.RaycastAll(ray);
-		
-		bool groundHitFound = false;
-		RaycastHit groundHit = default(RaycastHit); // ignore uninitialized error
-		
-		foreach (RaycastHit hit in hits) 
-		{
-			if (hit.collider.gameObject.tag == "Ground")
-			{
-				groundHit = hit; groundHitFound = true;
-                break;
-			}
-			
-		}
-		
-		if (groundHitFound) 
-		{
-            //Move the game object to the mouse position, which is the ray hit position with the ground
-
-            gameObject.transform.position = groundHit.point;
-			
-            if(collision)
+            //Cancel the building creation with mouse right button
+            if (Input.GetKeyDown(KeyCode.Mouse1))
             {
-                // Change the gameObject color to red, indicating that it is not posible to create the building there
-                foreach(Material material in GetComponent<Renderer>().materials)
-                {
-                    material.color = red;
-                }
-                
+                GameController.Instance.placing = false;
+                Destroy(gameObject);
 
-			} 
-			else if(Input.GetKeyUp (KeyCode.Mouse0))  
-			{
-                //When there is no collision and the mouse left button is clicked, order to start the construction
+                GameController.Instance.enabled = true;
 
-                gameObject.GetComponent<Renderer> ().material.color = transparentColor;
-
-                //GameObject original color with transparency
-                int i = 0;
-                foreach (Material material in GetComponent<Renderer>().materials)
-                {
-                    material.CopyPropertiesFromMaterial(originalMaterials[i]);
-
-                    i++;
-                }
-
-                BuildingConstruction build = GetComponent<BuildingConstruction>();
-
-                if (build != null)
-                {
-                    build.setFinalMesh();
-
-                    GetComponent<MeshFilter>().mesh = build.getInitialMesh().GetComponent<MeshFilter>().sharedMesh;
-
-                }
-                
-
-                Troop t = new Troop(GameController.Instance.getSelectedUnits().units);
-                gameObject.tag = t.units[0].tag;
-                GameController.Instance.buildingConstruction(gameObject.transform.position,t);
-                //gameObject.GetComponent<LOSEntity>().IsRevealer = true;
-				gameObject.GetComponent<LOSEntity>().enabled = true;
                 enabled = false;
-				Destroy (this);
-				
-			} else {
 
-                // Change the gameObject color to transparent color, indicating that it is posible to create the building there
-                foreach (Material material in GetComponent<Renderer>().materials)
+                Destroy(this);
+            }
+
+
+            //Create a ray and look for all collisions and keep the ground collision
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit[] hits;
+            hits = Physics.RaycastAll(ray);
+
+            bool groundHitFound = false;
+            RaycastHit groundHit = default(RaycastHit); // ignore uninitialized error
+
+            foreach (RaycastHit hit in hits)
+            {
+                if (hit.collider.gameObject.tag == "Ground")
                 {
-                    material.color = transparentColor;
+                    groundHit = hit; groundHitFound = true;
+                    break;
                 }
-                
-			}
-		}
-	
-	}
+
+            }
+
+            if (groundHitFound)
+            {
+                //Move the game object to the mouse position, which is the ray hit position with the ground
+
+                gameObject.transform.position = groundHit.point;
+
+                if (collision)
+                {
+                    // Change the gameObject color to red, indicating that it is not posible to create the building there
+                    foreach (Material material in GetComponent<Renderer>().materials)
+                    {
+                        material.color = red;
+                    }
+
+
+                }
+                else if (Input.GetKeyUp(KeyCode.Mouse0))
+                {
+                    //When there is no collision and the mouse left button is clicked, order to start the construction
+
+                    gameObject.GetComponent<Renderer>().material.color = transparentColor;
+
+                    //GameObject original color with transparency
+                    int i = 0;
+                    foreach (Material material in GetComponent<Renderer>().materials)
+                    {
+                        material.CopyPropertiesFromMaterial(originalMaterials[i]);
+
+                        i++;
+                    }
+
+                    BuildingConstruction build = GetComponent<BuildingConstruction>();
+
+                    if (build != null)
+                    {
+                        build.setFinalMesh();
+
+                        GetComponent<MeshFilter>().mesh = build.getInitialMesh().GetComponent<MeshFilter>().sharedMesh;
+
+                    }
+
+
+                    Troop t = new Troop(GameController.Instance.getSelectedUnits().units);
+                    gameObject.tag = t.units[0].tag;
+                    GameController.Instance.buildingConstruction(gameObject.transform.position, t);
+                    gameObject.GetComponent<LOSEntity>().IsRevealer = false;
+                    gameObject.GetComponent<LOSEntity>().enabled = true;
+                    enabled = false;
+                    Destroy(this);
+
+                }
+                else
+                {
+
+                    // Change the gameObject color to transparent color, indicating that it is posible to create the building there
+                    foreach (Material material in GetComponent<Renderer>().materials)
+                    {
+                        material.color = transparentColor;
+                    }
+
+                }
+            }
+
+        }
+    }
 }

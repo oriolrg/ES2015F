@@ -32,10 +32,12 @@ public class BuildingConstruction : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+       
         //if (GetComponent<Unit>().getInConstruction())
-        //{
+        if(constructionOnGoing)
+        {
             //Timer that changes the mesh of the building
-
+            //Debug.Log("Is revealer "+GetComponent<LOSEntity>().IsRevealer);
             //Debug.Log(timer);
             
             timer -= constructingUnits.Count * Time.deltaTime;
@@ -54,11 +56,22 @@ public class BuildingConstruction : MonoBehaviour {
                 constructingUnits.Clear();
                 //GetComponent<Unit>().SetInConstruction(false);
                 constructionOnGoing = false;
+
+                GetComponent<LOSEntity>().IsRevealer = true;
+
                 GameController.Instance.updateInteractable();
 				GameController.Instance.addUnit(gameObject);
 
             }
-        //}
+        }
+        else
+        {
+            if (constructingUnits.Count > 0)
+            {
+                foreach (var unit in constructingUnits) unit.GetComponent<Construct>().SetInConstruction(false);
+                constructingUnits.Clear();
+            }
+        }
 	}
 
     public void startConstruction(GameObject unit)
@@ -70,7 +83,7 @@ public class BuildingConstruction : MonoBehaviour {
 			upG.isBuildingPlaced = true;
 		}
         //Change the mesh of the building to the initialMesh 
-        GetComponent<MeshFilter>().mesh = initialMesh.GetComponent<MeshFilter>().sharedMesh;
+        if(phase==0) GetComponent<MeshFilter>().mesh = initialMesh.GetComponent<MeshFilter>().sharedMesh;
 
         //Remove the gameObject transparency
         Color color = GetComponent<Renderer>().material.color;
@@ -115,5 +128,10 @@ public class BuildingConstruction : MonoBehaviour {
 	public int getPhase(){
 		return phase;
 	}
+
+    public List<GameObject> getConstructingUnits()
+    {
+        return constructingUnits;
+    }
 }
 
