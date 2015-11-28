@@ -7,6 +7,9 @@ public class Health : MonoBehaviour
     private float MaxHealth;
     [SerializeField] private float health;
     public float HealthRatio { get { return health / MaxHealth; } }
+
+    public GameObject destroyedPrefab;
+    public bool changedMesh = false;
     
     void Start()
     {
@@ -20,6 +23,13 @@ public class Health : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             loseHP(10);
+        }
+
+        if (!changedMesh && GetComponent<Identity>().unitType.isBuilding() && health <= MaxHealth / 2)
+        {
+
+            GetComponent<MeshFilter>().mesh = destroyedPrefab.GetComponent<MeshFilter>().sharedMesh;
+            changedMesh = true;
         }
     }
 
