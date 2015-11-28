@@ -288,7 +288,8 @@ public class AI : MonoBehaviour {
 
 		GameObject wonder = null;
 		int i = 0;
-		while(wonder == null){
+		while(wonder == null && i < GameController.Instance.getAllAllyCivilians().Count){
+
 			GameObject o = GameController.Instance.getAllAllyCivilians()[i];
 			Construct c = o.GetComponent<Construct> (); 
 			if(c != null){
