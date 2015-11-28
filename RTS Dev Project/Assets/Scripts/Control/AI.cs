@@ -168,26 +168,6 @@ public class AI : MonoBehaviour {
 			}
         }
 
-<<<<<<< HEAD
-
-		counterAttackWonder (); 
-=======
-		//counterattack ();
-		//compareArmy();
->>>>>>> 758aa232b343ab67bb9d04e226d87e21cd0fa505
-		/*List<GameObject> lo = GameController.Instance.getAllEnemyArmy ();
-		if(lo != null){
-			GameObject o = lo[0];
-			if(o != null){
-				AttackController a = o.GetComponent<AttackController> ();
-				if(a != null) {
-					if(a.attacking_enemy == null) {
-
-					}
-				}
-			}
-		}*/
-
     }
     
 
@@ -509,6 +489,7 @@ public class AI : MonoBehaviour {
     }
 
 
+<<<<<<< HEAD
 	public void counterAttackWonder(){
 
 		GameObject wonder = isPlayerBuildingWonder ();
@@ -549,5 +530,52 @@ public class AI : MonoBehaviour {
 	}
 	
 	
+=======
+	public void counterAttackAnnihilation(){
+
+		int numTownCenter = 0;
+		int numBarracks = 0;
+		int numStable = 0;
+		int numArchery = 0;
+		foreach (GameObject o in GameController.Instance.getAllEnemyBuildings()) {
+			switch (o.GetComponent<Identity>().unitType ){
+			case UnitType.TownCenter:
+				numTownCenter += 1;
+				break;
+			
+			case UnitType.Barracs:
+				numBarracks += 1;
+				break;
+
+			case UnitType.Stable:
+				numStable += 1;
+				break;
+
+			case UnitType.Archery:
+				numArchery += 1;
+				break;
+			default:
+				print (o.GetComponent<Identity>().unitType );
+				break;
+			}
+			
+		}
+
+		if(numTownCenter < 2) {
+			GameController.Instance.hud.showMessageBox("CPU must to create a townCenter");
+		}else if(numBarracks< 2){
+			GameController.Instance.hud.showMessageBox("CPU must to create a Barrack");
+		}else if(numStable< 2){
+			GameController.Instance.hud.showMessageBox("CPU must to create a Stable");
+		}else if(numArchery< 2){
+			GameController.Instance.hud.showMessageBox("CPU must to create a Archery");
+		}
+		
+	
+	}
+
+
+
+>>>>>>> issue-313
 }
 
