@@ -386,25 +386,8 @@ public class AI : MonoBehaviour {
 	public void counterattack(GameObject target){
 		
 		List<GameObject> allyAtacking = whoIsAttacking (target);
-		List<GameObject> enemiesNoAtacking = getEnemiesNoAtacking(allyAtacking.Count);
-		
-		
-		print ("Enemies noAttacking "+ enemiesNoAtacking.Count);
-		
-		print ("Player " + allyAtacking.Count);
-		
-		/*int numEnemiesPerPlayer = 1;
-		 
-		if (enemiesNoAtacking.Count == allyAtacking.Count) {
-			numEnemiesPerPlayer = 1;
-		} else if ((enemiesNoAtacking.Count) >= (allyAtacking.Count) * 2) {
-			numEnemiesPerPlayer = 2;
-		} else if ( (allyAtacking.Count) <  (enemiesNoAtacking.Count) < (allyAtacking.Count) * 2) {
-			numEnemiesPerPlayer = 1;
-		}*/
-		
-		int count = 0;
-		int playerUnit = 0;
+		List<GameObject> enemiesNoAtacking = getEnemiesNoAtacking(allyAtacking.Count +1);
+
 		for(int i = 0; i < Math.Min (allyAtacking.Count + 1, enemiesNoAtacking.Count) ; i++){
 			//foreach (GameObject o in enemiesNoAtacking) {
 			GameObject o = enemiesNoAtacking[i];
@@ -474,14 +457,14 @@ public class AI : MonoBehaviour {
 			}
 		}
 		if (enemiesNotBusy.Count < numTargets) {
-			print ("Busco civilians per attackar");
+
 			foreach (GameObject o in GameController.Instance.getAllEnemyCivilians()) {
 				noAttacking = true;
 				noConstructing = true;
 				
 				AttackController a = o.GetComponent<AttackController> ();
 				if (a != null) {
-					if(a.attacking_enemy == null){
+					if(a.attacking_enemy != null){
 						noAttacking = false;
 						
 					}
@@ -494,13 +477,8 @@ public class AI : MonoBehaviour {
 						noConstructing = false;
 					}
 				}
-				//print ("noAttacking  "+ noAttacking+ "  nocontrs   "+ noConstructing);
-				if(noAttacking){
-					print("noAttacking");
-					enemiesNotBusy.Add(o);
-				}
+			
 				if(noAttacking && noConstructing){
-					//print ("Algun civilian nomes recolecta");
 					enemiesNotBusy.Add(o);
 				}
 				
