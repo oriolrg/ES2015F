@@ -171,7 +171,7 @@ public class MinimapCamera : MonoBehaviour {
 		if (Time.timeScale == 0)
 			return; // game paused: don't interact
 
-		minimapCamera.Render (); // To display on top of GUI; CAUTION! slows down everything
+		// minimapCamera.Render (); // To display on top of GUI; CAUTION! slows down everything
 
 		// Draw a rect in the minimap to show the visible area
 		Vector2 position = minimapCamera.WorldToScreenPoint(currentLookAtPoint);
