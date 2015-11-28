@@ -53,10 +53,12 @@ public class MinimapCamera : MonoBehaviour {
 		if (Time.timeScale == 0)
 			return; // game paused, don't interact
 
+		Vector3 mouse;
+
 		// Move mainCamera if minimapCamera is clicked or was clicked and now is dragged
 		if (Input.GetMouseButtonDown (0)) { // is left-button clicked?
 			// Mouse on minimap?
-			Vector3 mouse = Input.mousePosition; // get mouse position
+			mouse = Input.mousePosition; // get mouse position
 
 			// Normalize mouse coordinates
 			mouse.x /= Screen.width;
@@ -73,7 +75,7 @@ public class MinimapCamera : MonoBehaviour {
 
 		// Only move when "clicked"
 		if (mouseClicked) {
-			// Change position of mainCamera.
+			// Change position of maiznCamera.
 
 			Vector3 position = Input.mousePosition;
 			position.x /= Screen.width;
@@ -106,6 +108,32 @@ public class MinimapCamera : MonoBehaviour {
 
 				// Set currentLookAtPoint so we can upload it in OnGUI
 				currentLookAtPoint = hit.point;
+			}
+		}
+
+		if (Input.GetMouseButton(1)) {
+			// Mouse on minimap?
+			mouse = Input.mousePosition; // get mouse position
+			
+			// Normalize mouse coordinates
+			mouse.x /= Screen.width;
+			mouse.y /= Screen.height;
+			
+			if(minimapCamera.rect.Contains (mouse)){ // if rect contains, click was made on minimap
+				// Now we need the Input.mousePosition again; use it directly
+				// Get position of where we clicked on the minimap
+				Ray ray = minimapCamera.ScreenPointToRay (Input.mousePosition);
+				RaycastHit hit;
+				
+				// Where is that point in the ground?
+				if (Physics.Raycast (ray, out hit, Mathf.Infinity, // max distance
+				                     minimapLookAtMask.value)) {
+					//Debug.DrawLine (ray.origin, hit.point);
+					
+					// Change camera position, adding offset
+					GameObject target = Instantiate(GameController.Instance.targetPrefab, hit.point, Quaternion.identity) as GameObject;
+					GameController.Instance.moveUnits(target);
+				}
 			}
 		}
 	}
