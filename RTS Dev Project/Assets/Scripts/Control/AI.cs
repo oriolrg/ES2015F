@@ -11,6 +11,7 @@ public class AI : MonoBehaviour {
     private List<GameObject> resourcesFood;
     private List<GameObject> resourcesMetal;
     private List<GameObject> resourcesWood;
+	private float inf = 99999999;
 	
     public static AI Instance { get; private set; }
    
@@ -34,7 +35,21 @@ public class AI : MonoBehaviour {
 		//tasks.Add (new Task(new Method(createWonder)));
         
     }
-
+	private void elaborateStrategyObjectives()
+	{
+		List<GameObject> civ = GameController.Instance.getAllEnemyCivilians ();
+		for (int i = 0; i<civ.Count; i++) {
+			Boolean isbusy=false;
+			foreach(Objective obj in GameController.Instance.objectives) if(civ[i].GetComponent<UnitMovement>().target == obj.transform) isbusy=true;
+			if(!isbusy)
+				civ[i].GetComponent<UnitMovement>().startMoving(GameController.Instance.objectives[i%GameController.Instance.objectives.Count].gameObject);
+		}
+	}
+	private void elaborateStrategyWonder()
+	{
+		tasks = new List<Task>();
+		tasks.Add (new Task(new Method(createWonder)));
+	}
     void Awake()
     {
 		if (Instance != null && Instance != this)
@@ -56,6 +71,10 @@ public class AI : MonoBehaviour {
     void Update()
     {
 
+		if (evaluateWinByObjectives () > evaluateWinByWonder())
+			elaborateStrategyObjectives ();
+		else if (evaluateWinByWonder()<1000)
+			elaborateStrategyWonder ();
         if (tasks.Count > 0)
         {
             if(tasks[0].method()){
@@ -253,14 +272,43 @@ public class AI : MonoBehaviour {
 
 	}
 
+	public float evaluateWinByObjectives(){
+		List<Objective> obs = GameController.Instance.objectives;
+		float time = inf;
+		if (obs.Count > 0) {
+			time=0;
+			float meanDistancesObjectives=0;
+			foreach (Objective objective in obs){
+				meanDistancesObjectives+=(GameController.Instance.getAllEnemyTownCentres()[0].transform.position - objective.transform.position).magnitude;
+			}
+			meanDistancesObjectives/=obs.Count;
+			time += Math.Max(1,obs.Count-GameController.Instance.getAllEnemyCivilians().Count)*meanDistancesObjectives/DataManager.Instance.unitDatas[UnitType.Civilian].stats[Stat.Speed];
+
+		} 
+		return time;
+	} 
+	public float evaluateWinByWonder(){
+		float time = 0;
+		if (GameController.Instance.getAllEnemyCivilians ().Count > 0)
+			time += DataManager.Instance.unitDatas [UnitType.Wonder].requiredTime / GameController.Instance.getAllEnemyCivilians ().Count;
+		else
+			return inf;
+		float resourcesNeeded = 0;
+		foreach (KeyValuePair<Resource, int> kv in DataManager.Instance.unitDatas[UnitType.Wonder].resourceCost)
+		{
+			resourcesNeeded+= Math.Max (0, kv.Value-GameController.Instance.getCPUResources()[kv.Key]) ;
+		}
+		time = resourcesNeeded * 3;//Now make a way to go from number of resources needed to time it takes to harvest it
+		return time;
+	}
+
 
 
 
     public class Task
     {
         public Method method;
-        public Task(Method m)
-        {
+		public Task(Method m){
             method = m;
         }
 
