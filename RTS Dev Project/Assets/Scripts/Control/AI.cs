@@ -197,7 +197,7 @@ public class AI : MonoBehaviour {
 			}
 		}
 		if(! isCPUBuilding (UnitType.Barracs))
-			tasks.Insert(0, new Task(new Method(createBarrac()));
+			tasks.Insert(0, new Task(new Method(createBarrac)));
 		return false;
 	}
 	
@@ -224,7 +224,7 @@ public class AI : MonoBehaviour {
 			}
 		}
 		if(! isCPUBuilding (UnitType.Archery))
-			tasks.Insert(0, new Task(new Method(createBuilding(UnitType.Archery)));
+			tasks.Insert(0, new Task(new Method(createBuilding(UnitType.Archery))));
      	return false;
      }
 
@@ -452,7 +452,7 @@ public class AI : MonoBehaviour {
 		
 		List<GameObject> enemiesNotBusy = new List<GameObject>();
 		bool noAttacking = true;
-		bool noRecollecting = true;
+		bool noConstructing = true;
 		foreach (GameObject o in GameController.Instance.getAllEnemyArmy()) {
 			
 			AttackController a = o.GetComponent<AttackController> ();
@@ -465,12 +465,10 @@ public class AI : MonoBehaviour {
 				}
 			}
 		}
-		print (enemiesNotBusy.Count + "  " + numTargets);
 		if (enemiesNotBusy.Count < numTargets) {
-			print ("Me defiendo con los civilians");
 			foreach (GameObject o in GameController.Instance.getAllEnemyCivilians()) {
 				noAttacking = true;
-				noRecollecting = true;
+				noConstructing = true;
 				
 				AttackController a = o.GetComponent<AttackController> ();
 				if (a != null) {
@@ -479,16 +477,16 @@ public class AI : MonoBehaviour {
 						
 					}
 				}
-				//Posar no construint i no no recolectant.
-				UnitMovement uM = o.GetComponent<UnitMovement> (); 
-				if(uM != null){
-					if(uM.status == Status.collecting){
-						noRecollecting = false;
+				
+				Construct c = o.GetComponent<Construct> (); 
+				if(c != null){
+					if(c.getInConstruction()){
+						
+						noConstructing = false;
 					}
 				}
-				if(noAttacking && noRecollecting){
-					print("Voy a atacar");
-					enemiesNotBusy.Add(o);
+				if(noAttacking && noConstructing){
+				enemiesNotBusy.Add(o);
 				}
 				
 			}
@@ -498,86 +496,7 @@ public class AI : MonoBehaviour {
 	}
 
 
-	public List<GameObject>  whoIsAttacking(GameObject target){
-
-		List<GameObject> lo = new List<GameObject>();
-
-		foreach (GameObject o in GameController.Instance.getAllAllyArmy()) {
-			
-			AttackController a = o.GetComponent<AttackController> ();
-			if (a != null) {
-				if(a.attacking_enemy == target){
-					lo.Add(o);
-					
-				}
-			}
-		}
-		
-		foreach (GameObject o in GameController.Instance.getAllAllyCivilians()) {
-			
-			AttackController a = o.GetComponent<AttackController> ();
-			if (a != null) {
-				if (a.attacking_enemy == target) {
-					lo.Add (o);
-					
-				}
-			}
-		}
-
-		return lo;
-
-	}
-
 	
-
-	public List<GameObject> getEnemiesNoAtacking(int numTargets){
-
-		
-		List<GameObject> enemiesNotBusy = new List<GameObject>();
-		bool noAttacking = true;
-		bool noRecollecting = true;
-		foreach (GameObject o in GameController.Instance.getAllEnemyArmy()) {
-			
-			AttackController a = o.GetComponent<AttackController> ();
-
-			if (a != null) {
-				if(a.attacking_enemy  == null){
-	
-					enemiesNotBusy.Add(o);
-					
-				}
-			}
-		}
-		print (enemiesNotBusy.Count + "  " + numTargets);
-		if (enemiesNotBusy.Count < numTargets) {
-			print ("Me defiendo con los civilians");
-			foreach (GameObject o in GameController.Instance.getAllEnemyCivilians()) {
-				noAttacking = true;
-				noRecollecting = true;
-		
-				AttackController a = o.GetComponent<AttackController> ();
-				if (a != null) {
-					if(a.attacking_enemy == null){
-						noAttacking = false;
-						
-					}
-				}
-				UnitMovement uM = o.GetComponent<UnitMovement> (); 
-				if(uM != null){
-					if(uM.status == Status.collecting){
-						noRecollecting = false;
-					}
-				}
-				if(noAttacking && noRecollecting){
-					print("Voy a atacar");
-					enemiesNotBusy.Add(o);
-				}
-
-			}
-		}
-
-		return enemiesNotBusy;
-	}
 
 
 
@@ -601,24 +520,18 @@ public class AI : MonoBehaviour {
 
 	public GameObject isPlayerBuildingWonder (){
 
-		GameObject wonder = null;
-		int i = 0;
-		while(wonder == null && i < GameController.Instance.getAllAllyCivilians().Count){
-
-			GameObject o = GameController.Instance.getAllAllyCivilians()[i];
+		foreach (GameObject o in GameController.Instance.getAllAllyCivilians()) {
 			Construct c = o.GetComponent<Construct> (); 
 			if(c != null){
 				if(c.getInConstruction()){
 					GameObject build = c.getBuildingToConstruct();
 					if(build.GetComponentOrEnd<Identity>().unitType == UnitType.Wonder){
-						wonder = build;
+						return build;
 					}
 				}
 			}
-			i += 1;
-					
 		}
-		return wonder;
+		return null;
 	}
 	
 	
