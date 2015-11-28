@@ -41,6 +41,9 @@ public class Health : MonoBehaviour
         if (health <= 0)
         {
             die();
+
+            healthbar h = GetComponent<healthbar>();
+            if(h!=null) h.destroyBar();
         }
         GameController.Instance.updateHealth(gameObject);
     }
@@ -69,5 +72,15 @@ public class Health : MonoBehaviour
                 Destroy(gameObject, 3);
             }
         }
+    }
+
+    public float getMaxHealth()
+    {
+        return MaxHealth;
+    }
+
+    public float getHealth()
+    {
+        return health;
     }
 }
