@@ -866,14 +866,14 @@ public class GameController : MonoBehaviour
     }
 
     // Action events
-    public void OnActionButtonEnter(UnitData data)
+    public void OnActionButtonEnter(String description, ResourceValueDictionary resourceCost)
     {
-        hud.OnActionButtonEnter(data);
+        hud.OnActionButtonEnter(description, resourceCost);
     }
 
-    public void OnActionButtonExit(UnitData data)
+    public void OnActionButtonExit(String description, ResourceValueDictionary resourceCost)
     {
-        hud.OnActionButtonExit(data);
+        hud.OnActionButtonExit(description, resourceCost);
     }
     
     public void hideRightPanel()

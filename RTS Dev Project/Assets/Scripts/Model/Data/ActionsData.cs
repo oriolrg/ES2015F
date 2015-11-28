@@ -13,7 +13,7 @@ public class ActionsData : ScriptableObject
         { UnitType.Soldier, new List<UnitType>() { } },
         { UnitType.Knight, new List<UnitType>() { } },
         { UnitType.Archer, new List<UnitType>() { } },
-        { UnitType.Carpenter, new List<UnitType>() { UnitType.Farm, UnitType.Carpentry, UnitType.Minery, UnitType.Academy } },
+        { UnitType.Carpenter, new List<UnitType>() { UnitType.Farm, UnitType.Carpentry, UnitType.Minery, UnitType.Academy, UnitType.Windmill } },
         { UnitType.Farmer, new List<UnitType>() { UnitType.Farm } },
 
         { UnitType.TownCenter, new List<UnitType>() {UnitType.Civilian, UnitType.Carpenter, UnitType.Farmer } },
