@@ -11,6 +11,7 @@ public class AI : MonoBehaviour {
     private List<GameObject> resourcesFood;
     private List<GameObject> resourcesMetal;
     private List<GameObject> resourcesWood;
+	private float inf = 99999999;
 	
     public static AI Instance { get; private set; }
    
@@ -46,7 +47,8 @@ public class AI : MonoBehaviour {
 	}
 	private void elaborateStrategyWonder()
 	{
-
+		tasks = new List<Task>();
+		tasks.Add (new Task(new Method(createWonder)));
 	}
     void Awake()
     {
@@ -68,9 +70,10 @@ public class AI : MonoBehaviour {
     }
     void Update()
     {
+
 		if (evaluateWinByObjectives () > evaluateWinByWonder())
 			elaborateStrategyObjectives ();
-		else
+		else if (evaluateWinByWonder()<1000)
 			elaborateStrategyWonder ();
         if (tasks.Count > 0)
         {
@@ -271,7 +274,7 @@ public class AI : MonoBehaviour {
 
 	public float evaluateWinByObjectives(){
 		List<Objective> obs = GameController.Instance.objectives;
-		float time = 99999999;
+		float time = inf;
 		if (obs.Count > 0) {
 			time=0;
 			float meanDistancesObjectives=0;
@@ -279,18 +282,21 @@ public class AI : MonoBehaviour {
 				meanDistancesObjectives+=(GameController.Instance.getAllEnemyTownCentres()[0].transform.position - objective.transform.position).magnitude;
 			}
 			meanDistancesObjectives/=obs.Count;
-			time += Math.Min(1,obs.Count-GameController.Instance.getAllEnemyCivilians().Count)*meanDistancesObjectives/DataManager.Instance.unitDatas[UnitType.Civilian].stats[Stat.Speed];
+			time += Math.Max(1,obs.Count-GameController.Instance.getAllEnemyCivilians().Count)*meanDistancesObjectives/DataManager.Instance.unitDatas[UnitType.Civilian].stats[Stat.Speed];
 
 		} 
 		return time;
 	} 
 	public float evaluateWinByWonder(){
 		float time = 0;
-		time += DataManager.Instance.unitDatas[UnitType.Wonder].requiredTime;
+		if (GameController.Instance.getAllEnemyCivilians ().Count > 0)
+			time += DataManager.Instance.unitDatas [UnitType.Wonder].requiredTime / GameController.Instance.getAllEnemyCivilians ().Count;
+		else
+			return inf;
 		float resourcesNeeded = 0;
 		foreach (KeyValuePair<Resource, int> kv in DataManager.Instance.unitDatas[UnitType.Wonder].resourceCost)
 		{
-			resourcesNeeded+= Math.Min (0, kv.Value-GameController.Instance.getCPUResources()[kv.Key]) ;
+			resourcesNeeded+= Math.Max (0, kv.Value-GameController.Instance.getCPUResources()[kv.Key]) ;
 		}
 		time = resourcesNeeded * 3;//Now make a way to go from number of resources needed to time it takes to harvest it
 		return time;
