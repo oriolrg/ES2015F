@@ -124,16 +124,7 @@ public class GameController : MonoBehaviour
                         if (projector != null)
                             projector.gameObject.SetActive(true);
                         hud.updateSelection(selectedUnits);
-
-                        Identity hitUnit = hitInfo.transform.GetComponent<Identity>();
-                        if (hitUnit != null && hitUnit.unitType.Equals(UnitType.Civilian))
-                        {
-                            hud.updateRightPanel(selectedGO);
-                        }
-                        else
-                        {
-                            hud.hideRightPanel();
-                        }
+                        
 
                     }
                     else
