@@ -27,12 +27,12 @@ public class AI : MonoBehaviour {
 	private void elaborateStrategy()
 	{
 		
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),2));
-		tasks.Add (new Task(new Method(createTownCenter)));
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),5));
-		tasks.Add (new Task(new Method(createBarrac)));
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier)),10));
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian)),3));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),2));
+		tasks.Add (new Task(new Method(createBuilding), UnitType.TownCenter));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),5));
+		tasks.Add (new Task(new Method(createBuilding), UnitType.Barracs));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier), UnitType.Soldier),10));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),3));
 		//tasks.Add (new Task(new Method(createWonder)));
 		
 	}
@@ -49,7 +49,7 @@ public class AI : MonoBehaviour {
 	private void elaborateStrategyWonder()
 	{
 		tasks = new List<Task>();
-		tasks.Add (new Task(new Method(createWonder)));
+		tasks.Add (new Task(new Method(createBuilding), UnitType.Wonder));
 	}
 	void Awake()
 	{
@@ -71,7 +71,7 @@ public class AI : MonoBehaviour {
 	}
 	void Update()
 	{
-		if (GameData.diff == GameData.DifficultyEnum.Medium || GameData.diff == GameData.DifficultyEnum.Hard) {	 
+		/*if (GameData.diff == GameData.DifficultyEnum.Medium || GameData.diff == GameData.DifficultyEnum.Hard) {	 
 			float evalWinObjective = evaluateWinByObjectives ();
 			float evalWinWonder = evaluateWinByWonder ();
 			if (evalWinObjective > evalWinWonder && evalWinObjective < 1000) //&&  Victory.MapControl in GameData.winConditions   
@@ -80,12 +80,15 @@ public class AI : MonoBehaviour {
 				elaborateStrategyWonder ();
 
 			if(GameData.diff == GameData.DifficultyEnum.Hard){
+				if(Victory.Annihilation in GameData.winConditions)
+					counterAttackAnnihilation();
 				//codi carme
 			}
-		}
-		
+		}*/
+
+
 		if (tasks.Count > 0) {
-			if (tasks [0].method ()) {
+			if (tasks [0].method (tasks[0].unit)) {
 				tasks.RemoveAt (0);
 			}
 		}
@@ -196,8 +199,10 @@ public class AI : MonoBehaviour {
 				if(GameController.Instance.OnCreate(b.GetComponent<Identity>(), UnitType.Soldier)) return true;
 			}
 		}
-		if(! isCPUBuilding (UnitType.Barracs))
-			tasks.Insert(0, new Task(new Method(createBarrac)));
+		if (! isCPUBuilding (UnitType.Barracs)) {
+			print ("--------------------------->Entro a CPU no esta contruint barrackes");
+			tasks.Insert (0, new Task (new Method (createBuilding), UnitType.Barracs));
+		}
 		return false;
 	}
 	
@@ -224,20 +229,20 @@ public class AI : MonoBehaviour {
 			}
 		}
 		if(! isCPUBuilding (UnitType.Archery))
-			tasks.Insert(0, new Task(new Method(createBuilding(UnitType.Archery))));
+			tasks.Insert(0, new Task(new Method(createBuilding), UnitType.Archery));
      	return false;
      }
 
 	private bool createBuilding(UnitType u)
 	{
 		GameObject civil = getIdleCivilian ();
-		if (civil == null)
+		if (civil != null)
 		{
-			Vector3 v = new Vector3(UnityEngine.Random.Range(20,40), 0, UnityEngine.Random.Range(20,40));
+			Vector3 v = new Vector3(UnityEngine.Random.Range(-20,20), 0, UnityEngine.Random.Range(-20,20));
 			
-			float position = civil.transform.position + v;
+			Vector3 position = civil.transform.position + v;
 			if(GameController.Instance.getAllEnemyTownCentres().Count > 0)
-				position = 	GameController.Instance.getAllEnemyTownCentres()[0] + v;
+				position = 	GameController.Instance.getAllEnemyTownCentres()[0].transform.position + v;
 			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>().civilization].units[u], position, new Troop( new List<GameObject>(){civil}));
 			return true;
 		}
@@ -253,7 +258,7 @@ public class AI : MonoBehaviour {
 			if (c != null) {
 				if (! c.getInConstruction () & !c.getConstruct ()) {
 					
-						return c;
+						return o;
 				}
 			}
 		}
@@ -268,9 +273,12 @@ public class AI : MonoBehaviour {
 		foreach (GameObject o in GameController.Instance.getAllEnemyCivilians()) {
 			Construct c = o.GetComponent<Construct> (); 
 			if (c != null) {
+	
 				if (c.getInConstruction () || c.getConstruct ()) {
+			
 					GameObject build = c.getBuildingToConstruct ();
 					if (build.GetComponentOrEnd<Identity> ().unitType == u) {
+					
 						return true;
 					}
 				}
@@ -466,6 +474,7 @@ public class AI : MonoBehaviour {
 			}
 		}
 		if (enemiesNotBusy.Count < numTargets) {
+			print ("Busco civilians per attackar");
 			foreach (GameObject o in GameController.Instance.getAllEnemyCivilians()) {
 				noAttacking = true;
 				noConstructing = true;
@@ -480,13 +489,19 @@ public class AI : MonoBehaviour {
 				
 				Construct c = o.GetComponent<Construct> (); 
 				if(c != null){
-					if(c.getInConstruction()){
+					if(c.getInConstruction() || c.getConstruct()){
 						
 						noConstructing = false;
 					}
 				}
+				//print ("noAttacking  "+ noAttacking+ "  nocontrs   "+ noConstructing);
+				if(noAttacking){
+					print("noAttacking");
+					enemiesNotBusy.Add(o);
+				}
 				if(noAttacking && noConstructing){
-				enemiesNotBusy.Add(o);
+					//print ("Algun civilian nomes recolecta");
+					enemiesNotBusy.Add(o);
 				}
 				
 			}
@@ -576,7 +591,7 @@ public class AI : MonoBehaviour {
 		}*/
 
 		if(GameController.Instance.getAllEnemyTownCentres().Count == 0)
-			tasks.Insert(0, new Task(new Method(createTownCenter)));
+			tasks.Insert(0, new Task(new Method(createBuilding), UnitType.TownCenter));
 		
 	
 	}
@@ -584,9 +599,12 @@ public class AI : MonoBehaviour {
 	public class Task
 	{
 		public Method method;
-		public Task(Method m){
+		public UnitType unit;
+		public Task(Method m, UnitType u){
 			method = m;
+			unit = u;
 		}
+
 		
 	}
 
