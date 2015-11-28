@@ -80,9 +80,43 @@ public class AI : MonoBehaviour {
 				elaborateStrategyWonder ();
 
 			if(GameData.diff == GameData.DifficultyEnum.Hard){
-				if(Victory.Annihilation in GameData.winConditions)
+
+				bool counterAttackAnnihilationDone = false;
+				bool counterAttackWonderDone = false;
+				if(Victory.MapControl in GameData.winConditions){
+					counterAttackAnnihilationDone = counterAttackAnnihilation()){
+
+
+				if(!counterAttackAnnihilationDone & Victory.Wonder in GameData.winConditions){
+					counterAttackWonderDone = counterAttackWonder();
+				if(!counterAttackAnnihilationDone & !counterAttackWonderDone & Victory.Annihilation in GameData.winConditions ){
 					counterAttackAnnihilation();
-				//codi carme
+				}
+
+
+
+				/*if(Victory.MapControl in GameData.winConditions){
+					if(! counterAttackAnnihilation()){
+						if(Victory.Wonder in GameData.winConditions){
+							if(! counterAttackWonder()){
+								if(Victory.Annihilation in GameData.winConditions ){
+									counterAttackAnnihilation();
+								}
+							}
+						}
+					}
+							
+
+				}else if(Victory.Wonder in GameData.winConditions){
+					if(! counterAttackWonder()){
+						if(Victory.Annihilation in GameData.winConditions ){
+							counterAttackAnnihilation();
+						}
+					}
+				}else if(Victory.Annihilation in GameData.winConditions ){
+					counterAttackAnnihilation();
+				}*/
+
 			}
 		}*/
 
@@ -92,7 +126,8 @@ public class AI : MonoBehaviour {
 				tasks.RemoveAt (0);
 			}
 		}
-		compareArmy();
+		//compareArmy();
+		counterAttackMapControl ();
 
 		
 	}
@@ -200,7 +235,7 @@ public class AI : MonoBehaviour {
 			}
 		}
 		if (! isCPUBuilding (UnitType.Barracs)) {
-			print ("--------------------------->Entro a CPU no esta contruint barrackes");
+			//print ("--------------------------->Entro a CPU no esta contruint barrackes");
 			tasks.Insert (0, new Task (new Method (createBuilding), UnitType.Barracs));
 		}
 		return false;
@@ -493,12 +528,12 @@ public class AI : MonoBehaviour {
 
 
 
-	public void counterAttackWonder(){
+	public bool counterAttackWonder(){
 		
 		GameObject wonder = isPlayerBuildingWonder ();
-		if(wonder != null){
-			for(int i = 0; i < 5; i++){
-				GameObject o = GameController.Instance.getAllEnemyArmy()[i];
+		if (wonder != null) {
+			for (int i = 0; i < 5; i++) {
+				GameObject o = GameController.Instance.getAllEnemyArmy () [i];
 				
 				AttackController a = o.GetComponent<AttackController> ();
 				if (a != null) {
@@ -506,7 +541,10 @@ public class AI : MonoBehaviour {
 				}
 			}
 			
+		} else {
+			return false;
 		}
+		return true
 		
 	}
 
@@ -574,39 +612,41 @@ public class AI : MonoBehaviour {
 	
 	}
 
-	public class Task
-		{
-			public Method method;
-			public UnitType unit;
-			public Task(Method m, UnitType u){
-				method = m;
-				unit = u;
-			}
 
-			
-		}
-	public void counterAttackMapControl(){
+	public bool counterAttackMapControl(){
 
 		GameObject target = new GameObject ();
 		foreach(Objective o in GameController.Instance.objectives){
-			/*if (o.Controller != Player)
-                return;
-        	}*/
+			if (o.Controller != Civilization.Egyptians) //S'ha de canviar quan estigui fet per Player!
+                return false;
+        	
 
 			target.transform.position = o.transform.position;
 		
 		}
-		/*foreach(GameObject o in getEnemiesNoAtacking(GameController.Instance.getAllEnemyArmy().Count + GameController.Instance.getAllEnemyCivilians().Count)){
+		foreach(GameObject o in getEnemiesNoAtacking(GameController.Instance.getAllEnemyArmy().Count + GameController.Instance.getAllEnemyCivilians().Count)){
 
 			o.GetComponent<UnitMovement>().startMoving(target);
-		 }*/
+		 }
 
+		return true;
 
-		//miro quin objectiu està més aprop
+		//miro quin objectiu està més aprop?? Mes aprop de que??
 		       
 	}
 
+	public class Task
+	{
+		public Method method;
+		public UnitType unit;
+		public Task(Method m, UnitType u){
+			method = m;
+			unit = u;
+		}
+		
+		
+	}
 	
-
+	
 }
 
