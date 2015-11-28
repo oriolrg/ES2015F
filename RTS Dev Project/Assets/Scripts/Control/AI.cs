@@ -575,16 +575,38 @@ public class AI : MonoBehaviour {
 	}
 
 	public class Task
-	{
-		public Method method;
-		public UnitType unit;
-		public Task(Method m, UnitType u){
-			method = m;
-			unit = u;
-		}
+		{
+			public Method method;
+			public UnitType unit;
+			public Task(Method m, UnitType u){
+				method = m;
+				unit = u;
+			}
 
+			
+		}
+	public void counterAttackMapControl(){
+
+		GameObject target = new GameObject ();
+		foreach(Objective o in GameController.Instance.objectives){
+			/*if (o.Controller != Player)
+                return;
+        	}*/
+
+			target.transform.position = o.transform.position;
 		
+		}
+		/*foreach(GameObject o in getEnemiesNoAtacking(GameController.Instance.getAllEnemyArmy().Count + GameController.Instance.getAllEnemyCivilians().Count)){
+
+			o.GetComponent<UnitMovement>().startMoving(target);
+		 }*/
+
+
+		//miro quin objectiu està més aprop
+		       
 	}
+
+	
 
 }
 
