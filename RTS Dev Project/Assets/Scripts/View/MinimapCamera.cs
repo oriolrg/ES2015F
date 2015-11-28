@@ -149,7 +149,7 @@ public class MinimapCamera : MonoBehaviour {
 		Rect rect = minimapCamera.rect;
 
 		float edgeSize = ((float) minimapPanelRectTransform.rect.height) / Screen.height;
-
+		//edgeSize = 0.295f;
 		if (ScreenAspect > 1) {
 			rect.width = edgeSize / ScreenAspect;
 			rect.height = edgeSize;
@@ -178,10 +178,14 @@ public class MinimapCamera : MonoBehaviour {
 		position.y = Screen.height - position.y;
 
 		Vector2 size = minimapCamera.rect.size;
-		float sqSize = Mathf.Min (size.x * Screen.width, size.y * Screen.height);
-		sqSize *= Camera.main.fieldOfView / 200f;
+		size.x *= Screen.width * ScreenAspect;
+		size.y *= Screen.height;
 
-		size = new Vector2 (sqSize, sqSize);
+		//float sqSize = Mathf.Min (size.x * Screen.width, size.y * Screen.height); // whole MinimapRect
+		//sqSize *= Camera.main.transform.localPosition.y / 200f; // reduce it with this
+		size *= Camera.main.transform.localPosition.y / 200f; // reduce it with this
+
+		//size = new Vector2 (sqSize, sqSize);
 		position -= size / 2f;
 
 		Rect rect = new Rect(position, size);
