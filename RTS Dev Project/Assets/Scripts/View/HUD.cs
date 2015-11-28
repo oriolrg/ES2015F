@@ -238,7 +238,7 @@ public class HUD : MonoBehaviour
             
             // Add time frame to each block
             GameObject timeFrame = Instantiate(data.overlappedTimeFrame) as GameObject;
-            timeFrame.transform.SetParent(block.transform.GetChild(0));
+            timeFrame.transform.SetParent(block.transform);
 
             UnfillWithTime filling = timeFrame.GetComponent<UnfillWithTime>();
             filling.action = action;

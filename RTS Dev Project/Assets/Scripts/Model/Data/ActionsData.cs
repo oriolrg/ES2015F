@@ -24,7 +24,6 @@ public class ActionsData : ScriptableObject
         { UnitType.Farm, new List<UnitType>() { UnitType.Farmer } },
         { UnitType.Carpentry, new List<UnitType>() { UnitType.Carpenter } },
         { UnitType.Academy, new List<UnitType>() { } },
-        { UnitType.Minery, new List<UnitType>() { } },
         { UnitType.Windmill, new List<UnitType>() { } },
         { UnitType.Tower, new List<UnitType>() { UnitType.Soldier, UnitType.Knight } },
 

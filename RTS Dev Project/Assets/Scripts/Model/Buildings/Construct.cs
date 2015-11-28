@@ -12,7 +12,7 @@ public class Construct : MonoBehaviour {
 	private float dist;
 
     public GameObject dustPrefab;
-    public GameObject usingDust;
+    private GameObject usingDust;
 
 
     // Use this for initialization
