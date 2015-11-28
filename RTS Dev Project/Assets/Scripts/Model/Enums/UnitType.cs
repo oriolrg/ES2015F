@@ -8,11 +8,18 @@ public enum UnitType
     Soldier,
     Knight,
     Archer,
+    Farmer,
+    Carpenter,
 
     TownCenter,
     Barracs,
     Stable,
     Archery,
+    Minery,
+    Windmill,
+    Carpentry,
+    Farm,
+    Academy,
 
     Objective,
     Wonder 
@@ -22,13 +29,18 @@ public static class UnitExtensions
 {
     public static bool isBuilding(this UnitType unit)
     {
-        return 
-            unit == UnitType.TownCenter || 
-            unit == UnitType.Barracs || 
-            unit == UnitType.Stable || 
+        return
+            unit == UnitType.TownCenter ||
+            unit == UnitType.Barracs ||
+            unit == UnitType.Stable ||
             unit == UnitType.Archery ||
             unit == UnitType.Objective ||
-            unit == UnitType.Wonder;
+            unit == UnitType.Wonder ||
+            unit == UnitType.Minery ||
+            unit == UnitType.Windmill ||
+            unit == UnitType.Carpentry ||
+            unit == UnitType.Farm ||
+            unit == UnitType.Academy;
     }
     public static T GetComponentOrEnd<T>(this GameObject go)
     {
