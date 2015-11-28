@@ -13,11 +13,20 @@ public class ActionsData : ScriptableObject
         { UnitType.Soldier, new List<UnitType>() { } },
         { UnitType.Knight, new List<UnitType>() { } },
         { UnitType.Archer, new List<UnitType>() { } },
+        { UnitType.Carpenter, new List<UnitType>() { UnitType.Farm, UnitType.Carpentry, UnitType.Minery, UnitType.Academy } },
+        { UnitType.Farmer, new List<UnitType>() { UnitType.Farm } },
 
-        { UnitType.TownCenter, new List<UnitType>() {UnitType.Civilian } },
+        { UnitType.TownCenter, new List<UnitType>() {UnitType.Civilian, UnitType.Carpenter } },
         { UnitType.Barracs, new List<UnitType>() { UnitType.Soldier } },
         { UnitType.Stable, new List<UnitType>() { UnitType.Knight } },
         { UnitType.Archery, new List<UnitType>() {UnitType.Archer } },
+        { UnitType.Minery, new List<UnitType>() { } },
+        { UnitType.Farm, new List<UnitType>() { UnitType.Farmer } },
+        { UnitType.Carpentry, new List<UnitType>() { UnitType.Carpenter } },
+        { UnitType.Academy, new List<UnitType>() { } },
+        { UnitType.Windmill, new List<UnitType>() { } },
+        { UnitType.Tower, new List<UnitType>() { UnitType.Soldier, UnitType.Knight } },
+
         { UnitType.Objective, new List<UnitType>() { } },
         {UnitType.Wonder, new List<UnitType>() { } }
     };

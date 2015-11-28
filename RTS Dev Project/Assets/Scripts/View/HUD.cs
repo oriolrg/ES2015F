@@ -114,6 +114,8 @@ public class HUD : MonoBehaviour
             // Update Action buttons
             UnitType unitType = identity.unitType;
 
+            if (actionsData == null) print("bad");
+
             List<UnitType> creations = actionsData.creationPermissions[unitType];
             for (int i = 0; i < creations.Count; i++)
             {
@@ -236,7 +238,7 @@ public class HUD : MonoBehaviour
             
             // Add time frame to each block
             GameObject timeFrame = Instantiate(data.overlappedTimeFrame) as GameObject;
-            timeFrame.transform.SetParent(block.transform.GetChild(0));
+            timeFrame.transform.SetParent(block.transform);
 
             UnfillWithTime filling = timeFrame.GetComponent<UnfillWithTime>();
             filling.action = action;

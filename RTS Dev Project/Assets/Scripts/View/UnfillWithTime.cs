@@ -17,7 +17,7 @@ public class UnfillWithTime : MonoBehaviour
     {
         
         if (action.TimeRatio <= 0)
-            Destroy(transform.parent.parent.gameObject);
+            Destroy(transform.parent.gameObject);
             
         GetComponent<Image>().fillAmount = action.TimeRatio;
                
