@@ -17,16 +17,12 @@ public class UnitMovement : MonoBehaviour {
 	Seeker seeker;
 	Path path;
 	public int currentWaypoint;
-	public int totalWaypointCount;
 	CharacterController characterController;
 	Vector3 targetPos;
     Animator animator;
 	AttackController attack;
 
-	public float dis;
-
-	public float firstPathCount;
-	public float lastPathCount;
+	public float distanceToTarget;
 	public float currentPathCount;
 
 	public bool hasTarget;
@@ -86,10 +82,8 @@ public class UnitMovement : MonoBehaviour {
 			currentPathCount = path.vectorPath.Count;
 		} else {
 			p.Release (this);
-			Debug.Log ("Oh noes, the target was not reachable: "+p.errorLog);
+			Debug.Log ("The target was not reachable: "+p.errorLog);
 		}
-		
-		//seeker.StartPath (transform.position,targetPosition, OnPathComplete);
 	}
 
 
@@ -107,22 +101,15 @@ public class UnitMovement : MonoBehaviour {
 			
 			//Direction to the next waypoint
 
-			Vector3 v = new Vector3(1.0f,transform.localScale.y/2.0f,1.0f);
-			dis = (Vector3.Distance(transform.position,Vector3.Scale(targetPos,v)));
+			//Vector3 v = new Vector3(1.0f,transform.localScale.y/2.0f,1.0f);
+			distanceToTarget = Vector3.Distance(transform.position,targetPos);
 
-			if(!targetReached(dis)){
-				//print (gameObject.name + " is moving " + "finalWaypoint: " + firstPathCount);
+			if(!targetReached(distanceToTarget)){
 				Vector3 dir = (path.vectorPath[currentWaypoint]-transform.position).normalized;
-				dir *= speed;// * Time.deltaTime;
-				//transform.Translate (dir);
+				dir *= speed;
 				characterController.SimpleMove (dir);
-				
-				//if (Vector3.Distance (transform.position,path.vectorPath[currentWaypoint]) < nextWaypointDistance) {
-				if ( (transform.position-path.vectorPath[currentWaypoint]).sqrMagnitude < nextWaypointDistance*nextWaypointDistance && currentWaypoint < currentPathCount - 1) {
-					currentWaypoint++;
-					totalWaypointCount++;
-				}
-			} 
+				if ( (transform.position-path.vectorPath[currentWaypoint]).sqrMagnitude < nextWaypointDistance*nextWaypointDistance && currentWaypoint < currentPathCount - 1) currentWaypoint++;
+			}
 
 
 			if(status != Status.attacking){
@@ -132,7 +119,7 @@ public class UnitMovement : MonoBehaviour {
                 {
                     if (!construct.getConstruct())
                     {
-                        if (targetReached( dis ))
+                        if (targetReached( distanceToTarget ))
                         {
 
 
@@ -156,7 +143,7 @@ public class UnitMovement : MonoBehaviour {
                     }
                 }
                 else {
-                    if (targetReached( dis ))
+                    if (targetReached( distanceToTarget ))
                     {
                         timerDeath timer = target.GetComponent<timerDeath>();
                         if (timer != null)
