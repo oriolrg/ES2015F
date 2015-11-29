@@ -15,6 +15,7 @@ public class AI : MonoBehaviour {
 	private float inf = 99999999;
 	private bool contructingBarrack = false;
 	private bool counterAttackingObjectives = false;
+	private bool counterAttackingWonder = false;
 	public static AI Instance { get; private set; }
 	
 	
@@ -28,9 +29,9 @@ public class AI : MonoBehaviour {
 	private void elaborateStrategy()
 	{
 		
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),2));
-		tasks.Add (new Task(new Method(createBuilding), UnitType.TownCenter));
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),5));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),5));
+		tasks.Add (new Task(new Method(createBuilding), UnitType.Barracs));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Soldier),5));
 		tasks.Add (new Task(new Method(createBuilding), UnitType.Barracs));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier), UnitType.Soldier),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),3));
@@ -123,6 +124,8 @@ public class AI : MonoBehaviour {
 
 			counterAttackingObjectives = counterAttackMapControl ();
 		}*/
+
+		counterAttackWonder ();
 				
 		/*bool counterAttackAnnihilationDone = false;
 		bool counterAttackWonderDone = false;
@@ -555,12 +558,12 @@ public class AI : MonoBehaviour {
 
 
 	public bool counterAttackWonder(){
-		
+
 		GameObject wonder = isPlayerBuildingWonder ();
-		if (wonder != null) {
-			for (int i = 0; i < 5; i++) {
-				GameObject o = GameController.Instance.getAllEnemyArmy () [i];
-				
+		print ("wonder " + wonder + "some.. " + someArmyAttackingWonder ());
+		if (wonder != null & !someArmyAttackingWonder()) {
+			List<GameObject> le = getEnemiesNoAtacking(GameController.Instance.getAllEnemyArmy ().Count);
+			foreach(GameObject o in le) {
 				AttackController a = o.GetComponent<AttackController> ();
 				if (a != null) {
 					a.attack (wonder);
@@ -574,7 +577,20 @@ public class AI : MonoBehaviour {
 		
 	}
 
+	public bool someArmyAttackingWonder(){
 
+		foreach(GameObject o in GameController.Instance.getAllEnemyArmy ()) {
+			AttackController a = o.GetComponent<AttackController> ();
+			if (a != null) {
+				if(a.attacking_enemy != null){
+					if(a.attacking_enemy.GetComponent<Identity>().unitType == UnitType.Wonder)
+						return true;
+				}
+				
+			}
+		}
+		return false;
+	}
 	public GameObject isPlayerBuildingWonder (){
 
 		foreach (GameObject o in GameController.Instance.getAllAllyCivilians()) {
