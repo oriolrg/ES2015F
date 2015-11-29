@@ -44,6 +44,7 @@ ModelImporter:
     4300008: wood
     4300010: roof
     4300012: house
+    4300014: wood_000
     7400000: Default Take
     9500000: //RootNode
   materials:

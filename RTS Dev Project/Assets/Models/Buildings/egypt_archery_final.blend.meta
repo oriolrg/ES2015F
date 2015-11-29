@@ -6,10 +6,60 @@ ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Cylinder_001
+    100004: toldo
+    100006: toldo_001
+    100008: toldo_002
+    100010: Cylinder_002
+    100012: toldo_003
+    100014: toldo_004
+    100016: toldo_005
+    100018: toldo_006
+    100020: toldo_007
     400000: //RootNode
+    400002: Cylinder_001
+    400004: toldo
+    400006: toldo_001
+    400008: toldo_002
+    400010: Cylinder_002
+    400012: toldo_003
+    400014: toldo_004
+    400016: toldo_005
+    400018: toldo_006
+    400020: toldo_007
     2300000: //RootNode
+    2300002: Cylinder_001
+    2300004: toldo
+    2300006: toldo_001
+    2300008: toldo_002
+    2300010: Cylinder_002
+    2300012: toldo_003
+    2300014: toldo_004
+    2300016: toldo_005
+    2300018: toldo_006
+    2300020: toldo_007
     3300000: //RootNode
+    3300002: Cylinder_001
+    3300004: toldo
+    3300006: toldo_001
+    3300008: toldo_002
+    3300010: Cylinder_002
+    3300012: toldo_003
+    3300014: toldo_004
+    3300016: toldo_005
+    3300018: toldo_006
+    3300020: toldo_007
     4300000: house
+    4300002: toldo_002
+    4300004: Cylinder_001
+    4300006: toldo_001
+    4300008: toldo
+    4300010: Cylinder_002
+    4300012: toldo_003
+    4300014: toldo_004
+    4300016: toldo_007
+    4300018: toldo_006
+    4300020: toldo_005
     7400000: Default Take
     9500000: //RootNode
   materials:
