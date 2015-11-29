@@ -66,6 +66,7 @@ public class LOSManager : MonoBehaviour {
     float[,] terrainHeightsCache;
     Texture2D losTexture;
 
+
     // Used to determine when the user changes a field that requires
     // the texture to be recreated
     private int previewParameterHash = 0;
@@ -74,6 +75,7 @@ public class LOSManager : MonoBehaviour {
     void Start() {
         Terrain = GameObject.FindWithTag("Ground").GetComponent<Terrain>();
         if (Application.isPlaying) InitializeTexture();
+
     }
 
     // Get a size from the provided properties
@@ -113,6 +115,7 @@ public class LOSManager : MonoBehaviour {
     }
 
     void Update() {
+
 #if UNITY_EDITOR
         if (!Application.isPlaying) {
             if (PreviewInEditor) {
@@ -245,7 +248,7 @@ public class LOSManager : MonoBehaviour {
                 //Manage the fact that resources and enemies behave in a different way.
                 foreach (var entity in Entities)
                 {
-                    if (!entity.IsRevealer && entity.RevealState == LOSEntity.RevealStates.Fogged)
+                    if (!entity.IsRevealer &&  (entity.RevealState == LOSEntity.RevealStates.Fogged || entity.RevealState == LOSEntity.RevealStates.Hidden) )
                     {
                         entity.setActive(false);
                     }
@@ -342,7 +345,7 @@ public class LOSManager : MonoBehaviour {
         RevealLOS(rect, sight.Range, sight.Height + sight.transform.position.y, los, fow, grayscale);
     }
     int[] jCache = new int[1024];
-    private void RevealLOS(Rect rect, float range, float height, float los, float fow, float grayscale) {
+    public void RevealLOS(Rect rect, float range, float height, float los, float fow, float grayscale) {
         int xMin, yMin, xMax, yMax;
         int rangeI = Mathf.RoundToInt(range * Scale);
         int xiMin, yiMin, xiMax, yiMax;

@@ -285,9 +285,19 @@ public class GameController : MonoBehaviour
             //Fog of war button
             if (fogOfWarEnabled)
             {
-                GameObject fog = GameObject.FindGameObjectsWithTag("Ground")[0];
-                LOSManager script = fog.GetComponent("LOSManager") as LOSManager;
-                script.HeightBlockers.Enable = false;
+                print("FOG OF WAR BUTTON PRESSED");
+                //GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                //cube.transform.position = new Vector3(250, 15, 250);
+                //cube.tag = "FOWObject";
+                //cube.AddComponent<LOSEntity>();
+                //cube.GetComponent<LOSEntity>().Range = 1000;
+                GameObject Terrain = GameObject.FindGameObjectWithTag("Ground");
+                Rect R = new Rect(500, 500, 1, 1);
+                Terrain.GetComponent<LOSManager>().RevealLOS(R, 10, 20, 1, 1,1);
+            }
+            else
+            {
+
 
             }
 
