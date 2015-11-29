@@ -495,4 +495,19 @@ public class LOSManager : MonoBehaviour {
         }
     }
 
+    public void forceFullUpdate()
+    {
+
+        int revealerCount = 0;
+        foreach (var entity in Entities)
+        {
+            entity.RevealState = LOSEntity.RevealStates.Hidden;
+            if (entity.IsRevealer) revealerCount++;
+        }
+        if (revealerCount == 0)
+        {
+            Debug.LogError("No LOSEntity items were marked as revealers! Tick the 'Is Revealed' checkbox for at least 1 item.");
+        }
+    }
+
 }

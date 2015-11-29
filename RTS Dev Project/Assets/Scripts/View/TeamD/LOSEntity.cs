@@ -21,6 +21,8 @@ public class LOSEntity : MonoBehaviour {
     public float Height = 1;
     public float BaseSize = 0;
 
+    public bool firstTime=true;
+
     // Our bounds on the terrain
     public Rect Bounds {
         get {
@@ -50,6 +52,7 @@ public class LOSEntity : MonoBehaviour {
     void Start()
     {
         this.IsRevealer = gameObject.tag.Equals("Ally");
+        this.setActive(gameObject.tag.Equals("Ally"));
     }
 
     // Some cache parameters for FOW animation
@@ -92,15 +95,16 @@ public class LOSEntity : MonoBehaviour {
 
     public void setActive(bool active)
     {
-        if (IsEnemy)
+        if (IsEnemy || firstTime)
         {
-            if (!active)
+            if (!active || firstTime)
             {
                 // this.GetComponent<Renderer>().enabled = false;
                 //this.gameObject.SetActive(false);
                 foreach(Renderer R in this.GetComponentsInChildren<Renderer>()) { 
                     R.enabled = active;
                 }
+                firstTime = false;
             }
         }
     }

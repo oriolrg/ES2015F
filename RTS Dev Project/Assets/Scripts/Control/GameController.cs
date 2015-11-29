@@ -53,6 +53,10 @@ public class GameController : MonoBehaviour
 
     public List<Objective> objectives;
 
+    //Fog of war button
+    private bool firstFogOfWar;
+    private float prevRange;
+
 
 
     // Static singleton property
@@ -95,11 +99,13 @@ public class GameController : MonoBehaviour
         {
             spawnRandomObjectives();
         }
+        firstFogOfWar = true; //fog of war enabler and disabler
     }
 
     // Update is called once per frame
     void Update()
     {
+
 
         if (Input.mousePosition.y > Screen.height * UIheight)
         {
@@ -273,6 +279,17 @@ public class GameController : MonoBehaviour
         {
             if( selectedUnits.FocusedUnit != null )
                 selectedUnits.FocusedUnit.GetComponent<AttackController>().attack(selectedUnits.FocusedUnit);
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            //Fog of war button
+            if (firstFogOfWar)
+            {
+                GameObject fog = GameObject.FindGameObjectsWithTag("Ground")[0];
+                LOSManager script = fog.GetComponent("LOSManager") as LOSManager;
+                script.forceFullUpdate();
+            }
+
         }
 
     }
