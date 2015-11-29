@@ -9,7 +9,7 @@ public class Construct : MonoBehaviour {
     
     private GameObject buildingToConstruct;
 
-	private float dist;
+	[SerializeField] private float dist;
 
     public GameObject dustPrefab;
     public GameObject usingDust;
@@ -48,10 +48,7 @@ public class Construct : MonoBehaviour {
                 UnitMovement uM = gameObject.GetComponent<UnitMovement>();
                 if (uM != null)
                 {
-                    uM.hasTarget = false;
-                    Animator a = GetComponentInParent<Animator>();
-                    a.SetBool("walk", false);
-                    //uM.status = Status.idle;
+					uM.stopUnit();
                 }
             }
 
