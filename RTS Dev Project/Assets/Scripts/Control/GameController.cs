@@ -297,11 +297,11 @@ public class GameController : MonoBehaviour
                 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cube.transform.position = new Vector3(250, 20, 250);
                 cube.tag = "FOWObject";
-                cube.GetComponent<Renderer>().enabled = false;
+                
                 cube.AddComponent<LOSEntity>();
                 cube.GetComponent<LOSEntity>().Range = 1000;
+                cube.GetComponent<MeshRenderer>().enabled = false;
 
-               
                 justDisabled = true;
                 print("ENTRA");
             }
@@ -316,6 +316,7 @@ public class GameController : MonoBehaviour
                 //GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().forceFullUpdate();
                 if (fowCounter > 5)
                 {
+                    GameObject.FindGameObjectWithTag("FOWObject").GetComponent<MeshRenderer>().enabled = false;
                     print("GENIAL");
                     GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().enabled = false;
                     justDisabled = false;
