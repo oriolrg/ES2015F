@@ -118,6 +118,7 @@ public class AttackController : MonoBehaviour {
 		} else {
 			this.um.status = Status.attacking;
 			InvokeRepeating ("DealDamage", 1, 1);
+			animator.SetBool ("attack",true);
 
 		}
 
