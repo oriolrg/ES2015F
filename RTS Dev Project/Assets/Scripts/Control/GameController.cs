@@ -518,8 +518,11 @@ public class GameController : MonoBehaviour
                 allEnemyArmy.Remove(u);
             }
         }
-        checkWin();
-        checkLose();
+
+		if (GameData.winConditions.Contains (Victory.Annihilation)){
+	        checkWin();
+	        checkLose();
+		}
 
         if (selectedUnits.units.Contains(u))
         {
@@ -654,27 +657,18 @@ public class GameController : MonoBehaviour
     }
     public void checkWin()
     {
-		if (allEnemyBuildings.Count == 0) winCondition();
+		if (allEnemyBuildings.Count == 0) 
+			hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
+				true, "You destroyed all enemy buildings"
+			);
     }
 
     public void checkLose()
     {
-		if (allAllyBuildings.Count == 0) loseCondition();
-    }
-
-    //Ends the game.
-    public void winCondition()
-	{
-        //hud.ShowWinMessage();
-
-        hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(true);
-    }
-
-    public void loseCondition()
-    {
-        //hud.ShowLoseMessage();
-
-        hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(false);
+		if (allAllyBuildings.Count == 0) 
+			hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
+				false, "All your building were destroyed"
+			);
     }
 
     public void reloadLevel()
