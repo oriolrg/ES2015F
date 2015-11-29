@@ -1,0 +1,176 @@
+fileFormatVersion: 2
+guid: 36845e42257b7904396b6b53ece1536c
+timeCreated: 1448832952
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Arco
+    100002: Armature
+    100004: Armature_001
+    100006: arquero_egipcio
+    100008: Bone
+    100010: chest
+    100012: //RootNode
+    100014: flecha
+    100016: foot_L
+    100018: foot_R
+    100020: hand_L
+    100022: hand_R
+    100024: head
+    100026: lower_arm_L
+    100028: lower_arm_R
+    100030: lower_index_L
+    100032: lower_index_R
+    100034: lower_leg_L
+    100036: lower_leg_R
+    100038: lower_middle_L
+    100040: lower_middle_R
+    100042: lower_pinky_L
+    100044: lower_pinky_R
+    100046: lower_ring_L
+    100048: lower_ring_R
+    100050: lower_thumb_L
+    100052: lower_thumb_R
+    100054: neck
+    100056: root
+    100058: toes_L
+    100060: toes_R
+    100062: torso
+    100064: upper_arm_L
+    100066: upper_arm_R
+    100068: upper_index_L
+    100070: upper_index_R
+    100072: upper_leg_L
+    100074: upper_leg_R
+    100076: upper_middle_L
+    100078: upper_middle_R
+    100080: upper_pinky_L
+    100082: upper_pinky_R
+    100084: upper_ring_L
+    100086: upper_ring_R
+    100088: upper_thumb_L
+    100090: upper_thumb_R
+    400000: Arco
+    400002: Armature
+    400004: Armature_001
+    400006: arquero_egipcio
+    400008: Bone
+    400010: chest
+    400012: //RootNode
+    400014: flecha
+    400016: foot_L
+    400018: foot_R
+    400020: hand_L
+    400022: hand_R
+    400024: head
+    400026: lower_arm_L
+    400028: lower_arm_R
+    400030: lower_index_L
+    400032: lower_index_R
+    400034: lower_leg_L
+    400036: lower_leg_R
+    400038: lower_middle_L
+    400040: lower_middle_R
+    400042: lower_pinky_L
+    400044: lower_pinky_R
+    400046: lower_ring_L
+    400048: lower_ring_R
+    400050: lower_thumb_L
+    400052: lower_thumb_R
+    400054: neck
+    400056: root
+    400058: toes_L
+    400060: toes_R
+    400062: torso
+    400064: upper_arm_L
+    400066: upper_arm_R
+    400068: upper_index_L
+    400070: upper_index_R
+    400072: upper_leg_L
+    400074: upper_leg_R
+    400076: upper_middle_L
+    400078: upper_middle_R
+    400080: upper_pinky_L
+    400082: upper_pinky_R
+    400084: upper_ring_L
+    400086: upper_ring_R
+    400088: upper_thumb_L
+    400090: upper_thumb_R
+    4300000: Arco
+    4300002: arquero_egipcio
+    4300004: flecha
+    7400000: Default Take
+    7400002: ArmatureAction
+    7400004: attack
+    7400006: die
+    7400008: standby
+    7400010: walk
+    9500000: //RootNode
+    13700000: Arco
+    13700002: arquero_egipcio
+    13700004: flecha
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
