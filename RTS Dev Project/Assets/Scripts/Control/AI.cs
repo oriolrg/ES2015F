@@ -13,6 +13,7 @@ public class AI : MonoBehaviour {
 	private List<GameObject> resourcesMetal;
 	private List<GameObject> resourcesWood;
 	private float inf = 99999999;
+	private bool contructingBarrack = false;
 	
 	public static AI Instance { get; private set; }
 	
@@ -83,15 +84,15 @@ public class AI : MonoBehaviour {
 
 				bool counterAttackAnnihilationDone = false;
 				bool counterAttackWonderDone = false;
-				if(Victory.MapControl in GameData.winConditions){
-					counterAttackAnnihilationDone = counterAttackAnnihilation()){
+				if(GameData.winConditions.Contains(Victory.MapControl ))
+					counterAttackAnnihilationDone = counterAttackMapControl();
 
 
-				if(!counterAttackAnnihilationDone & Victory.Wonder in GameData.winConditions){
+				if(!counterAttackAnnihilationDone & GameData.winConditions.Contains(Victory.Wonder))
 					counterAttackWonderDone = counterAttackWonder();
-				if(!counterAttackAnnihilationDone & !counterAttackWonderDone & Victory.Annihilation in GameData.winConditions ){
+				if(!counterAttackAnnihilationDone & !counterAttackWonderDone & GameData.winConditions.Contains(Victory.Annihilation))
 					counterAttackAnnihilation();
-				}
+			}
 
 
 
@@ -117,8 +118,18 @@ public class AI : MonoBehaviour {
 					counterAttackAnnihilation();
 				}
 
-			}
 		}*/
+				
+		bool counterAttackAnnihilationDone = false;
+		bool counterAttackWonderDone = false;
+		if(GameData.winConditions.Contains(Victory.MapControl ))
+			counterAttackAnnihilationDone = counterAttackMapControl();
+		
+		
+		if(!counterAttackAnnihilationDone & GameData.winConditions.Contains(Victory.Wonder))
+			counterAttackWonderDone = counterAttackWonder();
+		if(!counterAttackAnnihilationDone & !counterAttackWonderDone & GameData.winConditions.Contains(Victory.Annihilation))
+			counterAttackAnnihilation();
 
 
 		if (tasks.Count > 0) {
@@ -127,10 +138,13 @@ public class AI : MonoBehaviour {
 			}
 		}
 		//compareArmy();
-		counterAttackMapControl ();
+		//counterAttackAnnihilation ();
 
 		
 	}
+
+
+
 	
 	
 	
@@ -199,9 +213,14 @@ public class AI : MonoBehaviour {
 	
 	private bool createCivilian(UnitType u)
 	{
+
 		if (GameController.Instance.getAllEnemyTownCentres().Count > 0)
 		{
+
 			if(GameController.Instance.OnCreate(GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>(),UnitType.Civilian)) return true;
+		}
+		if (! isCPUBuilding (UnitType.TownCenter)) {
+			tasks.Insert (0, new Task (new Method (createBuilding), UnitType.TownCenter));
 		}
 		return false; 
 	}
@@ -226,17 +245,18 @@ public class AI : MonoBehaviour {
 	}
 	public bool createSoldier(UnitType u)
 	{
-
 		List<GameObject> buildings = GameController.Instance.getAllEnemyBuildings();
 		
 		foreach (GameObject b in buildings){
 			if(b.GetComponent<Identity>().unitType == UnitType.Barracs){
+				contructingBarrack = false;
 				if(GameController.Instance.OnCreate(b.GetComponent<Identity>(), UnitType.Soldier)) return true;
 			}
 		}
-		if (! isCPUBuilding (UnitType.Barracs)) {
-			//print ("--------------------------->Entro a CPU no esta contruint barrackes");
+		if (! isCPUBuilding (UnitType.Barracs) & !contructingBarrack) {
+			print ("Pq entres");
 			tasks.Insert (0, new Task (new Method (createBuilding), UnitType.Barracs));
+			contructingBarrack = true;
 		}
 		return false;
 	}
@@ -246,6 +266,7 @@ public class AI : MonoBehaviour {
 		if (GameController.Instance.getAllEnemyCivilians().Count > 1)
 		{
 			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>().civilization].units[UnitType.Barracs], GameController.Instance.getAllEnemyTownCentres()[0].transform.position + new Vector3(0, 0, -20), new Troop((List<GameObject>)GameController.Instance.getAllEnemyCivilians().GetRange(1,1) ));
+
 			return true;
 		}
 		return false;
