@@ -95,6 +95,10 @@ public class LOSEntity : MonoBehaviour {
 
     public void setActive(bool active)
     {
+        if (!GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().enabled)
+        {
+            return;
+        }
         if (IsEnemy || firstTime)
         {
             if (!active || firstTime)
@@ -107,6 +111,17 @@ public class LOSEntity : MonoBehaviour {
                 firstTime = false;
             }
         }
+    }
+
+    public void reset()
+    {
+
+        foreach (Renderer R in this.GetComponentsInChildren<Renderer>())
+        {
+            R.enabled = true;
+            this.RevealState = RevealStates.Unfogged;
+        }
+
     }
 
 }
