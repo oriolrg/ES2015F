@@ -24,6 +24,7 @@ ModelImporter:
     4300000: Cube
     4300002: Door
     4300004: terrat
+    4300006: Torus_000
     7400000: Default Take
     9500000: //RootNode
   materials:
