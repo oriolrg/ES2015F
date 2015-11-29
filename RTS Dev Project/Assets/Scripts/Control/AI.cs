@@ -95,7 +95,7 @@ public class AI : MonoBehaviour {
 
 
 
-				/*if(Victory.MapControl in GameData.winConditions){
+				if(Victory.MapControl in GameData.winConditions){
 					if(! counterAttackAnnihilation()){
 						if(Victory.Wonder in GameData.winConditions){
 							if(! counterAttackWonder()){
@@ -115,7 +115,7 @@ public class AI : MonoBehaviour {
 					}
 				}else if(Victory.Annihilation in GameData.winConditions ){
 					counterAttackAnnihilation();
-				}*/
+				}
 
 			}
 		}*/
@@ -544,7 +544,7 @@ public class AI : MonoBehaviour {
 		} else {
 			return false;
 		}
-		return true
+		return true;
 		
 	}
 
