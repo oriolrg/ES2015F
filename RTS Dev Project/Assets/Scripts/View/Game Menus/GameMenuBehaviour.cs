@@ -25,9 +25,9 @@ public class GameMenuBehaviour : MonoBehaviour {
 		Application.LoadLevel ("Menu");
 	}
 
-	public void EndGameMenu(bool victory){
-		ToMainMenu ();
-		//endGameMenu.GetComponent<EndGameMenu> ().endGame (victory);//.victory = victory;
-		//endGameMenu.SetActive (true);
+	public void EndGameMenu(bool victory, string reason){
+		//ToMainMenu ();
+		endGameMenu.GetComponent<EndGameMenu> ().endGame (victory, reason);//.victory = victory;
+		endGameMenu.SetActive (false); endGameMenu.SetActive (true);
 	}
 }

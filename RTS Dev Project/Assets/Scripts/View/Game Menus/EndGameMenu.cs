@@ -42,7 +42,7 @@ public class EndGameMenu : MonoBehaviour {
 		Time.timeScale = 0;
 	}
 */
-	public void endGame(bool victory){
+	public void endGame(bool victory, string reason){
 		gameObject.SetActive (true);
 		this.victory = victory;
 		string message;		
@@ -53,7 +53,7 @@ public class EndGameMenu : MonoBehaviour {
 			message = defeatText;
 		foreach (Transform t in transform) {
 			if (t.gameObject.name.Equals ("Text")){
-				t.gameObject.GetComponent<Text>().text = message;
+				t.gameObject.GetComponent<Text>().text = message + '\n' + reason;
 				break;
 			}
 		}

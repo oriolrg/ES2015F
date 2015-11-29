@@ -46,7 +46,7 @@ public class MainMenu : MonoBehaviour {
 		GameData.winConditions.Clear ();
 		foreach (TextToggle t in winConditions) {
 			if (t.isActive()){
-				GameData.winConditions.Add (Utils.GetEnumValue<GameData.WinConditionEnum>(t.getValue()));
+				GameData.winConditions.Add (Utils.GetEnumValue<Victory>(t.getValue()));
 			}
 		}
 
