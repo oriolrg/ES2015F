@@ -54,8 +54,8 @@ public class GameController : MonoBehaviour
     public List<Objective> objectives;
 
     //Fog of war button
-    private bool firstFogOfWar;
-    private float prevRange;
+    private bool fogOfWarEnabled;
+
 
 
 
@@ -99,7 +99,7 @@ public class GameController : MonoBehaviour
         {
             spawnRandomObjectives();
         }
-        firstFogOfWar = true; //fog of war enabler and disabler
+        fogOfWarEnabled = true; //fog of war enabler and disabler
     }
 
     // Update is called once per frame
@@ -283,11 +283,12 @@ public class GameController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             //Fog of war button
-            if (firstFogOfWar)
+            if (fogOfWarEnabled)
             {
                 GameObject fog = GameObject.FindGameObjectsWithTag("Ground")[0];
                 LOSManager script = fog.GetComponent("LOSManager") as LOSManager;
-                script.forceFullUpdate();
+                script.HeightBlockers.Enable = false;
+
             }
 
         }

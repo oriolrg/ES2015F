@@ -47,7 +47,7 @@ public class LOSManager : MonoBehaviour {
         public bool AllowOwnTeamBlockers = false;
     }
     public HeightBlockerParameters HeightBlockers;
-    public bool EnableHeightBlockers { get { return HeightBlockers.Enable; } }
+    public bool EnableHeightBlockers { get { return HeightBlockers.Enable; }  }
     public bool AllowOwnTeamHeightBlockers { get { return HeightBlockers.AllowOwnTeamBlockers; } }
 
     // List of entities that interact with LOS
