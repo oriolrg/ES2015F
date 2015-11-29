@@ -343,6 +343,7 @@ public class HUD : MonoBehaviour
     public void OnActionButtonEnter( String description, ResourceValueDictionary resourceCost )
     {
         rightPanel.gameObject.SetActive(true);
+        rightPanel.GetChild(1).gameObject.SetActive(! (resourceCost == ShowRightPanel.zeroResources));
         foreach(KeyValuePair<Resource,Text> kv in resourceCosts)
         {
             Resource resource = kv.Key;
@@ -452,10 +453,13 @@ public class HUD : MonoBehaviour
 
 	public void updateRightPanel(GameObject go)
 	{
-		if(go.tag != "Enemy"){
+		if(go.tag != "Enemy")
+        {
 			rightPanel.gameObject.SetActive(true);
+            
 			CollectResources collectResources = go.GetComponent<CollectResources>();
-			if(collectResources!=null){
+			if(collectResources!=null)
+            {
 				foreach( Resource resource in Enum.GetValues(typeof(Resource)))
 				{
 					resourceCosts[resource].text = collectResources.resourceBank[resource].ToString();
