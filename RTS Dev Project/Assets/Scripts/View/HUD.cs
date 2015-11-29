@@ -124,7 +124,7 @@ public class HUD : MonoBehaviour
                 UnitData creationData = DataManager.Instance.unitDatas[type];
 
                 // Create a block prefab with the image of the action
-                addBlock(createPanel, creationData.preview, () => { GameController.Instance.OnCreate(identity, type); });
+                addBlock(createPanel, creationData.preview, creationData.description, creationData.resourceCost, () => { GameController.Instance.OnCreate(identity, type); });
 
 
             }
@@ -136,7 +136,7 @@ public class HUD : MonoBehaviour
                 for (int i = 0; i < movements.Count; i++)
                 {
                     MoveData movement = movements[i];
-                    addBlock(movePanel, movement.preview, () => { movement.codeToExecute.Invoke(); });
+                    addBlock(movePanel, movement.preview, movement.description, null, () => { movement.codeToExecute.Invoke(); });
 
                 }
 
@@ -150,7 +150,7 @@ public class HUD : MonoBehaviour
                 for (int i = 0; i < specials.Count; i++)
                 {
                     SpecialData special = specials[i];
-                    addBlock(specialPanel, special.preview, () => { special.codeToExecute.Invoke(); });
+                    addBlock(specialPanel, special.preview, special.description, null, () => { special.codeToExecute.Invoke(); });
                 }
 
                 updateInteractable(focusedUnit);
@@ -170,6 +170,7 @@ public class HUD : MonoBehaviour
                 previewImage.color = DataManager.Instance.civilizationDatas[civilization].color;
             }
         }
+        
     }
 
     public void updateInteractable(GameObject focusedUnit)
@@ -339,30 +340,30 @@ public class HUD : MonoBehaviour
         
     }
     
-    public void OnActionButtonEnter( UnitData data )
+    public void OnActionButtonEnter( String description, ResourceValueDictionary resourceCost )
     {
         rightPanel.gameObject.SetActive(true);
         foreach(KeyValuePair<Resource,Text> kv in resourceCosts)
         {
             Resource resource = kv.Key;
-            kv.Value.text = data.resourceCost[resource].ToString();
+            kv.Value.text = resourceCost[resource].ToString();
             Text text = resourceTexts[resource];
-            int newvalue = (Int32.Parse(text.text) - data.resourceCost[resource]);
+            int newvalue = (Int32.Parse(text.text) - resourceCost[resource]);
             text.text =  newvalue.ToString();
-            if(data.resourceCost[resource] != 0)
+            if(resourceCost[resource] != 0)
                 text.color = newvalue > 0 ? new Color(.3f, .3f, .3f, 1f) : new Color(.5f, 0f, 0f, 1f);
         }
-        descriptionText.text = data.description;
+        descriptionText.text = description;
     }
 
-    public void OnActionButtonExit(UnitData data)
+    public void OnActionButtonExit(String description, ResourceValueDictionary resourceCost)
     {
         foreach (KeyValuePair<Resource, Text> kv in resourceCosts)
         {
             Resource resource = kv.Key;
-            kv.Value.text = data.resourceCost[resource].ToString();
+            kv.Value.text = resourceCost[resource].ToString();
             Text text = resourceTexts[resource];
-            text.text = (Int32.Parse(text.text) + data.resourceCost[resource]).ToString();
+            text.text = (Int32.Parse(text.text) + resourceCost[resource]).ToString();
             text.color = new Color(0f, 0f, 0f, 1f);
         }
     }
@@ -377,13 +378,40 @@ public class HUD : MonoBehaviour
 		controlPanel.gameObject.SetActive (false);
 	}
 
-    private GameObject addBlock( Transform parent, Sprite image, UnityAction callback)
+    private GameObject addBlock( Transform parent, Sprite image, String description, ResourceValueDictionary resourceCost, UnityAction callback)
     {
         GameObject block = Instantiate(data.blockPrefab) as GameObject;
+
         Image background = block.GetComponent<Image>();
         background.sprite = panelSprite;
         Image foreground = block.transform.GetChild(0).GetComponent<Image>();
         foreground.sprite = image;
+        
+        block.AddComponent<ShowRightPanel>();
+        block.GetComponent<ShowRightPanel>().description = description;
+        block.GetComponent<ShowRightPanel>().resourceCost = resourceCost == null ? ShowRightPanel.zeroResources : resourceCost;
+
+        block.transform.SetParent(parent);
+
+        // Add listener when clicked
+        Button button = block.GetComponent<Button>();
+
+        button.onClick.AddListener(callback);
+
+
+
+        return block;
+    }
+
+    private GameObject addBlock(Transform parent, Sprite image, UnityAction callback)
+    {
+        GameObject block = Instantiate(data.blockPrefab) as GameObject;
+
+        Image background = block.GetComponent<Image>();
+        background.sprite = panelSprite;
+        Image foreground = block.transform.GetChild(0).GetComponent<Image>();
+        foreground.sprite = image;
+
         block.transform.SetParent(parent);
 
         // Add listener when clicked

@@ -125,16 +125,7 @@ public class GameController : MonoBehaviour
                         if (projector != null)
                             projector.gameObject.SetActive(true);
                         hud.updateSelection(selectedUnits);
-
-                        Identity hitUnit = hitInfo.transform.GetComponent<Identity>();
-                        if (hitUnit != null && hitUnit.unitType.Equals(UnitType.Civilian))
-                        {
-                            hud.updateRightPanel(selectedGO);
-                        }
-                        else
-                        {
-                            hud.hideRightPanel();
-                        }
+                        
 
                     }
                     else
@@ -905,14 +896,14 @@ public class GameController : MonoBehaviour
     }
 
     // Action events
-    public void OnActionButtonEnter(UnitData data)
+    public void OnActionButtonEnter(String description, ResourceValueDictionary resourceCost)
     {
-        hud.OnActionButtonEnter(data);
+        hud.OnActionButtonEnter(description, resourceCost);
     }
 
-    public void OnActionButtonExit(UnitData data)
+    public void OnActionButtonExit(String description, ResourceValueDictionary resourceCost)
     {
-        hud.OnActionButtonExit(data);
+        hud.OnActionButtonExit(description, resourceCost);
     }
     
     public void hideRightPanel()
