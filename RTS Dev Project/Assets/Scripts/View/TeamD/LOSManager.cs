@@ -47,7 +47,7 @@ public class LOSManager : MonoBehaviour {
         public bool AllowOwnTeamBlockers = false;
     }
     public HeightBlockerParameters HeightBlockers;
-    public bool EnableHeightBlockers { get { return HeightBlockers.Enable; } }
+    public bool EnableHeightBlockers { get { return HeightBlockers.Enable; }  }
     public bool AllowOwnTeamHeightBlockers { get { return HeightBlockers.AllowOwnTeamBlockers; } }
 
     // List of entities that interact with LOS
@@ -66,6 +66,7 @@ public class LOSManager : MonoBehaviour {
     float[,] terrainHeightsCache;
     Texture2D losTexture;
 
+
     // Used to determine when the user changes a field that requires
     // the texture to be recreated
     private int previewParameterHash = 0;
@@ -74,6 +75,7 @@ public class LOSManager : MonoBehaviour {
     void Start() {
         Terrain = GameObject.FindWithTag("Ground").GetComponent<Terrain>();
         if (Application.isPlaying) InitializeTexture();
+
     }
 
     // Get a size from the provided properties
@@ -113,6 +115,7 @@ public class LOSManager : MonoBehaviour {
     }
 
     void Update() {
+
 #if UNITY_EDITOR
         if (!Application.isPlaying) {
             if (PreviewInEditor) {
@@ -245,7 +248,7 @@ public class LOSManager : MonoBehaviour {
                 //Manage the fact that resources and enemies behave in a different way.
                 foreach (var entity in Entities)
                 {
-                    if (!entity.IsRevealer && entity.RevealState == LOSEntity.RevealStates.Fogged)
+                    if (!entity.IsRevealer &&  (entity.RevealState == LOSEntity.RevealStates.Fogged || entity.RevealState == LOSEntity.RevealStates.Hidden) )
                     {
                         entity.setActive(false);
                     }
@@ -342,7 +345,7 @@ public class LOSManager : MonoBehaviour {
         RevealLOS(rect, sight.Range, sight.Height + sight.transform.position.y, los, fow, grayscale);
     }
     int[] jCache = new int[1024];
-    private void RevealLOS(Rect rect, float range, float height, float los, float fow, float grayscale) {
+    public void RevealLOS(Rect rect, float range, float height, float los, float fow, float grayscale) {
         int xMin, yMin, xMax, yMax;
         int rangeI = Mathf.RoundToInt(range * Scale);
         int xiMin, yiMin, xiMax, yiMax;
@@ -492,6 +495,21 @@ public class LOSManager : MonoBehaviour {
         get {
             if (_instance == null) _instance = GameObject.FindObjectOfType<LOSManager>();
             return _instance;
+        }
+    }
+
+    public void forceFullUpdate()
+    {
+
+        int revealerCount = 0;
+        foreach (var entity in Entities)
+        {
+            entity.RevealState = LOSEntity.RevealStates.Hidden;
+            if (entity.IsRevealer) revealerCount++;
+        }
+        if (revealerCount == 0)
+        {
+            Debug.LogError("No LOSEntity items were marked as revealers! Tick the 'Is Revealed' checkbox for at least 1 item.");
         }
     }
 

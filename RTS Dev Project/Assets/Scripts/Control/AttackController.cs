@@ -107,7 +107,7 @@ public class AttackController : MonoBehaviour {
 			dist = Vector3.Distance (this.gameObject.transform.position, enemy.transform.position) - boxRadius;
 			return dist;
 		} else {
-			return 0.0;
+			return (float)0.0;
 		}
 	}
 
