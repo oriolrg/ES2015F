@@ -7,8 +7,6 @@ public class MinimapCamera : MonoBehaviour {
 	private Camera minimapCamera;
 	[SerializeField] private LayerMask minimapLookAtMask = -1;
 
-	[SerializeField] private float edgeSize = 0.3f;
-
 	private CameraController mainCameraController;
 	
 	private static float ScreenAspect;
@@ -55,10 +53,12 @@ public class MinimapCamera : MonoBehaviour {
 		if (Time.timeScale == 0)
 			return; // game paused, don't interact
 
+		Vector3 mouse;
+
 		// Move mainCamera if minimapCamera is clicked or was clicked and now is dragged
 		if (Input.GetMouseButtonDown (0)) { // is left-button clicked?
 			// Mouse on minimap?
-			Vector3 mouse = Input.mousePosition; // get mouse position
+			mouse = Input.mousePosition; // get mouse position
 
 			// Normalize mouse coordinates
 			mouse.x /= Screen.width;
@@ -75,7 +75,7 @@ public class MinimapCamera : MonoBehaviour {
 
 		// Only move when "clicked"
 		if (mouseClicked) {
-			// Change position of mainCamera.
+			// Change position of maiznCamera.
 
 			Vector3 position = Input.mousePosition;
 			position.x /= Screen.width;
@@ -108,6 +108,32 @@ public class MinimapCamera : MonoBehaviour {
 
 				// Set currentLookAtPoint so we can upload it in OnGUI
 				currentLookAtPoint = hit.point;
+			}
+		}
+
+		if (Input.GetMouseButton(1)) {
+			// Mouse on minimap?
+			mouse = Input.mousePosition; // get mouse position
+			
+			// Normalize mouse coordinates
+			mouse.x /= Screen.width;
+			mouse.y /= Screen.height;
+			
+			if(minimapCamera.rect.Contains (mouse)){ // if rect contains, click was made on minimap
+				// Now we need the Input.mousePosition again; use it directly
+				// Get position of where we clicked on the minimap
+				Ray ray = minimapCamera.ScreenPointToRay (Input.mousePosition);
+				RaycastHit hit;
+				
+				// Where is that point in the ground?
+				if (Physics.Raycast (ray, out hit, Mathf.Infinity, // max distance
+				                     minimapLookAtMask.value)) {
+					//Debug.DrawLine (ray.origin, hit.point);
+					
+					// Change camera position, adding offset
+					GameObject target = Instantiate(GameController.Instance.targetPrefab, hit.point, Quaternion.identity) as GameObject;
+					GameController.Instance.moveUnits(target);
+				}
 			}
 		}
 	}
@@ -144,26 +170,14 @@ public class MinimapCamera : MonoBehaviour {
 		minimapCamera.orthographicSize = orthographicSize;// * 1.15f; // also add extra size to display objects at border
 
 		minimapCamera.transform.position = ground.transform.position + new Vector3(bounds.extents.x, 500, bounds.extents.z);
-
-//		Vector3 bounds = ground.GetComponent<MeshRenderer> ().bounds.size / 2f;
-//		print (bounds.x);
-//		print (bounds.z);
-//		float boundsAspectRatio = bounds.x / bounds.z;
-//		float orthographicSize;
-//		
-//		if (boundsAspectRatio < 1) {
-//			orthographicSize = bounds.z;
-//		} else {
-//			orthographicSize = bounds.x / 1;
-//		}
-//		
-//		minimapCamera.orthographicSize = orthographicSize;// * 1.15f; // also add extra size to display objects at border
 	}
 
 	private void updateViewport(float aspect){
 		ScreenAspect = aspect;
 		Rect rect = minimapCamera.rect;
-		
+
+		float edgeSize = ((float) minimapPanelRectTransform.rect.height) / Screen.height;
+		//edgeSize = 0.295f;
 		if (ScreenAspect > 1) {
 			rect.width = edgeSize / ScreenAspect;
 			rect.height = edgeSize;
@@ -172,27 +186,34 @@ public class MinimapCamera : MonoBehaviour {
 			rect.height = edgeSize / ScreenAspect;
 		}
 
-		rect.x = (minimapPanelRectTransform.rect.width / Screen.width - rect.width) / 2f;
-		rect.y = (minimapPanelRectTransform.rect.height / Screen.height - rect.height) / 2f;
+		rect.width *= 0.85f;
+		rect.height *= 0.85f;
+
+		rect.x = (minimapPanelRectTransform.rect.width / ((float) Screen.width) - rect.width) / 2f;
+		rect.y = (minimapPanelRectTransform.rect.height / ((float) Screen.height) - rect.height) / 2f;
 		
 		minimapCamera.rect = rect;
 	}
-	
-	void OnGUI(){
-		// minimapCamera.Render (); // To display on top of GUI
 
+	void OnGUI(){
 		if (Time.timeScale == 0)
 			return; // game paused: don't interact
+
+		// minimapCamera.Render (); // To display on top of GUI; CAUTION! slows down everything
 
 		// Draw a rect in the minimap to show the visible area
 		Vector2 position = minimapCamera.WorldToScreenPoint(currentLookAtPoint);
 		position.y = Screen.height - position.y;
 
 		Vector2 size = minimapCamera.rect.size;
-		float sqSize = Mathf.Min (size.x * Screen.width, size.y * Screen.height);
-		sqSize *= Camera.main.fieldOfView / 200f;
+		size.x *= Screen.width * ScreenAspect;
+		size.y *= Screen.height;
 
-		size = new Vector2 (sqSize, sqSize);
+		//float sqSize = Mathf.Min (size.x * Screen.width, size.y * Screen.height); // whole MinimapRect
+		//sqSize *= Camera.main.transform.localPosition.y / 200f; // reduce it with this
+		size *= Camera.main.transform.localPosition.y / 200f; // reduce it with this
+
+		//size = new Vector2 (sqSize, sqSize);
 		position -= size / 2f;
 
 		Rect rect = new Rect(position, size);

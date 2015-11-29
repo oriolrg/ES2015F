@@ -37,7 +37,7 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private GameObject teamCirclePrefab;
     [SerializeField]
-	private GameObject targetPrefab;
+	public GameObject targetPrefab;
 
     public float UIheight;
 
@@ -315,7 +315,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-	private void moveUnits(GameObject target)
+	public void moveUnits(GameObject target)
 	{
         if (selectedUnits.hasMovableUnits())
         {
