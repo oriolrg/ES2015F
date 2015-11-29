@@ -680,14 +680,14 @@ public class GameController : MonoBehaviour
     public void checkMapControl()
     {
         hud.updateSelection(selectedUnits);
-        Civilization possibleWinner = objectives[0].Controller;
+        Player possibleWinner = objectives[0].Controller;
         foreach(Objective objective in objectives)
         {
             if (objective.Controller != possibleWinner)
                 return;
         }
 
-        if (possibleWinner != Civilization.Neutral)
+        if (possibleWinner != Player.Neutral)
         {
             hud.startCountdown(Victory.MapControl, possibleWinner);
             InvokeRepeating("ensureWinner", 1, 1);
@@ -696,7 +696,7 @@ public class GameController : MonoBehaviour
 
     public void ensureWinner()
     {
-        Civilization possibleWinner = objectives[0].Controller;
+        Player possibleWinner = objectives[0].Controller;
         foreach (Objective objective in objectives)
         {
             if (objective.Controller != possibleWinner)

@@ -4,26 +4,26 @@ using System.Linq;
 
 public class Objective : MonoBehaviour 
 {
-    public Civilization Controller { get; private set; }
+    public Player Controller { get; private set; }
 
     public float tickValue = .001f;
 	public float radius = 10;
-	public CivilizationValueDictionary representants;
-	public CivilizationValueDictionary control;
-	private Civilization maximalCivilization = Civilization.Neutral;
+	public PlayerValueDictionary representants;
+	public PlayerValueDictionary control;
+	private Player maximalPlayer = Player.Neutral;
 
 	void Start()
 	{
 		InvokeRepeating ("detectUnits", 0, 3);
-        Controller = gameObject.GetComponentOrEnd<Identity>().civilization;
+        Controller = gameObject.GetComponentOrEnd<Identity>().player;
 	}
 
 	void FixedUpdate()
 	{
 		// If we have a maximal representant
-		if (maximalCivilization != Civilization.Neutral) 
+		if (maximalPlayer != Player.Neutral) 
 		{
-			Civilization c = maximalCivilization;
+			Player c = maximalPlayer;
 			if (control.ContainsKey (c))
             {
 				control [c] = Mathf.Min (control [c] + tickValue, 1 + tickValue - control.Where (x => x.Key != c).Sum (x => x.Value));
@@ -35,30 +35,30 @@ public class Objective : MonoBehaviour
             {
 				float toSubstract = substractValue ();
 
-                List<Civilization> lostCivilizations = new List<Civilization>();
+                List<Player> lostPlayers = new List<Player>();
 
 				for( int i = 0; i < control.Count; i++ )
                 {
-                    Civilization otherCiv = control.Keys.ToList()[i];
+                    Player otherPlayer = control.Keys.ToList()[i];
 					// Substract control to the rest of the civilizations
-					if (otherCiv != c && control.ContainsKey(otherCiv))
+					if (otherPlayer != c && control.ContainsKey(otherPlayer))
                     {
-                        control [otherCiv] = Mathf.Max (0, control [otherCiv] - toSubstract);
+                        control [otherPlayer] = Mathf.Max (0, control [otherPlayer] - toSubstract);
                         
-                        if (control [otherCiv] <= 0)
-							lostCivilizations.Add (otherCiv);
+                        if (control [otherPlayer] <= 0)
+							lostPlayers.Add (otherPlayer);
 					}
 				}
 
-                for( int i = 0; i < lostCivilizations.Count; i++ )
+                for( int i = 0; i < lostPlayers.Count; i++ )
                 {
-                    control.Remove(lostCivilizations[i]);
+                    control.Remove(lostPlayers[i]);
                 }
 
                 if (control.Count == 1)
                 {
                     // new controller
-                    Controller = maximalCivilization;
+                    Controller = maximalPlayer;
                     GameController.Instance.checkMapControl();
                 }
 			}
@@ -77,36 +77,36 @@ public class Objective : MonoBehaviour
 			Identity identity = collider.GetComponent<Identity>();
 			if( identity != null )
 			{
-				Civilization civ = identity.civilization;
+				Player player = identity.player;
 
-                if (civ == Civilization.Neutral) continue;
+                if (player == Player.Neutral) continue;
 
-				if( representants.ContainsKey( civ ) )
+				if( representants.ContainsKey( player ) )
 				{
-					representants[civ]++;
+					representants[player]++;
 				}
 				else
 				{
-					representants.Add(civ,1);
+					representants.Add(player,1);
 				}
 			}
 		}
 
-		maximalCivilization = maximalRepresentant ();
+		maximalPlayer = maximalRepresentant ();
 
 
 		
 
 	}
 
-	private Civilization maximalRepresentant()
+	private Player maximalRepresentant()
 	{
 		if (representants.Count == 0)
-			return Civilization.Neutral;
-		Civilization c = representants.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+			return Player.Neutral;
+		Player c = representants.OrderByDescending(x => x.Value).FirstOrDefault().Key;
 		float maxValue = representants [c];
 		if(representants.Where(x => x.Value == maxValue ).Count () != 1)
-			return Civilization.Neutral;
+			return Player.Neutral;
 		return c;
 	}
 

@@ -31,4 +31,8 @@ public class UnitPrefabDictionary : SerializableDictionary<UnitType, GameObject>
 public class CivilizationValueDictionary : SerializableDictionary<Civilization, float> { }
 
 [Serializable]
+public class PlayerValueDictionary : SerializableDictionary<Player, float> { }
+
+
+[Serializable]
 public class PlayersDataDictionary : SerializableDictionary<Player, PlayerData> { }

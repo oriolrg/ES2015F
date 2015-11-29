@@ -14,7 +14,7 @@ public class AI : MonoBehaviour {
 	private List<GameObject> resourcesWood;
 	private float inf = 99999999;
 	private bool contructingBarrack = false;
-	
+	private bool counterAttackingObjectives = false;
 	public static AI Instance { get; private set; }
 	
 	
@@ -119,8 +119,12 @@ public class AI : MonoBehaviour {
 				}
 
 		}*/
+		/*if (!counterAttackingObjectives) {
+
+			counterAttackingObjectives = counterAttackMapControl ();
+		}*/
 				
-		bool counterAttackAnnihilationDone = false;
+		/*bool counterAttackAnnihilationDone = false;
 		bool counterAttackWonderDone = false;
 		if(GameData.winConditions.Contains(Victory.MapControl ))
 			counterAttackAnnihilationDone = counterAttackMapControl();
@@ -131,7 +135,7 @@ public class AI : MonoBehaviour {
 		if(!counterAttackAnnihilationDone & !counterAttackWonderDone & GameData.winConditions.Contains(Victory.Annihilation))
 			counterAttackAnnihilation();
 
-
+		*/
 		if (tasks.Count > 0) {
 			if (tasks [0].method (tasks[0].unit)) {
 				tasks.RemoveAt (0);
@@ -254,7 +258,6 @@ public class AI : MonoBehaviour {
 			}
 		}
 		if (! isCPUBuilding (UnitType.Barracs) & !contructingBarrack) {
-			print ("Pq entres");
 			tasks.Insert (0, new Task (new Method (createBuilding), UnitType.Barracs));
 			contructingBarrack = true;
 		}
@@ -442,21 +445,23 @@ public class AI : MonoBehaviour {
 	public void counterattack(GameObject target){
 		
 		List<GameObject> allyAtacking = whoIsAttacking (target);
-		List<GameObject> enemiesNoAtacking = getEnemiesNoAtacking(allyAtacking.Count +1);
+		if (allyAtacking.Count != 0) {
+			List<GameObject> enemiesNoAtacking = getEnemiesNoAtacking (allyAtacking.Count + 1);
 
-		for(int i = 0; i < Math.Min (allyAtacking.Count + 1, enemiesNoAtacking.Count) ; i++){
-			//foreach (GameObject o in enemiesNoAtacking) {
-			GameObject o = enemiesNoAtacking[i];
-			
-			AttackController a = o.GetComponent<AttackController> ();
-			if (a != null) {
-				if(i < allyAtacking.Count){
-					a.attack(allyAtacking[i]);
-				}else{
-					a.attack(allyAtacking[0]);
+			for (int i = 0; i < Math.Min (allyAtacking.Count + 1, enemiesNoAtacking.Count); i++) {
+				//foreach (GameObject o in enemiesNoAtacking) {
+				GameObject o = enemiesNoAtacking [i];
+				
+				AttackController a = o.GetComponent<AttackController> ();
+				if (a != null) {
+					if (i < allyAtacking.Count) {
+						a.attack (allyAtacking [i]);
+					} else {
+						a.attack (allyAtacking [0]);
+					}
 				}
+				
 			}
-			
 		}
 	}
 	
@@ -636,20 +641,25 @@ public class AI : MonoBehaviour {
 
 	public bool counterAttackMapControl(){
 
-		GameObject target = new GameObject ();
 		foreach(Objective o in GameController.Instance.objectives){
-			if (o.Controller != Civilization.Egyptians) //S'ha de canviar quan estigui fet per Player!
+			if (o.Controller != Player.Player) //TODO canviar quan hi hagi més d'una CPU
                 return false;
         	
 
-			target.transform.position = o.transform.position;
 		
 		}
-		foreach(GameObject o in getEnemiesNoAtacking(GameController.Instance.getAllEnemyArmy().Count + GameController.Instance.getAllEnemyCivilians().Count)){
 
-			o.GetComponent<UnitMovement>().startMoving(target);
-		 }
+		if (GameController.Instance.objectives.Count > 0) {
+			print ("counterAttack");
+			Objective objective = GameController.Instance.objectives [0];
+			GameObject target = new GameObject();
+			target.transform.position = objective.transform.position;
+			GameController.Instance.hud.showMessageBox ("CPU go to objectives");
+			foreach (GameObject o in GameController.Instance.getAllEnemyArmy()){//getEnemiesNoAtacking(GameController.Instance.getAllEnemyArmy().Count + GameController.Instance.getAllEnemyCivilians().Count)) {
 
+				o.GetComponent<UnitMovement> ().startMoving (target);
+			}
+		}
 		return true;
 
 		//miro quin objectiu està més aprop?? Mes aprop de que??

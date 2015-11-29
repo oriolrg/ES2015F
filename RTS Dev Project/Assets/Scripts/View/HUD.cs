@@ -36,16 +36,16 @@ public class HUD : MonoBehaviour
 
     private Sprite panelSprite;
 
-    private Dictionary<Civilization, Color> civilizationColors;
+    private Dictionary<Player, Color> playerColors;
 
 
 
     void Start()
     {
-		civilizationColors = new Dictionary<Civilization,Color> ();
+		playerColors = new Dictionary<Player,Color> ();
 
-		foreach (KeyValuePair<Civilization, CivilizationData> kv in DataManager.Instance.civilizationDatas) {
-            civilizationColors.Add(kv.Key, kv.Value.color);
+		foreach (KeyValuePair<Player, PlayerData> kv in DataManager.Instance.playerDatas) {
+            playerColors.Add(kv.Key, kv.Value.material.color);
 		}
     }
 
@@ -165,9 +165,9 @@ public class HUD : MonoBehaviour
             else
             {
                 // Add controller color to preview if its an objective
-                Civilization civilization = objective.Controller;
+                Player player = objective.Controller;
 
-                previewImage.color = DataManager.Instance.civilizationDatas[civilization].color;
+                previewImage.color = DataManager.Instance.playerDatas[player].material.color;
             }
         }
         
@@ -254,7 +254,7 @@ public class HUD : MonoBehaviour
         {
             foreach (Transform child in controlPanel) Destroy(child.gameObject);
 
-            CivilizationValueDictionary control = objective.control;
+			PlayerValueDictionary control = objective.control;
 
             if ( control.Count > 0 && control.Max(x => x.Value) > .99f)
                 Invoke("DisappearControl", 3);
@@ -264,16 +264,16 @@ public class HUD : MonoBehaviour
                 controlPanel.gameObject.SetActive(true);
             }
             float accumulatedX = 0;
-            foreach (KeyValuePair<Civilization, float> kv in control)
+            foreach (KeyValuePair<Player, float> kv in control)
             {
-                Civilization c = kv.Key;
+                Player p = kv.Key;
                 float value = kv.Value;
 
                 GameObject controlGO = Instantiate(data.controlPrefab) as GameObject;
 
                 controlGO.transform.SetParent(controlPanel);
 
-                controlGO.GetComponent<Image>().color = civilizationColors[c];
+                controlGO.GetComponent<Image>().color = playerColors[p];
 
                 RectTransform rect = controlGO.GetComponent<RectTransform>();
 
@@ -438,10 +438,10 @@ public class HUD : MonoBehaviour
         messageBox.SetActive(false);
     }
 
-    public void startCountdown(Victory victory, Civilization winner )
+    public void startCountdown(Victory victory, Player winner )
     {
         countdownPanel.gameObject.SetActive(true);
-        victoryCondition.text = string.Format("{0}: {1}", victory.ToString(), DataManager.Instance.civilizationDatas[winner].name);
+		victoryCondition.text = string.Format("{0}: {1}", victory.ToString(), winner);//DataManager.Instance.playerDatas[winner].name);
         countdownText.setTimer( victory.countdownTime(), () => { winPanel.SetActive(true); });
     }
 

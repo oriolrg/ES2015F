@@ -4,8 +4,9 @@ using System;
 [Serializable]
 public enum Player
 {
-    Player,
+	Player,
     CPU1,
     CPU2,
-    CPU3
+    CPU3,
+	Neutral
 }
