@@ -35,6 +35,7 @@ public class Health : MonoBehaviour
 
     public void loseHP(int hpLost)
     {
+		AI.Instance.counterattack (gameObject);
         health -= hpLost;
         health = Mathf.Min(health, MaxHealth);
         health = Mathf.Max(health, 0);

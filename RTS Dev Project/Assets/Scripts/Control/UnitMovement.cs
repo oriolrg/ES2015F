@@ -103,7 +103,6 @@ public class UnitMovement : MonoBehaviour {
 			
 			if (currentWaypoint > path.vectorPath.Count) return; 
 			if (currentWaypoint == path.vectorPath.Count) {
-				Debug.Log ("End Of Path Reached");
 				currentWaypoint++;
 				return;
 			}

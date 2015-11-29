@@ -18,84 +18,109 @@ public class AttackController : MonoBehaviour {
     private UnitMovement um;
 
     Animator animator;
+	
 
-    // Use this for initialization
-
-
-    // Use this for initialization
-    void Start()
-    {
-        this.identity = this.gameObject.GetComponent<Identity>();
-        this.range = DataManager.Instance.unitDatas[identity.unitType].stats[Stat.Range];
-        this.atkDmg = DataManager.Instance.unitDatas[identity.unitType].stats[Stat.Attack];
-        um = gameObject.GetComponent<UnitMovement>();
+	// Use this for initialization
+	void Awake () {
+		this.identity = this.gameObject.GetComponent<Identity> ();
+		this.range = DataManager.Instance.unitDatas [identity.unitType].stats [Stat.Range];
+		this.atkDmg = DataManager.Instance.unitDatas [identity.unitType].stats [Stat.Attack];
+		um = gameObject.GetComponent<UnitMovement> ();
         animator = GetComponent<Animator>();
-    }
+	}
 
-    public void attack(GameObject enemy)
-    {
-        Debug.Log(enemy.gameObject.layer);
-        double r;
-        if (enemy.gameObject.layer == 11)
-        {
+	public void attack(GameObject enemy){
+		Debug.Log (enemy.gameObject.layer);
+		double r = this.range;
 
-            r = this.range + 7;
-        }
-        else
-        {
-            r = this.range;
-        }
-        this.attacking_enemy = enemy;
+		this.attacking_enemy = enemy ;
 
-        Vector3 myPos = this.gameObject.transform.position;
-        Vector3 enemyPos = enemy.gameObject.transform.position;
+		Vector3 myPos = this.gameObject.transform.position;
+		Vector3 enemyPos = enemy.gameObject.transform.position;
+		
+		double d = RealDistance(enemy);
 
-        double d = Vector3.Distance(myPos, enemyPos);
+		if (!IsInRange(enemy)) {
+			um.status = Status.running;
+			Vector3 vec = enemyPos - myPos;
+			vec = vec.normalized;
+			double alpha = d - (r / 2.0);
+		
+			vec.x *= (float)alpha;
+			vec.z *= (float)alpha;
+			Vector3 targetPos = myPos + vec;
+			targetPos.y = 0;
+		
+			attacking_target = Instantiate (targetPrefab, targetPos, Quaternion.identity) as GameObject; //Instanciar prefab target
+			um.startMoving (attacking_target);
+			this.enemy_last_pos = attacking_enemy.transform.position;
+		} else {
+			um.status = Status.attacking;
+		}
 
-        if (d >= range)
-        {
-            um.status = Status.running;
-            Vector3 vec = enemyPos - myPos;
-            vec = vec.normalized;
-            double alpha = d - (r / 2.0);
+	}
 
-            vec.x *= (float)alpha;
-            vec.z *= (float)alpha;
-            Vector3 targetPos = myPos + vec;
-            targetPos.y = 0;
+	// Update is called once per frame
+	void Update () {
+		if (this.attacking_enemy != null) { //check if position has changed, and follow if so
 
-            attacking_target = Instantiate(targetPrefab, targetPos, Quaternion.identity) as GameObject; //Instanciar prefab target
-            um.startMoving(attacking_target);
-            this.enemy_last_pos = attacking_enemy.transform.position;
-        }
-        else
-        {
-            um.status = Status.attacking;
-        }
+			if (IsInRange (attacking_enemy)) {
+				AttackManaging ();
+			}
 
-    }
+			if (Vector3.Distance (enemy_last_pos, attacking_enemy.transform.position) > this.range) {
+				this.attack (attacking_enemy);
+				CancelInvoke ("DealDamage");
+			}
+		} else {
+			CancelInvoke ("DealDamage");
+		}
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (this.attacking_enemy != null)
-        { //check if position has changed, and follow if so
-            Vector3 enemyPos = attacking_enemy.transform.position;
+	//Makes the target lose health equal to this unit damage stat.
+	private void DealDamage(){
+		if (this.attacking_enemy != null && IsInRange(attacking_enemy)) {
+			this.attacking_enemy.GetComponent<Health> ().loseHP ((int)this.atkDmg);
+		}
+	}
 
-            if (this.attacking_enemy.layer == 11 && (Vector3.Distance(enemyPos, this.gameObject.transform.position) <= range * 2 + 7))
-            {
-                attacking_enemy.GetComponent<Health>().loseHP((int)this.atkDmg);
-            }
-            else if (Vector3.Distance(enemyPos, this.gameObject.transform.position) <= this.range * 2)
-            {
-                attacking_enemy.GetComponent<Health>().loseHP((int)this.atkDmg);
-            }
+	//Returns a boolean indicating if the target is in attack range.
+	private bool IsInRange(GameObject enemy){
+		if (enemy != null) {
+			float dist = RealDistance (enemy);
+			return (dist < this.range);
+		} else {
+			return false;
+		}
+	}
 
-            if (Vector3.Distance(enemy_last_pos, enemyPos) > this.range)
-            {
-                this.attack(attacking_enemy);
-            }
-        }
-    }
+	//Returns distance between this gameobject and another one, considering its size.
+	private float RealDistance(GameObject enemy){
+		if (enemy != null) {
+			float dist;
+			//Attacking a Building
+			Vector3 boxSize = enemy.GetComponent<BoxCollider> ().size;
+			float boxRadius = Mathf.Sqrt (boxSize.x * boxSize.x + boxSize.z * boxSize.z);
+
+			dist = Vector3.Distance (this.gameObject.transform.position, enemy.transform.position) - boxRadius;
+			return dist;
+		} else {
+			return (float)0.0;
+		}
+	}
+
+	private void AttackManaging(){
+		if (this.um.status == Status.attacking) {
+			//Already attacking and already invoked routine.
+
+		} else {
+			this.um.status = Status.attacking;
+			InvokeRepeating ("DealDamage", 1, 1);
+			animator.SetBool ("attack",true);
+
+		}
+
+	}
+
 }
 
