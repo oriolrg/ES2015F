@@ -16,13 +16,14 @@ public class UnitMovement : MonoBehaviour {
 
 	Seeker seeker;
 	Path path;
-	int currentWaypoint;
+	public int currentWaypoint;
 	CharacterController characterController;
-	Vector3 targetPos;
+public Vector3 targetPos;
     Animator animator;
 	AttackController attack;
 
-	public float dis;
+	public float distanceToTarget;
+	public float currentPathCount;
 
 	public bool hasTarget;
 
@@ -52,7 +53,7 @@ public class UnitMovement : MonoBehaviour {
         CollectResources collect = gameObject.GetComponent<CollectResources>();
         //if (!AI.Instance.resources.Contains(target.tag) & collect != null) if (collect.goingToCollect) collect.goingToCollect = false;
 		this.target = target.transform;
-        if ( seeker != null ) seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
+		if ( seeker != null ) seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
         
 		targetPos = target.transform.position;
 		hasTarget = true;
@@ -69,9 +70,8 @@ public class UnitMovement : MonoBehaviour {
 		status = Status.running;
 	}
 
-
-
 	
+
 	public void OnPathComplete (Path p) {
 		p.Claim (this);
 		if (!p.error) {
@@ -79,97 +79,72 @@ public class UnitMovement : MonoBehaviour {
 			path = p;
 			//Reset the waypoint counter
 			currentWaypoint = 0;
+			currentPathCount = path.vectorPath.Count;
 		} else {
 			p.Release (this);
-			Debug.Log ("Oh noes, the target was not reachable: "+p.errorLog);
+			Debug.Log ("The target was not reachable: "+p.errorLog);
 		}
-		
-		//seeker.StartPath (transform.position,targetPosition, OnPathComplete);
 	}
 
 
 	void FixedUpdate(){
+
+		//If the unit have somewhere to go
 		if (hasTarget) {
 
+			Construct construct = GetComponent<Construct>(); //See if the unit has something to cunstruct
+
+			//Recalculate path
 			if (Time.time - lastRepath > repathRate && seeker.IsDone()) {
 				lastRepath = Time.time+ Random.value*repathRate*0.5f;
-				seeker.StartPath (transform.position,target.position, OnPathComplete);
+				seeker.StartPath (transform.position,targetPos, OnPathComplete);
 			}
-			
+
 			if (path == null) {
-				//We have no path to move after yet
 				return;
 			}
 			
-			if (currentWaypoint > path.vectorPath.Count) return; 
-			if (currentWaypoint == path.vectorPath.Count) {
-				currentWaypoint++;
-				return;
+			//Distance to the target from the current position
+			distanceToTarget = Vector3.Distance(transform.position,targetPos);
+
+			//If the unit hasn't reached the target yet
+			if(!targetReached(distanceToTarget)){
+				Vector3 dir = (path.vectorPath[currentWaypoint]-transform.position).normalized; //direction to move along
+				dir *= speed;
+				characterController.SimpleMove (dir);
+
+				//If the unit has moved enough go to the next waypoint of the grid
+				if ( (transform.position-path.vectorPath[currentWaypoint]).sqrMagnitude < nextWaypointDistance*nextWaypointDistance && currentWaypoint < currentPathCount - 1) currentWaypoint++;
+			} else {
+				if(status != Status.attacking){ 
+					if (construct != null) {
+						if (!construct.getConstruct()){
+							stopUnit();
+						}
+
+					}
+				}
 			}
-			
-			//Direction to the next waypoint
-			Vector3 dir = (path.vectorPath[currentWaypoint]-transform.position).normalized;
-			dir *= speed;// * Time.deltaTime;
-			//transform.Translate (dir);
-			characterController.SimpleMove (dir);
-			
-			//if (Vector3.Distance (transform.position,path.vectorPath[currentWaypoint]) < nextWaypointDistance) {
-			if ( (transform.position-path.vectorPath[currentWaypoint]).sqrMagnitude < nextWaypointDistance*nextWaypointDistance) {
-				currentWaypoint++;
-			}
 
-
-			if(status != Status.attacking){
-				Vector3 v = new Vector3(1.0f,transform.localScale.y/2.0f,1.0f);
-				dis = (Vector3.Distance(transform.position,Vector3.Scale(targetPos,v)));
-
-                Construct construct = GetComponent<Construct>();
-                if (construct != null)
-                {
-                    if (!construct.getConstruct())
-                    {
-                        if (targetReached( dis ))
-                        {
-
-
-                            timerDeath timer = target.GetComponent<timerDeath>();
-                            if (timer != null)
-                            {
-                                timer.UnitLostTarget(gameObject);
-                            }
-                            hasTarget = false;
-                            var animator = GetComponent<Animator>();
-                            if (animator != null)
-                            {
-                                animator.SetBool("walk", false);
-                            }
-                            status = Status.idle;
-
-                            // If there is any callback, call it
-                            if (callback != null)
-                                callback();
-                        }
-                    }
-                }
-                else {
-                    if (targetReached( dis ))
-                    {
-                        timerDeath timer = target.GetComponent<timerDeath>();
-                        if (timer != null)
-                        {
-                            timer.UnitLostTarget(gameObject);
-                        }
-                        hasTarget = false;
-                        var animator = GetComponent<Animator>();
-                        if (animator != null)
-                        {
-                            animator.SetBool("walk", false);
-                        }
-                        status = Status.idle;
-                    }
-                }
-            }
-        }
+		}
+	}
+	
+	public void stopUnit(){
+		timerDeath timer = target.GetComponent<timerDeath>();
+		if (timer != null)
+		{
+			timer.UnitLostTarget(gameObject);
+		}
+		hasTarget = false;
+		var animator = GetComponent<Animator>();
+		if (animator != null)
+		{
+			animator.SetBool("walk", false);
+		}
+		status = Status.idle;
+		// If there is any callback, call it
+		if (callback != null)
+			callback();
 	}
 
     private bool targetReached( float distanceToTarget )
@@ -185,7 +160,7 @@ public class UnitMovement : MonoBehaviour {
             float targetDiagonal = new Vector2(targetExtents.x, targetExtents.z).magnitude;
             float myDiagonal = new Vector2(myExtents.x, myExtents.z).magnitude;
 
-            if (targetDiagonal == 0) myDiagonal = 0.1f;
+            if (targetDiagonal == 0) myDiagonal = 0.2f;
 
             return distanceToTarget < targetDiagonal + myDiagonal;
         }
@@ -196,4 +171,6 @@ public class UnitMovement : MonoBehaviour {
 
         return false;
     }
+
+	
 }

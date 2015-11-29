@@ -373,8 +373,11 @@ public class GameController : MonoBehaviour
 
 	public void moveUnits(GameObject target)
 	{
+        timerDeath groundTarget = target.GetComponent<timerDeath>();
+        int formationMatrixSize = (int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)); 
         if (selectedUnits.hasMovableUnits())
         {
+            groundTarget.setFormationMatrix(formationMatrixSize);
             foreach (var unit in selectedUnits.units)
             {
                 // Special case: a civilian moves towards a town center and has resources to store
@@ -414,10 +417,17 @@ public class GameController : MonoBehaviour
                         }
                         else
                         {
-                            script.startMoving(target);
-                            timerDeath groundTarget = target.GetComponent<timerDeath>();
-                            if( groundTarget != null )
+                            if(formationMatrixSize > 1){
+                                Vector3 newTargetPosition = Vector3.zero;
+                                if( groundTarget != null )
+                                    newTargetPosition = groundTarget.AddUnitMouseSelection(unit);
+                                
+                                script.startMoving(target);
+                                script.targetPos = newTargetPosition;
+                            } else {
                                 groundTarget.AddUnit(unit);
+                                script.startMoving(target);
+                            }
                         }
                     }
                 }
