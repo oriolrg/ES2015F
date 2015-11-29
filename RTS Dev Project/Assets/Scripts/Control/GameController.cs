@@ -303,11 +303,11 @@ public class GameController : MonoBehaviour
                 cube.GetComponent<MeshRenderer>().enabled = false;
 
                 justDisabled = true;
-                print("ENTRA");
+                
             }
             else
             {
-                print("BIEN");
+                
                 fowCounter++;
                 //foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
                 //{
@@ -317,7 +317,6 @@ public class GameController : MonoBehaviour
                 if (fowCounter > 5)
                 {
                     GameObject.FindGameObjectWithTag("FOWObject").GetComponent<MeshRenderer>().enabled = false;
-                    print("GENIAL");
                     GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().enabled = false;
                     justDisabled = false;
                     fowCounter = 0;
