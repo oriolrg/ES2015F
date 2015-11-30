@@ -15,6 +15,8 @@ public class BuildingPlacer : MonoBehaviour {
 	void Start()
 	{
 
+        GetComponent<Renderer>().enabled = true;
+
 		originalColor = gameObject.GetComponent<Renderer> ().material.color;
         transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
 
