@@ -44,7 +44,7 @@ public class AttackController : MonoBehaviour {
 			um.status = Status.running;
 			Vector3 vec = enemyPos - myPos;
 			vec = vec.normalized;
-			double alpha = d - (r / 2.0);
+			double alpha = d - (r/3.0);
 		
 			vec.x *= (float)alpha;
 			vec.z *= (float)alpha;
@@ -55,7 +55,7 @@ public class AttackController : MonoBehaviour {
 			um.startMoving (attacking_target);
 			this.enemy_last_pos = attacking_enemy.transform.position;
 		} else {
-			um.status = Status.attacking;
+			AttackManaging();
 		}
 
 	}
@@ -69,8 +69,10 @@ public class AttackController : MonoBehaviour {
 			}
 
 			if (Vector3.Distance (enemy_last_pos, attacking_enemy.transform.position) > this.range) {
-				this.attack (attacking_enemy);
+				this.um.status = Status.running;
 				CancelInvoke ("DealDamage");
+				this.attack (attacking_enemy);
+
 			}
 		} else {
 			CancelInvoke ("DealDamage");
@@ -79,8 +81,10 @@ public class AttackController : MonoBehaviour {
 
 	//Makes the target lose health equal to this unit damage stat.
 	private void DealDamage(){
+		Debug.Log ("DealDamage");
 		if (this.attacking_enemy != null && IsInRange(attacking_enemy)) {
 			this.attacking_enemy.GetComponent<Health> ().loseHP ((int)this.atkDmg);
+			Debug.Log ("Unit "+ this.identity.name +" dealt " + this.atkDmg + " damage.");
 		}
 	}
 
