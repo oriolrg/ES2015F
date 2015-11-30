@@ -420,8 +420,6 @@ public class HUD : MonoBehaviour
 
         button.onClick.AddListener(callback);
 
-
-
         return block;
     }
 
@@ -442,7 +440,13 @@ public class HUD : MonoBehaviour
     {
         countdownPanel.gameObject.SetActive(true);
 		victoryCondition.text = string.Format("{0}: {1}", victory.ToString(), winner);//DataManager.Instance.playerDatas[winner].name);
-        countdownText.setTimer( victory.countdownTime(), () => { winPanel.SetActive(true); });
+        //countdownText.setTimer( victory.countdownTime(), () => { winPanel.SetActive(true); });
+		countdownText.setTimer( victory.countdownTime(), () => { 
+			gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu (
+				winner.Equals(Player.Player),
+				"All objectives controlled"
+			); 
+		});
     }
 
     public void stopCountdown(Victory victory)
@@ -467,6 +471,7 @@ public class HUD : MonoBehaviour
 			}
 		}
 	}
+
     /*
 	public void ShowWinMessage(){
 		winPanel.SetActive(true);
