@@ -1,0 +1,251 @@
+fileFormatVersion: 2
+guid: 6b8e49280ba13e942888aa71fbba1884
+timeCreated: 1448833000
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Arco
+    100002: arquero_egipcio
+    100004: arquero_egipcio_MeshPart0
+    100006: arquero_egipcio_MeshPart1
+    100008: arrow bone
+    100010: arrow bone 1
+    100012: arrow bone_end
+    100014: //RootNode
+    100016: Camera
+    100018: chest
+    100020: Flecha
+    100022: foot.L
+    100024: foot.R
+    100026: hand.L
+    100028: hand.R
+    100030: head
+    100032: head_end
+    100034: human bones
+    100036: leg control.L
+    100038: leg control.R
+    100040: leg ik.L
+    100042: leg ik.L_end
+    100044: leg ik.R
+    100046: leg ik.R_end
+    100048: leg pole target.L
+    100050: leg pole target.L_end
+    100052: leg pole target.R
+    100054: leg pole target.R_end
+    100056: lower arm ik.L
+    100058: lower arm ik.L_end
+    100060: lower arm ik.R
+    100062: lower arm ik.R_end
+    100064: lower arm.L
+    100066: lower arm.R
+    100068: lower index.L
+    100070: lower index.L_end
+    100072: lower index.R
+    100074: lower index.R_end
+    100076: lower leg.L
+    100078: lower leg.R
+    100080: lower middle.L
+    100082: lower middle.L_end
+    100084: lower middle.R
+    100086: lower middle.R_end
+    100088: lower pinky.L
+    100090: lower pinky.L_end
+    100092: lower pinky.R
+    100094: lower pinky.R_end
+    100096: lower ring.L
+    100098: lower ring.L_end
+    100100: lower ring.R
+    100102: lower ring.R_end
+    100104: lower thumb.L
+    100106: lower thumb.L_end
+    100108: lower thumb.R
+    100110: lower thumb.R_end
+    100112: neck
+    100114: root
+    100116: ropa.003
+    100118: toes.L
+    100120: toes.L_end
+    100122: toes.R
+    100124: toes.R_end
+    100126: torso
+    100128: upper arm ik.L
+    100130: upper arm ik.L_end
+    100132: upper arm ik.R
+    100134: upper arm ik.R_end
+    100136: upper arm.L
+    100138: upper arm.R
+    100140: upper index.L
+    100142: upper index.R
+    100144: upper leg.L
+    100146: upper leg.R
+    100148: upper middle.L
+    100150: upper middle.R
+    100152: upper pinky.L
+    100154: upper pinky.R
+    100156: upper ring.L
+    100158: upper ring.R
+    100160: upper thumb.L
+    100162: upper thumb.R
+    400000: Arco
+    400002: arquero_egipcio
+    400004: arquero_egipcio_MeshPart0
+    400006: arquero_egipcio_MeshPart1
+    400008: arrow bone
+    400010: arrow bone 1
+    400012: arrow bone_end
+    400014: //RootNode
+    400016: Camera
+    400018: chest
+    400020: Flecha
+    400022: foot.L
+    400024: foot.R
+    400026: hand.L
+    400028: hand.R
+    400030: head
+    400032: head_end
+    400034: human bones
+    400036: leg control.L
+    400038: leg control.R
+    400040: leg ik.L
+    400042: leg ik.L_end
+    400044: leg ik.R
+    400046: leg ik.R_end
+    400048: leg pole target.L
+    400050: leg pole target.L_end
+    400052: leg pole target.R
+    400054: leg pole target.R_end
+    400056: lower arm ik.L
+    400058: lower arm ik.L_end
+    400060: lower arm ik.R
+    400062: lower arm ik.R_end
+    400064: lower arm.L
+    400066: lower arm.R
+    400068: lower index.L
+    400070: lower index.L_end
+    400072: lower index.R
+    400074: lower index.R_end
+    400076: lower leg.L
+    400078: lower leg.R
+    400080: lower middle.L
+    400082: lower middle.L_end
+    400084: lower middle.R
+    400086: lower middle.R_end
+    400088: lower pinky.L
+    400090: lower pinky.L_end
+    400092: lower pinky.R
+    400094: lower pinky.R_end
+    400096: lower ring.L
+    400098: lower ring.L_end
+    400100: lower ring.R
+    400102: lower ring.R_end
+    400104: lower thumb.L
+    400106: lower thumb.L_end
+    400108: lower thumb.R
+    400110: lower thumb.R_end
+    400112: neck
+    400114: root
+    400116: ropa.003
+    400118: toes.L
+    400120: toes.L_end
+    400122: toes.R
+    400124: toes.R_end
+    400126: torso
+    400128: upper arm ik.L
+    400130: upper arm ik.L_end
+    400132: upper arm ik.R
+    400134: upper arm ik.R_end
+    400136: upper arm.L
+    400138: upper arm.R
+    400140: upper index.L
+    400142: upper index.R
+    400144: upper leg.L
+    400146: upper leg.R
+    400148: upper middle.L
+    400150: upper middle.R
+    400152: upper pinky.L
+    400154: upper pinky.R
+    400156: upper ring.L
+    400158: upper ring.R
+    400160: upper thumb.L
+    400162: upper thumb.R
+    2300000: Arco
+    3300000: Arco
+    4300000: Flecha
+    4300002: Arco
+    4300004: arquero_egipcio_MeshPart0
+    4300006: arquero_egipcio_MeshPart1
+    4300008: ropa.003
+    7400000: arrow bone|atacar
+    7400002: Flecha|atacar
+    7400004: human bones|atacar
+    7400006: Arco|walk
+    9500000: //RootNode
+    13700000: arquero_egipcio_MeshPart0
+    13700002: arquero_egipcio_MeshPart1
+    13700004: Flecha
+    13700006: ropa.003
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

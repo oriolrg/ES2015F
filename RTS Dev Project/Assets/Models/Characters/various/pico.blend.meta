@@ -1,22 +1,19 @@
 fileFormatVersion: 2
-guid: 21ea240e4e1e8ae42bc3194071f87317
-timeCreated: 1444156106
-licenseType: Pro
+guid: 9aa7c97165e82f34c90202488d42b25d
+timeCreated: 1448833055
+licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: Bone
-    100004: pic
-    100006: pic_bone
-    400000: //RootNode
-    400002: Bone
-    400004: pic
-    400006: pic_bone
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Circle
-    4300002: pic
+    100000: Bone
+    100002: pic
+    100004: pic_bone
+    100006: //RootNode
+    400000: Bone
+    400002: pic
+    400004: pic_bone
+    400006: //RootNode
+    4300000: pic
     7400000: Default Take
     7400002: chop
     9500000: //RootNode

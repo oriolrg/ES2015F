@@ -1,24 +1,24 @@
 fileFormatVersion: 2
-guid: 83d25e5bafed4c84a91e3fbc5b627d4f
-timeCreated: 1446403104
+guid: 7e2ff16e1c14ca44cac8e104265b8af1
+timeCreated: 1448833024
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: Armature
-    100002: chest
-    100004: cuerda de arco
-    100006: flecha
-    100008: foot.L
-    100010: foot.R
-    100012: //RootNode
-    100014: hand.L
-    100016: hand.R
-    100018: head
-    100020: head_end
-    100022: human
-    100024: human_MeshPart0
-    100026: human_MeshPart1
+    100002: arquero griego
+    100004: arquero griego_MeshPart0
+    100006: arquero griego_MeshPart1
+    100008: chest
+    100010: cuerda de arco
+    100012: flecha
+    100014: foot.L
+    100016: foot.R
+    100018: //RootNode
+    100020: hand.L
+    100022: hand.R
+    100024: head
+    100026: head_end
     100028: leg control.L
     100030: leg control.R
     100032: leg ik.L
@@ -58,48 +58,44 @@ ModelImporter:
     100100: lower thumb.R
     100102: lower thumb.R_end
     100104: neck
-    100106: pelo
-    100108: root
-    100110: toes.L
-    100112: toes.L_end
-    100114: toes.R
-    100116: toes.R_end
-    100118: torso
-    100120: upper arm ik.L
-    100122: upper arm ik.L_end
-    100124: upper arm ik.R
-    100126: upper arm ik.R_end
-    100128: upper arm.L
-    100130: upper arm.R
-    100132: upper index.L
-    100134: upper index.R
-    100136: upper leg.L
-    100138: upper leg.R
-    100140: upper middle.L
-    100142: upper middle.R
-    100144: upper pinky.L
-    100146: upper pinky.R
-    100148: upper ring.L
-    100150: upper ring.R
-    100152: upper thumb.L
-    100154: upper thumb.R
-    100156: vestido
-    100158: vestido.001
-    100160: vestido.002
+    100106: root
+    100108: toes.L
+    100110: toes.L_end
+    100112: toes.R
+    100114: toes.R_end
+    100116: torso
+    100118: upper arm ik.L
+    100120: upper arm ik.L_end
+    100122: upper arm ik.R
+    100124: upper arm ik.R_end
+    100126: upper arm.L
+    100128: upper arm.R
+    100130: upper index.L
+    100132: upper index.R
+    100134: upper leg.L
+    100136: upper leg.R
+    100138: upper middle.L
+    100140: upper middle.R
+    100142: upper pinky.L
+    100144: upper pinky.R
+    100146: upper ring.L
+    100148: upper ring.R
+    100150: upper thumb.L
+    100152: upper thumb.R
     400000: Armature
-    400002: chest
-    400004: cuerda de arco
-    400006: flecha
-    400008: foot.L
-    400010: foot.R
-    400012: //RootNode
-    400014: hand.L
-    400016: hand.R
-    400018: head
-    400020: head_end
-    400022: human
-    400024: human_MeshPart0
-    400026: human_MeshPart1
+    400002: arquero griego
+    400004: arquero griego_MeshPart0
+    400006: arquero griego_MeshPart1
+    400008: chest
+    400010: cuerda de arco
+    400012: flecha
+    400014: foot.L
+    400016: foot.R
+    400018: //RootNode
+    400020: hand.L
+    400022: hand.R
+    400024: head
+    400026: head_end
     400028: leg control.L
     400030: leg control.R
     400032: leg ik.L
@@ -139,60 +135,45 @@ ModelImporter:
     400100: lower thumb.R
     400102: lower thumb.R_end
     400104: neck
-    400106: pelo
-    400108: root
-    400110: toes.L
-    400112: toes.L_end
-    400114: toes.R
-    400116: toes.R_end
-    400118: torso
-    400120: upper arm ik.L
-    400122: upper arm ik.L_end
-    400124: upper arm ik.R
-    400126: upper arm ik.R_end
-    400128: upper arm.L
-    400130: upper arm.R
-    400132: upper index.L
-    400134: upper index.R
-    400136: upper leg.L
-    400138: upper leg.R
-    400140: upper middle.L
-    400142: upper middle.R
-    400144: upper pinky.L
-    400146: upper pinky.R
-    400148: upper ring.L
-    400150: upper ring.R
-    400152: upper thumb.L
-    400154: upper thumb.R
-    400156: vestido
-    400158: vestido.001
-    400160: vestido.002
-    4300000: vestido.002
-    4300002: vestido.001
-    4300004: pelo
-    4300006: vestido
-    4300008: human_MeshPart0
-    4300010: human_MeshPart1
-    4300012: cuerda de arco
-    4300014: flecha
+    400106: root
+    400108: toes.L
+    400110: toes.L_end
+    400112: toes.R
+    400114: toes.R_end
+    400116: torso
+    400118: upper arm ik.L
+    400120: upper arm ik.L_end
+    400122: upper arm ik.R
+    400124: upper arm ik.R_end
+    400126: upper arm.L
+    400128: upper arm.R
+    400130: upper index.L
+    400132: upper index.R
+    400134: upper leg.L
+    400136: upper leg.R
+    400138: upper middle.L
+    400140: upper middle.R
+    400142: upper pinky.L
+    400144: upper pinky.R
+    400146: upper ring.L
+    400148: upper ring.R
+    400150: upper thumb.L
+    400152: upper thumb.R
+    4300000: arquero griego_MeshPart0
+    4300002: arquero griego_MeshPart1
+    4300004: cuerda de arco
+    4300006: flecha
     7400000: Armature|die
     7400002: Armature|stand by
     7400004: Armature|walk
-    7400006: vestido.002|stand by
-    7400008: vestido.001|stand by
-    7400010: pelo|stand by
-    7400012: vestido|stand by
-    7400014: cuerda de arco|walk
-    7400016: flecha|stand by
+    7400006: arquero griego|attack
+    7400008: cuerda de arco|walk
+    7400010: flecha|walk
     9500000: //RootNode
-    13700000: cuerda de arco
-    13700002: flecha
-    13700004: human_MeshPart0
-    13700006: human_MeshPart1
-    13700008: pelo
-    13700010: vestido
-    13700012: vestido.001
-    13700014: vestido.002
+    13700000: arquero griego_MeshPart0
+    13700002: arquero griego_MeshPart1
+    13700004: cuerda de arco
+    13700006: flecha
   materials:
     importMaterials: 1
     materialName: 0

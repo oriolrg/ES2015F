@@ -1,0 +1,243 @@
+fileFormatVersion: 2
+guid: 4f90869440fca7848905eef8325b6613
+timeCreated: 1448832967
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Armature
+    100002: Armature.001
+    100004: Bone
+    100006: Bone_end
+    100008: chest
+    100010: Circle
+    100012: //RootNode
+    100014: foot rotation.L
+    100016: foot rotation.R
+    100018: foot.L
+    100020: foot.R
+    100022: hand.L
+    100024: hand.R
+    100026: head
+    100028: head_end
+    100030: human
+    100032: human_MeshPart0
+    100034: human_MeshPart1
+    100036: leg control.L
+    100038: leg control.R
+    100040: leg ik.L
+    100042: leg ik.L_end
+    100044: leg ik.R
+    100046: leg ik.R_end
+    100048: leg pole target.L
+    100050: leg pole target.L_end
+    100052: leg pole target.R
+    100054: leg pole target.R_end
+    100056: lower arm ik.L
+    100058: lower arm ik.L_end
+    100060: lower arm ik.R
+    100062: lower arm ik.R_end
+    100064: lower arm.L
+    100066: lower arm.R
+    100068: lower index.L
+    100070: lower index.L_end
+    100072: lower index.R
+    100074: lower index.R_end
+    100076: lower leg.L
+    100078: lower leg.R
+    100080: lower middle.L
+    100082: lower middle.L_end
+    100084: lower middle.R
+    100086: lower middle.R_end
+    100088: lower pinky.L
+    100090: lower pinky.L_end
+    100092: lower pinky.R
+    100094: lower pinky.R_end
+    100096: lower ring.L
+    100098: lower ring.L_end
+    100100: lower ring.R
+    100102: lower ring.R_end
+    100104: lower thumb.L
+    100106: lower thumb.L_end
+    100108: lower thumb.R
+    100110: lower thumb.R_end
+    100112: neck
+    100114: root
+    100116: toes.L
+    100118: toes.L_end
+    100120: toes.R
+    100122: toes.R_end
+    100124: torso
+    100126: upper arm ik.L
+    100128: upper arm ik.L_end
+    100130: upper arm ik.R
+    100132: upper arm ik.R_end
+    100134: upper arm.L
+    100136: upper arm.R
+    100138: upper index.L
+    100140: upper index.R
+    100142: upper leg.L
+    100144: upper leg.R
+    100146: upper middle.L
+    100148: upper middle.R
+    100150: upper pinky.L
+    100152: upper pinky.R
+    100154: upper ring.L
+    100156: upper ring.R
+    100158: upper thumb.L
+    100160: upper thumb.R
+    400000: Armature
+    400002: Armature.001
+    400004: Bone
+    400006: Bone_end
+    400008: chest
+    400010: Circle
+    400012: //RootNode
+    400014: foot rotation.L
+    400016: foot rotation.R
+    400018: foot.L
+    400020: foot.R
+    400022: hand.L
+    400024: hand.R
+    400026: head
+    400028: head_end
+    400030: human
+    400032: human_MeshPart0
+    400034: human_MeshPart1
+    400036: leg control.L
+    400038: leg control.R
+    400040: leg ik.L
+    400042: leg ik.L_end
+    400044: leg ik.R
+    400046: leg ik.R_end
+    400048: leg pole target.L
+    400050: leg pole target.L_end
+    400052: leg pole target.R
+    400054: leg pole target.R_end
+    400056: lower arm ik.L
+    400058: lower arm ik.L_end
+    400060: lower arm ik.R
+    400062: lower arm ik.R_end
+    400064: lower arm.L
+    400066: lower arm.R
+    400068: lower index.L
+    400070: lower index.L_end
+    400072: lower index.R
+    400074: lower index.R_end
+    400076: lower leg.L
+    400078: lower leg.R
+    400080: lower middle.L
+    400082: lower middle.L_end
+    400084: lower middle.R
+    400086: lower middle.R_end
+    400088: lower pinky.L
+    400090: lower pinky.L_end
+    400092: lower pinky.R
+    400094: lower pinky.R_end
+    400096: lower ring.L
+    400098: lower ring.L_end
+    400100: lower ring.R
+    400102: lower ring.R_end
+    400104: lower thumb.L
+    400106: lower thumb.L_end
+    400108: lower thumb.R
+    400110: lower thumb.R_end
+    400112: neck
+    400114: root
+    400116: toes.L
+    400118: toes.L_end
+    400120: toes.R
+    400122: toes.R_end
+    400124: torso
+    400126: upper arm ik.L
+    400128: upper arm ik.L_end
+    400130: upper arm ik.R
+    400132: upper arm ik.R_end
+    400134: upper arm.L
+    400136: upper arm.R
+    400138: upper index.L
+    400140: upper index.R
+    400142: upper leg.L
+    400144: upper leg.R
+    400146: upper middle.L
+    400148: upper middle.R
+    400150: upper pinky.L
+    400152: upper pinky.R
+    400154: upper ring.L
+    400156: upper ring.R
+    400158: upper thumb.L
+    400160: upper thumb.R
+    4300000: Circle
+    4300002: human_MeshPart0
+    4300004: human_MeshPart1
+    7400000: Armature|cut
+    7400002: Armature|die
+    7400004: Armature|stand by
+    9500000: //RootNode
+    13700000: Circle
+    13700002: human_MeshPart0
+    13700004: human_MeshPart1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

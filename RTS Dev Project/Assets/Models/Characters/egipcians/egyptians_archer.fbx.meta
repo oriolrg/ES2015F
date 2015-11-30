@@ -1,211 +1,196 @@
 fileFormatVersion: 2
-guid: 8b695249274971448b9d9500cf8dbf9c
-timeCreated: 1447611887
+guid: 218e3ad3c1c79754eae4a07176e497f1
+timeCreated: 1448832899
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: arco
+    100000: Arco
     100002: Armature
-    100004: Camera
-    100006: chest
-    100008: //RootNode
-    100010: flecha
-    100012: foot.L
-    100014: foot.R
-    100016: hand.L
-    100018: hand.R
-    100020: head
-    100022: head_end
-    100024: human
-    100026: human_MeshPart0
-    100028: human_MeshPart1
-    100030: leg control.L
-    100032: leg control.R
-    100034: leg ik.L
-    100036: leg ik.L_end
-    100038: leg ik.R
-    100040: leg ik.R_end
-    100042: leg pole target.L
-    100044: leg pole target.L_end
-    100046: leg pole target.R
-    100048: leg pole target.R_end
-    100050: lower arm ik.L
-    100052: lower arm ik.L_end
-    100054: lower arm ik.R
-    100056: lower arm ik.R_end
-    100058: lower arm.L
-    100060: lower arm.R
-    100062: lower index.L
-    100064: lower index.L_end
-    100066: lower index.R
-    100068: lower index.R_end
-    100070: lower leg.L
-    100072: lower leg.R
-    100074: lower middle.L
-    100076: lower middle.L_end
-    100078: lower middle.R
-    100080: lower middle.R_end
-    100082: lower pinky.L
-    100084: lower pinky.L_end
-    100086: lower pinky.R
-    100088: lower pinky.R_end
-    100090: lower ring.L
-    100092: lower ring.L_end
-    100094: lower ring.R
-    100096: lower ring.R_end
-    100098: lower thumb.L
-    100100: lower thumb.L_end
-    100102: lower thumb.R
-    100104: lower thumb.R_end
-    100106: neck
-    100108: pantalon
-    100110: pantalon.001
-    100112: pelo
-    100114: roba
-    100116: roba.001
-    100118: root
-    100120: Sun
-    100122: toes.L
-    100124: toes.L_end
-    100126: toes.R
-    100128: toes.R_end
-    100130: torso
-    100132: upper arm ik.L
-    100134: upper arm ik.L_end
-    100136: upper arm ik.R
-    100138: upper arm ik.R_end
-    100140: upper arm.L
-    100142: upper arm.R
-    100144: upper index.L
-    100146: upper index.R
-    100148: upper leg.L
-    100150: upper leg.R
-    100152: upper middle.L
-    100154: upper middle.R
-    100156: upper pinky.L
-    100158: upper pinky.R
-    100160: upper ring.L
-    100162: upper ring.R
-    100164: upper thumb.L
-    100166: upper thumb.R
-    400000: arco
+    100004: Armature.001
+    100006: arquero?egipcio
+    100008: arquero?egipcio_MeshPart0
+    100010: arquero?egipcio_MeshPart1
+    100012: arquero?egipcio_MeshPart2
+    100014: Bone
+    100016: Bone_end
+    100018: Camera
+    100020: chest
+    100022: //RootNode
+    100024: flecha
+    100026: foot.L
+    100028: foot.R
+    100030: hand.L
+    100032: hand.R
+    100034: head
+    100036: head_end
+    100038: leg control.L
+    100040: leg control.R
+    100042: leg ik.L
+    100044: leg ik.L_end
+    100046: leg ik.R
+    100048: leg ik.R_end
+    100050: leg pole target.L
+    100052: leg pole target.L_end
+    100054: leg pole target.R
+    100056: leg pole target.R_end
+    100058: lower arm ik.L
+    100060: lower arm ik.L_end
+    100062: lower arm ik.R
+    100064: lower arm ik.R_end
+    100066: lower arm.L
+    100068: lower arm.R
+    100070: lower index.L
+    100072: lower index.L_end
+    100074: lower index.R
+    100076: lower index.R_end
+    100078: lower leg.L
+    100080: lower leg.R
+    100082: lower middle.L
+    100084: lower middle.L_end
+    100086: lower middle.R
+    100088: lower middle.R_end
+    100090: lower pinky.L
+    100092: lower pinky.L_end
+    100094: lower pinky.R
+    100096: lower pinky.R_end
+    100098: lower ring.L
+    100100: lower ring.L_end
+    100102: lower ring.R
+    100104: lower ring.R_end
+    100106: lower thumb.L
+    100108: lower thumb.L_end
+    100110: lower thumb.R
+    100112: lower thumb.R_end
+    100114: neck
+    100116: root
+    100118: Sun
+    100120: toes.L
+    100122: toes.L_end
+    100124: toes.R
+    100126: toes.R_end
+    100128: torso
+    100130: upper arm ik.L
+    100132: upper arm ik.L_end
+    100134: upper arm ik.R
+    100136: upper arm ik.R_end
+    100138: upper arm.L
+    100140: upper arm.R
+    100142: upper index.L
+    100144: upper index.R
+    100146: upper leg.L
+    100148: upper leg.R
+    100150: upper middle.L
+    100152: upper middle.R
+    100154: upper pinky.L
+    100156: upper pinky.R
+    100158: upper ring.L
+    100160: upper ring.R
+    100162: upper thumb.L
+    100164: upper thumb.R
+    400000: Arco
     400002: Armature
-    400004: Camera
-    400006: chest
-    400008: //RootNode
-    400010: flecha
-    400012: foot.L
-    400014: foot.R
-    400016: hand.L
-    400018: hand.R
-    400020: head
-    400022: head_end
-    400024: human
-    400026: human_MeshPart0
-    400028: human_MeshPart1
-    400030: leg control.L
-    400032: leg control.R
-    400034: leg ik.L
-    400036: leg ik.L_end
-    400038: leg ik.R
-    400040: leg ik.R_end
-    400042: leg pole target.L
-    400044: leg pole target.L_end
-    400046: leg pole target.R
-    400048: leg pole target.R_end
-    400050: lower arm ik.L
-    400052: lower arm ik.L_end
-    400054: lower arm ik.R
-    400056: lower arm ik.R_end
-    400058: lower arm.L
-    400060: lower arm.R
-    400062: lower index.L
-    400064: lower index.L_end
-    400066: lower index.R
-    400068: lower index.R_end
-    400070: lower leg.L
-    400072: lower leg.R
-    400074: lower middle.L
-    400076: lower middle.L_end
-    400078: lower middle.R
-    400080: lower middle.R_end
-    400082: lower pinky.L
-    400084: lower pinky.L_end
-    400086: lower pinky.R
-    400088: lower pinky.R_end
-    400090: lower ring.L
-    400092: lower ring.L_end
-    400094: lower ring.R
-    400096: lower ring.R_end
-    400098: lower thumb.L
-    400100: lower thumb.L_end
-    400102: lower thumb.R
-    400104: lower thumb.R_end
-    400106: neck
-    400108: pantalon
-    400110: pantalon.001
-    400112: pelo
-    400114: roba
-    400116: roba.001
-    400118: root
-    400120: Sun
-    400122: toes.L
-    400124: toes.L_end
-    400126: toes.R
-    400128: toes.R_end
-    400130: torso
-    400132: upper arm ik.L
-    400134: upper arm ik.L_end
-    400136: upper arm ik.R
-    400138: upper arm ik.R_end
-    400140: upper arm.L
-    400142: upper arm.R
-    400144: upper index.L
-    400146: upper index.R
-    400148: upper leg.L
-    400150: upper leg.R
-    400152: upper middle.L
-    400154: upper middle.R
-    400156: upper pinky.L
-    400158: upper pinky.R
-    400160: upper ring.L
-    400162: upper ring.R
-    400164: upper thumb.L
-    400166: upper thumb.R
-    4300000: pantalon.001
-    4300002: roba.001
-    4300004: pelo
-    4300006: pantalon
-    4300008: roba
-    4300010: human_MeshPart0
-    4300012: human_MeshPart1
-    4300014: arco
-    4300016: flecha
+    400004: Armature.001
+    400006: arquero?egipcio
+    400008: arquero?egipcio_MeshPart0
+    400010: arquero?egipcio_MeshPart1
+    400012: arquero?egipcio_MeshPart2
+    400014: Bone
+    400016: Bone_end
+    400018: Camera
+    400020: chest
+    400022: //RootNode
+    400024: flecha
+    400026: foot.L
+    400028: foot.R
+    400030: hand.L
+    400032: hand.R
+    400034: head
+    400036: head_end
+    400038: leg control.L
+    400040: leg control.R
+    400042: leg ik.L
+    400044: leg ik.L_end
+    400046: leg ik.R
+    400048: leg ik.R_end
+    400050: leg pole target.L
+    400052: leg pole target.L_end
+    400054: leg pole target.R
+    400056: leg pole target.R_end
+    400058: lower arm ik.L
+    400060: lower arm ik.L_end
+    400062: lower arm ik.R
+    400064: lower arm ik.R_end
+    400066: lower arm.L
+    400068: lower arm.R
+    400070: lower index.L
+    400072: lower index.L_end
+    400074: lower index.R
+    400076: lower index.R_end
+    400078: lower leg.L
+    400080: lower leg.R
+    400082: lower middle.L
+    400084: lower middle.L_end
+    400086: lower middle.R
+    400088: lower middle.R_end
+    400090: lower pinky.L
+    400092: lower pinky.L_end
+    400094: lower pinky.R
+    400096: lower pinky.R_end
+    400098: lower ring.L
+    400100: lower ring.L_end
+    400102: lower ring.R
+    400104: lower ring.R_end
+    400106: lower thumb.L
+    400108: lower thumb.L_end
+    400110: lower thumb.R
+    400112: lower thumb.R_end
+    400114: neck
+    400116: root
+    400118: Sun
+    400120: toes.L
+    400122: toes.L_end
+    400124: toes.R
+    400126: toes.R_end
+    400128: torso
+    400130: upper arm ik.L
+    400132: upper arm ik.L_end
+    400134: upper arm ik.R
+    400136: upper arm ik.R_end
+    400138: upper arm.L
+    400140: upper arm.R
+    400142: upper index.L
+    400144: upper index.R
+    400146: upper leg.L
+    400148: upper leg.R
+    400150: upper middle.L
+    400152: upper middle.R
+    400154: upper pinky.L
+    400156: upper pinky.R
+    400158: upper ring.L
+    400160: upper ring.R
+    400162: upper thumb.L
+    400164: upper thumb.R
+    2300000: Arco
+    3300000: Arco
+    4300000: Arco
+    4300002: arquero?egipcio_MeshPart0
+    4300004: arquero?egipcio_MeshPart1
+    4300006: arquero?egipcio_MeshPart2
+    4300008: flecha
     7400000: Armature|attack
-    7400002: Armature|walk
-    7400004: pantalon.001|walk
-    7400006: roba.001|walk
-    7400008: pelo|walk
-    7400010: pantalon|walk
-    7400012: roba|walk
-    7400014: human|attack
-    7400016: arco|attack
-    7400018: flecha|attack
-    7400020: Armature|die
-    7400022: Armature|standby
-    7400024: pantalon|standby
-    7400026: flecha|standby
+    7400002: Armature|die
+    7400004: Armature|standby
+    7400006: Armature|walk
+    7400008: Arco|die
+    7400010: arquero?egipcio|attack
+    7400012: flecha|standby
+    7400014: Armature.001|ArmatureAction
     9500000: //RootNode
-    13700000: arco
-    13700002: flecha
-    13700004: human_MeshPart0
-    13700006: human_MeshPart1
-    13700008: pantalon
-    13700010: pantalon.001
-    13700012: pelo
-    13700014: roba
-    13700016: roba.001
+    13700000: arquero?egipcio_MeshPart0
+    13700002: arquero?egipcio_MeshPart1
+    13700004: arquero?egipcio_MeshPart2
+    13700006: flecha
   materials:
     importMaterials: 1
     materialName: 0
