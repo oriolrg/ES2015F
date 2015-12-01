@@ -54,7 +54,7 @@ public class MainMenu : MonoBehaviour {
 		String civ, skill;
 
 		GameData.player = new GameData.PlayerData (
-			Utils.GetEnumValue<GameData.PlayerData.CivilizationEnum>(
+			Utils.GetEnumValue<Civilization>(
 				playerCivilization.GetCurrentOption()
 			)
 		);
@@ -67,7 +67,7 @@ public class MainMenu : MonoBehaviour {
 
 				GameData.cpus.Add (
 					new GameData.CPUData(
-						Utils.GetEnumValue<GameData.PlayerData.CivilizationEnum> (civ),
+						Utils.GetEnumValue<Civilization> (civ),
 						Utils.GetEnumValue<GameData.DifficultyEnum> (skill)
 					)
 				);

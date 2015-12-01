@@ -19,11 +19,27 @@ public class CameraGoTo : MonoBehaviour {
 		float timeSinceStarted = 0f;
 		Vector3 originalPosition = transform.position;
 		Quaternion originalRotation = transform.rotation;
+
+		Vector3 original, target, midTarget;
+		midTarget = (originalPosition + newTransform.position) / 2f;
+		midTarget.y += 1f;
+		float virtualTime = 0f;
 		
 		while (true)
 		{
 			timeSinceStarted += Time.deltaTime / smoothTime;
-			transform.position = Vector3.Lerp(originalPosition, newTransform.position, timeSinceStarted);
+
+			if (timeSinceStarted <= 0.5){
+				original = originalPosition;
+				target = midTarget;
+				virtualTime = timeSinceStarted * 2f;
+			} else {
+				original = midTarget;
+				target = newTransform.position;
+				virtualTime = (timeSinceStarted - 0.5f) * 2f;
+			}
+
+			transform.position = Vector3.Lerp(original, target, virtualTime);
 			transform.rotation = Quaternion.Lerp(originalRotation, newTransform.rotation, timeSinceStarted);
 			
 			/*// If the object has arrived to newPosition with some margin(deltaMovement), stop the coroutine
@@ -33,7 +49,7 @@ public class CameraGoTo : MonoBehaviour {
 				yield break;
 			}*/
 				
-				if (timeSinceStarted >= smoothTime)
+				if (timeSinceStarted >= 1f)
 					yield break;
 			
 			// Otherwise, continue next frame

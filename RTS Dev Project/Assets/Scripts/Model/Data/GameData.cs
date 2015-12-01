@@ -14,6 +14,35 @@ public class GameData : MonoBehaviour {
 	public static PlayerData player;
 	public static List<CPUData> cpus = new List<CPUData>(maxCPUPlayers);
 
+	public static Player cpuIdToPlayer(int id){
+		switch(id) {
+		case 0: return Player.CPU1;
+		case 1: return Player.CPU2;
+		case 2: return Player.CPU3;
+		default: return Player.Neutral;
+		}
+	}
+
+	public static int playerToCPUId(Player p){
+		if (p.Equals (Player.CPU1))
+		    return 0;
+	    else if (p.Equals (Player.CPU2))
+		    return 1;
+	    else if (p.Equals (Player.CPU3))
+		    return 2;
+		else
+			throw new UnityException("Player not CPU");
+	}
+	
+	public static Civilization playerToCiv(Player p) {
+		if (p.Equals(Player.Player))
+			return player.civ;
+		else if (p.Equals(Player.Neutral))
+			return Civilization.Neutral;
+		else
+			return cpus[playerToCPUId(p)].civ;
+	}
+
 	public static GameObject map;
 
 	// Bool that tells GameController if it should use this data to initialize the game or not
@@ -29,10 +58,9 @@ public class GameData : MonoBehaviour {
 	}
 
 	public class PlayerData {
-		public enum CivilizationEnum { Greeks, Egyptians, Babylonians, None };
-		public CivilizationEnum civ { get; private set; }
+		public Civilization civ { get; private set; }
 
-		public PlayerData(CivilizationEnum civ){
+		public PlayerData(Civilization civ){
 			this.civ = civ;
 		}
 	}
@@ -40,7 +68,7 @@ public class GameData : MonoBehaviour {
 	public class CPUData : PlayerData {
 		public DifficultyEnum skill { get; private set; }
 
-		public CPUData(CivilizationEnum civ, DifficultyEnum skill) : base(civ){
+		public CPUData(Civilization civ, DifficultyEnum skill) : base(civ){
 			this.skill = skill;
 		}
 	}

@@ -26,9 +26,8 @@ public class GameMenuBehaviour : MonoBehaviour {
 	}
 
 	public void EndGameMenu(bool victory, string reason){
-		//ToMainMenu ();
-		print("EndGame");
-		endGameMenu.GetComponent<EndGameMenu> ().endGame (victory, reason);//.victory = victory;
-		endGameMenu.SetActive (false); endGameMenu.SetActive (true);
+		print("EndGameMenu method in GameMenuBehaviour");
+		ToMainMenu ();
+		//endGameMenu.GetComponent<EndGameMenu> ().endGame (victory, reason);
 	}
 }
