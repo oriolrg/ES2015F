@@ -26,9 +26,16 @@ public class Health : MonoBehaviour
         }
 
         if (!changedMesh && GetComponent<Identity>().unitType.isBuilding() && health <= MaxHealth / 2)
-        {
+        {   
+            //GetComponent<MeshFilter>().mesh = destroyedPrefab.GetComponent<MeshFilter>().sharedMesh;
+            foreach(Transform child in destroyedPrefab.transform)
+            {
+                GameObject newFirePrefab = Instantiate(child.gameObject, child.position, Quaternion.identity) as GameObject;
+                newFirePrefab.transform.SetParent(transform);
+                newFirePrefab.transform.localPosition = child.localPosition;
+                newFirePrefab.transform.localRotation = child.localRotation;
 
-            GetComponent<MeshFilter>().mesh = destroyedPrefab.GetComponent<MeshFilter>().sharedMesh;
+            }
             changedMesh = true;
         }
     }
