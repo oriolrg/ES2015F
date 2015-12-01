@@ -14,7 +14,6 @@ public class BuildingPlacer : MonoBehaviour {
 
 	void Start()
 	{
-
         GetComponent<Renderer>().enabled = true;
 
 		originalColor = gameObject.GetComponent<Renderer> ().material.color;
@@ -130,7 +129,7 @@ public class BuildingPlacer : MonoBehaviour {
                 else if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
                     //When there is no collision and the mouse left button is clicked, order to start the construction
-
+                    GameController.Instance.updateResource(DataManager.Instance.unitDatas[gameObject.GetComponent<Identity>().unitType].resourceCost, "Ally");
                     gameObject.GetComponent<Renderer>().material.color = transparentColor;
 
                     //GameObject original color with transparency

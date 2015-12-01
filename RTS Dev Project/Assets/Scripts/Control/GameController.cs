@@ -662,7 +662,7 @@ public class GameController : MonoBehaviour
         if (player == "Ally") resDict = playerResources;
         else resDict = cpuResources;
         resDict[res] -= value;
-        if (player=="Ally")hud.updateResource(res, resDict[res]); 
+        if (player=="Ally")hud.updateResource(res, resDict[res]-value); //Subtracting the value twice fixes update on resource panel as one times the cost is given back after OnActionButtonExit.
     }
 
     public void updateResource(Resource res, int value)
@@ -1057,7 +1057,7 @@ public class GameController : MonoBehaviour
 
                 Spawner spa = created.GetComponent<Spawner>();
                 if (spa != null) spa.initBounds();
-                updateResource(unitData.resourceCost, who.tag);
+                //updateResource(unitData.resourceCost, who.tag);
             }
         }
         else
