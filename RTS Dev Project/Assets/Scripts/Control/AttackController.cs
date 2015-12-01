@@ -52,6 +52,7 @@ public class AttackController : MonoBehaviour {
 			targetPos.y = 0;
 		
 			attacking_target = Instantiate (targetPrefab, targetPos, Quaternion.identity) as GameObject; //Instanciar prefab target
+            attacking_target.transform.SetParent(GameController.Instance.targetsParent.transform);
 			um.startMoving (attacking_target);
 			this.enemy_last_pos = attacking_enemy.transform.position;
 		} else {

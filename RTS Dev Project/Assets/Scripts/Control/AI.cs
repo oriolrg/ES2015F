@@ -168,7 +168,7 @@ public class AI : MonoBehaviour {
 		
 		
 		float minDistance = 100000;
-		GameObject closestTown = new GameObject();
+		GameObject closestTown = null;
 		
 		for (int i = 0; i < towncentresX.Count; i++)
 		{
@@ -181,7 +181,7 @@ public class AI : MonoBehaviour {
 				closestTown = towncentresX[i];
 			}
 		}
-		
+
 		return closestTown;
 		
 		
@@ -679,6 +679,7 @@ public class AI : MonoBehaviour {
 		if (GameController.Instance.objectives.Count > 0) {
 			Objective objective = GameController.Instance.objectives [0];
 			GameObject target = Instantiate(targetPrefab, objective.transform.position, Quaternion.identity) as GameObject;
+            target.transform.SetParent(GameController.Instance.targetsParent.transform);
 			timerDeath tD = target.GetComponent<timerDeath>();
 			foreach (GameObject o in GameController.Instance.getAllEnemyArmy()){//getEnemiesNoAtacking(GameController.Instance.getAllEnemyArmy().Count + GameController.Instance.getAllEnemyCivilians().Count)) {
 

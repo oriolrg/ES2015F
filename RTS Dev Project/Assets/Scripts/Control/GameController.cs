@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject unitsParent;
     [SerializeField] private GameObject buildingsParent;
     [SerializeField] private GameObject objectivesParent;
-    [SerializeField] private GameObject targetsParent;
+    public GameObject targetsParent;
 
     [SerializeField]
 	private Troop selectedUnits;
@@ -868,6 +868,8 @@ public class GameController : MonoBehaviour
         //Instantiate the building and start the positioning of the building
         GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
+        building.transform.SetParent(buildingsParent.transform);
+
         building.tag = selectedUnits.units[0].gameObject.tag;
 
         Identity newIden = building.GetComponent<Identity>();
@@ -916,6 +918,9 @@ public class GameController : MonoBehaviour
     public void createBuilding(GameObject prefab, Vector3 position, Troop t)
     {
         GameObject building = Instantiate(prefab, position, gameObject.transform.rotation) as GameObject;
+
+        building.transform.SetParent(buildingsParent.transform);
+
         building.tag = t.units[0].gameObject.tag;
 
         Identity newIden = building.GetComponent<Identity>();
