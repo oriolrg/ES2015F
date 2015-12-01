@@ -66,17 +66,20 @@ public class healthbar : MonoBehaviour
         }
         else {
 			// Only display HealthBar on GameObjects that are Unfogged
-			if (unitLOSEntity.RevealState.Equals (LOSEntity.RevealStates.Hidden) ||
+			/*if (unitLOSEntity.RevealState.Equals (LOSEntity.RevealStates.Hidden) ||
 			    unitLOSEntity.RevealState.Equals (LOSEntity.RevealStates.Fogged)
 			)
 				g.SetActive(false);
 			else
-				g.SetActive (true);
+				g.SetActive (true);*/
 
 
             g1.SetActive(true);
 
             g.transform.GetChild(0).transform.position = Camera.main.WorldToScreenPoint(GetComponentInChildren<auxHealth>().gameObject.transform.position);
+
+            auxHealth aH = g.GetComponentInChildren<auxHealth>();
+            if (aH == null) Debug.Log("nuuuuuuuuuuuuuuull"+ gameObject.name);
 
             maxXValue = g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.x;
             minXValue = g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.x - g.GetComponentInChildren<auxHealth>().gray.rectTransform.rect.width;
@@ -84,7 +87,8 @@ public class healthbar : MonoBehaviour
             curHealth = GetComponent<Health>().getHealth();
             HandleHealth();
 
-            if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || GetComponent<LOSEntity>().RevealState == LOSEntity.RevealStates.Hidden)
+            if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Hidden) ||
+                unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Fogged))
                 g.GetComponentInChildren<auxHealth>().gameObject.SetActive(false);
             
 
