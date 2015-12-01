@@ -19,16 +19,7 @@ public class Identity : MonoBehaviour
 
         // Create random name
         List<string> adjectives = DataManager.Instance.adjectives;
-		if(GameData.winConditions.Contains (Victory.Wonder) && unitType.Equals(UnitType.Wonder)){
-			if (gameObject.tag=="Ally") 
-				GameController.Instance.hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
-					true, "You built a Wonder"
-				);
-			else if(gameObject.tag=="Enemy") 
-				GameController.Instance.hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
-					false, "Enemy Wonder was created"
-				);
-		}
+
         if (unitType.isBuilding())
             name = string.Format("The {0} {1}", adjectives[Random.Range(0, adjectives.Count)], unitType.ToString() );
         else

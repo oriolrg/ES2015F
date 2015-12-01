@@ -61,6 +61,16 @@ public class BuildingConstruction : MonoBehaviour {
 
                 GameController.Instance.updateInteractable();
 				GameController.Instance.addUnit(gameObject);
+				if(GameData.winConditions.Contains (Victory.Wonder) && GetComponent<Identity>().unitType == UnitType.Wonder){
+					if (gameObject.tag=="Ally") 
+						GameController.Instance.hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
+							true, "You built a Wonder"
+							);
+					else if(gameObject.tag=="Enemy") 
+						GameController.Instance.hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
+							false, "Enemy Wonder was created"
+							);
+				}
 
             }
         }
