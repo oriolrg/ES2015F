@@ -56,18 +56,8 @@ public class timerDeath : MonoBehaviour
 	private void fillFormationMatrix(GameObject unit){
 		Vector3 unitOffSet = getUnitOffSet(unit);
 
-		print ("x: " + x.ToString() + " y: " +y.ToString() + " M: " + formationMatrixSize.ToString());
+		//print ("x: " + x.ToString() + " y: " +y.ToString() + " M: " + formationMatrixSize.ToString());
 
-		/*
-		if(x != formationMatrixSize - 1 && y != formationMatrixSize - 1){
-			formationMatrix[x + 1,y] += new Vector3(unitOffSet.x,0.0f,0.0f);
-			formationMatrix[x,y + 1] += new Vector3(0.0f,unitOffSet.y,0.0f);
-		} else if (x == formationMatrixSize - 1 && y != formationMatrixSize - 1) {
-			formationMatrix[x,y + 1] = new Vector3(unitOffSet.x,0.0f,0.0f);
-		} else if (x != formationMatrixSize - 1 && y == formationMatrixSize - 1) {
-			formationMatrix[x + 1,y] = new Vector3(0.0f,unitOffSet.y,0.0f);
-		}
-		*/
 		for(int i = y + 1; i<formationMatrixSize; i++){
 			//print ("x: " + x.ToString() + " y: " +i.ToString());
 			formationMatrix[x,i] += new Vector3(unitOffSet.x,0.0f,0.0f);
@@ -95,7 +85,7 @@ public class timerDeath : MonoBehaviour
 
 	public void setFormationMatrix(int fMSize){
 		formationMatrixSize = fMSize;
-		print ("Creating Formation Matrix with size: " + formationMatrixSize.ToString());
+		//print ("Creating Formation Matrix with size: " + formationMatrixSize.ToString());
 		formationMatrix = new Vector3[formationMatrixSize,formationMatrixSize];
 		for(int i = 0; i < formationMatrixSize; i++){
 			for(int j = 0; j < formationMatrixSize; j++){
