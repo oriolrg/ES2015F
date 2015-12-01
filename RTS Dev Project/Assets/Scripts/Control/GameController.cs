@@ -442,6 +442,7 @@ public class GameController : MonoBehaviour
                 if (script != null)
                 {
                     script.RallyPoint = target.transform.position;
+                    script.customRally = true;
                 }
             }
             Destroy(target.gameObject);
@@ -832,9 +833,10 @@ public class GameController : MonoBehaviour
 
             // Set unit as parent in hierarchy
             newUnit.transform.SetParent(unitsParent.transform);
-            GameObject target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+            GameObject target = Instantiate(targetPrefab, spawner.RallyPoint, Quaternion.identity) as GameObject;
+            
             target.transform.SetParent(targetsParent.transform);
-
+            print(spawner.RallyPoint + " " + target.transform.position);
             UnitMovement script = newUnit.GetComponent<UnitMovement>();
             if (script != null)
             {
