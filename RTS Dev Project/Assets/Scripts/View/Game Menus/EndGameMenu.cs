@@ -11,54 +11,38 @@ public class EndGameMenu : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		gameObject.SetActive(false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
-	/*
+
 	void OnEnable(){
-		print ("HELLOOOOOOO");
-		string message;
-
-
-		if (victory)
-			message = victoryText;
-
-		else
-			message = defeatText;
-		print (message);
-		foreach (Transform t in transform) {
-			if (t.gameObject.name.Equals ("Text")){
-				t.gameObject.GetComponent<Text>().text = message;
-				break;
-			}
-		}
-
-		
-
 		Time.timeScale = 0;
 	}
-*/
+
 	public void endGame(bool victory, string reason){
-		gameObject.SetActive (true);
-		this.victory = victory;
-		string message;		
+		print(string.Format("EndGame {0} {1}", victory.ToString (), reason));
+		string message;
+
 		if (victory)
 			message = victoryText;
-		
 		else
 			message = defeatText;
+
 		foreach (Transform t in transform) {
 			if (t.gameObject.name.Equals ("Text")){
 				t.gameObject.GetComponent<Text>().text = message + '\n' + reason;
 				break;
 			}
 		}
-		Time.timeScale = 0;
 
+		//print(gameObject.activeSelf);
+		gameObject.SetActive(true);
+		//print(gameObject.activeSelf);
 	}
+
 	void OnDisable() { Time.timeScale = 1; }
 }

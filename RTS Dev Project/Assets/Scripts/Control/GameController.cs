@@ -109,7 +109,8 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+		// TODO: Trial code for Alvaro. Erase when bug with EndGameMenu is solved
+		//hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(true, "hola");
 
         if (Input.mousePosition.y > Screen.height * UIheight)
         {
