@@ -22,6 +22,7 @@ public class AttackController : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
+		Debug.LogError ("Unit Awaken");
 		this.identity = this.gameObject.GetComponent<Identity> ();
 		this.range = DataManager.Instance.unitDatas [identity.unitType].stats [Stat.Range];
 		this.atkDmg = DataManager.Instance.unitDatas [identity.unitType].stats [Stat.Attack];
@@ -44,7 +45,7 @@ public class AttackController : MonoBehaviour {
 			um.status = Status.running;
 			Vector3 vec = enemyPos - myPos;
 			vec = vec.normalized;
-			double alpha = d - (r/3.0);
+			double alpha = d - (r/2.0);
 		
 			vec.x *= (float)alpha;
 			vec.z *= (float)alpha;
@@ -53,6 +54,7 @@ public class AttackController : MonoBehaviour {
 		
 			attacking_target = Instantiate (targetPrefab, targetPos, Quaternion.identity) as GameObject; //Instanciar prefab target
             attacking_target.transform.SetParent(GameController.Instance.targetsParent.transform);
+			Debug.LogError("Unit Starts moving for attacking");
 			um.startMoving (attacking_target);
 			this.enemy_last_pos = attacking_enemy.transform.position;
 		} else {
@@ -82,10 +84,9 @@ public class AttackController : MonoBehaviour {
 
 	//Makes the target lose health equal to this unit damage stat.
 	private void DealDamage(){
-		Debug.Log ("DealDamage");
 		if (this.attacking_enemy != null && IsInRange(attacking_enemy)) {
 			this.attacking_enemy.GetComponent<Health> ().loseHP ((int)this.atkDmg);
-			Debug.Log ("Unit "+ this.identity.name +" dealt " + this.atkDmg + " damage.");
+			Debug.LogError ("Unit "+ this.identity.name +" dealt " + this.atkDmg + " damage.");
 		}
 	}
 
