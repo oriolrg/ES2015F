@@ -373,11 +373,13 @@ public class GameController : MonoBehaviour
 
 	public void moveUnits(GameObject target)
 	{
+
         timerDeath groundTarget = target.GetComponent<timerDeath>();
         int formationMatrixSize = (int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)); 
         if (selectedUnits.hasMovableUnits())
         {
-            groundTarget.setFormationMatrix(formationMatrixSize);
+			if(groundTarget != null)
+           		groundTarget.setFormationMatrix(formationMatrixSize);
             foreach (var unit in selectedUnits.units)
             {
                 // Special case: a civilian moves towards a town center and has resources to store
@@ -425,7 +427,9 @@ public class GameController : MonoBehaviour
                                 script.startMoving(target);
                                 script.targetPos = newTargetPosition;
                             } else {
-                                groundTarget.AddUnit(unit);
+								if(groundTarget != null)
+									groundTarget.AddUnit(unit);
+								
                                 script.startMoving(target);
                             }
                         }
@@ -757,6 +761,7 @@ public class GameController : MonoBehaviour
 
     public GameObject CreateUnit(GameObject building, GameObject unit)
     {
+
         Spawner spawner = building.GetComponentOrEnd<Spawner>();
 
         spawner.initBounds();
@@ -818,6 +823,7 @@ public class GameController : MonoBehaviour
             UnitMovement script = newUnit.GetComponent<UnitMovement>();
             if (script != null)
             {
+				print (target.transform.position);
                 script.startMoving(target);
                 target.GetComponent<timerDeath>().AddUnit(newUnit);
             }

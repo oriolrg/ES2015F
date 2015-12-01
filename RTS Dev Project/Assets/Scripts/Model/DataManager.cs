@@ -8,6 +8,7 @@ public class DataManager : MonoBehaviour
     public PlayerData CPU1;
     public PlayerData CPU2;
     public PlayerData CPU3;
+	public PlayerData Neutral;
 
     public CivilizationDataDictionary civilizationDatas;
     public PlayersDataDictionary playerDatas;
@@ -36,5 +37,6 @@ public class DataManager : MonoBehaviour
         playerDatas.Add(Player.CPU1, CPU1);
         playerDatas.Add(Player.CPU2, CPU2);
         playerDatas.Add(Player.CPU3, CPU3);
+		playerDatas.Add (Player.Neutral, Neutral);
     }
 }

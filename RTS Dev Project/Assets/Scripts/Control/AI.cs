@@ -7,6 +7,7 @@ using System.Linq;
 
 public class AI : MonoBehaviour {
 	public delegate bool Method(UnitType u);
+	[SerializeField] private GameObject targetPrefab;
 	private List<Task> tasks;
 	public List<string> resources;
 	private List<GameObject> resourcesFood;
@@ -30,8 +31,8 @@ public class AI : MonoBehaviour {
 	{
 		
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),5));
-		tasks.Add (new Task(new Method(createBuilding), UnitType.Barracs));
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Soldier),5));
+		tasks.Add (new Task(new Method(createBuilding), UnitType.TownCenter));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),5));
 		tasks.Add (new Task(new Method(createBuilding), UnitType.Barracs));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier), UnitType.Soldier),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),3));
@@ -120,13 +121,13 @@ public class AI : MonoBehaviour {
 				}
 
 		}*/
-		/*if (!counterAttackingObjectives) {
+		if (!counterAttackingObjectives) {
 
 			counterAttackingObjectives = counterAttackMapControl ();
-		}*/
+		}
 
-		counterAttackWonder ();
-				
+		//counterAttackWonder ();
+
 		/*bool counterAttackAnnihilationDone = false;
 		bool counterAttackWonderDone = false;
 		if(GameData.winConditions.Contains(Victory.MapControl ))
@@ -139,6 +140,7 @@ public class AI : MonoBehaviour {
 			counterAttackAnnihilation();
 
 		*/
+
 		if (tasks.Count > 0) {
 			if (tasks [0].method (tasks[0].unit)) {
 				tasks.RemoveAt (0);
@@ -220,15 +222,12 @@ public class AI : MonoBehaviour {
 	
 	private bool createCivilian(UnitType u)
 	{
-
 		if (GameController.Instance.getAllEnemyTownCentres().Count > 0)
 		{
-
 			if(GameController.Instance.OnCreate(GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>(),UnitType.Civilian)) return true;
+			
 		}
-		if (! isCPUBuilding (UnitType.TownCenter)) {
-			tasks.Insert (0, new Task (new Method (createBuilding), UnitType.TownCenter));
-		}
+
 		return false; 
 	}
 	private bool createWonder(UnitType u)
@@ -560,7 +559,7 @@ public class AI : MonoBehaviour {
 	public bool counterAttackWonder(){
 
 		GameObject wonder = isPlayerBuildingWonder ();
-		print ("wonder " + wonder + "some.. " + someArmyAttackingWonder ());
+	
 		if (wonder != null & !someArmyAttackingWonder()) {
 			List<GameObject> le = getEnemiesNoAtacking(GameController.Instance.getAllEnemyArmy ().Count);
 			foreach(GameObject o in le) {
@@ -657,23 +656,34 @@ public class AI : MonoBehaviour {
 
 	public bool counterAttackMapControl(){
 
+		bool found = false;
 		foreach(Objective o in GameController.Instance.objectives){
+			if (o.Controller == Player.Player){
+				found = true;
+				break;
+			}
+		}
+		if (!found)
+			return false;
+
+		/*foreach(Objective o in GameController.Instance.objectives){
 			if (o.Controller != Player.Player) //TODO canviar quan hi hagi més d'una CPU
                 return false;
         	
 
 		
-		}
+		}*/
+
+
 
 		if (GameController.Instance.objectives.Count > 0) {
-			print ("counterAttack");
 			Objective objective = GameController.Instance.objectives [0];
-			GameObject target = new GameObject();
-			target.transform.position = objective.transform.position;
-			GameController.Instance.hud.showMessageBox ("CPU go to objectives");
+			GameObject target = Instantiate(targetPrefab, objective.transform.position, Quaternion.identity) as GameObject;
+			timerDeath tD = target.GetComponent<timerDeath>();
 			foreach (GameObject o in GameController.Instance.getAllEnemyArmy()){//getEnemiesNoAtacking(GameController.Instance.getAllEnemyArmy().Count + GameController.Instance.getAllEnemyCivilians().Count)) {
 
-				o.GetComponent<UnitMovement> ().startMoving (target);
+				tD.AddUnit(o);
+				o.GetComponentInParent<UnitMovement> ().startMoving (target);
 			}
 		}
 		return true;
