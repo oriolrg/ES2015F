@@ -105,10 +105,10 @@ public class AttackController : MonoBehaviour {
 		if (enemy != null) {
 			float dist;
 			//Attacking a Building
-			Vector3 boxSize = enemy.GetComponent<BoxCollider> ().size;
-			float boxRadius = Mathf.Sqrt (boxSize.x * boxSize.x + boxSize.z * boxSize.z);
+			Collider c = enemy.GetComponent<BoxCollider> ();
+			Vector3 closestPoint = c.ClosestPointOnBounds(this.gameObject.transform.position);
 
-			dist = Vector3.Distance (this.gameObject.transform.position, enemy.transform.position) - boxRadius;
+			dist = Vector3.Distance (this.gameObject.transform.position, closestPoint);
 			return dist;
 		} else {
 			return (float)0.0;
@@ -122,7 +122,6 @@ public class AttackController : MonoBehaviour {
 		} else {
 			this.um.status = Status.attacking;
 			InvokeRepeating ("DealDamage", 1, 1);
-			animator.SetBool ("attack",true);
 
 		}
 
