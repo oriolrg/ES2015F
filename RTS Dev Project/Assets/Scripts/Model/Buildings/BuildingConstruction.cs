@@ -18,7 +18,7 @@ public class BuildingConstruction : MonoBehaviour {
     private bool constructionOnGoing = false; //Indicates if a building construction is on going
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
 
         //finalMesh = GetComponent<MeshFilter>().mesh;
 
@@ -57,7 +57,7 @@ public class BuildingConstruction : MonoBehaviour {
                 //GetComponent<Unit>().SetInConstruction(false);
                 constructionOnGoing = false;
 
-                GetComponent<LOSEntity>().IsRevealer = true;
+                GetComponent<LOSEntity>().IsRevealer = (tag=="Ally");
 
                 GameController.Instance.updateInteractable();
 				GameController.Instance.addUnit(gameObject);

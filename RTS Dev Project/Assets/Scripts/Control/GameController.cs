@@ -154,12 +154,14 @@ public class GameController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(1))
             {
+                
                 //Click detection
                 RaycastHit hitInfo = new RaycastHit();
                 bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
                 GameObject target;
                 if (hit)
                 {
+                    
                     if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))
                         moveUnits(hitInfo.transform.gameObject);
                     else if (hitInfo.transform.gameObject.tag == "Enemy")
@@ -198,14 +200,17 @@ public class GameController : MonoBehaviour
                     }
                     else
                     {
+                        
                         Identity identity = hitInfo.transform.GetComponent<Identity>();
                         if (identity != null && identity.unitType.isBuilding())
                         {
+                            
                             // We hit a building
                             moveUnits(identity.gameObject);
                         }
                         else
                         {
+                            
                             // We hit the ground
                             noAttack();
                             target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
@@ -373,7 +378,7 @@ public class GameController : MonoBehaviour
 
 	public void moveUnits(GameObject target)
 	{
-
+        if (selectedUnits.units.Count == 0) return;
         timerDeath groundTarget = target.GetComponent<timerDeath>();
         int formationMatrixSize = (int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)); 
         if (selectedUnits.hasMovableUnits())
