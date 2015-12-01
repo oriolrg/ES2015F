@@ -18,6 +18,8 @@ public class healthbar : MonoBehaviour
     private GameObject g;
     private GameObject g1;
 
+	private LOSEntity unitLOSEntity;
+
     // Use this for initialization
     void Start()
     {
@@ -32,6 +34,8 @@ public class healthbar : MonoBehaviour
 
             visualHealth = g.GetComponentInChildren<auxHealth>().i;
         }
+
+		unitLOSEntity = gameObject.GetComponent<LOSEntity>();
     }
 
     // Update is called once per frame
@@ -59,6 +63,14 @@ public class healthbar : MonoBehaviour
             }
         }
         else {
+			// Only display HealthBar on GameObjects that are Unfogged
+			if (unitLOSEntity.RevealState.Equals (LOSEntity.RevealStates.Hidden) ||
+			    unitLOSEntity.RevealState.Equals (LOSEntity.RevealStates.Fogged)
+			)
+				g.SetActive(false);
+			else
+				g.SetActive (true);
+
 
             g1.SetActive(true);
 
