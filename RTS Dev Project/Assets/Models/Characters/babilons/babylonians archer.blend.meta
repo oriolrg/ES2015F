@@ -132,7 +132,607 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Default Take
+      takeName: Default Take
+      firstFrame: -1
+      lastFrame: 38
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Arco
+        weight: 1
+      - path: arquero_egipcio
+        weight: 1
+      - path: arrow_bone
+        weight: 1
+      - path: arrow_bone/arrow_bone_0
+        weight: 1
+      - path: Flecha
+        weight: 1
+      - path: human_bones
+        weight: 1
+      - path: human_bones/root
+        weight: 1
+      - path: human_bones/root/torso
+        weight: 1
+      - path: human_bones/root/torso/chest
+        weight: 1
+      - path: human_bones/root/torso/chest/neck
+        weight: 1
+      - path: human_bones/root/torso/chest/neck/head
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_index_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_index_L/lower_index_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_middle_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_middle_L/lower_middle_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_pinky_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_pinky_L/lower_pinky_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_ring_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_ring_L/lower_ring_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_thumb_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_thumb_L/lower_thumb_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_index_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_index_R/lower_index_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_middle_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_middle_R/lower_middle_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_pinky_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_pinky_R/lower_pinky_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_ring_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_ring_R/lower_ring_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_thumb_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_thumb_R/lower_thumb_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L/foot_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L/foot_L/toes_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R/foot_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R/foot_R/toes_R
+        weight: 1
+      - path: ropa_003
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: atacar
+      takeName: atacar
+      firstFrame: -1
+      lastFrame: 48
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Arco
+        weight: 1
+      - path: arquero_egipcio
+        weight: 1
+      - path: arrow_bone
+        weight: 1
+      - path: arrow_bone/arrow_bone_0
+        weight: 1
+      - path: Flecha
+        weight: 1
+      - path: human_bones
+        weight: 1
+      - path: human_bones/root
+        weight: 1
+      - path: human_bones/root/torso
+        weight: 1
+      - path: human_bones/root/torso/chest
+        weight: 1
+      - path: human_bones/root/torso/chest/neck
+        weight: 1
+      - path: human_bones/root/torso/chest/neck/head
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_index_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_index_L/lower_index_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_middle_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_middle_L/lower_middle_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_pinky_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_pinky_L/lower_pinky_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_ring_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_ring_L/lower_ring_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_thumb_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_thumb_L/lower_thumb_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_index_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_index_R/lower_index_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_middle_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_middle_R/lower_middle_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_pinky_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_pinky_R/lower_pinky_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_ring_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_ring_R/lower_ring_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_thumb_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_thumb_R/lower_thumb_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L/foot_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L/foot_L/toes_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R/foot_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R/foot_R/toes_R
+        weight: 1
+      - path: ropa_003
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: die
+      takeName: die
+      firstFrame: -1
+      lastFrame: 42
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Arco
+        weight: 1
+      - path: arquero_egipcio
+        weight: 1
+      - path: arrow_bone
+        weight: 1
+      - path: arrow_bone/arrow_bone_0
+        weight: 1
+      - path: Flecha
+        weight: 1
+      - path: human_bones
+        weight: 1
+      - path: human_bones/root
+        weight: 1
+      - path: human_bones/root/torso
+        weight: 1
+      - path: human_bones/root/torso/chest
+        weight: 1
+      - path: human_bones/root/torso/chest/neck
+        weight: 1
+      - path: human_bones/root/torso/chest/neck/head
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_index_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_index_L/lower_index_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_middle_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_middle_L/lower_middle_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_pinky_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_pinky_L/lower_pinky_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_ring_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_ring_L/lower_ring_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_thumb_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_thumb_L/lower_thumb_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_index_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_index_R/lower_index_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_middle_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_middle_R/lower_middle_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_pinky_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_pinky_R/lower_pinky_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_ring_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_ring_R/lower_ring_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_thumb_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_thumb_R/lower_thumb_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L/foot_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L/foot_L/toes_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R/foot_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R/foot_R/toes_R
+        weight: 1
+      - path: ropa_003
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: standby
+      takeName: standby
+      firstFrame: -1
+      lastFrame: 24
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Arco
+        weight: 1
+      - path: arquero_egipcio
+        weight: 1
+      - path: arrow_bone
+        weight: 1
+      - path: arrow_bone/arrow_bone_0
+        weight: 1
+      - path: Flecha
+        weight: 1
+      - path: human_bones
+        weight: 1
+      - path: human_bones/root
+        weight: 1
+      - path: human_bones/root/torso
+        weight: 1
+      - path: human_bones/root/torso/chest
+        weight: 1
+      - path: human_bones/root/torso/chest/neck
+        weight: 1
+      - path: human_bones/root/torso/chest/neck/head
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_index_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_index_L/lower_index_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_middle_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_middle_L/lower_middle_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_pinky_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_pinky_L/lower_pinky_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_ring_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_ring_L/lower_ring_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_thumb_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_thumb_L/lower_thumb_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_index_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_index_R/lower_index_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_middle_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_middle_R/lower_middle_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_pinky_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_pinky_R/lower_pinky_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_ring_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_ring_R/lower_ring_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_thumb_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_thumb_R/lower_thumb_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L/foot_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L/foot_L/toes_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R/foot_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R/foot_R/toes_R
+        weight: 1
+      - path: ropa_003
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: walk
+      takeName: walk
+      firstFrame: -1
+      lastFrame: 39
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Arco
+        weight: 1
+      - path: arquero_egipcio
+        weight: 1
+      - path: arrow_bone
+        weight: 1
+      - path: arrow_bone/arrow_bone_0
+        weight: 1
+      - path: Flecha
+        weight: 1
+      - path: human_bones
+        weight: 1
+      - path: human_bones/root
+        weight: 1
+      - path: human_bones/root/torso
+        weight: 1
+      - path: human_bones/root/torso/chest
+        weight: 1
+      - path: human_bones/root/torso/chest/neck
+        weight: 1
+      - path: human_bones/root/torso/chest/neck/head
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_index_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_index_L/lower_index_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_middle_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_middle_L/lower_middle_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_pinky_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_pinky_L/lower_pinky_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_ring_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_ring_L/lower_ring_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_thumb_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_L/lower_arm_L/hand_L/upper_thumb_L/lower_thumb_L
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_index_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_index_R/lower_index_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_middle_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_middle_R/lower_middle_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_pinky_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_pinky_R/lower_pinky_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_ring_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_ring_R/lower_ring_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_thumb_R
+        weight: 1
+      - path: human_bones/root/torso/chest/upper_arm_R/lower_arm_R/hand_R/upper_thumb_R/lower_thumb_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L/foot_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_L/lower_leg_L/foot_L/toes_L
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R/foot_R
+        weight: 1
+      - path: human_bones/root/torso/upper_leg_R/lower_leg_R/foot_R/toes_R
+        weight: 1
+      - path: ropa_003
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []

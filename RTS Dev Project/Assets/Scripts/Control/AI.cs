@@ -30,9 +30,7 @@ public class AI : MonoBehaviour {
 	private void elaborateStrategy()
 	{
 		
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),5));
-		tasks.Add (new Task(new Method(createBuilding), UnitType.TownCenter));
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),5));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),10));
 		tasks.Add (new Task(new Method(createBuilding), UnitType.Barracs));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier), UnitType.Soldier),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),3));
@@ -41,6 +39,7 @@ public class AI : MonoBehaviour {
 	}
 	private void elaborateStrategyObjectives()
 	{
+		print ("WIN BY OBJECTIVES");
 		List<GameObject> civ = GameController.Instance.getAllEnemyCivilians ();
 		for (int i = 0; i<civ.Count; i++) {
 			Boolean isbusy=false;
@@ -51,8 +50,10 @@ public class AI : MonoBehaviour {
 	}
 	private void elaborateStrategyWonder()
 	{
-		tasks = new List<Task>();
-		tasks.Add (new Task(new Method(createBuilding), UnitType.Wonder));
+		if (!isCPUBuilding (UnitType.Wonder)&!tasks.Contains( new Task (new Method (createBuilding), UnitType.Wonder))) {
+			print ("WIN BY WONDER");
+			//tasks.Insert(0,new Task (new Method (createBuilding), UnitType.Wonder));
+		}
 	}
 	void Awake()
 	{
@@ -74,15 +75,15 @@ public class AI : MonoBehaviour {
 	}
 	void Update()
 	{
-		/*if (GameData.diff == GameData.DifficultyEnum.Medium || GameData.diff == GameData.DifficultyEnum.Hard) {	 
+		if (GameData.cpus[0].skill==GameData.DifficultyEnum.Medium|| GameData.cpus[0].skill==GameData.DifficultyEnum.Hard) {	 
 			float evalWinObjective = evaluateWinByObjectives ();
 			float evalWinWonder = evaluateWinByWonder ();
-			if (evalWinObjective > evalWinWonder && evalWinObjective < 1000) //&&  Victory.MapControl in GameData.winConditions   
+			if (evalWinObjective < evalWinWonder && evalWinObjective < 150) //&&  Victory.MapControl in GameData.winConditions   
 				elaborateStrategyObjectives ();
-			else if (evalWinWonder < 1000) // && Victory.Wonder in GameData.winConditions 
+			else if (evalWinWonder < 150) // && Victory.Wonder in GameData.winConditions 
 				elaborateStrategyWonder ();
 
-			if(GameData.diff == GameData.DifficultyEnum.Hard){
+			if(GameData.cpus[0].skill==GameData.DifficultyEnum.Hard){
 
 				bool counterAttackAnnihilationDone = false;
 				bool counterAttackWonderDone = false;
@@ -95,51 +96,8 @@ public class AI : MonoBehaviour {
 				if(!counterAttackAnnihilationDone & !counterAttackWonderDone & GameData.winConditions.Contains(Victory.Annihilation))
 					counterAttackAnnihilation();
 			}
-
-
-
-				if(Victory.MapControl in GameData.winConditions){
-					if(! counterAttackAnnihilation()){
-						if(Victory.Wonder in GameData.winConditions){
-							if(! counterAttackWonder()){
-								if(Victory.Annihilation in GameData.winConditions ){
-									counterAttackAnnihilation();
-								}
-							}
-						}
-					}
-							
-
-				}else if(Victory.Wonder in GameData.winConditions){
-					if(! counterAttackWonder()){
-						if(Victory.Annihilation in GameData.winConditions ){
-							counterAttackAnnihilation();
-						}
-					}
-				}else if(Victory.Annihilation in GameData.winConditions ){
-					counterAttackAnnihilation();
-				}
-
-		}*/
-		if (!counterAttackingObjectives) {
-
-			counterAttackingObjectives = counterAttackMapControl ();
 		}
 
-		//counterAttackWonder ();
-
-		/*bool counterAttackAnnihilationDone = false;
-		bool counterAttackWonderDone = false;
-		if(GameData.winConditions.Contains(Victory.MapControl ))
-			counterAttackAnnihilationDone = counterAttackMapControl();
-		
-		
-		if(!counterAttackAnnihilationDone & GameData.winConditions.Contains(Victory.Wonder))
-			counterAttackWonderDone = counterAttackWonder();
-		if(!counterAttackAnnihilationDone & !counterAttackWonderDone & GameData.winConditions.Contains(Victory.Annihilation))
-			counterAttackAnnihilation();
-
-		*/
 
 		if (tasks.Count > 0) {
 			if (tasks [0].method (tasks[0].unit)) {
@@ -168,7 +126,7 @@ public class AI : MonoBehaviour {
 		
 		
 		float minDistance = 100000;
-		GameObject closestTown = new GameObject();
+		GameObject closestTown = null;
 		
 		for (int i = 0; i < towncentresX.Count; i++)
 		{
@@ -181,7 +139,7 @@ public class AI : MonoBehaviour {
 				closestTown = towncentresX[i];
 			}
 		}
-		
+
 		return closestTown;
 		
 		
@@ -519,7 +477,7 @@ public class AI : MonoBehaviour {
 				}
 			}
 		}
-		if (enemiesNotBusy.Count < numTargets) {
+		/*if (enemiesNotBusy.Count < numTargets) {
 
 			foreach (GameObject o in GameController.Instance.getAllEnemyCivilians()) {
 				noAttacking = true;
@@ -546,7 +504,7 @@ public class AI : MonoBehaviour {
 				}
 				
 			}
-		}
+		}*/
 		
 		return enemiesNotBusy;
 	}
@@ -560,8 +518,8 @@ public class AI : MonoBehaviour {
 
 		GameObject wonder = isPlayerBuildingWonder ();
 	
-		if (wonder != null & !someArmyAttackingWonder()) {
-			List<GameObject> le = getEnemiesNoAtacking(GameController.Instance.getAllEnemyArmy ().Count);
+		if (wonder != null) {
+			List<GameObject> le = GameController.Instance.getAllEnemyArmy ();
 			foreach(GameObject o in le) {
 				AttackController a = o.GetComponent<AttackController> ();
 				if (a != null) {
@@ -655,33 +613,17 @@ public class AI : MonoBehaviour {
 
 
 	public bool counterAttackMapControl(){
-
-		bool found = false;
 		foreach(Objective o in GameController.Instance.objectives){
-			if (o.Controller == Player.Player){
-				found = true;
-				break;
-			}
-		}
-		if (!found)
-			return false;
-
-		/*foreach(Objective o in GameController.Instance.objectives){
 			if (o.Controller != Player.Player) //TODO canviar quan hi hagi més d'una CPU
                 return false;
-        	
-
-		
-		}*/
-
-
+		}
 
 		if (GameController.Instance.objectives.Count > 0) {
 			Objective objective = GameController.Instance.objectives [0];
 			GameObject target = Instantiate(targetPrefab, objective.transform.position, Quaternion.identity) as GameObject;
+            target.transform.SetParent(GameController.Instance.targetsParent.transform);
 			timerDeath tD = target.GetComponent<timerDeath>();
 			foreach (GameObject o in GameController.Instance.getAllEnemyArmy()){//getEnemiesNoAtacking(GameController.Instance.getAllEnemyArmy().Count + GameController.Instance.getAllEnemyCivilians().Count)) {
-
 				tD.AddUnit(o);
 				o.GetComponentInParent<UnitMovement> ().startMoving (target);
 			}

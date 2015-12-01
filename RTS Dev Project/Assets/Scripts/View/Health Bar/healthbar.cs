@@ -29,6 +29,7 @@ public class healthbar : MonoBehaviour
         if (!GetComponent<Identity>().unitType.isBuilding())
         {
             g = Instantiate(prefab);
+            g.transform.SetParent(this.transform);
             g.transform.GetChild(0).transform.position = Camera.main.WorldToScreenPoint(GetComponentInChildren<auxHealth>().gameObject.transform.position);
             g1 = g.GetComponentInChildren<auxHealth>().gameObject;
 
@@ -49,6 +50,7 @@ public class healthbar : MonoBehaviour
                 if (!GetComponent<BuildingConstruction>().getConstructionOnGoing())
                 {
                     g = Instantiate(prefab);
+                    g.transform.SetParent(this.transform);
                     g.transform.GetChild(0).transform.position = Camera.main.WorldToScreenPoint(GetComponentInChildren<auxHealth>().gameObject.transform.position);
                     g1 = g.GetComponentInChildren<auxHealth>().gameObject;
 
@@ -82,7 +84,8 @@ public class healthbar : MonoBehaviour
             curHealth = GetComponent<Health>().getHealth();
             HandleHealth();
 
-            if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight) g.GetComponentInChildren<auxHealth>().gameObject.SetActive(false);
+            if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || GetComponent<LOSEntity>().RevealState == LOSEntity.RevealStates.Hidden)
+                g.GetComponentInChildren<auxHealth>().gameObject.SetActive(false);
             
 
 

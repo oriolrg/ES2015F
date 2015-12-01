@@ -106,9 +106,14 @@ public Vector3 targetPos;
 			//Distance to the target from the current position
 			distanceToTarget = Vector3.Distance(transform.position,targetPos);
 
+
 			//If the unit hasn't reached the target yet
 			if(!targetReached(distanceToTarget)){
+
 				Vector3 dir = (path.vectorPath[currentWaypoint]-transform.position).normalized; //direction to move along
+				print (gameObject.name + ": " + dir.y);
+
+				transform.LookAt(transform.position + new Vector3(dir.x,0f,dir.z));
 				dir *= speed;
 				characterController.SimpleMove (dir);
 

@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject unitsParent;
     [SerializeField] private GameObject buildingsParent;
     [SerializeField] private GameObject objectivesParent;
-    [SerializeField] private GameObject targetsParent;
+    public GameObject targetsParent;
 
     [SerializeField]
 	private Troop selectedUnits;
@@ -155,12 +155,14 @@ public class GameController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(1))
             {
+                
                 //Click detection
                 RaycastHit hitInfo = new RaycastHit();
                 bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
                 GameObject target;
                 if (hit)
                 {
+                    
                     if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))
                         moveUnits(hitInfo.transform.gameObject);
                     else if (hitInfo.transform.gameObject.tag == "Enemy")
@@ -199,14 +201,17 @@ public class GameController : MonoBehaviour
                     }
                     else
                     {
+                        
                         Identity identity = hitInfo.transform.GetComponent<Identity>();
                         if (identity != null && identity.unitType.isBuilding())
                         {
+                            
                             // We hit a building
                             moveUnits(identity.gameObject);
                         }
                         else
                         {
+                            
                             // We hit the ground
                             noAttack();
                             target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
@@ -374,7 +379,7 @@ public class GameController : MonoBehaviour
 
 	public void moveUnits(GameObject target)
 	{
-
+        if (selectedUnits.units.Count == 0) return;
         timerDeath groundTarget = target.GetComponent<timerDeath>();
         int formationMatrixSize = (int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)); 
         if (selectedUnits.hasMovableUnits())
@@ -658,7 +663,7 @@ public class GameController : MonoBehaviour
         if (player == "Ally") resDict = playerResources;
         else resDict = cpuResources;
         resDict[res] -= value;
-        if (player=="Ally")hud.updateResource(res, resDict[res]); 
+        if (player=="Ally")hud.updateResource(res, resDict[res]-value); //Subtracting the value twice fixes update on resource panel as one times the cost is given back after OnActionButtonExit.
     }
 
     public void updateResource(Resource res, int value)
@@ -864,6 +869,8 @@ public class GameController : MonoBehaviour
         //Instantiate the building and start the positioning of the building
         GameObject building = Instantiate (prefab, Vector3.zero, gameObject.transform.rotation) as GameObject;
 
+        building.transform.SetParent(buildingsParent.transform);
+
         building.tag = selectedUnits.units[0].gameObject.tag;
 
         Identity newIden = building.GetComponent<Identity>();
@@ -912,6 +919,9 @@ public class GameController : MonoBehaviour
     public void createBuilding(GameObject prefab, Vector3 position, Troop t)
     {
         GameObject building = Instantiate(prefab, position, gameObject.transform.rotation) as GameObject;
+
+        building.transform.SetParent(buildingsParent.transform);
+
         building.tag = t.units[0].gameObject.tag;
 
         Identity newIden = building.GetComponent<Identity>();
@@ -1048,7 +1058,7 @@ public class GameController : MonoBehaviour
 
                 Spawner spa = created.GetComponent<Spawner>();
                 if (spa != null) spa.initBounds();
-                updateResource(unitData.resourceCost, who.tag);
+                //updateResource(unitData.resourceCost, who.tag);
             }
         }
         else

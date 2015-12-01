@@ -134,9 +134,9 @@ public class LOSManager : MonoBehaviour {
 #endif
         if (losTexture != null) {
             // Update any animating entities (update their FOW color)
-            for (int e = 0; e < AnimatingEntities.Count; ++e) {
+            for (int e = AnimatingEntities.Count-1; e >=0 ; e--) {
                 if (AnimatingEntities[e].UpdateFOWColor())
-                    AnimatingEntities.RemoveAt(e--);
+                    AnimatingEntities.RemoveAt(e);
             }
             // If in editor mode
             if (!Application.isPlaying) {
