@@ -132,9 +132,7 @@ public class GameInitializer : MonoBehaviour {
         foreach (GameData.CPUData cpu in GameData.cpus) {
 			cpus++;
 
-			townCenterPrefab = DataManager.Instance.civilizationDatas[
-				Utils.GetEnumValue<Civilization>(cpu.civ.ToString())
-			].units[UnitType.TownCenter];
+			townCenterPrefab = DataManager.Instance.civilizationDatas[cpu.civ].units[UnitType.TownCenter];
 
             if (cpus == 1)
             {
