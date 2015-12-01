@@ -8,7 +8,7 @@ public class BuildingPlacer : MonoBehaviour {
 	private Color red = new Color(1f, 0f, 0f, 0.5f);
     private List<Material> originalMaterials;
 
-    private bool collision;//indicates if there is a collision
+    public bool collision;//indicates if there is a collision
 	private int counterCollision;//indicates how many different collisions there are
 
 
@@ -175,4 +175,7 @@ public class BuildingPlacer : MonoBehaviour {
 
         }
     }
+	public bool getCollision(){
+		return collision;
+	}
 }

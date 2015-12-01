@@ -996,6 +996,30 @@ public class GameController : MonoBehaviour
 
         enabled = true;//Enable the script 
     }
+	public Vector3 buildingPossible(float x, float z, UnitType u){
+		Vector3 point = new Vector3 (0, 0, 0);
+		Ray ray = new Ray (new Vector3 (x, 1000, z), -Vector3.up);
+		RaycastHit[] hits;
+		hits = Physics.RaycastAll(ray);
+		
+		bool groundHitFound = false;
+		RaycastHit groundHit = default(RaycastHit);		
+		foreach (RaycastHit hit in hits)
+		{
+			if (hit.collider.gameObject.tag == "Ground")
+			{
+				/*GameObject building = Instantiate(DataManager.Instance.civilizationDatas[GameData.cpus[0].civ].units[u], hit.point, Quaternion.identity) as GameObject;
+				building.AddComponent<BuildingPlacer> ();
+				BuildingPlacer script = building.GetComponent<BuildingPlacer>();
+				if (script.getCollision()){
+					return null;
+				}
+				return hit.point;
+				*/
+			}
+		}
+		return point;
+	}
 
     // Action events
     public void OnActionButtonEnter(String description, ResourceValueDictionary resourceCost)
