@@ -446,6 +446,7 @@ public class GameController : MonoBehaviour
                 if (script != null)
                 {
                     script.RallyPoint = target.transform.position;
+                    script.customRally = true;
                 }
             }
             Destroy(target.gameObject);
@@ -694,7 +695,15 @@ public class GameController : MonoBehaviour
     public void checkMapControl()
     {
         hud.updateSelection(selectedUnits);
+
+		if (!GameData.winConditions.Contains (Victory.MapControl))
+			return; // don't check it; it's not a win condition
+
+		if (objectives.Count == 0)
+			return; // nothing to check
+
         Player possibleWinner = objectives[0].Controller;
+
         foreach(Objective objective in objectives)
         {
             if (objective.Controller != possibleWinner)
@@ -709,7 +718,13 @@ public class GameController : MonoBehaviour
     }
 
     public void ensureWinner()
-    {
+	{
+		if (!GameData.winConditions.Contains (Victory.MapControl))
+			return; // don't check it; it's not a win condition
+
+		if (objectives.Count == 0)
+			return; // nothing to check here
+
         Player possibleWinner = objectives[0].Controller;
         foreach (Objective objective in objectives)
         {
@@ -718,22 +733,28 @@ public class GameController : MonoBehaviour
                 hud.stopCountdown(Victory.MapControl);
                 return;
             }
-                
         }
     }
+
     public void checkWin()
     {
-		if (allEnemyBuildings.Count == 0) 
+		if (!GameData.winConditions.Contains(Victory.Annihilation))
+			return; // not a win condition
+
+		if (allEnemyBuildings.Count == 0) // TODO: Correct this for multiple CPUs
 			hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
 				true, "You destroyed all enemy buildings"
 			);
     }
 
     public void checkLose()
-    {
+	{
+		if (!GameData.winConditions.Contains(Victory.Annihilation))
+			return; // not a win condition
+
 		if (allAllyBuildings.Count == 0) 
 			hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
-				false, "All your building were destroyed"
+				false, "All your buildings were destroyed"
 			);
     }
 
@@ -817,9 +838,10 @@ public class GameController : MonoBehaviour
 
             // Set unit as parent in hierarchy
             newUnit.transform.SetParent(unitsParent.transform);
-            GameObject target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+            GameObject target = Instantiate(targetPrefab, spawner.RallyPoint, Quaternion.identity) as GameObject;
+            
             target.transform.SetParent(targetsParent.transform);
-
+            print(spawner.RallyPoint + " " + target.transform.position);
             UnitMovement script = newUnit.GetComponent<UnitMovement>();
             if (script != null)
             {

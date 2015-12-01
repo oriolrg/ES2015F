@@ -9,6 +9,7 @@ public class Spawner : MonoBehaviour
     */
     public Vector3 SpawningPoint;
     public Vector3 RallyPoint;
+    public bool customRally = false;
 
     void Start()
     {
@@ -27,6 +28,7 @@ public class Spawner : MonoBehaviour
         {
             SpawningPoint = transform.position + transform.forward * 3;
         }
-        RallyPoint = SpawningPoint;
+        if( !customRally )
+            RallyPoint = SpawningPoint + transform.forward * 3;
     }
 }

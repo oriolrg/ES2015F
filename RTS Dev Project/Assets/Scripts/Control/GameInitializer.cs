@@ -51,12 +51,12 @@ public class GameInitializer : MonoBehaviour {
 
 		// Deactive LOSManager before Instantiating
 		terrainLOSManager = GameData.map.GetComponent<LOSManager>();
-		terrainLOSManager.enabled = false;
+		terrainLOSManager.enabled = false; // remember to restore prefab later
 
 		// Deactivate A* too
 		foreach (Transform t in GameData.map.transform){
 			if (t.gameObject.name.Equals ("A*"))
-				t.gameObject.SetActive(false);
+				t.gameObject.SetActive(false); // remember to reactivate it later in prefab
 		}
 
 		createdMap = (GameObject) Instantiate (
@@ -64,6 +64,14 @@ public class GameInitializer : MonoBehaviour {
 			Vector3.zero,
 			Quaternion.identity
 		);
+
+		terrainLOSManager.enabled = true; // restore prefab
+
+		// Reactivate A* too
+		foreach (Transform t in GameData.map.transform){
+			if (t.gameObject.name.Equals ("A*"))
+				t.gameObject.SetActive(true);
+		}
 
 		MapInfo mapInfo = createdMap.GetComponent<MapInfo>();
 
