@@ -111,7 +111,6 @@ public Vector3 targetPos;
 			if(!targetReached(distanceToTarget)){
 
 				Vector3 dir = (path.vectorPath[currentWaypoint]-transform.position).normalized; //direction to move along
-				print (gameObject.name + ": " + dir.y);
 
 				transform.LookAt(transform.position + new Vector3(dir.x,0f,dir.z));
 				dir *= speed;
