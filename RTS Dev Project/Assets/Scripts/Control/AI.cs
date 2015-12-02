@@ -30,10 +30,12 @@ public class AI : MonoBehaviour {
 	private void elaborateStrategy()
 	{
 		
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),10));
-		tasks.Add (new Task(new Method(createBuilding), UnitType.Barracs));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),5));
+		tasks.Add (new Task(new Method(createBarrac), UnitType.Barracs));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier), UnitType.Soldier),10));
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),3));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),5));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createArcher), UnitType.Archer),20));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),5));
 		//tasks.Add (new Task(new Method(createWonder)));
 		
 	}
@@ -78,9 +80,11 @@ public class AI : MonoBehaviour {
 		if (GameData.cpus[0].skill==GameData.DifficultyEnum.Medium|| GameData.cpus[0].skill==GameData.DifficultyEnum.Hard) {	 
 			float evalWinObjective = evaluateWinByObjectives ();
 			float evalWinWonder = evaluateWinByWonder ();
-			if (evalWinObjective < evalWinWonder && evalWinObjective < 150) //&&  Victory.MapControl in GameData.winConditions   
+			if (evalWinObjective < evalWinWonder && evalWinObjective < 40){ //&&  Victory.MapControl in GameData.winConditions   
+				print ("Evaluacio win by objective " + evalWinObjective);
 				elaborateStrategyObjectives ();
-			else if (evalWinWonder < 150) // && Victory.Wonder in GameData.winConditions 
+			}
+			else if (evalWinWonder < 50) // && Victory.Wonder in GameData.winConditions 
 				elaborateStrategyWonder ();
 
 			if(GameData.cpus[0].skill==GameData.DifficultyEnum.Hard){
@@ -261,9 +265,15 @@ public class AI : MonoBehaviour {
 			
 			Vector3 position = civil.transform.position + v;
 			if(GameController.Instance.getAllEnemyTownCentres().Count > 0)
-				position = 	GameController.Instance.getAllEnemyTownCentres()[0].transform.position + v;
-			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>().civilization].units[u], position, new Troop( new List<GameObject>(){civil}));
-			return true;
+				position = 	GameController.Instance.getAllEnemyTownCentres()[0].transform.position + v;			 
+			Vector3 constructionPoint = GameController.Instance.buildingPossible(position.x,position.z,Player.CPU1,u);
+			if(constructionPoint.magnitude!=0){
+				GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>().civilization].units[u], position, new Troop( new List<GameObject>(){civil}));
+				return true;
+			}
+				
+
+
 		}
 		return false;
 		

@@ -847,11 +847,9 @@ public class GameController : MonoBehaviour
             GameObject target = Instantiate(targetPrefab, spawner.RallyPoint, Quaternion.identity) as GameObject;
             
             target.transform.SetParent(targetsParent.transform);
-            print(spawner.RallyPoint + " " + target.transform.position);
             UnitMovement script = newUnit.GetComponent<UnitMovement>();
             if (script != null)
             {
-				print (target.transform.position);
                 script.startMoving(target);
                 target.GetComponent<timerDeath>().AddUnit(newUnit);
             }
@@ -997,7 +995,7 @@ public class GameController : MonoBehaviour
 
         enabled = true;//Enable the script 
     }
-	public Vector3 buildingPossible(float x, float z, UnitType u){
+	public Vector3 buildingPossible(float x, float z,Player p, UnitType u){
 		Vector3 point = new Vector3 (0, 0, 0);
 		Ray ray = new Ray (new Vector3 (x, 1000, z), -Vector3.up);
 		RaycastHit[] hits;
@@ -1009,14 +1007,17 @@ public class GameController : MonoBehaviour
 		{
 			if (hit.collider.gameObject.tag == "Ground")
 			{
-				/*GameObject building = Instantiate(DataManager.Instance.civilizationDatas[GameData.cpus[0].civ].units[u], hit.point, Quaternion.identity) as GameObject;
-				building.AddComponent<BuildingPlacer> ();
-				BuildingPlacer script = building.GetComponent<BuildingPlacer>();
-				if (script.getCollision()){
-					return null;
+
+				Collider[] hitColliders = Physics.OverlapSphere(hit.point, DataManager.Instance.civilizationDatas[GameData.playerToCiv(p)].units[u].GetComponent<Renderer>().bounds.extents.magnitude);
+				print (DataManager.Instance.civilizationDatas[GameData.playerToCiv(p)].units[u].GetComponent<Renderer>().bounds.extents.magnitude);
+				foreach(Collider c in hitColliders){
+					print (c.gameObject.name);
+					if(c.tag!="Ground"&c.gameObject.name!=gameObject.name){
+						return point;
+					}
 				}
 				return hit.point;
-				*/
+
 			}
 		}
 		return point;
