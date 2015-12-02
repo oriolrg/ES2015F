@@ -22,7 +22,6 @@ public class AttackController : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		Debug.LogError ("Unit Awaken");
 		this.identity = this.gameObject.GetComponent<Identity> ();
 		this.range = DataManager.Instance.unitDatas [identity.unitType].stats [Stat.Range];
 		this.atkDmg = DataManager.Instance.unitDatas [identity.unitType].stats [Stat.Attack];
