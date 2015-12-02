@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject unitsParent;
     [SerializeField] private GameObject buildingsParent;
     [SerializeField] private GameObject objectivesParent;
+	public GameObject healthBarsParent;
     public GameObject targetsParent;
 
     [SerializeField]
@@ -62,7 +63,6 @@ public class GameController : MonoBehaviour
     
     // Static singleton property
     public static GameController Instance { get; private set; }
-
 
 
     void Awake()
@@ -613,7 +613,7 @@ public class GameController : MonoBehaviour
     //Set starting resource values.
     public void initResourceValues()
     {
-        playerResources[Resource.Food] = 1000;
+        /*playerResources[Resource.Food] = 1000;
         playerResources[Resource.Wood] = 1000;
         playerResources[Resource.Metal] = 1000;
         playerResources[Resource.Population] = 100;
@@ -624,7 +624,19 @@ public class GameController : MonoBehaviour
         hud.updateResource(Resource.Food, playerResources[Resource.Food]);
         hud.updateResource(Resource.Wood, playerResources[Resource.Wood]);
         hud.updateResource(Resource.Metal, playerResources[Resource.Metal]);
-        hud.updateResource(Resource.Population, playerResources[Resource.Population]);
+        hud.updateResource(Resource.Population, playerResources[Resource.Population]);*/
+		playerResources[Resource.Food] = 100000;
+		playerResources[Resource.Wood] = 100000;
+		playerResources[Resource.Metal] = 100000;
+		playerResources[Resource.Population] = 10000;
+		cpuResources[Resource.Food] = 1000;
+		cpuResources[Resource.Wood] = 1000;
+		cpuResources[Resource.Metal] = 1000;
+		cpuResources[Resource.Population] = 100;
+		hud.updateResource(Resource.Food, playerResources[Resource.Food]);
+		hud.updateResource(Resource.Wood, playerResources[Resource.Wood]);
+		hud.updateResource(Resource.Metal, playerResources[Resource.Metal]);
+		hud.updateResource(Resource.Population, playerResources[Resource.Population]);
     }
 
     //Called to check whether there are enough resources to perform an action.
@@ -692,10 +704,6 @@ public class GameController : MonoBehaviour
 
     public void updateRightPanel( GameObject go )
     {
-        if( go == selectedUnits.FocusedUnit )
-        {
-            hud.updateRightPanel(go);
-        }
     }
 
     public void checkMapControl()

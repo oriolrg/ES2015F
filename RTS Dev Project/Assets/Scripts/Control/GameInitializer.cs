@@ -37,8 +37,8 @@ public class GameInitializer : MonoBehaviour {
 
 		// Reallocate mainCamera wherever map tells us
 		Transform newCameraTransform = GameData.map.transform.Find ("Main Camera");
-		Camera.main.transform.position = newCameraTransform.position;
-		Camera.main.transform.rotation = newCameraTransform.rotation;
+		Camera.main.transform.position = newCameraTransform.localPosition;
+		Camera.main.transform.rotation = newCameraTransform.localRotation;
 	}
 
 	void Start() {
