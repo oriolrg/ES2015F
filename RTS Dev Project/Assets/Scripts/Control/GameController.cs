@@ -28,6 +28,8 @@ public class GameController : MonoBehaviour
 	private List<GameObject> allEnemyTownCentres;
     private List<GameObject> allEnemyCivilians;
 
+    private List<Troop> troops;
+
     //Keeps track of the resources the player has.
     [SerializeField]
     private ResourceValueDictionary playerResources;
@@ -77,6 +79,7 @@ public class GameController : MonoBehaviour
         // Here we save our singleton instance
         Instance = this;
 
+        troops = new List<Troop>();
         allAllyUnits = new List<GameObject>();
         allEnemyUnits = new List<GameObject>();
         allAllyArmy = new List<GameObject>();
@@ -89,6 +92,11 @@ public class GameController : MonoBehaviour
         allEnemyCivilians = new List<GameObject>();
         selectedUnits = new Troop();
         selectedUnits.units = new List<GameObject>();
+
+        for (int i = 0; i<10; i++)
+        {
+            troops.Add(new Troop());
+        }
     }
 
     // Use this for initialization
@@ -114,6 +122,8 @@ public class GameController : MonoBehaviour
 
         if (Input.mousePosition.y > Screen.height * UIheight)
         {
+
+
             //Left Click Manager
             if (Input.GetMouseButtonDown(0))
             {
@@ -264,6 +274,38 @@ public class GameController : MonoBehaviour
                 }
             }
 
+        }
+
+        for (int i = 0; i < 10; ++i)
+        {
+            if (Input.GetKey("" + i))
+            {
+                if (Input.GetKey(KeyCode.LeftAlt))
+                {
+                    troops[i].units.Clear();
+                    foreach (var unit in selectedUnits.units)
+                    {
+                        troops[i].units.Add(unit);
+                    }
+                    print(troops[i].units[0]);
+                }
+                else
+                {
+                    if (troops[i].units.Count > 0)
+                    {
+                        ClearSelection();
+                        foreach (var unit in troops[i].units)
+                        {
+                            selectedUnits.units.Add(unit);
+                            Transform projector = unit.transform.FindChild("Selected");
+                            if (projector != null)
+                                projector.gameObject.SetActive(true);
+                        }
+                        if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0];
+                        hud.updateSelection(selectedUnits);
+                    } 
+                }
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Tab))
