@@ -99,6 +99,10 @@ public class LOSEntity : MonoBehaviour {
 
     public void setActive(bool active)
     {
+        if (GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().revealed)
+        {
+            return;
+        }
         if (!GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().enabled)
         {
             return;
@@ -123,9 +127,39 @@ public class LOSEntity : MonoBehaviour {
         foreach (Renderer R in this.GetComponentsInChildren<Renderer>())
         {
             R.enabled = true;
-            this.RevealState = RevealStates.Unfogged;
+           // this.RevealState = RevealStates.Unfogged;
         }
 
+    }
+
+    public void show()
+    {
+        foreach (Renderer R in this.GetComponentsInChildren<Renderer>())
+        {
+            R.enabled = true;
+            //this.RevealState = RevealStates.Unfogged;
+        }
+
+    }
+
+    public void disable()
+    {
+        if ((!gameObject.tag.Equals("Ally") )&& (this.RevealState == RevealStates.Hidden) )
+        {
+            foreach (Renderer R in this.GetComponentsInChildren<Renderer>())
+            {
+                R.enabled = false;
+                //this.RevealState = RevealStates.Fogged;
+            }
+        }
+        else
+        {
+            foreach (Renderer R in this.GetComponentsInChildren<Renderer>())
+            {
+                R.enabled = true;
+                //this.RevealState = RevealStates.Fogged;
+            }
+        }
     }
 
 }
