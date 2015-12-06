@@ -71,10 +71,23 @@ public class LOSManager : MonoBehaviour {
     // the texture to be recreated
     private int previewParameterHash = 0;
     private int GenerateParameterHash() { return (Width + Height * 1024) + Scale.GetHashCode() + HighDetailTexture.GetHashCode(); }
+    //FOG OF WAR BUTTON
+    //Fog of war button
+    private bool fogOfWarEnabled;
+
+    private bool justDisabled;
+
+    private int fowCounter;
+
 
     void Start() {
         Terrain = GameObject.FindWithTag("Ground").GetComponent<Terrain>();
         if (Application.isPlaying) InitializeTexture();
+
+        //FOG OF WAR BUTTON
+        fogOfWarEnabled = true; //fog of war enabler and disabler
+        justDisabled = false; //fog of war enabler and disabler
+        fowCounter = 0;
 
     }
 
@@ -115,6 +128,56 @@ public class LOSManager : MonoBehaviour {
     }
 
     void Update() {
+
+        //FOG OF WAR BUTTON 
+        if (Input.GetKeyDown(KeyCode.F) || justDisabled)
+        {
+            //Fog of war button
+            if (fogOfWarEnabled)
+            {
+                print("FOG OF WAR BUTTON PRESSED");
+                GameObject.FindGameObjectsWithTag("Ally")[0].GetComponent<LOSEntity>().Range = 1000;
+                fogOfWarEnabled = false;
+                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                cube.transform.position = new Vector3(250, 20, 250);
+                cube.tag = "FOWObject";
+
+                cube.AddComponent<LOSEntity>();
+                cube.GetComponent<LOSEntity>().Range = 1000;
+                cube.GetComponent<MeshRenderer>().enabled = false;
+
+                justDisabled = true;
+
+            }
+            else
+            {
+
+                fowCounter++;
+                //foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
+                //{
+                //    g.GetComponent<LOSEntity>().reset();
+                //}
+                //GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().forceFullUpdate();
+                if (fowCounter > 5)
+                {
+                    GameObject.FindGameObjectWithTag("FOWObject").GetComponent<MeshRenderer>().enabled = false;
+                    GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().enabled = false;
+                    justDisabled = false;
+                    fowCounter = 0;
+                    foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
+                    {
+                        g.GetComponent<LOSEntity>().reset();
+                    }
+                    foreach (GameObject g in GameObject.FindGameObjectsWithTag("Ally"))
+                    {
+                        g.GetComponent<LOSEntity>().reset();
+                    }
+
+                }
+            }
+
+        }
+        //THE UPDATE GOES ON
 
 #if UNITY_EDITOR
         if (!Application.isPlaying) {

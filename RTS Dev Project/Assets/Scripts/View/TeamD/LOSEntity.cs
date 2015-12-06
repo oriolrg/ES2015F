@@ -52,6 +52,10 @@ public class LOSEntity : MonoBehaviour {
     void Start()
     {
         this.IsRevealer = gameObject.tag.Equals("Ally") || gameObject.tag.Equals("FOWObject");
+        if (gameObject.tag.Equals("Ally"))
+        {
+            this.RevealState = RevealStates.Unfogged;
+        }
         this.setActive(gameObject.tag.Equals("Ally"));
     }
 

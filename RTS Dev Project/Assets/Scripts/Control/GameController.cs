@@ -54,12 +54,7 @@ public class GameController : MonoBehaviour
     public List<Objective> objectives;
  	public bool placing;
  	
-    //Fog of war button
-    private bool fogOfWarEnabled;
 
-    private bool justDisabled;
-
-    private int fowCounter;
     
     // Static singleton property
     public static GameController Instance { get; private set; }
@@ -101,9 +96,7 @@ public class GameController : MonoBehaviour
             spawnRandomObjectives();
         }
         placing = false;
-        fogOfWarEnabled = true; //fog of war enabler and disabler
-        justDisabled = false; //fog of war enabler and disabler
-        fowCounter = 0;
+
     }
 
     // Update is called once per frame
@@ -281,49 +274,7 @@ public class GameController : MonoBehaviour
             if( selectedUnits.FocusedUnit != null )
                 selectedUnits.FocusedUnit.GetComponent<AttackController>().attack(selectedUnits.FocusedUnit);
         }
-        if (Input.GetKeyDown(KeyCode.F) || justDisabled)
-        {
-            //Fog of war button
-            if (fogOfWarEnabled)
-            {
-                print("FOG OF WAR BUTTON PRESSED");
-                GameObject.FindGameObjectsWithTag("Ally")[0].GetComponent<LOSEntity>().Range = 1000;
-                fogOfWarEnabled = false;
-                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cube.transform.position = new Vector3(250, 20, 250);
-                cube.tag = "FOWObject";
-                
-                cube.AddComponent<LOSEntity>();
-                cube.GetComponent<LOSEntity>().Range = 1000;
-                cube.GetComponent<MeshRenderer>().enabled = false;
 
-                justDisabled = true;
-                
-            }
-            else
-            {
-                
-                fowCounter++;
-                //foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
-                //{
-                //    g.GetComponent<LOSEntity>().reset();
-                //}
-                //GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().forceFullUpdate();
-                if (fowCounter > 5)
-                {
-                    GameObject.FindGameObjectWithTag("FOWObject").GetComponent<MeshRenderer>().enabled = false;
-                    GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().enabled = false;
-                    justDisabled = false;
-                    fowCounter = 0;
-                    foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
-                    {
-                        g.GetComponent<LOSEntity>().reset();
-                    }
-
-                }
-            }
-
-        }
 
     }
 
