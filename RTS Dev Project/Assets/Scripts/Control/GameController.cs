@@ -593,8 +593,7 @@ public class GameController : MonoBehaviour
         }
 
 		if (GameData.winConditions.Contains (Victory.Annihilation)){
-	        checkWin();
-	        checkLose();
+			checkBuildingDestruction(u);
 		}
 
         if (selectedUnits.units.Contains(u))
@@ -706,7 +705,7 @@ public class GameController : MonoBehaviour
     {
     }
 
-    public void checkMapControl()
+    public void checkMapControl(GameObject lastObjectControlled)
     {
         hud.updateSelection(selectedUnits);
 
@@ -726,7 +725,7 @@ public class GameController : MonoBehaviour
 
         if (possibleWinner != Player.Neutral)
         {
-            hud.startCountdown(Victory.MapControl, possibleWinner);
+            hud.startCountdown(lastObjectControlled.transform.position, Victory.MapControl, possibleWinner);
             InvokeRepeating("ensureWinner", 1, 1);
         }
     }
@@ -750,26 +749,20 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void checkWin()
+    public void checkBuildingDestruction(GameObject lastBuilding)
     {
 		if (!GameData.winConditions.Contains(Victory.Annihilation))
 			return; // not a win condition
 
-		if (allEnemyBuildings.Count == 0) // TODO: Correct this for multiple CPUs
+		if (allEnemyBuildings.Count == 0){ // TODO: Correct this for multiple CPUs
 			hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
-				true, "You destroyed all enemy buildings"
+				lastBuilding.transform.position, true, "You destroyed all enemy buildings"
 			);
-    }
-
-    public void checkLose()
-	{
-		if (!GameData.winConditions.Contains(Victory.Annihilation))
-			return; // not a win condition
-
-		if (allAllyBuildings.Count == 0) 
+		} else if(allAllyBuildings.Count == 0) {
 			hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
-				false, "All your buildings were destroyed"
+				lastBuilding.transform.position, false, "All your buildings were destroyed"
 			);
+		}
     }
 
     public void reloadLevel()
