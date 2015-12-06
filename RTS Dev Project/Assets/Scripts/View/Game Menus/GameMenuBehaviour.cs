@@ -21,8 +21,8 @@ public class GameMenuBehaviour : MonoBehaviour {
 			
 	}
 
-	public void ToMainMenu(){
-		Application.LoadLevel ("Menu");
+	public void ToMainMenu(string scene){
+		Application.LoadLevel (scene);
 	}
 
 	public void EndGameMenu(Vector3 poi, bool victory, string reason){
@@ -46,7 +46,7 @@ public class GameMenuBehaviour : MonoBehaviour {
 		Camera.main.transform.position = newCameraPosition;
 
 		Time.timeScale = 0; // pause the game
-		ToMainMenu(); // open the EndGameScene in 3 seconds
+		ToMainMenu("EndGameScene"); // open the EndGameScene in 3 seconds
 		//endGameMenu.GetComponent<EndGameMenu> ().endGame (victory, reason);
 	}
 }
