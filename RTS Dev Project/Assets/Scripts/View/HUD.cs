@@ -436,13 +436,14 @@ public class HUD : MonoBehaviour
         messageBox.SetActive(false);
     }
 
-    public void startCountdown(Victory victory, Player winner )
+    public void startCountdown(Vector3 poi, Victory victory, Player winner )
     {
         countdownPanel.gameObject.SetActive(true);
 		victoryCondition.text = string.Format("{0}: {1}", victory.ToString(), winner);//DataManager.Instance.playerDatas[winner].name);
         //countdownText.setTimer( victory.countdownTime(), () => { winPanel.SetActive(true); });
 		countdownText.setTimer( victory.countdownTime(), () => { 
 			gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu (
+				poi,
 				winner.Equals(Player.Player),
 				"All objectives controlled"
 			); 

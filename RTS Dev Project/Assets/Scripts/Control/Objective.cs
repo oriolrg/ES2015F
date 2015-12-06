@@ -59,7 +59,7 @@ public class Objective : MonoBehaviour
                 {
                     // new controller
                     Controller = maximalPlayer;
-                    GameController.Instance.checkMapControl();
+                    GameController.Instance.checkMapControl(gameObject);
                 }
 			}
 			GameController.Instance.updateControl (gameObject);
