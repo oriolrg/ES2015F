@@ -167,6 +167,7 @@ public class GameController : MonoBehaviour
                         moveUnits(hitInfo.transform.gameObject);
                     else if (hitInfo.transform.gameObject.tag == "Enemy")
                     {
+                        Debug.Log("ataacaaarrr");
                         GameObject enemy = hitInfo.transform.gameObject;
                         attack(enemy);
                     }

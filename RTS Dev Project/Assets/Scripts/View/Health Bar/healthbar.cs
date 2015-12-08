@@ -76,9 +76,12 @@ public class healthbar : MonoBehaviour
             curHealth = GetComponent<Health>().getHealth();
             HandleHealth();
 
-            if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Hidden) ||
-                unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Fogged))
-                g.GetComponentInChildren<auxHealth>().gameObject.SetActive(false);
+            if (unitLOSEntity != null)
+            {
+                if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Hidden) ||
+                    unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Fogged))
+                    g.GetComponentInChildren<auxHealth>().gameObject.SetActive(false);
+            }
             
 
 
