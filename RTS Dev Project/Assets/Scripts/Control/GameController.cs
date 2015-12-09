@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
@@ -97,6 +98,8 @@ public class GameController : MonoBehaviour
         {
             troops.Add(new Troop());
         }
+
+		GameStatistics.resetStatistics();
     }
 
     // Use this for initialization
@@ -113,6 +116,17 @@ public class GameController : MonoBehaviour
         justDisabled = false; //fog of war enabler and disabler
         fowCounter = 0;
     }
+
+	IEnumerator ToGameStatisticsIEnumerator(Player winner, Victory winCondition){
+		GameStatistics.winner = winner;
+		GameStatistics.winCondition = winCondition;
+		yield return new WaitForSeconds(3);
+		Application.LoadLevel("EndGameScene");
+	}
+
+	public void ToGameStatistics(Player winner, Victory winCondition){
+		StartCoroutine(ToGameStatisticsIEnumerator(winner, winCondition));
+	}
 
     // Update is called once per frame
     void Update()
@@ -797,13 +811,15 @@ public class GameController : MonoBehaviour
 			return; // not a win condition
 
 		if (allEnemyBuildings.Count == 0){ // TODO: Correct this for multiple CPUs
-			hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
+			GameController.Instance.ToGameStatistics(Player.Player, Victory.Annihilation);
+			/*hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
 				lastBuilding.transform.position, true, "You destroyed all enemy buildings"
-			);
+			);*/
 		} else if(allAllyBuildings.Count == 0) {
-			hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
+			GameController.Instance.ToGameStatistics(Player.CPU1, Victory.Annihilation);
+			/*hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
 				lastBuilding.transform.position, false, "All your buildings were destroyed"
-			);
+			);*/
 		}
     }
 
