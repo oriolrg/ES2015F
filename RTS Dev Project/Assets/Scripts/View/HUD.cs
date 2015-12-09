@@ -442,7 +442,7 @@ public class HUD : MonoBehaviour
 		victoryCondition.text = string.Format("{0}: {1}", victory.ToString(), winner);//DataManager.Instance.playerDatas[winner].name);
         //countdownText.setTimer( victory.countdownTime(), () => { winPanel.SetActive(true); });
 		countdownText.setTimer( victory.countdownTime(), () => { 
-			GameController.Instance.ToGameStatistics(winner, Victory.MapControl);
+			GameController.Instance.ToGameStatistics(poi, winner, Victory.MapControl);
 			/*gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu (
 				poi,
 				winner.Equals(Player.Player),

@@ -124,7 +124,26 @@ public class GameController : MonoBehaviour
 		Application.LoadLevel("EndGameScene");
 	}
 
-	public void ToGameStatistics(Player winner, Victory winCondition){
+	public void ToGameStatistics(Vector3 poi, Player winner, Victory winCondition){
+		Vector3 newCameraPosition;
+		
+		Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+		RaycastHit hit;
+		
+		if (Physics.Raycast (
+			ray, out hit,
+			Mathf.Infinity // max distance
+			)
+	    ) {
+			newCameraPosition = poi + (Camera.main.transform.position - hit.point);
+		} else {
+			throw new UnityException("POI isn't over ground!");
+		}
+		
+		Camera.main.transform.position = newCameraPosition;
+		
+		Time.timeScale = 0; // pause the game
+
 		StartCoroutine(ToGameStatisticsIEnumerator(winner, winCondition));
 	}
 
@@ -811,12 +830,12 @@ public class GameController : MonoBehaviour
 			return; // not a win condition
 
 		if (allEnemyBuildings.Count == 0){ // TODO: Correct this for multiple CPUs
-			GameController.Instance.ToGameStatistics(Player.Player, Victory.Annihilation);
+			GameController.Instance.ToGameStatistics(lastBuilding.transform.position, Player.Player, Victory.Annihilation);
 			/*hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
 				lastBuilding.transform.position, true, "You destroyed all enemy buildings"
 			);*/
 		} else if(allAllyBuildings.Count == 0) {
-			GameController.Instance.ToGameStatistics(Player.CPU1, Victory.Annihilation);
+			GameController.Instance.ToGameStatistics(lastBuilding.transform.position, Player.CPU1, Victory.Annihilation);
 			/*hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
 				lastBuilding.transform.position, false, "All your buildings were destroyed"
 			);*/
