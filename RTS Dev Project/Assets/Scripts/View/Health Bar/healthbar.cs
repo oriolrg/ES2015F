@@ -68,8 +68,11 @@ public class healthbar : MonoBehaviour
                 //if (GetComponent<BuildingConstruction>().getPhase() == 2)
                 if (GetComponent<BuildingConstruction>().getConstructionOnGoing())
                 {
-                    maxHealth = auxMaxHealth;
-                    curHealth = maxHealth - GetComponent<BuildingConstruction>().timer;
+                    //maxHealth = auxMaxHealth;
+                    //curHealth = maxHealth - GetComponent<BuildingConstruction>().timer;
+                    float dif = GetComponent<Health>().getMaxHealth() - GetComponent<Health>().getHealth();
+                    maxHealth = MapValues(auxMaxHealth,0,auxMaxHealth,0, GetComponent<Health>().getMaxHealth());
+                    curHealth = MapValues(auxMaxHealth - GetComponent<BuildingConstruction>().timer, 0, auxMaxHealth, 0, GetComponent<Health>().getMaxHealth()) - dif;
                 }
                 else
                 {
