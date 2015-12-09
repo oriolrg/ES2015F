@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class GameStatistics : MonoBehaviour {
 	
-	class PlayerStatistics {
+	public class PlayerStatistics {
 		public int CreatedUnits;
+		public int LostUnits;
 		public int KilledUnits;
-		public int DeadUnits;
 		public int WoodCollected;
 		public int StoneCollected;
 		public int FoodCollected;
 		
 		public PlayerStatistics(){
 			CreatedUnits = 0;
+			LostUnits = 0;
 			KilledUnits = 0;
-			DeadUnits = 0;
 			WoodCollected = 0;
 			StoneCollected = 0;
 			FoodCollected = 0;
@@ -25,6 +26,15 @@ public class GameStatistics : MonoBehaviour {
 	private static PlayerStatistics cpu1 = new PlayerStatistics();
 	private static PlayerStatistics cpu2 = new PlayerStatistics();
 	private static PlayerStatistics cpu3 = new PlayerStatistics();
+	public static Player winner = Player.Player;
+	public static Victory winCondition = Victory.Annihilation;
+
+	public static void resetStatistics(){
+		player = new PlayerStatistics();
+		cpu1 = new PlayerStatistics();
+		cpu2 = new PlayerStatistics();
+		cpu3 = new PlayerStatistics();
+	}
 
 	public static PlayerStatistics getPS(Player p){
 		if (p.Equals(Player.Player))
@@ -36,13 +46,13 @@ public class GameStatistics : MonoBehaviour {
 		else if (p.Equals (Player.CPU3))
 			return cpu3;
 		else
-			raise UnityException(string.format("Player {0} doesn't have statistics", p.ToString()));
+			throw new UnityException(String.Format("Player {0} doesn't have statistics", p));
 	}
 
-	public static int addCreatedUnits(Player p, int x){ getPS(p).CreatedUnits += x; }
-	public static int addKilledUnits(Player p, int x){ getPS(p).KilledUnits += x; }
-	public static int addDeadUnits(Player p, int x){ getPS(p).DeadUnits += x; }
-	public static int addWoodCollected(Player p, int x){ getPS(p).WoodCollected += x; }
-	public static int addStoneCollected(Player p, int x){ getPS(p).StoneCollected += x; }
-	public static int addFoodCollected(Player p, int x){ getPS(p).FoodCollected += x; }
+	public static void addCreatedUnits(Player p, int x){ getPS(p).CreatedUnits += x; }
+	public static void addLostUnits(Player p, int x){ getPS(p).LostUnits += x; }
+	public static void addKilledUnits(Player p, int x){ getPS(p).KilledUnits += x; }
+	public static void addWoodCollected(Player p, int x){ getPS(p).WoodCollected += x; }
+	public static void addStoneCollected(Player p, int x){ getPS(p).StoneCollected += x; }
+	public static void addFoodCollected(Player p, int x){ getPS(p).FoodCollected += x; }
 }
