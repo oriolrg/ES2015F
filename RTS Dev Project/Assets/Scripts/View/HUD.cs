@@ -12,6 +12,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private List<Image> panels;
     [SerializeField] private List<Text> texts;
     [SerializeField] private ResourceTextDictionary resourceTexts;
+	[SerializeField] private ResourceTextDictionary resourceTextsAI;
     [SerializeField] private ResourceTextDictionary resourceCosts;
     [SerializeField] private Image flagImage;
     [SerializeField] RectTransform creationPanel;
@@ -87,6 +88,18 @@ public class HUD : MonoBehaviour
         // Show the value
         text.text = value.ToString();
     }
+
+
+	// Updates the text of a resource. resourceTexts should be filled within inspector
+	public void updateResourceAI( Resource resource, int value )
+	{
+		print ("Updating the AI resource" + resource.ToString() + "with value" + value);
+		// Get the Text component that corresponds to this resource
+		Text text = resourceTextsAI[resource];
+		
+		// Show the value
+		text.text = value.ToString();
+	}
 
     public void updateSelection( Troop troop )
     {

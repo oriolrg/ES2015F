@@ -258,6 +258,9 @@ public class AI : MonoBehaviour {
 
 	private bool createBuilding(UnitType u)
 	{
+
+		print ("Trec dobers");
+		GameController.Instance.hud.updateResourceAI (Resource.Food, GameController.Instance.cpuResources[Resource.Food]);
 		GameObject civil = getIdleCivilian ();
 		if (civil != null)
 		{

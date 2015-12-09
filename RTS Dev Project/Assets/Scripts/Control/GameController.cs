@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour
     private ResourceValueDictionary playerResources;
 
     [SerializeField]
-    private ResourceValueDictionary cpuResources;
+    public ResourceValueDictionary cpuResources;
 
     [SerializeField]
     private GameObject selectedPrefab;
@@ -588,6 +588,10 @@ public class GameController : MonoBehaviour
 		hud.updateResource(Resource.Wood, playerResources[Resource.Wood]);
 		hud.updateResource(Resource.Metal, playerResources[Resource.Metal]);
 		hud.updateResource(Resource.Population, playerResources[Resource.Population]);
+		hud.updateResourceAI(Resource.Food, cpuResources[Resource.Food]);
+		hud.updateResourceAI(Resource.Wood, cpuResources[Resource.Wood]);
+		hud.updateResourceAI(Resource.Metal, cpuResources[Resource.Metal]);
+		hud.updateResourceAI(Resource.Population, cpuResources[Resource.Population]);
     }
 
     //Called to check whether there are enough resources to perform an action.
