@@ -14,8 +14,9 @@ public class Objective : MonoBehaviour
 
 	void Start()
 	{
-		InvokeRepeating ("detectUnits", 0, 3);
+		InvokeRepeating ("detectUnits", 0, 1);
         Controller = gameObject.GetComponentOrEnd<Identity>().player;
+        GameController.Instance.addTeamCirclePrefab(gameObject);
 	}
 
 	void FixedUpdate()
@@ -59,7 +60,12 @@ public class Objective : MonoBehaviour
                 {
                     // new controller
                     Controller = maximalPlayer;
-                    GameController.Instance.checkMapControl(gameObject);
+                    // check win
+                    GameController.Instance.checkMapControl();
+
+                    // paint team circle with other color
+                    GetComponent<Identity>().player = Controller;
+                    GetComponentInChildren<TeamCircleProjector>().initWithTeamColor(GetComponent<Identity>());
                 }
 			}
 			GameController.Instance.updateControl (gameObject);
@@ -93,10 +99,6 @@ public class Objective : MonoBehaviour
 		}
 
 		maximalPlayer = maximalRepresentant ();
-
-
-		
-
 	}
 
 	private Player maximalRepresentant()

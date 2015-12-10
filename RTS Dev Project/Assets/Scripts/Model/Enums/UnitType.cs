@@ -41,7 +41,8 @@ public static class UnitExtensions
             unit == UnitType.Windmill ||
             unit == UnitType.Carpentry ||
             unit == UnitType.Farm ||
-            unit == UnitType.Academy;
+            unit == UnitType.Academy ||
+            unit == UnitType.Tower;
     }
     public static T GetComponentOrEnd<T>(this GameObject go)
     {
