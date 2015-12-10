@@ -628,6 +628,8 @@ public class GameController : MonoBehaviour
         {
             if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Civilian)
             {
+                GameStatistics.addKilledUnits(Player.CPU1, 1);
+                GameStatistics.addLostUnits(Player.Player, 1);
                 allAllyCivilians.Remove(u);
             }
             else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter
@@ -635,6 +637,8 @@ public class GameController : MonoBehaviour
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archery
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Stable)
             {
+                GameStatistics.addKilledUnits(Player.CPU1, 1);
+                GameStatistics.addLostUnits(Player.Player, 1); //Buildings
                 allAllyBuildings.Remove(u);
 				if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter) allAllyTownCentres.Remove(u);
             }
@@ -642,6 +646,8 @@ public class GameController : MonoBehaviour
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archer
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Knight)
             {
+                GameStatistics.addKilledUnits(Player.CPU1, 1);
+                GameStatistics.addLostUnits(Player.Player, 1);
                 allAllyArmy.Remove(u);
             }
         }
@@ -649,6 +655,8 @@ public class GameController : MonoBehaviour
         {
             if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Civilian)
             {
+                GameStatistics.addKilledUnits(Player.Player, 1);
+                GameStatistics.addLostUnits(Player.CPU1, 1);
                 allEnemyCivilians.Remove(u);
             }
             else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter
@@ -657,12 +665,16 @@ public class GameController : MonoBehaviour
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Stable)
             {
                 allEnemyBuildings.Remove(u);
-				if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter) allEnemyTownCentres.Remove(u);
+                GameStatistics.addKilledUnits(Player.Player, 1);
+                GameStatistics.addLostUnits(Player.CPU1, 1);
+                if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter) allEnemyTownCentres.Remove(u);
             }
             else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Soldier
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archer
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Knight)
             {
+                GameStatistics.addKilledUnits(Player.Player, 1);
+                GameStatistics.addLostUnits(Player.CPU1, 1);
                 allEnemyArmy.Remove(u);
             }
         }
@@ -1155,6 +1167,7 @@ public class GameController : MonoBehaviour
 
                 Identity newIden = created.GetComponent<Identity>();
                 if (newIden != null) newIden.player = who.player;
+                GameStatistics.addCreatedUnits(who.player, 1); //buidings
 
                 if (who.tag == "Ally") addSelectedPrefab(created);
                 addTeamCirclePrefab(created);
@@ -1173,6 +1186,7 @@ public class GameController : MonoBehaviour
 
                 Identity newIden = created.GetComponent<Identity>();
                 if (newIden != null) newIden.player = who.player;
+                GameStatistics.addCreatedUnits(who.player, 1);
 
                 if (who.tag == "Ally")
                 {
@@ -1284,6 +1298,7 @@ public class GameController : MonoBehaviour
 
             if (health != null)
             {
+                GameStatistics.addKilledUnits(Player.CPU1, -1);
                 health.die();
             }
             else

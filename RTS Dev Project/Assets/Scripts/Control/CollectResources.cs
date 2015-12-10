@@ -9,7 +9,7 @@ public class CollectResources : MonoBehaviour
 {
 	public UnitMovement unitMovement;
     public ResourceValueDictionary resourceBank;
-    
+    public int collectSpeed = 2;
     public GameObject targetObject;
     public Animator animator;
 	public bool goingToCollect;
@@ -46,15 +46,20 @@ public class CollectResources : MonoBehaviour
 
         if (destroyOnExpend != null)
         {
-            destroyOnExpend.amount -= 2;
+            destroyOnExpend.amount -= collectSpeed;
 
             Resource resourceCollected = (Resource)System.Enum.Parse(typeof(Resource), targetObject.tag);
 
-            resourceBank[resourceCollected] += 2;
+            resourceBank[resourceCollected] += collectSpeed;
 
+            Identity iden = GetComponent<Identity>();
+            if (iden != null)
+            {
+                if (resourceCollected == Resource.Food) GameStatistics.addFoodCollected(iden.player, collectSpeed);
+                if (resourceCollected == Resource.Wood) GameStatistics.addWoodCollected(iden.player, collectSpeed);
+                if (resourceCollected == Resource.Metal) GameStatistics.addStoneCollected(iden.player, collectSpeed);
+            }
 			GameController.Instance.hud.updateRightPanel(gameObject);
-
-
         }
         else
         {
