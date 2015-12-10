@@ -27,9 +27,13 @@ public class healthbar : MonoBehaviour
 
         if (GetComponent<Identity>().unitType.isBuilding())
         {
+            //GetComponent<Health>().setHealth(50);
+            //GetComponent<Health>().setMaxHealth(50);
+            //GetComponent<Health>().setAuxHealth(50);
             auxMaxHealth = GetComponent<BuildingConstruction>().timer;
-            maxHealth = auxMaxHealth;
-            curHealth = maxHealth - GetComponent<BuildingConstruction>().timer;
+            maxHealth = MapValues(auxMaxHealth, 0, auxMaxHealth, GetComponent<Health>().getMaxHealth() / 10, GetComponent<Health>().getMaxHealth());
+            curHealth = MapValues(auxMaxHealth - GetComponent<BuildingConstruction>().timer, 0, auxMaxHealth, GetComponent<Health>().getMaxHealth() / 10, GetComponent<Health>().getMaxHealth());
+
         }
         else
         {
@@ -45,6 +49,7 @@ public class healthbar : MonoBehaviour
         visualHealth = g.GetComponentInChildren<auxHealth>().i;
 
         unitLOSEntity = gameObject.GetComponent<LOSEntity>();
+        
     }
 
     // Update is called once per frame
@@ -70,9 +75,10 @@ public class healthbar : MonoBehaviour
                 {
                     //maxHealth = auxMaxHealth;
                     //curHealth = maxHealth - GetComponent<BuildingConstruction>().timer;
-                    float dif = GetComponent<Health>().getMaxHealth() - GetComponent<Health>().getHealth();
-                    maxHealth = MapValues(auxMaxHealth,0,auxMaxHealth,0, GetComponent<Health>().getMaxHealth());
-                    curHealth = MapValues(auxMaxHealth - GetComponent<BuildingConstruction>().timer, 0, auxMaxHealth, 0, GetComponent<Health>().getMaxHealth()) - dif;
+                    float dif = GetComponent<Health>().getMaxHealth() - GetComponent<Health>().getAuxHealth();
+                    maxHealth = MapValues(auxMaxHealth,0,auxMaxHealth, GetComponent<Health>().getMaxHealth() / 10, GetComponent<Health>().getMaxHealth());
+                    curHealth = MapValues(auxMaxHealth - GetComponent<BuildingConstruction>().timer, 0, auxMaxHealth, GetComponent<Health>().getMaxHealth()/10, GetComponent<Health>().getMaxHealth()) - dif;
+                    GetComponent<Health>().setHealth(curHealth);
                 }
                 else
                 {
@@ -85,12 +91,15 @@ public class healthbar : MonoBehaviour
                 curHealth = GetComponent<Health>().getHealth();
             }
 
-            HandleHealth();
+            if (g != null)
+            {
 
+                HandleHealth();
 
-            if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Hidden) ||
-                unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Fogged))
-                g1.SetActive(false);
+                if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Hidden) ||
+                    unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Fogged))
+                    g1.SetActive(false);
+            }
 
         }
 
