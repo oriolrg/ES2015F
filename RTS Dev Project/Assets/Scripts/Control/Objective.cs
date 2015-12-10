@@ -16,6 +16,7 @@ public class Objective : MonoBehaviour
 	{
 		InvokeRepeating ("detectUnits", 0, 3);
         Controller = gameObject.GetComponentOrEnd<Identity>().player;
+        GameController.Instance.addTeamCirclePrefab(gameObject);
 	}
 
 	void FixedUpdate()
@@ -59,6 +60,7 @@ public class Objective : MonoBehaviour
                 {
                     // new controller
                     Controller = maximalPlayer;
+                    // check win
                     GameController.Instance.checkMapControl();
                 }
 			}
@@ -93,10 +95,6 @@ public class Objective : MonoBehaviour
 		}
 
 		maximalPlayer = maximalRepresentant ();
-
-
-		
-
 	}
 
 	private Player maximalRepresentant()
