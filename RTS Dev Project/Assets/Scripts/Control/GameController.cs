@@ -332,11 +332,14 @@ public class GameController : MonoBehaviour
 	{
         if (selectedUnits.units.Count == 0) return;
         timerDeath groundTarget = target.GetComponent<timerDeath>();
-        int formationMatrixSize = (int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)); 
+        //int formationMatrixSize = (int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)); 
+		Vector2 formationMatrixSizeTri = new Vector2((int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)),(int)(2*Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)) - 1));
+		int numberUnit = 0;
         if (selectedUnits.hasMovableUnits())
         {
 			if(groundTarget != null)
-           		groundTarget.setFormationMatrix(formationMatrixSize);
+           		//groundTarget.setFormationMatrix(formationMatrixSize);
+				groundTarget.setFormationMatrixTri(formationMatrixSizeTri);
             foreach (var unit in selectedUnits.units)
             {
                 // Special case: a civilian moves towards a town center and has resources to store
@@ -376,30 +379,53 @@ public class GameController : MonoBehaviour
                         }
                         else
                         {
-                            if(formationMatrixSize > 1){
-                                Vector3 newTargetPosition = Vector3.zero;
-                                if( groundTarget != null )
-                                    newTargetPosition = groundTarget.AddUnitMouseSelection(unit);
-                                
-                                script.startMoving(target);
-                                script.targetPos = newTargetPosition;
-                            } else {
+							//FORMATION MATRIX NO TRIANGLE
+//                            if(formationMatrixSize > 1){
+//                                Vector3 newTargetPosition = Vector3.zero;
+//                                if( groundTarget != null )
+//                                    newTargetPosition = groundTarget.AddUnitMouseSelection(unit);
+//                                
+//                                script.startMoving(target);
+//                                script.targetPos = newTargetPosition;
+//                            } else {
+//								if(groundTarget != null)
+//									groundTarget.AddUnit(unit);
+//								
+//                                script.startMoving(target);
+//                            }
+
+							//FORMATION MATRIX TRIANGLE
+							if(formationMatrixSizeTri.x > 1){
+								Vector3 newTargetPosition = Vector3.zero;
+								Vector3 unitPosition = unit.transform.position;
+								Vector3 targetPosition = target.transform.position;
+								
+								if (numberUnit == 0){
+									Vector3 direction = new Vector3(Mathf.Abs(unitPosition.x) - Mathf.Abs(targetPosition.x),unitPosition.y-targetPosition.y,Mathf.Abs(unitPosition.z) - Mathf.Abs(targetPosition.z));
+									groundTarget.setDirection(direction);
+								}
+								
+								numberUnit++;
+								if( groundTarget != null )
+									newTargetPosition = groundTarget.AddUnitMouseSelectionTri(unit);
+								script.startMoving(target);
+								script.targetPos = newTargetPosition;
+							} else {
 								if(groundTarget != null)
 									groundTarget.AddUnit(unit);
-								
-                                script.startMoving(target);
-                            }
-                        }
-                    }
-                }
-            }
-            
-        }
-        else
-        {
-            foreach (var unit in selectedUnits.units)
-            {
-                Spawner script = unit.GetComponentInParent<Spawner>();
+								script.startMoving(target);
+							}
+						}
+					}
+				}
+			}
+			
+		}
+		else
+		{
+			foreach (var unit in selectedUnits.units)
+			{
+				Spawner script = unit.GetComponentInParent<Spawner>();
                 if (script != null)
                 {
                     script.RallyPoint = target.transform.position;
