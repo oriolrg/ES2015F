@@ -11,6 +11,7 @@ public class BuildingPlacer : MonoBehaviour {
     public bool collision;//indicates if there is a collision
 	private int counterCollision;//indicates how many different collisions there are
 
+    private Troop t;
 
 	void Start()
 	{
@@ -19,7 +20,8 @@ public class BuildingPlacer : MonoBehaviour {
 		originalColor = gameObject.GetComponent<Renderer> ().material.color;
         transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
 
-		gameObject.GetComponent<LOSEntity>().enabled = false;
+        gameObject.GetComponent<LOSEntity>().RevealState = LOSEntity.RevealStates.Fogged;
+        gameObject.GetComponent<LOSEntity>().enabled = false;
 
         //Make the gameObject a bit transparent. Hacky hacky
         originalMaterials = new List<Material>();
@@ -40,6 +42,8 @@ public class BuildingPlacer : MonoBehaviour {
         }
         collision = false;
 		counterCollision = 0;
+
+        t = new Troop(GameController.Instance.getSelectedUnits().units);
     }
 
     void OnTriggerEnter(Collider col)
@@ -155,7 +159,7 @@ public class BuildingPlacer : MonoBehaviour {
                     }
 
 
-                    Troop t = new Troop(GameController.Instance.getSelectedUnits().units);
+                    //Troop t = new Troop(GameController.Instance.getSelectedUnits().units);
                     gameObject.tag = t.units[0].tag;
                     GameController.Instance.buildingConstruction(gameObject.transform.position, t);
                     gameObject.GetComponent<LOSEntity>().IsRevealer = false;

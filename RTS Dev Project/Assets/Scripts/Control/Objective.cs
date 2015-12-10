@@ -61,7 +61,7 @@ public class Objective : MonoBehaviour
                     // new controller
                     Controller = maximalPlayer;
                     // check win
-                    GameController.Instance.checkMapControl();
+                    GameController.Instance.checkMapControl(gameObject);
 
                     // paint team circle with other color
                     GetComponent<Identity>().player = Controller;
