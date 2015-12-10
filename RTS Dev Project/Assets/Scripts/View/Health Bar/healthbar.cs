@@ -96,16 +96,31 @@ public class healthbar : MonoBehaviour
 
                 HandleHealth();
 
-                if (unitLOSEntity != null)
+            if (unitLOSEntity != null)
+            {
+                if (!GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().revealed)
                 {
                     if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Hidden) ||
-                        unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Fogged))
-                        g1.SetActive(false);
+                    unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Fogged))
+                    {
+                        g.GetComponentInChildren<auxHealth>().gameObject.SetActive(false);
+
+                    }
+                }
+                else
+                {
+                    if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight)
+                        g.GetComponentInChildren<auxHealth>().gameObject.SetActive(false);
+                }
+
+            }            
+
+
+               
+
                 }
 
 
-
-            }
 
         }
     }
