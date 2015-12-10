@@ -5,7 +5,8 @@ using System.Collections;
 /// This represents an entity that interacts with the LOSManager
 /// </summary>
 [ExecuteInEditMode]
-public class LOSEntity : MonoBehaviour {
+public class LOSEntity : MonoBehaviour
+{
 
     public enum RevealStates { Hidden, Fogged, Unfogged, };
 
@@ -21,11 +22,13 @@ public class LOSEntity : MonoBehaviour {
     public float Height = 1;
     public float BaseSize = 0;
 
-    public bool firstTime=true;
+    public bool firstTime = true;
 
     // Our bounds on the terrain
-    public Rect Bounds {
-        get {
+    public Rect Bounds
+    {
+        get
+        {
             var bounds = new Rect(
                 transform.position.x - BaseSize / 2,
                 transform.position.z - BaseSize / 2,
@@ -37,21 +40,28 @@ public class LOSEntity : MonoBehaviour {
     // Current state, if we're visible, fogged, or hidden
     public RevealStates RevealState;
 
-    public void SetIsCurrentTeam(bool isCurrent) {
+    public void SetIsCurrentTeam(bool isCurrent)
+    {
         IsRevealer |= isCurrent;
     }
 
     // Tell the LOS manager that we're here
-    public void OnEnable() {
+    public void OnEnable()
+    {
         LOSManager.AddEntity(this);
     }
-    public void OnDisable() {
+    public void OnDisable()
+    {
         LOSManager.RemoveEntity(this);
     }
 
     void Start()
     {
         this.IsRevealer = gameObject.tag.Equals("Ally") || gameObject.tag.Equals("FOWObject");
+        if (gameObject.tag.Equals("Ally"))
+        {
+            this.RevealState = RevealStates.Unfogged;
+        }
         this.setActive(gameObject.tag.Equals("Ally"));
     }
 
@@ -60,10 +70,12 @@ public class LOSEntity : MonoBehaviour {
     Color _fowColor = Color.clear;
     float _fowInterp = 1;
     // Request a change to the FOW colour
-    public void SetFOWColor(Color fowColor, bool interpolate) {
+    public void SetFOWColor(Color fowColor, bool interpolate)
+    {
         fowColor.a = 255;
         if (fowColor == _fowColor) return;
-        if (!interpolate) {
+        if (!interpolate)
+        {
             _fowColor = fowColor;
             _fowInterp = 1;
             UpdateFOWColor();
@@ -77,16 +89,22 @@ public class LOSEntity : MonoBehaviour {
     // Does this item require fog of war updates
     public bool RequiresFOWUpdate { get { return _fowInterp < 1; } }
     // Returns true when the item has completed transitioning its fog of war colour
-    public bool UpdateFOWColor() {
+    public bool UpdateFOWColor()
+    {
         _fowInterp = Mathf.Clamp01(_fowInterp + Time.deltaTime / 0.4f);
         var fowColor = Color.Lerp(_oldfowColor, _fowColor, _fowInterp);
-        foreach (var renderer in GetComponentsInChildren<Renderer>()) {
-            if (fowColor.r > 0 || fowColor.g > 0) {
+        foreach (var renderer in GetComponentsInChildren<Renderer>())
+        {
+            if (fowColor.r > 0 || fowColor.g > 0)
+            {
                 renderer.enabled = true;
-                foreach (var material in renderer.materials) {
+                foreach (var material in renderer.materials)
+                {
                     material.SetColor("_FOWColor", fowColor);
                 }
-            } else {
+            }
+            else
+            {
                 renderer.enabled = false;
             }
         }
@@ -95,6 +113,10 @@ public class LOSEntity : MonoBehaviour {
 
     public void setActive(bool active)
     {
+        if (GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().revealed)
+        {
+            return;
+        }
         if (!GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().enabled)
         {
             return;
@@ -105,7 +127,8 @@ public class LOSEntity : MonoBehaviour {
             {
                 // this.GetComponent<Renderer>().enabled = false;
                 //this.gameObject.SetActive(false);
-                foreach(Renderer R in this.GetComponentsInChildren<Renderer>()) { 
+                foreach (Renderer R in this.GetComponentsInChildren<Renderer>())
+                {
                     R.enabled = active;
                 }
                 firstTime = false;
@@ -119,9 +142,39 @@ public class LOSEntity : MonoBehaviour {
         foreach (Renderer R in this.GetComponentsInChildren<Renderer>())
         {
             R.enabled = true;
-            this.RevealState = RevealStates.Unfogged;
+            // this.RevealState = RevealStates.Unfogged;
         }
 
+    }
+
+    public void show()
+    {
+        foreach (Renderer R in this.GetComponentsInChildren<Renderer>())
+        {
+            R.enabled = true;
+            //this.RevealState = RevealStates.Unfogged;
+        }
+
+    }
+
+    public void disable()
+    {
+        if ((!gameObject.tag.Equals("Ally")) && (this.RevealState == RevealStates.Hidden))
+        {
+            foreach (Renderer R in this.GetComponentsInChildren<Renderer>())
+            {
+                R.enabled = false;
+                //this.RevealState = RevealStates.Fogged;
+            }
+        }
+        else
+        {
+            foreach (Renderer R in this.GetComponentsInChildren<Renderer>())
+            {
+                R.enabled = true;
+                //this.RevealState = RevealStates.Fogged;
+            }
+        }
     }
 
 }
