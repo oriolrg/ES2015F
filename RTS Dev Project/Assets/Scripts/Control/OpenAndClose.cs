@@ -14,16 +14,7 @@ public class OpenAndClose : MonoBehaviour
 
     void FixedUpdate()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius);
-        bool unitsNearBy = false;
-        int i = 0;
-
-        while(!unitsNearBy && i < colliders.Length)
-        {
-            Identity identity = colliders[i].GetComponent<Identity>();
-
-            unitsNearBy = identity != null && !identity.unitType.isBuilding();
-        }
+        bool unitsNearBy = detectUnitsNearby();
 
         if (open && !unitsNearBy)
         {
@@ -35,5 +26,23 @@ public class OpenAndClose : MonoBehaviour
             open = true;
             animator.SetBool("open", open);
         }
+    }
+
+    private bool detectUnitsNearby()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius);
+
+        bool unitsNearBy = false;
+        int i = 0;
+
+        while (!unitsNearBy && i < colliders.Length)
+        {
+            Identity identity = colliders[i].GetComponent<Identity>();
+
+            unitsNearBy = identity != null && !identity.unitType.isBuilding();
+            i++;
+        }
+
+        return unitsNearBy;
     }
 }
