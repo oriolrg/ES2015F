@@ -5,20 +5,35 @@ public class OpenAndClose : MonoBehaviour
 {
     private Animator animator;
     private bool open = false;
-    
-	void Start ()
+    [SerializeField] float detectionRadius;
+
+    void Start ()
     {
         animator = gameObject.GetComponentOrEnd<Animator>();    
-
-        
 	}
-	
-	void Update ()
+
+    void FixedUpdate()
     {
-	    if(Input.GetKeyDown(KeyCode.O))
+        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        bool unitsNearBy = false;
+        int i = 0;
+
+        while(!unitsNearBy && i < colliders.Length)
         {
-            open = !open;
+            Identity identity = colliders[i].GetComponent<Identity>();
+
+            unitsNearBy = identity != null && !identity.unitType.isBuilding();
+        }
+
+        if (open && !unitsNearBy)
+        {
+            open = false;
             animator.SetBool("open", open);
         }
-	}
+        if(!open && unitsNearBy)
+        {
+            open = true;
+            animator.SetBool("open", open);
+        }
+    }
 }
