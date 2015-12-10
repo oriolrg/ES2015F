@@ -76,8 +76,8 @@ public class healthbar : MonoBehaviour
                     //maxHealth = auxMaxHealth;
                     //curHealth = maxHealth - GetComponent<BuildingConstruction>().timer;
                     float dif = GetComponent<Health>().getMaxHealth() - GetComponent<Health>().getAuxHealth();
-                    maxHealth = MapValues(auxMaxHealth,0,auxMaxHealth, GetComponent<Health>().getMaxHealth() / 10, GetComponent<Health>().getMaxHealth());
-                    curHealth = MapValues(auxMaxHealth - GetComponent<BuildingConstruction>().timer, 0, auxMaxHealth, GetComponent<Health>().getMaxHealth()/10, GetComponent<Health>().getMaxHealth()) - dif;
+                    maxHealth = MapValues(auxMaxHealth, 0, auxMaxHealth, GetComponent<Health>().getMaxHealth() / 10, GetComponent<Health>().getMaxHealth());
+                    curHealth = MapValues(auxMaxHealth - GetComponent<BuildingConstruction>().timer, 0, auxMaxHealth, GetComponent<Health>().getMaxHealth() / 10, GetComponent<Health>().getMaxHealth()) - dif;
                     GetComponent<Health>().setHealth(curHealth);
                 }
                 else
@@ -96,17 +96,18 @@ public class healthbar : MonoBehaviour
 
                 HandleHealth();
 
-           if (unitLOSEntity != null)
-            {
-                if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Hidden) ||
-                    unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Fogged))
-                    g1.SetActive(false);
+                if (unitLOSEntity != null)
+                {
+                    if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Hidden) ||
+                        unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Fogged))
+                        g1.SetActive(false);
+                }
+
+
+
             }
 
-
-
         }
-
     }
 
 
