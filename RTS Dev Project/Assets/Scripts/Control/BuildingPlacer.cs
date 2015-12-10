@@ -80,12 +80,14 @@ public class BuildingPlacer : MonoBehaviour {
             //Cancel the building creation with mouse right button
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
+                enabled = false;
+               
                 GameController.Instance.placing = false;
                 Destroy(gameObject);
 
                 GameController.Instance.enabled = true;
 
-                enabled = false;
+                //enabled = false;
 
                 Destroy(this);
             }
@@ -128,6 +130,7 @@ public class BuildingPlacer : MonoBehaviour {
                 }
                 else if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
+                    enabled = false;
                     //When there is no collision and the mouse left button is clicked, order to start the construction
                     GameController.Instance.updateResource(DataManager.Instance.unitDatas[gameObject.GetComponent<Identity>().unitType].resourceCost, "Ally");
                     gameObject.GetComponent<Renderer>().material.color = transparentColor;
@@ -157,7 +160,7 @@ public class BuildingPlacer : MonoBehaviour {
                     GameController.Instance.buildingConstruction(gameObject.transform.position, t);
                     gameObject.GetComponent<LOSEntity>().IsRevealer = false;
                     gameObject.GetComponent<LOSEntity>().enabled = true;
-                    enabled = false;
+                    //enabled = false;
                     Destroy(this);
 
                 }
