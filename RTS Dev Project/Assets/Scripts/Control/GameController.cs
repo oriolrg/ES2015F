@@ -350,8 +350,13 @@ public class GameController : MonoBehaviour
         GameObject ground = GameObject.FindGameObjectWithTag("Ground");
         Bounds bounds = ground.GetComponent<TerrainCollider>().bounds;
 
-        for ( int i = 0; i < ammount; i++ )
+        int done = 0;
+        int tries = 0;
+
+        while ( done < ammount && tries < 100 )
         {
+            tries++;
+
             Vector3 position = new Vector3
             (
                 bounds.center.x + UnityEngine.Random.Range(-bounds.extents.x / 2, bounds.extents.x / 2),
@@ -365,14 +370,36 @@ public class GameController : MonoBehaviour
 
             if (Physics.Raycast(ray, out hitInfo))
             {
-                GameObject go = Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity) as GameObject;
+                if( hitInfo.collider.gameObject.tag == "Ground" )
+                {
+                    // Hit the ground
 
-                LOSEntity script = go.GetComponent<LOSEntity>();
-                script.enabled = false;
-                script.enabled = true;
+                    GameObject go = Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity) as GameObject;
 
-                objectives.Add(go.GetComponentOrEnd<Objective>());
-                go.transform.SetParent(objectivesParent.transform);
+                    Collider[]  colliders = Physics.OverlapSphere(go.transform.position, (go.GetComponent<BoxCollider>().bounds.max - go.GetComponent<BoxCollider>().bounds.center).magnitude);
+
+                    bool well = true;
+
+                    foreach(Collider c in colliders )
+                    {
+                        if(c.tag !="Ground" && c.gameObject != go)
+                        {
+                            Destroy(go);
+                            well = false;
+                        }
+                    }
+                    if (well)
+                    {
+                        LOSEntity script = go.GetComponent<LOSEntity>();
+                        script.enabled = false;
+                        script.enabled = true;
+
+                        objectives.Add(go.GetComponentOrEnd<Objective>());
+                        go.transform.SetParent(objectivesParent.transform);
+
+                        done++;
+                    }
+                }
             }
         }
     }
