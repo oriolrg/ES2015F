@@ -583,7 +583,8 @@ public class GameController : MonoBehaviour
 		cpuResources[Resource.Food] = 1000;
 		cpuResources[Resource.Wood] = 1000;
 		cpuResources[Resource.Metal] = 1000;
-		cpuResources[Resource.Population] = 100;
+		cpuResources[Resource.Population] = 0;
+		cpuResources[Resource.Buildings] = 0;
 		hud.updateResource(Resource.Food, playerResources[Resource.Food]);
 		hud.updateResource(Resource.Wood, playerResources[Resource.Wood]);
 		hud.updateResource(Resource.Metal, playerResources[Resource.Metal]);
@@ -591,7 +592,8 @@ public class GameController : MonoBehaviour
 		hud.updateResourceAI(Resource.Food, cpuResources[Resource.Food]);
 		hud.updateResourceAI(Resource.Wood, cpuResources[Resource.Wood]);
 		hud.updateResourceAI(Resource.Metal, cpuResources[Resource.Metal]);
-		hud.updateResourceAI(Resource.Population, cpuResources[Resource.Population]);
+		hud.updateResourceAI(Resource.Population, allEnemyCivilians.Count + allEnemyArmy.Count);
+		hud.updateResourceAI(Resource.Buildings, allEnemyBuildings.Count);
     }
 
     //Called to check whether there are enough resources to perform an action.
@@ -600,6 +602,7 @@ public class GameController : MonoBehaviour
     //Returns false if there aren't enough, and displays warnings.
     public bool checkResources(ResourceValueDictionary resourceCosts, String player)
     {
+	
         ResourceValueDictionary resDict;
         if (player == "Ally") resDict = playerResources;
         else resDict = cpuResources;
@@ -1028,6 +1031,7 @@ public class GameController : MonoBehaviour
             // get the unit data and the prefab of the unit that can be created
             GameObject prefab = DataManager.Instance.civilizationDatas[who.civilization].units[what];
             UnitData unitData = DataManager.Instance.unitDatas[what];
+
             //print("Creating " + unitData.description);
 
         if (what.isBuilding())
@@ -1070,6 +1074,7 @@ public class GameController : MonoBehaviour
                 //create an action and add it to the focused unit's queue
                 if (who.gameObject.GetComponentOrEnd<DelayedActionQueue>().Enqueue(action))
                 {
+				
                     if (checkResources(unitData.resourceCost, who.tag))
                     {
                         //DelayedActionQueue script = who.gameObject.GetComponentOrEnd<DelayedActionQueue>();
@@ -1081,7 +1086,6 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-
         return done;
 
      }

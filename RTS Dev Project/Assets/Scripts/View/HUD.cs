@@ -93,7 +93,6 @@ public class HUD : MonoBehaviour
 	// Updates the text of a resource. resourceTexts should be filled within inspector
 	public void updateResourceAI( Resource resource, int value )
 	{
-		print ("Updating the AI resource" + resource.ToString() + "with value" + value);
 		// Get the Text component that corresponds to this resource
 		Text text = resourceTextsAI[resource];
 		

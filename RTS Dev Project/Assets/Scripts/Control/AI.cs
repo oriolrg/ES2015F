@@ -30,7 +30,7 @@ public class AI : MonoBehaviour {
 	private void elaborateStrategy()
 	{
 		
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),5));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),1));
 		tasks.Add (new Task(new Method(createBarrac), UnitType.Barracs));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier), UnitType.Soldier),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),5));
@@ -77,6 +77,13 @@ public class AI : MonoBehaviour {
 	}
 	void Update()
 	{
+		GameController.Instance.hud.updateResourceAI(Resource.Population, GameController.Instance.getAllEnemyCivilians().Count + GameController.Instance.getAllEnemyArmy().Count);
+		GameController.Instance.hud.updateResourceAI(Resource.Buildings, GameController.Instance.getAllEnemyBuildings().Count);
+		GameController.Instance.hud.updateResourceAI(Resource.Wood, GameController.Instance.cpuResources[Resource.Wood]);
+		GameController.Instance.hud.updateResourceAI(Resource.Food, GameController.Instance.cpuResources[Resource.Food]);
+		GameController.Instance.hud.updateResourceAI(Resource.Metal, GameController.Instance.cpuResources[Resource.Metal]);
+
+
 		if (GameData.cpus[0].skill==GameData.DifficultyEnum.Medium|| GameData.cpus[0].skill==GameData.DifficultyEnum.Hard) {	 
 			float evalWinObjective = evaluateWinByObjectives ();
 			float evalWinWonder = evaluateWinByWonder ();
@@ -108,8 +115,8 @@ public class AI : MonoBehaviour {
 				tasks.RemoveAt (0);
 			}
 		}
-		//compareArmy();
-		//counterAttackAnnihilation ();
+
+	
 
 		
 	}
@@ -258,9 +265,6 @@ public class AI : MonoBehaviour {
 
 	private bool createBuilding(UnitType u)
 	{
-
-		print ("Trec dobers");
-		GameController.Instance.hud.updateResourceAI (Resource.Food, GameController.Instance.cpuResources[Resource.Food]);
 		GameObject civil = getIdleCivilian ();
 		if (civil != null)
 		{
