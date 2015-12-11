@@ -58,8 +58,6 @@ public class timerDeath : MonoBehaviour
 		setUnitPositionTri(unit);
 		x = (int)unitPosition.x;
 		y = (int)unitPosition.y;
-		//print (x.ToString()+","+y.ToString());
-		//print ("....");
 		fillFormationMatrixTri(unit);
 		Vector3 newPosition = Vector3.zero;
 
@@ -116,16 +114,19 @@ public class timerDeath : MonoBehaviour
 
 	public void setDirection(Vector3 direction){
 
-		//print (direction);
+		float absValueZ = Mathf.Abs(direction.z);
+		float absValueX = Mathf.Abs(direction.x);
+		float valueX = direction.x;
+		float valueZ = direction.z;
 
-		if(direction.x > direction.z){
-			this.direction = 0; //Look left
-		} else if (direction.x < direction.z) {
-			this.direction = 1; //Look right
-		} else if (direction.x>0 && direction.z<0) {
-			this.direction = 2; //Look up
-		} else if (direction.x<0 && direction.z>0) {
-			this.direction = 3; //Look down
+		if(absValueZ < 10 && valueX > 0){
+			this.direction = 0;
+		} else if(absValueZ < 10 && valueX < 0){
+			this.direction = 1;
+		} else if(absValueX < 10 && valueZ < 0){
+			this.direction = 2;
+		} else if(absValueX < 10 && valueZ > 0){
+			this.direction = 3;
 		}
 	}
 	
@@ -209,7 +210,7 @@ public class timerDeath : MonoBehaviour
 
 	public void setFormationMatrixTri(Vector2 fMSize){
 		formationMatrixSizeTri = fMSize;
-		print ("Creating Formation Matrix with size: " + formationMatrixSizeTri.x.ToString()+"x"+formationMatrixSizeTri.y.ToString());
+		//print ("Creating Formation Matrix with size: " + formationMatrixSizeTri.x.ToString()+"x"+formationMatrixSizeTri.y.ToString());
 		formationMatrix = new Vector3[(int)formationMatrixSizeTri.x,(int)formationMatrixSizeTri.y];
 		for(int i = 0; i < formationMatrixSizeTri.x; i++){
 			for(int j = 0; j < formationMatrixSizeTri.y; j++){

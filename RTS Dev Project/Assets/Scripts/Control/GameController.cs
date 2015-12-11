@@ -401,7 +401,7 @@ public class GameController : MonoBehaviour
 								Vector3 targetPosition = target.transform.position;
 								
 								if (numberUnit == 0){
-									Vector3 direction = new Vector3(Mathf.Abs(unitPosition.x) - Mathf.Abs(targetPosition.x),unitPosition.y-targetPosition.y,Mathf.Abs(unitPosition.z) - Mathf.Abs(targetPosition.z));
+									Vector3 direction = unitPosition - targetPosition;
 									groundTarget.setDirection(direction);
 								}
 								
