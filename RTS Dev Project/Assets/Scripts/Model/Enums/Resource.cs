@@ -7,5 +7,6 @@ public enum Resource
     Wood,
     Metal,
     Population,
-	Buildings
+	Buildings, 
+	People
 }

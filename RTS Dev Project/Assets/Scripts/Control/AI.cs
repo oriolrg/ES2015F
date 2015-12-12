@@ -30,7 +30,7 @@ public class AI : MonoBehaviour {
 	private void elaborateStrategy()
 	{
 		
-		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),1));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),5));
 		tasks.Add (new Task(new Method(createBarrac), UnitType.Barracs));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier), UnitType.Soldier),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),5));
@@ -77,7 +77,7 @@ public class AI : MonoBehaviour {
 	}
 	void Update()
 	{
-		GameController.Instance.hud.updateResourceAI(Resource.Population, GameController.Instance.getAllEnemyCivilians().Count + GameController.Instance.getAllEnemyArmy().Count);
+		GameController.Instance.hud.updateResourceAI(Resource.People, GameController.Instance.getAllEnemyCivilians().Count + GameController.Instance.getAllEnemyArmy().Count);
 		GameController.Instance.hud.updateResourceAI(Resource.Buildings, GameController.Instance.getAllEnemyBuildings().Count);
 		GameController.Instance.hud.updateResourceAI(Resource.Wood, GameController.Instance.cpuResources[Resource.Wood]);
 		GameController.Instance.hud.updateResourceAI(Resource.Food, GameController.Instance.cpuResources[Resource.Food]);
@@ -121,11 +121,8 @@ public class AI : MonoBehaviour {
 		
 	}
 
+	
 
-
-	
-	
-	
 	public GameObject getClosestTownCenter(GameObject c)
 	{ 
 		
@@ -197,7 +194,7 @@ public class AI : MonoBehaviour {
 			
 		}
 
-		return false; 
+		return true; 
 	}
 	private bool createWonder(UnitType u)
 	{

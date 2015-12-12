@@ -583,7 +583,8 @@ public class GameController : MonoBehaviour
 		cpuResources[Resource.Food] = 1000;
 		cpuResources[Resource.Wood] = 1000;
 		cpuResources[Resource.Metal] = 1000;
-		cpuResources[Resource.Population] = 0;
+		cpuResources[Resource.Population] = 10000;
+		cpuResources[Resource.People] = 0;
 		cpuResources[Resource.Buildings] = 0;
 		hud.updateResource(Resource.Food, playerResources[Resource.Food]);
 		hud.updateResource(Resource.Wood, playerResources[Resource.Wood]);
@@ -592,7 +593,7 @@ public class GameController : MonoBehaviour
 		hud.updateResourceAI(Resource.Food, cpuResources[Resource.Food]);
 		hud.updateResourceAI(Resource.Wood, cpuResources[Resource.Wood]);
 		hud.updateResourceAI(Resource.Metal, cpuResources[Resource.Metal]);
-		hud.updateResourceAI(Resource.Population, allEnemyCivilians.Count + allEnemyArmy.Count);
+		hud.updateResourceAI(Resource.People, allEnemyCivilians.Count + allEnemyArmy.Count);
 		hud.updateResourceAI(Resource.Buildings, allEnemyBuildings.Count);
     }
 
@@ -634,7 +635,8 @@ public class GameController : MonoBehaviour
         else resDict = cpuResources;
         resDict[res] -= value;
         if (player=="Ally")hud.updateResource(res, resDict[res]-value); //Subtracting the value twice fixes update on resource panel as one times the cost is given back after OnActionButtonExit.
-    }
+    	
+	}
 
     public void updateResource(Resource res, int value)
     {
@@ -1050,7 +1052,7 @@ public class GameController : MonoBehaviour
 
                 Spawner spa = created.GetComponent<Spawner>();
                 if (spa != null) spa.initBounds();
-                //updateResource(unitData.resourceCost, who.tag);
+				//updateResource(unitData.resourceCost, who.tag);
             }
         }
         else
@@ -1071,14 +1073,17 @@ public class GameController : MonoBehaviour
                 addTeamCirclePrefab(created);
             });
 
+
                 //create an action and add it to the focused unit's queue
                 if (who.gameObject.GetComponentOrEnd<DelayedActionQueue>().Enqueue(action))
                 {
-				
+		
+
                     if (checkResources(unitData.resourceCost, who.tag))
                     {
                         //DelayedActionQueue script = who.gameObject.GetComponentOrEnd<DelayedActionQueue>();
                         //script.Enqueue(action);
+			
                         updateResource(unitData.resourceCost, who.tag);
                         if (who.gameObject.tag == "Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
                         done = true;
