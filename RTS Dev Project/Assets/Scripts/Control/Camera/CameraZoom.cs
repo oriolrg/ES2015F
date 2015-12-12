@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraZoom : MonoBehaviour {
 
-	[SerializeField] float min = 15f;
+	[SerializeField] float min = 5f;
 	[SerializeField] float max = 70f;
 	//public float sensitivity = 10f;
 
