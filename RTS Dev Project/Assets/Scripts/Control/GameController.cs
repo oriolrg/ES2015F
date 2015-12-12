@@ -120,8 +120,11 @@ public class GameController : MonoBehaviour
 	IEnumerator ToGameStatisticsIEnumerator(Player winner, Victory winCondition){
 		GameStatistics.winner = winner;
 		GameStatistics.winCondition = winCondition;
+	
 		yield return new WaitForSeconds(3);
+	
 		Application.LoadLevel("EndGameScene");
+	
 	}
 
 	public void ToGameStatistics(Vector3 poi, Player winner, Victory winCondition){
@@ -141,8 +144,6 @@ public class GameController : MonoBehaviour
 		}
 		
 		Camera.main.transform.position = newCameraPosition;
-		
-		Time.timeScale = 0; // pause the game
 
 		StartCoroutine(ToGameStatisticsIEnumerator(winner, winCondition));
 	}
@@ -150,8 +151,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		// TODO: Trial code for Alvaro. Erase when bug with EndGameMenu is solved
-		// hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(Vector3.zero, true, "hola");
+		// if (Input.GetKey(KeyCode.P)) ToGameStatistics(Vector3.zero, Player.CPU1, Victory.Annihilation);
 
         if (Input.mousePosition.y > Screen.height * UIheight)
         {
@@ -218,7 +218,6 @@ public class GameController : MonoBehaviour
                     else if (hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction>().getConstructionOnGoing())
                     {
                         noAttack();
-                        Debug.Log("vaig a construir");
 
                         Troop troop = new Troop(selectedUnits.units);
 
@@ -1000,7 +999,7 @@ public class GameController : MonoBehaviour
         Identity newIden = building.GetComponent<Identity>();
         if (newIden != null) newIden.player = t.units[0].GetComponent<Identity>().player;
 
-	LOSEntity fow = building.GetComponent<LOSEntity>();
+		LOSEntity fow = building.GetComponent<LOSEntity>();
         if (fow != null) fow.IsRevealer = false;
 
         addSelectedPrefab(building);
@@ -1055,9 +1054,14 @@ public class GameController : MonoBehaviour
         //LOSEntity fow = t.units[0].GetComponent<Construct>().getBuildingToConstruct().GetComponent<LOSEntity>();
         //if (fow != null) fow.IsRevealer = false;
 
+		Construct c;
         foreach (var unit in t.units)
         {
-            if (unit.tag != unit.GetComponent<Construct>().getBuildingToConstruct().tag) t.units.Remove(unit);
+			c = unit.GetComponent<Construct>();
+			if (c != null){
+				if (unit.tag != c.getBuildingToConstruct().tag) 
+					t.units.Remove(unit);
+			}
         }
 
         //Move the units that are selected to construct to the building position
@@ -1084,9 +1088,8 @@ public class GameController : MonoBehaviour
 			{
 
 				Collider[] hitColliders = Physics.OverlapSphere(hit.point, DataManager.Instance.civilizationDatas[GameData.playerToCiv(p)].units[u].GetComponent<Renderer>().bounds.extents.magnitude);
-				print (DataManager.Instance.civilizationDatas[GameData.playerToCiv(p)].units[u].GetComponent<Renderer>().bounds.extents.magnitude);
+
 				foreach(Collider c in hitColliders){
-					print (c.gameObject.name);
 					if(c.tag!="Ground"&c.gameObject.name!=gameObject.name){
 						return point;
 					}

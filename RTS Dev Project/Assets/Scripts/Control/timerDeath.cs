@@ -32,7 +32,6 @@ public class timerDeath : MonoBehaviour
 		x = (int)unitPosition.x;
 		y = (int)unitPosition.y;
 		fillFormationMatrix(unit);
-		print (formationMatrix[x,y]);
 		Vector3 newPosition = Vector3.zero;
 		newPosition.x = gameObject.transform.position.x + formationMatrix[x,y].x;
 		newPosition.z = gameObject.transform.position.z - formationMatrix[x,y].z;
