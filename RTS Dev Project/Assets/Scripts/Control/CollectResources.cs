@@ -59,7 +59,7 @@ public class CollectResources : MonoBehaviour
                 if (resourceCollected == Resource.Wood) GameStatistics.addWoodCollected(iden.player, collectSpeed);
                 if (resourceCollected == Resource.Metal) GameStatistics.addStoneCollected(iden.player, collectSpeed);
             }
-			GameController.Instance.hud.updateRightPanel(gameObject);
+			//GameController.Instance.hud.updateRightPanel(gameObject);
         }
         else
         {
@@ -125,7 +125,7 @@ public class CollectResources : MonoBehaviour
 
     public void returnToCollect()
     {
-		GameController.Instance.hud.updateRightPanel(gameObject);
+		//GameController.Instance.hud.updateRightPanel(gameObject);
         startMovingToCollect(targetObject);
     }
 
