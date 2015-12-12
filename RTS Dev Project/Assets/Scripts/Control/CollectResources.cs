@@ -71,7 +71,6 @@ public class CollectResources : MonoBehaviour
 
     public void collect()
     {
-        print("collecting");
 
         InvokeRepeating("addResource", 1, 1);
 

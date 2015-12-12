@@ -157,12 +157,10 @@ public class LOSManager : MonoBehaviour
             }
             else
             {
-                print("HOLA DEBUG!" + Entities.Count());
                 this.Terrain.materialTemplate = temp;//Resources.Load("Materials/Terrain", typeof(Material)) as Material;
                 this.Terrain.materialType = temp2;//Terrain.MaterialType.Custom;
                 foreach (LOSEntity g in Entities)
                 {
-                    print(g.gameObject.name);
                     //g.RevealState = LOSEntity.RevealStates.Fogged;
                     g.disable();
                 }
