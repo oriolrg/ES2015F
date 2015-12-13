@@ -1061,7 +1061,11 @@ public class GameController : MonoBehaviour
 			if (c != null){
 				if (unit.tag != c.getBuildingToConstruct().tag) 
 					t.units.Remove(unit);
-			}
+            }
+            else
+            {
+                t.units.Remove(unit);
+            }
         }
 
         //Move the units that are selected to construct to the building position
