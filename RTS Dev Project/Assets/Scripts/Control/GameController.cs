@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
     private ResourceValueDictionary playerResources;
 
     [SerializeField]
-    private ResourceValueDictionary cpuResources;
+    public ResourceValueDictionary cpuResources;
 
     [SerializeField]
     private GameObject selectedPrefab;
@@ -57,12 +57,7 @@ public class GameController : MonoBehaviour
     public List<Objective> objectives;
  	public bool placing;
  	
-    //Fog of war button
-    private bool fogOfWarEnabled;
 
-    private bool justDisabled;
-
-    private int fowCounter;
     
     // Static singleton property
     public static GameController Instance { get; private set; }
@@ -112,9 +107,7 @@ public class GameController : MonoBehaviour
             spawnRandomObjectives();
         }
         placing = false;
-        fogOfWarEnabled = true; //fog of war enabler and disabler
-        justDisabled = false; //fog of war enabler and disabler
-        fowCounter = 0;
+
     }
 
 	IEnumerator ToGameStatisticsIEnumerator(Player winner, Victory winCondition){
@@ -356,7 +349,6 @@ public class GameController : MonoBehaviour
             if( selectedUnits.FocusedUnit != null )
                 selectedUnits.FocusedUnit.GetComponent<AttackController>().attack(selectedUnits.FocusedUnit);
         }
-        
     }
 
 
@@ -440,11 +432,14 @@ public class GameController : MonoBehaviour
 	{
         if (selectedUnits.units.Count == 0) return;
         timerDeath groundTarget = target.GetComponent<timerDeath>();
-        int formationMatrixSize = (int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)); 
+        //int formationMatrixSize = (int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)); 
+		Vector2 formationMatrixSizeTri = new Vector2((int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)),(int)(2*Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)) - 1));
+		int numberUnit = 0;
         if (selectedUnits.hasMovableUnits())
         {
 			if(groundTarget != null)
-           		groundTarget.setFormationMatrix(formationMatrixSize);
+           		//groundTarget.setFormationMatrix(formationMatrixSize);
+				groundTarget.setFormationMatrixTri(formationMatrixSizeTri);
             foreach (var unit in selectedUnits.units)
             {
                 // Special case: a civilian moves towards a town center and has resources to store
@@ -484,30 +479,53 @@ public class GameController : MonoBehaviour
                         }
                         else
                         {
-                            if(formationMatrixSize > 1){
-                                Vector3 newTargetPosition = Vector3.zero;
-                                if( groundTarget != null )
-                                    newTargetPosition = groundTarget.AddUnitMouseSelection(unit);
-                                
-                                script.startMoving(target);
-                                script.targetPos = newTargetPosition;
-                            } else {
+							//FORMATION MATRIX NO TRIANGLE
+//                            if(formationMatrixSize > 1){
+//                                Vector3 newTargetPosition = Vector3.zero;
+//                                if( groundTarget != null )
+//                                    newTargetPosition = groundTarget.AddUnitMouseSelection(unit);
+//                                
+//                                script.startMoving(target);
+//                                script.targetPos = newTargetPosition;
+//                            } else {
+//								if(groundTarget != null)
+//									groundTarget.AddUnit(unit);
+//								
+//                                script.startMoving(target);
+//                            }
+
+							//FORMATION MATRIX TRIANGLE
+							if(formationMatrixSizeTri.x > 1){
+								Vector3 newTargetPosition = Vector3.zero;
+								Vector3 unitPosition = unit.transform.position;
+								Vector3 targetPosition = target.transform.position;
+								
+								if (numberUnit == 0){
+									Vector3 direction = unitPosition - targetPosition;
+									groundTarget.setDirection(direction);
+								}
+								
+								numberUnit++;
+								if( groundTarget != null )
+									newTargetPosition = groundTarget.AddUnitMouseSelectionTri(unit);
+								script.startMoving(target);
+								script.targetPos = newTargetPosition;
+							} else {
 								if(groundTarget != null)
 									groundTarget.AddUnit(unit);
-								
-                                script.startMoving(target);
-                            }
-                        }
-                    }
-                }
-            }
-            
-        }
-        else
-        {
-            foreach (var unit in selectedUnits.units)
-            {
-                Spawner script = unit.GetComponentInParent<Spawner>();
+								script.startMoving(target);
+							}
+						}
+					}
+				}
+			}
+			
+		}
+		else
+		{
+			foreach (var unit in selectedUnits.units)
+			{
+				Spawner script = unit.GetComponentInParent<Spawner>();
                 if (script != null)
                 {
                     script.RallyPoint = target.transform.position;
@@ -702,11 +720,18 @@ public class GameController : MonoBehaviour
 		cpuResources[Resource.Food] = 1000;
 		cpuResources[Resource.Wood] = 1000;
 		cpuResources[Resource.Metal] = 1000;
-		cpuResources[Resource.Population] = 100;
+		cpuResources[Resource.Population] = 10000;
+		cpuResources[Resource.People] = 0;
+		cpuResources[Resource.Buildings] = 0;
 		hud.updateResource(Resource.Food, playerResources[Resource.Food]);
 		hud.updateResource(Resource.Wood, playerResources[Resource.Wood]);
 		hud.updateResource(Resource.Metal, playerResources[Resource.Metal]);
 		hud.updateResource(Resource.Population, playerResources[Resource.Population]);
+		hud.updateResourceAI(Resource.Food, cpuResources[Resource.Food]);
+		hud.updateResourceAI(Resource.Wood, cpuResources[Resource.Wood]);
+		hud.updateResourceAI(Resource.Metal, cpuResources[Resource.Metal]);
+		hud.updateResourceAI(Resource.People, allEnemyCivilians.Count + allEnemyArmy.Count);
+		hud.updateResourceAI(Resource.Buildings, allEnemyBuildings.Count);
     }
 
     //Called to check whether there are enough resources to perform an action.
@@ -715,6 +740,7 @@ public class GameController : MonoBehaviour
     //Returns false if there aren't enough, and displays warnings.
     public bool checkResources(ResourceValueDictionary resourceCosts, String player)
     {
+	
         ResourceValueDictionary resDict;
         if (player == "Ally") resDict = playerResources;
         else resDict = cpuResources;
@@ -746,7 +772,8 @@ public class GameController : MonoBehaviour
         else resDict = cpuResources;
         resDict[res] -= value;
         if (player=="Ally")hud.updateResource(res, resDict[res]-value); //Subtracting the value twice fixes update on resource panel as one times the cost is given back after OnActionButtonExit.
-    }
+    	
+	}
 
     public void updateResource(Resource res, int value)
     {
@@ -1147,6 +1174,7 @@ public class GameController : MonoBehaviour
             // get the unit data and the prefab of the unit that can be created
             GameObject prefab = DataManager.Instance.civilizationDatas[who.civilization].units[what];
             UnitData unitData = DataManager.Instance.unitDatas[what];
+
             //print("Creating " + unitData.description);
 
         if (what.isBuilding())
@@ -1166,7 +1194,7 @@ public class GameController : MonoBehaviour
 
                 Spawner spa = created.GetComponent<Spawner>();
                 if (spa != null) spa.initBounds();
-                //updateResource(unitData.resourceCost, who.tag);
+				//updateResource(unitData.resourceCost, who.tag);
             }
         }
         else
@@ -1188,13 +1216,17 @@ public class GameController : MonoBehaviour
                 addTeamCirclePrefab(created);
             });
 
+
                 //create an action and add it to the focused unit's queue
                 if (who.gameObject.GetComponentOrEnd<DelayedActionQueue>().Enqueue(action))
                 {
+		
+
                     if (checkResources(unitData.resourceCost, who.tag))
                     {
                         //DelayedActionQueue script = who.gameObject.GetComponentOrEnd<DelayedActionQueue>();
                         //script.Enqueue(action);
+			
                         updateResource(unitData.resourceCost, who.tag);
                         if (who.gameObject.tag == "Ally") hud.updateDelayedActions(selectedUnits.FocusedUnit);
                         done = true;
@@ -1202,7 +1234,6 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-
         return done;
 
      }

@@ -77,16 +77,24 @@ public class AI : MonoBehaviour {
 	}
 	void Update()
 	{
-		if (GameData.cpus[0].skill==GameData.DifficultyEnum.Medium|| GameData.cpus[0].skill==GameData.DifficultyEnum.Hard) {	 
+		GameController.Instance.hud.updateResourceAI(Resource.People, GameController.Instance.getAllEnemyCivilians().Count + GameController.Instance.getAllEnemyArmy().Count);
+		GameController.Instance.hud.updateResourceAI(Resource.Buildings, GameController.Instance.getAllEnemyBuildings().Count);
+		GameController.Instance.hud.updateResourceAI(Resource.Wood, GameController.Instance.cpuResources[Resource.Wood]);
+		GameController.Instance.hud.updateResourceAI(Resource.Food, GameController.Instance.cpuResources[Resource.Food]);
+		GameController.Instance.hud.updateResourceAI(Resource.Metal, GameController.Instance.cpuResources[Resource.Metal]);
+
+
+		if (GameData.cpus[0].skill==GameData.DifficultyEnum.Medium|| GameData.cpus[0].skill==GameData.DifficultyEnum.Hard) {	
+
 			float evalWinObjective = evaluateWinByObjectives ();
 			float evalWinWonder = evaluateWinByWonder ();
-			if (evalWinObjective < evalWinWonder && evalWinObjective < 40){ //&&  Victory.MapControl in GameData.winConditions   
+			if (evalWinObjective < evalWinWonder && evalWinObjective < 40 ){ //
 				print ("Evaluacio win by objective " + evalWinObjective);
 				elaborateStrategyObjectives ();
 			}
 			else if (evalWinWonder < 50) // && Victory.Wonder in GameData.winConditions 
 				elaborateStrategyWonder ();
-
+			
 			if(GameData.cpus[0].skill==GameData.DifficultyEnum.Hard){
 
 				bool counterAttackAnnihilationDone = false;
@@ -108,17 +116,14 @@ public class AI : MonoBehaviour {
 				tasks.RemoveAt (0);
 			}
 		}
-		//compareArmy();
-		//counterAttackAnnihilation ();
+
+	
 
 		
 	}
 
+	
 
-
-	
-	
-	
 	public GameObject getClosestTownCenter(GameObject c)
 	{ 
 		
@@ -190,7 +195,7 @@ public class AI : MonoBehaviour {
 			
 		}
 
-		return false; 
+		return true; 
 	}
 	private bool createWonder(UnitType u)
 	{
@@ -389,6 +394,7 @@ public class AI : MonoBehaviour {
 			time += Math.Max(1,obs.Count-GameController.Instance.getAllEnemyCivilians().Count)*meanDistancesObjectives/DataManager.Instance.unitDatas[UnitType.Civilian].stats[Stat.Speed];
 			
 		} 
+		GameController.Instance.hud.updateStateAI (2, time.ToString());
 		return time;
 	} 
 	public float evaluateWinByWonder(){
@@ -403,6 +409,7 @@ public class AI : MonoBehaviour {
 			resourcesNeeded+= Math.Max (0, kv.Value-GameController.Instance.getCPUResources()[kv.Key]) ;
 		}
 		time = resourcesNeeded * 3;//Now make a way to go from number of resources needed to time it takes to harvest it
+		GameController.Instance.hud.updateStateAI (1, time.ToString());
 		return time;
 	}
 	

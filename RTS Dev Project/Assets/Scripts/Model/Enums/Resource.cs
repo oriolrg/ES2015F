@@ -6,5 +6,7 @@ public enum Resource
     Food,
     Wood,
     Metal,
-    Population
+    Population,
+	Buildings, 
+	People
 }
