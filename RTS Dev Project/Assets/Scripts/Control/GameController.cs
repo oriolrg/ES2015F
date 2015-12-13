@@ -349,6 +349,10 @@ public class GameController : MonoBehaviour
             if( selectedUnits.FocusedUnit != null )
                 selectedUnits.FocusedUnit.GetComponent<AttackController>().attack(selectedUnits.FocusedUnit);
         }
+
+		if (Input.GetKeyDown(KeyCode.I))
+			hud.AIPanel.SetActive(! hud.AIPanel.activeSelf);
+		
     }
 
 
