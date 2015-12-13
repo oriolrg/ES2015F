@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using Pathfinding;
@@ -50,3 +51,4 @@ public class RaycastModifierEditor : Editor {
 
 	}
 }
+#endif
