@@ -31,7 +31,7 @@ public class AI : MonoBehaviour {
 	{
 		
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),5));
-		tasks.Add (new Task(new Method(createBarrac), UnitType.Barracs));
+		tasks.Add (new Task(new Method(createBuilding), UnitType.Barracs));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier), UnitType.Soldier),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),5));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createArcher), UnitType.Archer),20));
@@ -263,22 +263,25 @@ public class AI : MonoBehaviour {
 
 	private bool createBuilding(UnitType u)
 	{
-		GameObject civil = getIdleCivilian ();
-		if (civil != null)
-		{
-			Vector3 v = new Vector3(UnityEngine.Random.Range(-20,20), 0, UnityEngine.Random.Range(-20,20));
+
+		UnitData unitData = DataManager.Instance.unitDatas[u];
+		if (GameController.Instance.checkResources (unitData.resourceCost, "Enemy")) {
+			GameObject civil = getIdleCivilian ();
+			if (civil != null) {
+				Vector3 v = new Vector3 (UnityEngine.Random.Range (-20, 20), 0, UnityEngine.Random.Range (-20, 20));
 			
-			Vector3 position = civil.transform.position + v;
-			if(GameController.Instance.getAllEnemyTownCentres().Count > 0)
-				position = 	GameController.Instance.getAllEnemyTownCentres()[0].transform.position + v;			 
-			Vector3 constructionPoint = GameController.Instance.buildingPossible(position.x,position.z,Player.CPU1,u);
-			if(constructionPoint.magnitude!=0){
-				GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>().civilization].units[u], position, new Troop( new List<GameObject>(){civil}));
-				return true;
-			}
+				Vector3 position = civil.transform.position + v;
+				if (GameController.Instance.getAllEnemyTownCentres ().Count > 0)
+					position = GameController.Instance.getAllEnemyTownCentres () [0].transform.position + v;			 
+				Vector3 constructionPoint = GameController.Instance.buildingPossible (position.x, position.z, Player.CPU1, u);
+				if (constructionPoint.magnitude != 0) {
+					GameController.Instance.createBuilding (DataManager.Instance.civilizationDatas [GameController.Instance.getAllEnemyTownCentres () [0].GetComponent<Identity> ().civilization].units [u], position, new Troop (new List<GameObject> (){civil}));
+					return true;
+				}
 				
 
 
+			}
 		}
 		return false;
 		

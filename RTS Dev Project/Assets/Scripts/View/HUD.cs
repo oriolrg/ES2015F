@@ -36,6 +36,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
     [SerializeField] public GameObject gameMenu;
+	[SerializeField] public GameObject AIPanel;
 
     private Sprite panelSprite;
 
