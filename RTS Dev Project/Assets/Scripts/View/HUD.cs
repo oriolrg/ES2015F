@@ -12,6 +12,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private List<Image> panels;
     [SerializeField] private List<Text> texts;
 	[SerializeField] private List<Text> stateAI;
+	[SerializeField] private List<Text> cosoAI;
     [SerializeField] private ResourceTextDictionary resourceTexts;
 	[SerializeField] private ResourceTextDictionary resourceTextsAI;
     [SerializeField] private ResourceTextDictionary resourceCosts;
@@ -99,6 +100,15 @@ public class HUD : MonoBehaviour
 		
 		// Show the value
 		text.text = value.ToString();
+	}
+
+	public void updateCosoAI( int text, int value )
+	{
+		// Get the Text component that corresponds to this resource
+		Text textPanel = cosoAI[text];
+		
+		// Show the value
+		textPanel.text =  value.ToString();
 	}
 
 	public void updateStateAI( int text, String s )

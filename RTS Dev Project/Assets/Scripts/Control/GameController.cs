@@ -721,8 +721,6 @@ public class GameController : MonoBehaviour
 		cpuResources[Resource.Wood] = 1000;
 		cpuResources[Resource.Metal] = 1000;
 		cpuResources[Resource.Population] = 10000;
-		cpuResources[Resource.People] = 0;
-		cpuResources[Resource.Buildings] = 0;
 		hud.updateResource(Resource.Food, playerResources[Resource.Food]);
 		hud.updateResource(Resource.Wood, playerResources[Resource.Wood]);
 		hud.updateResource(Resource.Metal, playerResources[Resource.Metal]);
@@ -730,8 +728,9 @@ public class GameController : MonoBehaviour
 		hud.updateResourceAI(Resource.Food, cpuResources[Resource.Food]);
 		hud.updateResourceAI(Resource.Wood, cpuResources[Resource.Wood]);
 		hud.updateResourceAI(Resource.Metal, cpuResources[Resource.Metal]);
-		hud.updateResourceAI(Resource.People, allEnemyCivilians.Count + allEnemyArmy.Count);
-		hud.updateResourceAI(Resource.Buildings, allEnemyBuildings.Count);
+		GameController.Instance.hud.updateCosoAI(0, GameController.Instance.getAllEnemyCivilians().Count + GameController.Instance.getAllEnemyArmy().Count);
+		GameController.Instance.hud.updateCosoAI(1, GameController.Instance.getAllEnemyBuildings().Count);
+
     }
 
     //Called to check whether there are enough resources to perform an action.
