@@ -84,16 +84,17 @@ public class AI : MonoBehaviour {
 		GameController.Instance.hud.updateResourceAI(Resource.Metal, GameController.Instance.cpuResources[Resource.Metal]);
 
 
-		if (GameData.cpus[0].skill==GameData.DifficultyEnum.Medium|| GameData.cpus[0].skill==GameData.DifficultyEnum.Hard) {	 
+		if (GameData.cpus[0].skill==GameData.DifficultyEnum.Medium|| GameData.cpus[0].skill==GameData.DifficultyEnum.Hard) {	
+
 			float evalWinObjective = evaluateWinByObjectives ();
 			float evalWinWonder = evaluateWinByWonder ();
-			if (evalWinObjective < evalWinWonder && evalWinObjective < 40){ //&&  Victory.MapControl in GameData.winConditions   
+			if (evalWinObjective < evalWinWonder && evalWinObjective < 40 ){ //
 				print ("Evaluacio win by objective " + evalWinObjective);
 				elaborateStrategyObjectives ();
 			}
 			else if (evalWinWonder < 50) // && Victory.Wonder in GameData.winConditions 
 				elaborateStrategyWonder ();
-
+			
 			if(GameData.cpus[0].skill==GameData.DifficultyEnum.Hard){
 
 				bool counterAttackAnnihilationDone = false;
@@ -393,6 +394,7 @@ public class AI : MonoBehaviour {
 			time += Math.Max(1,obs.Count-GameController.Instance.getAllEnemyCivilians().Count)*meanDistancesObjectives/DataManager.Instance.unitDatas[UnitType.Civilian].stats[Stat.Speed];
 			
 		} 
+		GameController.Instance.hud.updateStateAI (2, time.ToString());
 		return time;
 	} 
 	public float evaluateWinByWonder(){
@@ -407,6 +409,7 @@ public class AI : MonoBehaviour {
 			resourcesNeeded+= Math.Max (0, kv.Value-GameController.Instance.getCPUResources()[kv.Key]) ;
 		}
 		time = resourcesNeeded * 3;//Now make a way to go from number of resources needed to time it takes to harvest it
+		GameController.Instance.hud.updateStateAI (1, time.ToString());
 		return time;
 	}
 	
