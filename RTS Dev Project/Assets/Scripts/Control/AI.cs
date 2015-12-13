@@ -31,7 +31,7 @@ public class AI : MonoBehaviour {
 	{
 		
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),5));
-		tasks.Add (new Task(new Method(createBarrac), UnitType.Barracs));
+		tasks.Add (new Task(new Method(createBuilding), UnitType.Barracs));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier), UnitType.Soldier),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),5));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createArcher), UnitType.Archer),20));
@@ -77,16 +77,24 @@ public class AI : MonoBehaviour {
 	}
 	void Update()
 	{
-		if (GameData.cpus[0].skill==GameData.DifficultyEnum.Medium|| GameData.cpus[0].skill==GameData.DifficultyEnum.Hard) {	 
+		GameController.Instance.hud.updateCosoAI(0, GameController.Instance.getAllEnemyCivilians().Count + GameController.Instance.getAllEnemyArmy().Count);
+		GameController.Instance.hud.updateCosoAI(1, GameController.Instance.getAllEnemyBuildings().Count);
+		GameController.Instance.hud.updateResourceAI(Resource.Wood, GameController.Instance.cpuResources[Resource.Wood]);
+		GameController.Instance.hud.updateResourceAI(Resource.Food, GameController.Instance.cpuResources[Resource.Food]);
+		GameController.Instance.hud.updateResourceAI(Resource.Metal, GameController.Instance.cpuResources[Resource.Metal]);
+
+
+		if (GameData.cpus[0].skill==GameData.DifficultyEnum.Medium|| GameData.cpus[0].skill==GameData.DifficultyEnum.Hard) {	
+
 			float evalWinObjective = evaluateWinByObjectives ();
 			float evalWinWonder = evaluateWinByWonder ();
-			if (evalWinObjective < evalWinWonder && evalWinObjective < 40){ //&&  Victory.MapControl in GameData.winConditions   
+			if (evalWinObjective < evalWinWonder && evalWinObjective < 40 ){ //
 				print ("Evaluacio win by objective " + evalWinObjective);
 				elaborateStrategyObjectives ();
 			}
 			else if (evalWinWonder < 50) // && Victory.Wonder in GameData.winConditions 
 				elaborateStrategyWonder ();
-
+			
 			if(GameData.cpus[0].skill==GameData.DifficultyEnum.Hard){
 
 				bool counterAttackAnnihilationDone = false;
@@ -108,17 +116,14 @@ public class AI : MonoBehaviour {
 				tasks.RemoveAt (0);
 			}
 		}
-		//compareArmy();
-		//counterAttackAnnihilation ();
+
+	
 
 		
 	}
 
+	
 
-
-	
-	
-	
 	public GameObject getClosestTownCenter(GameObject c)
 	{ 
 		
@@ -190,7 +195,7 @@ public class AI : MonoBehaviour {
 			
 		}
 
-		return false; 
+		return true; 
 	}
 	private bool createWonder(UnitType u)
 	{
@@ -258,22 +263,25 @@ public class AI : MonoBehaviour {
 
 	private bool createBuilding(UnitType u)
 	{
-		GameObject civil = getIdleCivilian ();
-		if (civil != null)
-		{
-			Vector3 v = new Vector3(UnityEngine.Random.Range(-20,20), 0, UnityEngine.Random.Range(-20,20));
+
+		UnitData unitData = DataManager.Instance.unitDatas[u];
+		if (GameController.Instance.checkResources (unitData.resourceCost, "Enemy")) {
+			GameObject civil = getIdleCivilian ();
+			if (civil != null) {
+				Vector3 v = new Vector3 (UnityEngine.Random.Range (-20, 20), 0, UnityEngine.Random.Range (-20, 20));
 			
-			Vector3 position = civil.transform.position + v;
-			if(GameController.Instance.getAllEnemyTownCentres().Count > 0)
-				position = 	GameController.Instance.getAllEnemyTownCentres()[0].transform.position + v;			 
-			Vector3 constructionPoint = GameController.Instance.buildingPossible(position.x,position.z,Player.CPU1,u);
-			if(constructionPoint.magnitude!=0){
-				GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>().civilization].units[u], position, new Troop( new List<GameObject>(){civil}));
-				return true;
-			}
+				Vector3 position = civil.transform.position + v;
+				if (GameController.Instance.getAllEnemyTownCentres ().Count > 0)
+					position = GameController.Instance.getAllEnemyTownCentres () [0].transform.position + v;			 
+				Vector3 constructionPoint = GameController.Instance.buildingPossible (position.x, position.z, Player.CPU1, u);
+				if (constructionPoint.magnitude != 0) {
+					GameController.Instance.createBuilding (DataManager.Instance.civilizationDatas [GameController.Instance.getAllEnemyTownCentres () [0].GetComponent<Identity> ().civilization].units [u], position, new Troop (new List<GameObject> (){civil}));
+					return true;
+				}
 				
 
 
+			}
 		}
 		return false;
 		
@@ -389,6 +397,7 @@ public class AI : MonoBehaviour {
 			time += Math.Max(1,obs.Count-GameController.Instance.getAllEnemyCivilians().Count)*meanDistancesObjectives/DataManager.Instance.unitDatas[UnitType.Civilian].stats[Stat.Speed];
 			
 		} 
+		GameController.Instance.hud.updateStateAI (2, time.ToString());
 		return time;
 	} 
 	public float evaluateWinByWonder(){
@@ -403,6 +412,7 @@ public class AI : MonoBehaviour {
 			resourcesNeeded+= Math.Max (0, kv.Value-GameController.Instance.getCPUResources()[kv.Key]) ;
 		}
 		time = resourcesNeeded * 3;//Now make a way to go from number of resources needed to time it takes to harvest it
+		GameController.Instance.hud.updateStateAI (1, time.ToString());
 		return time;
 	}
 	

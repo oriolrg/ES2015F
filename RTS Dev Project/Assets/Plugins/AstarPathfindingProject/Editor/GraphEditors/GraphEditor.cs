@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using Pathfinding;
 using UnityEditor;
 using UnityEngine;
@@ -208,3 +209,4 @@ namespace Pathfinding {
 		}
 	}
 }
+#endif
