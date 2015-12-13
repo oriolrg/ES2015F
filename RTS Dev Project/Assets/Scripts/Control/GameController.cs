@@ -321,13 +321,13 @@ public class GameController : MonoBehaviour
 			hud.AIPanel.SetActive (! hud.AIPanel.activeSelf);
 
 		if (Input.GetKeyDown (KeyCode.Plus)) {
-			print ("Tecla mas");
+		
 			nivelMusic += 0.1f;
 			AudioListener.volume = nivelMusic;
 		}
 
 		if (Input.GetKeyDown (KeyCode.Minus)) {
-			print ("Tecla menos");
+		
 			nivelMusic -= 0.1f;
 			AudioListener.volume = nivelMusic;
 		}
