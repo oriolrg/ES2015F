@@ -23,7 +23,8 @@ public enum UnitType
     Tower,
 
     Objective,
-    Wonder 
+    Wonder,
+    Wall
 }
 
 public static class UnitExtensions
