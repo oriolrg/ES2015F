@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour
     public List<Objective> objectives;
  	public bool placing;
  	
-
+	private float nivelMusic = 0.5f;
     
     // Static singleton property
     public static GameController Instance { get; private set; }
@@ -108,6 +108,8 @@ public class GameController : MonoBehaviour
         }
         placing = false;
 
+		AudioListener.volume = nivelMusic;
+
     }
 
 	IEnumerator ToGameStatisticsIEnumerator(Player winner, Victory winCondition){
@@ -146,212 +148,191 @@ public class GameController : MonoBehaviour
     {
 		// if (Input.GetKey(KeyCode.P)) ToGameStatistics(Vector3.zero, Player.CPU1, Victory.Annihilation);
 
-        if (Input.mousePosition.y > Screen.height * UIheight)
-        {
+		if (Input.mousePosition.y > Screen.height * UIheight) {
 
 
-            //Left Click Manager
-            if (Input.GetMouseButtonDown(0))
-            {
-                isSelecting = true;
-                mPos = Input.mousePosition;
+			//Left Click Manager
+			if (Input.GetMouseButtonDown (0)) {
+				isSelecting = true;
+				mPos = Input.mousePosition;
 
-                //Click detection
-                RaycastHit hitInfo = new RaycastHit();
-                bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
-                if (hit)
-                {
+				//Click detection
+				RaycastHit hitInfo = new RaycastHit ();
+				bool hit = Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hitInfo);
+				if (hit) {
 
-                    GameObject selectedGO = hitInfo.transform.gameObject;
-                    if (hitInfo.transform.gameObject.tag == "Ally")
-                    {
+					GameObject selectedGO = hitInfo.transform.gameObject;
+					if (hitInfo.transform.gameObject.tag == "Ally") {
 
-                        if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
+						if (!Input.GetKey (KeyCode.LeftControl))
+							ClearSelection ();
 
-                        if (!selectedUnits.units.Contains(selectedGO)) selectedUnits.units.Add(selectedGO);
+						if (!selectedUnits.units.Contains (selectedGO))
+							selectedUnits.units.Add (selectedGO);
 
-                        selectedUnits.FocusedUnit = selectedGO;
-                        Transform projector = selectedGO.transform.FindChild("Selected");
-                        if (projector != null)
-                            projector.gameObject.SetActive(true);
-                        hud.updateSelection(selectedUnits);
+						selectedUnits.FocusedUnit = selectedGO;
+						Transform projector = selectedGO.transform.FindChild ("Selected");
+						if (projector != null)
+							projector.gameObject.SetActive (true);
+						hud.updateSelection (selectedUnits);
                         
 
-                    }
-                    else
-                    {
-                        // Debug.Log("not Ally");
-                    }
-                }
-                else
-                {
-                    // Debug.Log("No hit");
-                }
-            }
+					} else {
+						// Debug.Log("not Ally");
+					}
+				} else {
+					// Debug.Log("No hit");
+				}
+			}
 
-            if (Input.GetMouseButtonDown(1))
-            {
+			if (Input.GetMouseButtonDown (1)) {
                 
-                //Click detection
-                RaycastHit hitInfo = new RaycastHit();
-                bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
-                GameObject target;
-                if (hit)
-                {
+				//Click detection
+				RaycastHit hitInfo = new RaycastHit ();
+				bool hit = Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hitInfo);
+				GameObject target;
+				if (hit) {
                     
-                    if (AI.Instance.resources.Contains(hitInfo.transform.gameObject.tag))
-                        moveUnits(hitInfo.transform.gameObject);
-                    else if (hitInfo.transform.gameObject.tag == "Enemy")
-                    {
-                        Debug.Log("ataacaaarrr");
-                        GameObject enemy = hitInfo.transform.gameObject;
-                        attack(enemy);
-                    }
+					if (AI.Instance.resources.Contains (hitInfo.transform.gameObject.tag))
+						moveUnits (hitInfo.transform.gameObject);
+					else if (hitInfo.transform.gameObject.tag == "Enemy") {
+						Debug.Log ("ataacaaarrr");
+						GameObject enemy = hitInfo.transform.gameObject;
+						attack (enemy);
+					} else if (hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction> ().getConstructionOnGoing ()) {
+						noAttack ();
 
-                    else if (hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction>().getConstructionOnGoing())
-                    {
-                        noAttack();
+						Troop troop = new Troop (selectedUnits.units);
 
-                        Troop troop = new Troop(selectedUnits.units);
+						foreach (var unit in troop.units) {
+							Construct scriptConstruct = unit.GetComponent<Construct> ();
 
-                        foreach (var unit in troop.units)
-                        {
-                            Construct scriptConstruct = unit.GetComponent<Construct>();
+							if (scriptConstruct != null) {
 
-                            if (scriptConstruct != null)
-                            {
+								if (scriptConstruct.getConstruct () || scriptConstruct.getInConstruction ()) {
+									scriptConstruct.setConstruct (false);
+									scriptConstruct.SetInConstruction (false);
+									scriptConstruct.getBuildingToConstruct ().GetComponentOrEnd<BuildingConstruction> ().deleteUnit (unit);
+								}
 
-                                if (scriptConstruct.getConstruct() || scriptConstruct.getInConstruction())
-                                {
-                                    scriptConstruct.setConstruct(false);
-                                    scriptConstruct.SetInConstruction(false);
-                                    scriptConstruct.getBuildingToConstruct().GetComponentOrEnd<BuildingConstruction>().deleteUnit(unit);
-                                }
+								scriptConstruct.SetBuildingToConstruct (hitInfo.transform.gameObject);
+							}
+						}
 
-                                scriptConstruct.SetBuildingToConstruct(hitInfo.transform.gameObject);
-                            }
-                        }
+						buildingConstruction (hitInfo.transform.gameObject.transform.position, troop);
 
-                        buildingConstruction(hitInfo.transform.gameObject.transform.position, troop);
-
-                    }
-                    else
-                    {
+					} else {
                         
-                        Identity identity = hitInfo.transform.GetComponent<Identity>();
-                        if (identity != null && identity.unitType.isBuilding())
-                        {
+						Identity identity = hitInfo.transform.GetComponent<Identity> ();
+						if (identity != null && identity.unitType.isBuilding ()) {
                             
-                            // We hit a building
-                            moveUnits(identity.gameObject);
-                        }
-                        else
-                        {
+							// We hit a building
+							moveUnits (identity.gameObject);
+						} else {
                             
-                            // We hit the ground
-                            noAttack();
-                            target = Instantiate(targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
-                            target.transform.SetParent(targetsParent.transform);
-                            moveUnits(target);
-                        }
-                    }
-                }
-                else
-                {
-                    // Debug.Log("No hit");
-                }
-            }
-        }
-
-        //End of click
-        if (Input.GetMouseButtonUp(0))
-        {
-
-            if (isSelecting)
-            {
-                isSelecting = false;
-
-                //We impose a size of 5 to detect a box.
-                //Box Selection
-                Vector3 maxVector = new Vector3(Input.mousePosition.x, Mathf.Max(Input.mousePosition.y, UIheight * Screen.height), Input.mousePosition.z);
-                if ((mPos - maxVector).magnitude > 5)
-                {
-                    var camera = Camera.main;
-                    var viewportBounds = RectDrawer.GetViewportBounds(camera, mPos, maxVector);
-
-                    //Deselecting
-                    if (!Input.GetKey(KeyCode.LeftControl)) ClearSelection();
-
-                    //Selecting
-                    foreach (var unit in FindObjectsOfType<GameObject>())
-                    {
-                        //Units inside the rect get selected.
-                        if (viewportBounds.Contains(camera.WorldToViewportPoint(unit.transform.position)) & unit.tag == "Ally" & !selectedUnits.units.Contains(unit))
-                        {
-                            selectedUnits.units.Add(unit);
-                            Transform projector = unit.transform.FindChild("Selected");
-                            if (projector != null)
-                                projector.gameObject.SetActive(true);
-                        }
-
-                    }
-                    if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0];
-                    hud.updateSelection(selectedUnits);
-                }
-            }
-
-        }
-
-        for (int i = 0; i < 10; ++i)
-        {
-            if (Input.GetKey("" + i))
-            {
-                if (Input.GetKey(KeyCode.LeftAlt))
-                {
-                    troops[i].units.Clear();
-                    foreach (var unit in selectedUnits.units)
-                    {
-                        troops[i].units.Add(unit);
-                    }
-                    print(troops[i].units[0]);
-                }
-                else
-                {
-                    if (troops[i].units.Count > 0)
-                    {
-                        ClearSelection();
-                        foreach (var unit in troops[i].units)
-                        {
-                            selectedUnits.units.Add(unit);
-                            Transform projector = unit.transform.FindChild("Selected");
-                            if (projector != null)
-                                projector.gameObject.SetActive(true);
-                        }
-                        if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0];
-                        hud.updateSelection(selectedUnits);
-                    } 
-                }
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            selectedUnits.focusNext();
-            hud.updateSelection(selectedUnits); // There will exist an updateFocus method            
-        }
-
-		if (Input.GetKeyDown(KeyCode.B))
-		{
-            //createCubeTestingGrid();
+							// We hit the ground
+							noAttack ();
+							target = Instantiate (targetPrefab, hitInfo.point, Quaternion.identity) as GameObject;
+							target.transform.SetParent (targetsParent.transform);
+							moveUnits (target);
+						}
+					}
+				} else {
+					// Debug.Log("No hit");
+				}
+			}
 		}
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            if( selectedUnits.FocusedUnit != null )
-                selectedUnits.FocusedUnit.GetComponent<AttackController>().attack(selectedUnits.FocusedUnit);
-        }
 
-		if (Input.GetKeyDown(KeyCode.I))
-			hud.AIPanel.SetActive(! hud.AIPanel.activeSelf);
+		//End of click
+		if (Input.GetMouseButtonUp (0)) {
+
+			if (isSelecting) {
+				isSelecting = false;
+
+				//We impose a size of 5 to detect a box.
+				//Box Selection
+				Vector3 maxVector = new Vector3 (Input.mousePosition.x, Mathf.Max (Input.mousePosition.y, UIheight * Screen.height), Input.mousePosition.z);
+				if ((mPos - maxVector).magnitude > 5) {
+					var camera = Camera.main;
+					var viewportBounds = RectDrawer.GetViewportBounds (camera, mPos, maxVector);
+
+					//Deselecting
+					if (!Input.GetKey (KeyCode.LeftControl))
+						ClearSelection ();
+
+					//Selecting
+					foreach (var unit in FindObjectsOfType<GameObject>()) {
+						//Units inside the rect get selected.
+						if (viewportBounds.Contains (camera.WorldToViewportPoint (unit.transform.position)) & unit.tag == "Ally" & !selectedUnits.units.Contains (unit)) {
+							selectedUnits.units.Add (unit);
+							Transform projector = unit.transform.FindChild ("Selected");
+							if (projector != null)
+								projector.gameObject.SetActive (true);
+						}
+
+					}
+					if (selectedUnits.units.Count > 0)
+						selectedUnits.FocusedUnit = selectedUnits.units [0];
+					hud.updateSelection (selectedUnits);
+				}
+			}
+
+		}
+
+		for (int i = 0; i < 10; ++i) {
+			if (Input.GetKey ("" + i)) {
+				if (Input.GetKey (KeyCode.LeftAlt)) {
+					troops [i].units.Clear ();
+					foreach (var unit in selectedUnits.units) {
+						troops [i].units.Add (unit);
+					}
+					print (troops [i].units [0]);
+				} else {
+					if (troops [i].units.Count > 0) {
+						ClearSelection ();
+						foreach (var unit in troops[i].units) {
+							selectedUnits.units.Add (unit);
+							Transform projector = unit.transform.FindChild ("Selected");
+							if (projector != null)
+								projector.gameObject.SetActive (true);
+						}
+						if (selectedUnits.units.Count > 0)
+							selectedUnits.FocusedUnit = selectedUnits.units [0];
+						hud.updateSelection (selectedUnits);
+					} 
+				}
+			}
+		}
+
+		if (Input.GetKeyDown (KeyCode.Tab)) {
+			selectedUnits.focusNext ();
+			hud.updateSelection (selectedUnits); // There will exist an updateFocus method            
+		}
+
+		if (Input.GetKeyDown (KeyCode.B)) {
+			//createCubeTestingGrid();
+		}
+		if (Input.GetKeyDown (KeyCode.K)) {
+			if (selectedUnits.FocusedUnit != null)
+				selectedUnits.FocusedUnit.GetComponent<AttackController> ().attack (selectedUnits.FocusedUnit);
+		}
+
+		if (Input.GetKeyDown (KeyCode.I))
+			hud.AIPanel.SetActive (! hud.AIPanel.activeSelf);
+
+		if (Input.GetKeyDown (KeyCode.Plus)) {
+			print ("Tecla mas");
+			nivelMusic += 0.1f;
+			AudioListener.volume = nivelMusic;
+		}
+
+		if (Input.GetKeyDown (KeyCode.Minus)) {
+			print ("Tecla menos");
+			nivelMusic -= 0.1f;
+			AudioListener.volume = nivelMusic;
+		}
+	
+
 		
     }
 
