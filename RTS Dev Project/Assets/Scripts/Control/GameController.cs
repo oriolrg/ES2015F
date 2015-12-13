@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
@@ -27,6 +28,8 @@ public class GameController : MonoBehaviour
     private List<GameObject> allEnemyBuildings;
 	private List<GameObject> allEnemyTownCentres;
     private List<GameObject> allEnemyCivilians;
+
+    private List<Troop> troops;
 
     //Keeps track of the resources the player has.
     [SerializeField]
@@ -77,6 +80,7 @@ public class GameController : MonoBehaviour
         // Here we save our singleton instance
         Instance = this;
 
+        troops = new List<Troop>();
         allAllyUnits = new List<GameObject>();
         allEnemyUnits = new List<GameObject>();
         allAllyArmy = new List<GameObject>();
@@ -89,6 +93,13 @@ public class GameController : MonoBehaviour
         allEnemyCivilians = new List<GameObject>();
         selectedUnits = new Troop();
         selectedUnits.units = new List<GameObject>();
+
+        for (int i = 0; i<10; i++)
+        {
+            troops.Add(new Troop());
+        }
+
+		GameStatistics.resetStatistics();
     }
 
     // Use this for initialization
@@ -106,14 +117,46 @@ public class GameController : MonoBehaviour
         fowCounter = 0;
     }
 
+	IEnumerator ToGameStatisticsIEnumerator(Player winner, Victory winCondition){
+		GameStatistics.winner = winner;
+		GameStatistics.winCondition = winCondition;
+	
+		yield return new WaitForSeconds(3);
+	
+		Application.LoadLevel("EndGameScene");
+	
+	}
+
+	public void ToGameStatistics(Vector3 poi, Player winner, Victory winCondition){
+		Vector3 newCameraPosition;
+		
+		Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+		RaycastHit hit;
+		
+		if (Physics.Raycast (
+			ray, out hit,
+			Mathf.Infinity // max distance
+			)
+	    ) {
+			newCameraPosition = poi + (Camera.main.transform.position - hit.point);
+		} else {
+			throw new UnityException("POI isn't over ground!");
+		}
+		
+		Camera.main.transform.position = newCameraPosition;
+
+		StartCoroutine(ToGameStatisticsIEnumerator(winner, winCondition));
+	}
+
     // Update is called once per frame
     void Update()
     {
-		// TODO: Trial code for Alvaro. Erase when bug with EndGameMenu is solved
-		//hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(true, "hola");
+		// if (Input.GetKey(KeyCode.P)) ToGameStatistics(Vector3.zero, Player.CPU1, Victory.Annihilation);
 
         if (Input.mousePosition.y > Screen.height * UIheight)
         {
+
+
             //Left Click Manager
             if (Input.GetMouseButtonDown(0))
             {
@@ -167,6 +210,7 @@ public class GameController : MonoBehaviour
                         moveUnits(hitInfo.transform.gameObject);
                     else if (hitInfo.transform.gameObject.tag == "Enemy")
                     {
+                        Debug.Log("ataacaaarrr");
                         GameObject enemy = hitInfo.transform.gameObject;
                         attack(enemy);
                     }
@@ -174,7 +218,6 @@ public class GameController : MonoBehaviour
                     else if (hitInfo.transform.gameObject.tag == "Ally" && hitInfo.transform.gameObject.GetComponent<BuildingConstruction>().getConstructionOnGoing())
                     {
                         noAttack();
-                        Debug.Log("vaig a construir");
 
                         Troop troop = new Troop(selectedUnits.units);
 
@@ -266,6 +309,38 @@ public class GameController : MonoBehaviour
 
         }
 
+        for (int i = 0; i < 10; ++i)
+        {
+            if (Input.GetKey("" + i))
+            {
+                if (Input.GetKey(KeyCode.LeftAlt))
+                {
+                    troops[i].units.Clear();
+                    foreach (var unit in selectedUnits.units)
+                    {
+                        troops[i].units.Add(unit);
+                    }
+                    print(troops[i].units[0]);
+                }
+                else
+                {
+                    if (troops[i].units.Count > 0)
+                    {
+                        ClearSelection();
+                        foreach (var unit in troops[i].units)
+                        {
+                            selectedUnits.units.Add(unit);
+                            Transform projector = unit.transform.FindChild("Selected");
+                            if (projector != null)
+                                projector.gameObject.SetActive(true);
+                        }
+                        if (selectedUnits.units.Count > 0) selectedUnits.FocusedUnit = selectedUnits.units[0];
+                        hud.updateSelection(selectedUnits);
+                    } 
+                }
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             selectedUnits.focusNext();
@@ -281,50 +356,7 @@ public class GameController : MonoBehaviour
             if( selectedUnits.FocusedUnit != null )
                 selectedUnits.FocusedUnit.GetComponent<AttackController>().attack(selectedUnits.FocusedUnit);
         }
-        if (Input.GetKeyDown(KeyCode.F) || justDisabled)
-        {
-            //Fog of war button
-            if (fogOfWarEnabled)
-            {
-                print("FOG OF WAR BUTTON PRESSED");
-                GameObject.FindGameObjectsWithTag("Ally")[0].GetComponent<LOSEntity>().Range = 1000;
-                fogOfWarEnabled = false;
-                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cube.transform.position = new Vector3(250, 20, 250);
-                cube.tag = "FOWObject";
-                
-                cube.AddComponent<LOSEntity>();
-                cube.GetComponent<LOSEntity>().Range = 1000;
-                cube.GetComponent<MeshRenderer>().enabled = false;
-
-                justDisabled = true;
-                
-            }
-            else
-            {
-                
-                fowCounter++;
-                //foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
-                //{
-                //    g.GetComponent<LOSEntity>().reset();
-                //}
-                //GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().forceFullUpdate();
-                if (fowCounter > 5)
-                {
-                    GameObject.FindGameObjectWithTag("FOWObject").GetComponent<MeshRenderer>().enabled = false;
-                    GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().enabled = false;
-                    justDisabled = false;
-                    fowCounter = 0;
-                    foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
-                    {
-                        g.GetComponent<LOSEntity>().reset();
-                    }
-
-                }
-            }
-
-        }
-
+        
     }
 
 
@@ -350,8 +382,13 @@ public class GameController : MonoBehaviour
         GameObject ground = GameObject.FindGameObjectWithTag("Ground");
         Bounds bounds = ground.GetComponent<TerrainCollider>().bounds;
 
-        for ( int i = 0; i < ammount; i++ )
+        int done = 0;
+        int tries = 0;
+
+        while ( done < ammount && tries < 100 )
         {
+            tries++;
+
             Vector3 position = new Vector3
             (
                 bounds.center.x + UnityEngine.Random.Range(-bounds.extents.x / 2, bounds.extents.x / 2),
@@ -365,14 +402,36 @@ public class GameController : MonoBehaviour
 
             if (Physics.Raycast(ray, out hitInfo))
             {
-                GameObject go = Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity) as GameObject;
+                if( hitInfo.collider.gameObject.tag == "Ground" )
+                {
+                    // Hit the ground
 
-                LOSEntity script = go.GetComponent<LOSEntity>();
-                script.enabled = false;
-                script.enabled = true;
+                    GameObject go = Instantiate(objectivePrefab, hitInfo.point, Quaternion.identity) as GameObject;
 
-                objectives.Add(go.GetComponentOrEnd<Objective>());
-                go.transform.SetParent(objectivesParent.transform);
+                    Collider[]  colliders = Physics.OverlapSphere(go.transform.position, (go.GetComponent<BoxCollider>().bounds.max - go.GetComponent<BoxCollider>().bounds.center).magnitude);
+
+                    bool well = true;
+
+                    foreach(Collider c in colliders )
+                    {
+                        if(c.tag !="Ground" && c.gameObject != go)
+                        {
+                            Destroy(go);
+                            well = false;
+                        }
+                    }
+                    if (well)
+                    {
+                        LOSEntity script = go.GetComponent<LOSEntity>();
+                        script.enabled = false;
+                        script.enabled = true;
+
+                        objectives.Add(go.GetComponentOrEnd<Objective>());
+                        go.transform.SetParent(objectivesParent.transform);
+
+                        done++;
+                    }
+                }
             }
         }
     }
@@ -553,6 +612,8 @@ public class GameController : MonoBehaviour
         {
             if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Civilian)
             {
+                GameStatistics.addKilledUnits(Player.CPU1, 1);
+                GameStatistics.addLostUnits(Player.Player, 1);
                 allAllyCivilians.Remove(u);
             }
             else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter
@@ -560,6 +621,8 @@ public class GameController : MonoBehaviour
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archery
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Stable)
             {
+                GameStatistics.addKilledUnits(Player.CPU1, 1);
+                GameStatistics.addLostUnits(Player.Player, 1); //Buildings
                 allAllyBuildings.Remove(u);
 				if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter) allAllyTownCentres.Remove(u);
             }
@@ -567,6 +630,8 @@ public class GameController : MonoBehaviour
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archer
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Knight)
             {
+                GameStatistics.addKilledUnits(Player.CPU1, 1);
+                GameStatistics.addLostUnits(Player.Player, 1);
                 allAllyArmy.Remove(u);
             }
         }
@@ -574,6 +639,8 @@ public class GameController : MonoBehaviour
         {
             if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Civilian)
             {
+                GameStatistics.addKilledUnits(Player.Player, 1);
+                GameStatistics.addLostUnits(Player.CPU1, 1);
                 allEnemyCivilians.Remove(u);
             }
             else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter
@@ -582,19 +649,22 @@ public class GameController : MonoBehaviour
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Stable)
             {
                 allEnemyBuildings.Remove(u);
-				if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter) allEnemyTownCentres.Remove(u);
+                GameStatistics.addKilledUnits(Player.Player, 1);
+                GameStatistics.addLostUnits(Player.CPU1, 1);
+                if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.TownCenter) allEnemyTownCentres.Remove(u);
             }
             else if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Soldier
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Archer
               || u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Knight)
             {
+                GameStatistics.addKilledUnits(Player.Player, 1);
+                GameStatistics.addLostUnits(Player.CPU1, 1);
                 allEnemyArmy.Remove(u);
             }
         }
 
 		if (GameData.winConditions.Contains (Victory.Annihilation)){
-	        checkWin();
-	        checkLose();
+			checkBuildingDestruction(u);
 		}
 
         if (selectedUnits.units.Contains(u))
@@ -706,7 +776,7 @@ public class GameController : MonoBehaviour
     {
     }
 
-    public void checkMapControl()
+    public void checkMapControl(GameObject lastObjectControlled)
     {
         hud.updateSelection(selectedUnits);
 
@@ -726,7 +796,7 @@ public class GameController : MonoBehaviour
 
         if (possibleWinner != Player.Neutral)
         {
-            hud.startCountdown(Victory.MapControl, possibleWinner);
+            hud.startCountdown(lastObjectControlled.transform.position, Victory.MapControl, possibleWinner);
             InvokeRepeating("ensureWinner", 1, 1);
         }
     }
@@ -750,26 +820,22 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void checkWin()
+    public void checkBuildingDestruction(GameObject lastBuilding)
     {
 		if (!GameData.winConditions.Contains(Victory.Annihilation))
 			return; // not a win condition
 
-		if (allEnemyBuildings.Count == 0) // TODO: Correct this for multiple CPUs
-			hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
-				true, "You destroyed all enemy buildings"
-			);
-    }
-
-    public void checkLose()
-	{
-		if (!GameData.winConditions.Contains(Victory.Annihilation))
-			return; // not a win condition
-
-		if (allAllyBuildings.Count == 0) 
-			hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
-				false, "All your buildings were destroyed"
-			);
+		if (allEnemyBuildings.Count == 0){ // TODO: Correct this for multiple CPUs
+			GameController.Instance.ToGameStatistics(lastBuilding.transform.position, Player.Player, Victory.Annihilation);
+			/*hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
+				lastBuilding.transform.position, true, "You destroyed all enemy buildings"
+			);*/
+		} else if(allAllyBuildings.Count == 0) {
+			GameController.Instance.ToGameStatistics(lastBuilding.transform.position, Player.CPU1, Victory.Annihilation);
+			/*hud.gameMenu.GetComponent<GameMenuBehaviour>().EndGameMenu(
+				lastBuilding.transform.position, false, "All your buildings were destroyed"
+			);*/
+		}
     }
 
     public void reloadLevel()
@@ -933,7 +999,7 @@ public class GameController : MonoBehaviour
         Identity newIden = building.GetComponent<Identity>();
         if (newIden != null) newIden.player = t.units[0].GetComponent<Identity>().player;
 
-	LOSEntity fow = building.GetComponent<LOSEntity>();
+		LOSEntity fow = building.GetComponent<LOSEntity>();
         if (fow != null) fow.IsRevealer = false;
 
         addSelectedPrefab(building);
@@ -988,9 +1054,14 @@ public class GameController : MonoBehaviour
         //LOSEntity fow = t.units[0].GetComponent<Construct>().getBuildingToConstruct().GetComponent<LOSEntity>();
         //if (fow != null) fow.IsRevealer = false;
 
+		Construct c;
         foreach (var unit in t.units)
         {
-            if (unit.tag != unit.GetComponent<Construct>().getBuildingToConstruct().tag) t.units.Remove(unit);
+			c = unit.GetComponent<Construct>();
+			if (c != null){
+				if (unit.tag != c.getBuildingToConstruct().tag) 
+					t.units.Remove(unit);
+			}
         }
 
         //Move the units that are selected to construct to the building position
@@ -1017,9 +1088,8 @@ public class GameController : MonoBehaviour
 			{
 
 				Collider[] hitColliders = Physics.OverlapSphere(hit.point, DataManager.Instance.civilizationDatas[GameData.playerToCiv(p)].units[u].GetComponent<Renderer>().bounds.extents.magnitude);
-				print (DataManager.Instance.civilizationDatas[GameData.playerToCiv(p)].units[u].GetComponent<Renderer>().bounds.extents.magnitude);
+
 				foreach(Collider c in hitColliders){
-					print (c.gameObject.name);
 					if(c.tag!="Ground"&c.gameObject.name!=gameObject.name){
 						return point;
 					}
@@ -1085,6 +1155,7 @@ public class GameController : MonoBehaviour
 
                 Identity newIden = created.GetComponent<Identity>();
                 if (newIden != null) newIden.player = who.player;
+                GameStatistics.addCreatedUnits(who.player, 1); //buidings
 
                 if (who.tag == "Ally") addSelectedPrefab(created);
                 addTeamCirclePrefab(created);
@@ -1103,6 +1174,7 @@ public class GameController : MonoBehaviour
 
                 Identity newIden = created.GetComponent<Identity>();
                 if (newIden != null) newIden.player = who.player;
+                GameStatistics.addCreatedUnits(who.player, 1);
 
                 if (who.tag == "Ally")
                 {
@@ -1214,6 +1286,7 @@ public class GameController : MonoBehaviour
 
             if (health != null)
             {
+                GameStatistics.addKilledUnits(Player.CPU1, -1);
                 health.die();
             }
             else

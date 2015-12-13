@@ -6,6 +6,7 @@ public class Health : MonoBehaviour
 
     private float MaxHealth;
     [SerializeField] private float health;
+    private float auxHealth;
     public float HealthRatio { get { return health / MaxHealth; } }
 
     public GameObject destroyedPrefab;
@@ -16,6 +17,7 @@ public class Health : MonoBehaviour
         UnitType myType = gameObject.GetComponentOrEnd<Identity>().unitType;
         MaxHealth = DataManager.Instance.unitDatas[myType].stats[Stat.Health];
         health = MaxHealth;
+        auxHealth = health;
     }
     
     void Update()
@@ -26,23 +28,30 @@ public class Health : MonoBehaviour
         }
 
         if (!changedMesh && GetComponent<Identity>().unitType.isBuilding() && health <= MaxHealth / 2)
-        {   
-            //GetComponent<MeshFilter>().mesh = destroyedPrefab.GetComponent<MeshFilter>().sharedMesh;
-            foreach(Transform child in destroyedPrefab.transform)
+        {
+            if (!GetComponent<BuildingConstruction>().getConstructionOnGoing())
             {
-                GameObject newFirePrefab = Instantiate(child.gameObject, child.position, Quaternion.identity) as GameObject;
-                newFirePrefab.transform.SetParent(transform);
-                newFirePrefab.transform.localPosition = child.localPosition;
-                newFirePrefab.transform.localRotation = child.localRotation;
+                //GetComponent<MeshFilter>().mesh = destroyedPrefab.GetComponent<MeshFilter>().sharedMesh;
+                if (destroyedPrefab != null)
+                {
+                    foreach (Transform child in destroyedPrefab.transform)
+                    {
+                        GameObject newFirePrefab = Instantiate(child.gameObject, child.position, Quaternion.identity) as GameObject;
+                        newFirePrefab.transform.SetParent(transform);
+                        newFirePrefab.transform.localPosition = child.localPosition;
+                        newFirePrefab.transform.localRotation = child.localRotation;
 
+                    }
+                }
+                changedMesh = true;
             }
-            changedMesh = true;
         }
     }
 
     public void loseHP(int hpLost)
     {
 		AI.Instance.counterattack (gameObject);
+        auxHealth -= hpLost;
         health -= hpLost;
         health = Mathf.Min(health, MaxHealth);
         health = Mathf.Max(health, 0);
@@ -72,6 +81,12 @@ public class Health : MonoBehaviour
         }
         else
         {
+            if (GetComponent<Construct>().getInConstruction() || GetComponent<Construct>().getConstruct())
+            {
+                GetComponent<Construct>().getBuildingToConstruct().GetComponent<BuildingConstruction>().deleteUnit(gameObject);
+                GetComponent<Construct>().SetInConstruction(false);
+                GetComponent<Construct>().setConstruct(false);
+            }
 
             Animator ani = GetComponent<Animator>();
             if (ani != null)
@@ -90,5 +105,24 @@ public class Health : MonoBehaviour
     public float getHealth()
     {
         return health;
+    }
+
+    public float getAuxHealth()
+    {
+        return auxHealth;
+    }
+
+    public void setHealth(float h)
+    {
+        health = h;
+    }
+    public void setMaxHealth(float h)
+    {
+        MaxHealth = h;
+    }
+
+    public void setAuxHealth(float h)
+    {
+        auxHealth = h;
     }
 }
