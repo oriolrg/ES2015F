@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 65d1046ec29cb9f4f9ec266f8ffee8cb
-timeCreated: 1448832994
+guid: c747a2f8edb37904bbfcb47acf58c6b8
+timeCreated: 1449918252
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: Armature
-    100002: Armature_001
+    100002: Bone
     100004: chest
     100006: Circle
-    100008: //RootNode
-    100010: foot_L
-    100012: foot_R
-    100014: foot_rotation_L
-    100016: foot_rotation_R
+    100008: foot_L
+    100010: foot_R
+    100012: foot_rotation_L
+    100014: foot_rotation_R
+    100016: //RootNode
     100018: hand_L
     100020: hand_R
     100022: head
@@ -36,30 +36,31 @@ ModelImporter:
     100056: root
     100058: toes_L
     100060: toes_R
-    100062: torso
-    100064: upper_arm_L
-    100066: upper_arm_R
-    100068: upper_index_L
-    100070: upper_index_R
-    100072: upper_leg_L
-    100074: upper_leg_R
-    100076: upper_middle_L
-    100078: upper_middle_R
-    100080: upper_pinky_L
-    100082: upper_pinky_R
-    100084: upper_ring_L
-    100086: upper_ring_R
-    100088: upper_thumb_L
-    100090: upper_thumb_R
+    100062: Tool_bone
+    100064: torso
+    100066: upper_arm_L
+    100068: upper_arm_R
+    100070: upper_index_L
+    100072: upper_index_R
+    100074: upper_leg_L
+    100076: upper_leg_R
+    100078: upper_middle_L
+    100080: upper_middle_R
+    100082: upper_pinky_L
+    100084: upper_pinky_R
+    100086: upper_ring_L
+    100088: upper_ring_R
+    100090: upper_thumb_L
+    100092: upper_thumb_R
     400000: Armature
-    400002: Armature_001
+    400002: Bone
     400004: chest
     400006: Circle
-    400008: //RootNode
-    400010: foot_L
-    400012: foot_R
-    400014: foot_rotation_L
-    400016: foot_rotation_R
+    400008: foot_L
+    400010: foot_R
+    400012: foot_rotation_L
+    400014: foot_rotation_R
+    400016: //RootNode
     400018: hand_L
     400020: hand_R
     400022: head
@@ -82,23 +83,22 @@ ModelImporter:
     400056: root
     400058: toes_L
     400060: toes_R
-    400062: torso
-    400064: upper_arm_L
-    400066: upper_arm_R
-    400068: upper_index_L
-    400070: upper_index_R
-    400072: upper_leg_L
-    400074: upper_leg_R
-    400076: upper_middle_L
-    400078: upper_middle_R
-    400080: upper_pinky_L
-    400082: upper_pinky_R
-    400084: upper_ring_L
-    400086: upper_ring_R
-    400088: upper_thumb_L
-    400090: upper_thumb_R
-    2300000: Circle
-    3300000: Circle
+    400062: Tool_bone
+    400064: torso
+    400066: upper_arm_L
+    400068: upper_arm_R
+    400070: upper_index_L
+    400072: upper_index_R
+    400074: upper_leg_L
+    400076: upper_leg_R
+    400078: upper_middle_L
+    400080: upper_middle_R
+    400082: upper_pinky_L
+    400084: upper_pinky_R
+    400086: upper_ring_L
+    400088: upper_ring_R
+    400090: upper_thumb_L
+    400092: upper_thumb_R
     4300000: Circle
     4300002: human
     7400000: Default Take
@@ -109,8 +109,8 @@ ModelImporter:
     7400010: stand_by
     7400012: walk
     9500000: //RootNode
-    13700000: human
-    13700002: Circle
+    13700000: Circle
+    13700002: human
   materials:
     importMaterials: 1
     materialName: 0
@@ -136,7 +136,7 @@ ModelImporter:
       name: Default Take
       takeName: Default Take
       firstFrame: -1
-      lastFrame: 29
+      lastFrame: 38
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -160,8 +160,6 @@ ModelImporter:
       - path: 
         weight: 1
       - path: Armature
-        weight: 1
-      - path: Armature/Armature_001
         weight: 1
       - path: Armature/root
         weight: 1
@@ -244,6 +242,10 @@ ModelImporter:
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R
         weight: 1
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R/toes_R
+        weight: 1
+      - path: Armature/Tool_bone
+        weight: 1
+      - path: Armature/Tool_bone/Bone
         weight: 1
       - path: Circle
         weight: 1
@@ -281,8 +283,6 @@ ModelImporter:
         weight: 1
       - path: Armature
         weight: 1
-      - path: Armature/Armature_001
-        weight: 1
       - path: Armature/root
         weight: 1
       - path: Armature/root/torso
@@ -364,6 +364,10 @@ ModelImporter:
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R
         weight: 1
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R/toes_R
+        weight: 1
+      - path: Armature/Tool_bone
+        weight: 1
+      - path: Armature/Tool_bone/Bone
         weight: 1
       - path: Circle
         weight: 1
@@ -401,8 +405,6 @@ ModelImporter:
         weight: 1
       - path: Armature
         weight: 1
-      - path: Armature/Armature_001
-        weight: 1
       - path: Armature/root
         weight: 1
       - path: Armature/root/torso
@@ -484,6 +486,10 @@ ModelImporter:
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R
         weight: 1
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R/toes_R
+        weight: 1
+      - path: Armature/Tool_bone
+        weight: 1
+      - path: Armature/Tool_bone/Bone
         weight: 1
       - path: Circle
         weight: 1
@@ -521,8 +527,6 @@ ModelImporter:
         weight: 1
       - path: Armature
         weight: 1
-      - path: Armature/Armature_001
-        weight: 1
       - path: Armature/root
         weight: 1
       - path: Armature/root/torso
@@ -604,6 +608,10 @@ ModelImporter:
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R
         weight: 1
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R/toes_R
+        weight: 1
+      - path: Armature/Tool_bone
+        weight: 1
+      - path: Armature/Tool_bone/Bone
         weight: 1
       - path: Circle
         weight: 1
@@ -641,8 +649,6 @@ ModelImporter:
         weight: 1
       - path: Armature
         weight: 1
-      - path: Armature/Armature_001
-        weight: 1
       - path: Armature/root
         weight: 1
       - path: Armature/root/torso
@@ -724,6 +730,10 @@ ModelImporter:
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R
         weight: 1
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R/toes_R
+        weight: 1
+      - path: Armature/Tool_bone
+        weight: 1
+      - path: Armature/Tool_bone/Bone
         weight: 1
       - path: Circle
         weight: 1
@@ -761,8 +771,6 @@ ModelImporter:
         weight: 1
       - path: Armature
         weight: 1
-      - path: Armature/Armature_001
-        weight: 1
       - path: Armature/root
         weight: 1
       - path: Armature/root/torso
@@ -844,6 +852,10 @@ ModelImporter:
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R
         weight: 1
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R/toes_R
+        weight: 1
+      - path: Armature/Tool_bone
+        weight: 1
+      - path: Armature/Tool_bone/Bone
         weight: 1
       - path: Circle
         weight: 1
@@ -863,7 +875,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -880,8 +892,6 @@ ModelImporter:
       - path: 
         weight: 1
       - path: Armature
-        weight: 1
-      - path: Armature/Armature_001
         weight: 1
       - path: Armature/root
         weight: 1
@@ -964,6 +974,10 @@ ModelImporter:
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R
         weight: 1
       - path: Armature/root/torso/upper_leg_R/lower_leg_R/foot_rotation_R/foot_R/toes_R
+        weight: 1
+      - path: Armature/Tool_bone
+        weight: 1
+      - path: Armature/Tool_bone/Bone
         weight: 1
       - path: Circle
         weight: 1
