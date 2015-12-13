@@ -1071,6 +1071,11 @@ public class GameController : MonoBehaviour
             }
         }
 
+        if (building.tag == "Enemy")
+        {
+            updateResource(DataManager.Instance.unitDatas[building.gameObject.GetComponent<Identity>().unitType].resourceCost, "Enemy");
+        }
+
         buildingConstruction(position, t);
 
     }
