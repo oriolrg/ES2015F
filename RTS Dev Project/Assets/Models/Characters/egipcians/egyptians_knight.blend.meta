@@ -3,7 +3,7 @@ guid: f3829319835fc27489b801639973b80c
 timeCreated: 1448833224
 licenseType: Free
 ModelImporter:
-  serializedVersion: 18
+  serializedVersion: 19
   fileIDToRecycleName:
     100000: chest
     100002: //RootNode
@@ -172,6 +172,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleRotations: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -179,9 +180,9 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     clipAnimations:
@@ -195,6 +196,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
@@ -361,6 +363,7 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ATTACK
       takeName: ATTACK
@@ -371,534 +374,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: horse_armature
-        weight: 1
-      - path: horse_armature/root
-        weight: 1
-      - path: horse_armature/root/foot_control_L
-        weight: 1
-      - path: horse_armature/root/foot_control_L/foot_L
-        weight: 1
-      - path: horse_armature/root/foot_control_R
-        weight: 1
-      - path: horse_armature/root/foot_control_R/foot_R
-        weight: 1
-      - path: horse_armature/root/hand_control_L
-        weight: 1
-      - path: horse_armature/root/hand_control_L/hand_L
-        weight: 1
-      - path: horse_armature/root/hand_control_R
-        weight: 1
-      - path: horse_armature/root/hand_control_R/hand_R
-        weight: 1
-      - path: horse_armature/root/torso
-        weight: 1
-      - path: horse_armature/root/torso/chest
-        weight: 1
-      - path: horse_armature/root/torso/chest/lower_neck
-        weight: 1
-      - path: horse_armature/root/torso/chest/lower_neck/head_control
-        weight: 1
-      - path: horse_armature/root/torso/chest/lower_neck/head_control/head
-        weight: 1
-      - path: horse_armature/root/torso/chest/lower_neck/upper_neck
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_L
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_L/middle_arm_L
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_L/middle_arm_L/lower_arm_L
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_R
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_R/middle_arm_R
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_R/middle_arm_R/lower_arm_R
-        weight: 1
-      - path: horse_armature/root/torso/tail01
-        weight: 1
-      - path: horse_armature/root/torso/tail01/tail02
-        weight: 1
-      - path: horse_armature/root/torso/tail01/tail02/tail03
-        weight: 1
-      - path: horse_armature/root/torso/tail01/tail02/tail03/tail04
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_L
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_L/middle_leg_L
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_L/middle_leg_L/lower_leg_L
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_R
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_R/middle_leg_R
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_R/middle_leg_R/lower_leg_R
-        weight: 1
-      - path: horse_mesh
-        weight: 1
-      - path: human_armature
-        weight: 1
-      - path: human_armature/h_root
-        weight: 1
-      - path: human_armature/h_root/h_torso
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_neck
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_neck/h_head
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_index_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_index_L/h_lower_index_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_middle_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_middle_L/h_lower_middle_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_pinky_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_pinky_L/h_lower_pinky_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_ring_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_ring_L/h_lower_ring_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_thumb_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_thumb_L/h_lower_thumb_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_index_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_index_R/h_lower_index_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_middle_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_middle_R/h_lower_middle_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_pinky_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_pinky_R/h_lower_pinky_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_ring_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_ring_R/h_lower_ring_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_thumb_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_thumb_R/h_lower_thumb_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L/h_foot_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L/h_foot_L/h_toes_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R/h_foot_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R/h_foot_R/h_toes_R
-        weight: 1
-      - path: human_mesh
-        weight: 1
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: DIE
-      takeName: DIE
-      firstFrame: -1
-      lastFrame: 29
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: horse_armature
-        weight: 1
-      - path: horse_armature/root
-        weight: 1
-      - path: horse_armature/root/foot_control_L
-        weight: 1
-      - path: horse_armature/root/foot_control_L/foot_L
-        weight: 1
-      - path: horse_armature/root/foot_control_R
-        weight: 1
-      - path: horse_armature/root/foot_control_R/foot_R
-        weight: 1
-      - path: horse_armature/root/hand_control_L
-        weight: 1
-      - path: horse_armature/root/hand_control_L/hand_L
-        weight: 1
-      - path: horse_armature/root/hand_control_R
-        weight: 1
-      - path: horse_armature/root/hand_control_R/hand_R
-        weight: 1
-      - path: horse_armature/root/torso
-        weight: 1
-      - path: horse_armature/root/torso/chest
-        weight: 1
-      - path: horse_armature/root/torso/chest/lower_neck
-        weight: 1
-      - path: horse_armature/root/torso/chest/lower_neck/head_control
-        weight: 1
-      - path: horse_armature/root/torso/chest/lower_neck/head_control/head
-        weight: 1
-      - path: horse_armature/root/torso/chest/lower_neck/upper_neck
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_L
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_L/middle_arm_L
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_L/middle_arm_L/lower_arm_L
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_R
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_R/middle_arm_R
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_R/middle_arm_R/lower_arm_R
-        weight: 1
-      - path: horse_armature/root/torso/tail01
-        weight: 1
-      - path: horse_armature/root/torso/tail01/tail02
-        weight: 1
-      - path: horse_armature/root/torso/tail01/tail02/tail03
-        weight: 1
-      - path: horse_armature/root/torso/tail01/tail02/tail03/tail04
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_L
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_L/middle_leg_L
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_L/middle_leg_L/lower_leg_L
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_R
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_R/middle_leg_R
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_R/middle_leg_R/lower_leg_R
-        weight: 1
-      - path: horse_mesh
-        weight: 1
-      - path: human_armature
-        weight: 1
-      - path: human_armature/h_root
-        weight: 1
-      - path: human_armature/h_root/h_torso
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_neck
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_neck/h_head
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_index_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_index_L/h_lower_index_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_middle_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_middle_L/h_lower_middle_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_pinky_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_pinky_L/h_lower_pinky_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_ring_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_ring_L/h_lower_ring_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_thumb_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_thumb_L/h_lower_thumb_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_index_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_index_R/h_lower_index_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_middle_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_middle_R/h_lower_middle_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_pinky_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_pinky_R/h_lower_pinky_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_ring_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_ring_R/h_lower_ring_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_thumb_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_thumb_R/h_lower_thumb_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L/h_foot_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L/h_foot_L/h_toes_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R/h_foot_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R/h_foot_R/h_toes_R
-        weight: 1
-      - path: human_mesh
-        weight: 1
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: IDLE
-      takeName: IDLE
-      firstFrame: -1
-      lastFrame: 60
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: horse_armature
-        weight: 1
-      - path: horse_armature/root
-        weight: 1
-      - path: horse_armature/root/foot_control_L
-        weight: 1
-      - path: horse_armature/root/foot_control_L/foot_L
-        weight: 1
-      - path: horse_armature/root/foot_control_R
-        weight: 1
-      - path: horse_armature/root/foot_control_R/foot_R
-        weight: 1
-      - path: horse_armature/root/hand_control_L
-        weight: 1
-      - path: horse_armature/root/hand_control_L/hand_L
-        weight: 1
-      - path: horse_armature/root/hand_control_R
-        weight: 1
-      - path: horse_armature/root/hand_control_R/hand_R
-        weight: 1
-      - path: horse_armature/root/torso
-        weight: 1
-      - path: horse_armature/root/torso/chest
-        weight: 1
-      - path: horse_armature/root/torso/chest/lower_neck
-        weight: 1
-      - path: horse_armature/root/torso/chest/lower_neck/head_control
-        weight: 1
-      - path: horse_armature/root/torso/chest/lower_neck/head_control/head
-        weight: 1
-      - path: horse_armature/root/torso/chest/lower_neck/upper_neck
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_L
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_L/middle_arm_L
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_L/middle_arm_L/lower_arm_L
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_R
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_R/middle_arm_R
-        weight: 1
-      - path: horse_armature/root/torso/chest/upper_arm_R/middle_arm_R/lower_arm_R
-        weight: 1
-      - path: horse_armature/root/torso/tail01
-        weight: 1
-      - path: horse_armature/root/torso/tail01/tail02
-        weight: 1
-      - path: horse_armature/root/torso/tail01/tail02/tail03
-        weight: 1
-      - path: horse_armature/root/torso/tail01/tail02/tail03/tail04
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_L
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_L/middle_leg_L
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_L/middle_leg_L/lower_leg_L
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_R
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_R/middle_leg_R
-        weight: 1
-      - path: horse_armature/root/torso/upper_leg_R/middle_leg_R/lower_leg_R
-        weight: 1
-      - path: horse_mesh
-        weight: 1
-      - path: human_armature
-        weight: 1
-      - path: human_armature/h_root
-        weight: 1
-      - path: human_armature/h_root/h_torso
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_neck
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_neck/h_head
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_index_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_index_L/h_lower_index_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_middle_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_middle_L/h_lower_middle_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_pinky_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_pinky_L/h_lower_pinky_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_ring_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_ring_L/h_lower_ring_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_thumb_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_thumb_L/h_lower_thumb_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_index_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_index_R/h_lower_index_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_middle_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_middle_R/h_lower_middle_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_pinky_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_pinky_R/h_lower_pinky_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_ring_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_ring_R/h_lower_ring_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_thumb_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_thumb_R/h_lower_thumb_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L/h_foot_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L/h_foot_L/h_toes_L
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R/h_foot_R
-        weight: 1
-      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R/h_foot_R/h_toes_R
-        weight: 1
-      - path: human_mesh
-        weight: 1
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: RUN
-      takeName: RUN
-      firstFrame: -1
-      lastFrame: 19
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1065,6 +541,541 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: DIE
+      takeName: DIE
+      firstFrame: -1
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: horse_armature
+        weight: 1
+      - path: horse_armature/root
+        weight: 1
+      - path: horse_armature/root/foot_control_L
+        weight: 1
+      - path: horse_armature/root/foot_control_L/foot_L
+        weight: 1
+      - path: horse_armature/root/foot_control_R
+        weight: 1
+      - path: horse_armature/root/foot_control_R/foot_R
+        weight: 1
+      - path: horse_armature/root/hand_control_L
+        weight: 1
+      - path: horse_armature/root/hand_control_L/hand_L
+        weight: 1
+      - path: horse_armature/root/hand_control_R
+        weight: 1
+      - path: horse_armature/root/hand_control_R/hand_R
+        weight: 1
+      - path: horse_armature/root/torso
+        weight: 1
+      - path: horse_armature/root/torso/chest
+        weight: 1
+      - path: horse_armature/root/torso/chest/lower_neck
+        weight: 1
+      - path: horse_armature/root/torso/chest/lower_neck/head_control
+        weight: 1
+      - path: horse_armature/root/torso/chest/lower_neck/head_control/head
+        weight: 1
+      - path: horse_armature/root/torso/chest/lower_neck/upper_neck
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_L
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_L/middle_arm_L
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_L/middle_arm_L/lower_arm_L
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_R
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_R/middle_arm_R
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_R/middle_arm_R/lower_arm_R
+        weight: 1
+      - path: horse_armature/root/torso/tail01
+        weight: 1
+      - path: horse_armature/root/torso/tail01/tail02
+        weight: 1
+      - path: horse_armature/root/torso/tail01/tail02/tail03
+        weight: 1
+      - path: horse_armature/root/torso/tail01/tail02/tail03/tail04
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_L
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_L/middle_leg_L
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_L/middle_leg_L/lower_leg_L
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_R
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_R/middle_leg_R
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_R/middle_leg_R/lower_leg_R
+        weight: 1
+      - path: horse_mesh
+        weight: 1
+      - path: human_armature
+        weight: 1
+      - path: human_armature/h_root
+        weight: 1
+      - path: human_armature/h_root/h_torso
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_neck
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_neck/h_head
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_index_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_index_L/h_lower_index_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_middle_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_middle_L/h_lower_middle_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_pinky_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_pinky_L/h_lower_pinky_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_ring_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_ring_L/h_lower_ring_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_thumb_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_thumb_L/h_lower_thumb_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_index_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_index_R/h_lower_index_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_middle_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_middle_R/h_lower_middle_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_pinky_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_pinky_R/h_lower_pinky_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_ring_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_ring_R/h_lower_ring_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_thumb_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_thumb_R/h_lower_thumb_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L/h_foot_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L/h_foot_L/h_toes_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R/h_foot_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R/h_foot_R/h_toes_R
+        weight: 1
+      - path: human_mesh
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: IDLE
+      takeName: IDLE
+      firstFrame: -1
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: horse_armature
+        weight: 1
+      - path: horse_armature/root
+        weight: 1
+      - path: horse_armature/root/foot_control_L
+        weight: 1
+      - path: horse_armature/root/foot_control_L/foot_L
+        weight: 1
+      - path: horse_armature/root/foot_control_R
+        weight: 1
+      - path: horse_armature/root/foot_control_R/foot_R
+        weight: 1
+      - path: horse_armature/root/hand_control_L
+        weight: 1
+      - path: horse_armature/root/hand_control_L/hand_L
+        weight: 1
+      - path: horse_armature/root/hand_control_R
+        weight: 1
+      - path: horse_armature/root/hand_control_R/hand_R
+        weight: 1
+      - path: horse_armature/root/torso
+        weight: 1
+      - path: horse_armature/root/torso/chest
+        weight: 1
+      - path: horse_armature/root/torso/chest/lower_neck
+        weight: 1
+      - path: horse_armature/root/torso/chest/lower_neck/head_control
+        weight: 1
+      - path: horse_armature/root/torso/chest/lower_neck/head_control/head
+        weight: 1
+      - path: horse_armature/root/torso/chest/lower_neck/upper_neck
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_L
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_L/middle_arm_L
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_L/middle_arm_L/lower_arm_L
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_R
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_R/middle_arm_R
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_R/middle_arm_R/lower_arm_R
+        weight: 1
+      - path: horse_armature/root/torso/tail01
+        weight: 1
+      - path: horse_armature/root/torso/tail01/tail02
+        weight: 1
+      - path: horse_armature/root/torso/tail01/tail02/tail03
+        weight: 1
+      - path: horse_armature/root/torso/tail01/tail02/tail03/tail04
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_L
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_L/middle_leg_L
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_L/middle_leg_L/lower_leg_L
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_R
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_R/middle_leg_R
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_R/middle_leg_R/lower_leg_R
+        weight: 1
+      - path: horse_mesh
+        weight: 1
+      - path: human_armature
+        weight: 1
+      - path: human_armature/h_root
+        weight: 1
+      - path: human_armature/h_root/h_torso
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_neck
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_neck/h_head
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_index_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_index_L/h_lower_index_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_middle_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_middle_L/h_lower_middle_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_pinky_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_pinky_L/h_lower_pinky_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_ring_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_ring_L/h_lower_ring_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_thumb_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_thumb_L/h_lower_thumb_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_index_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_index_R/h_lower_index_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_middle_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_middle_R/h_lower_middle_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_pinky_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_pinky_R/h_lower_pinky_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_ring_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_ring_R/h_lower_ring_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_thumb_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_thumb_R/h_lower_thumb_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L/h_foot_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L/h_foot_L/h_toes_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R/h_foot_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R/h_foot_R/h_toes_R
+        weight: 1
+      - path: human_mesh
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: RUN
+      takeName: RUN
+      firstFrame: -1
+      lastFrame: 19
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: horse_armature
+        weight: 1
+      - path: horse_armature/root
+        weight: 1
+      - path: horse_armature/root/foot_control_L
+        weight: 1
+      - path: horse_armature/root/foot_control_L/foot_L
+        weight: 1
+      - path: horse_armature/root/foot_control_R
+        weight: 1
+      - path: horse_armature/root/foot_control_R/foot_R
+        weight: 1
+      - path: horse_armature/root/hand_control_L
+        weight: 1
+      - path: horse_armature/root/hand_control_L/hand_L
+        weight: 1
+      - path: horse_armature/root/hand_control_R
+        weight: 1
+      - path: horse_armature/root/hand_control_R/hand_R
+        weight: 1
+      - path: horse_armature/root/torso
+        weight: 1
+      - path: horse_armature/root/torso/chest
+        weight: 1
+      - path: horse_armature/root/torso/chest/lower_neck
+        weight: 1
+      - path: horse_armature/root/torso/chest/lower_neck/head_control
+        weight: 1
+      - path: horse_armature/root/torso/chest/lower_neck/head_control/head
+        weight: 1
+      - path: horse_armature/root/torso/chest/lower_neck/upper_neck
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_L
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_L/middle_arm_L
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_L/middle_arm_L/lower_arm_L
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_R
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_R/middle_arm_R
+        weight: 1
+      - path: horse_armature/root/torso/chest/upper_arm_R/middle_arm_R/lower_arm_R
+        weight: 1
+      - path: horse_armature/root/torso/tail01
+        weight: 1
+      - path: horse_armature/root/torso/tail01/tail02
+        weight: 1
+      - path: horse_armature/root/torso/tail01/tail02/tail03
+        weight: 1
+      - path: horse_armature/root/torso/tail01/tail02/tail03/tail04
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_L
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_L/middle_leg_L
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_L/middle_leg_L/lower_leg_L
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_R
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_R/middle_leg_R
+        weight: 1
+      - path: horse_armature/root/torso/upper_leg_R/middle_leg_R/lower_leg_R
+        weight: 1
+      - path: horse_mesh
+        weight: 1
+      - path: human_armature
+        weight: 1
+      - path: human_armature/h_root
+        weight: 1
+      - path: human_armature/h_root/h_torso
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_neck
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_neck/h_head
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_index_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_index_L/h_lower_index_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_middle_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_middle_L/h_lower_middle_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_pinky_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_pinky_L/h_lower_pinky_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_ring_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_ring_L/h_lower_ring_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_thumb_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_L/h_lower_arm_L/h_hand_L/h_upper_thumb_L/h_lower_thumb_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_index_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_index_R/h_lower_index_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_middle_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_middle_R/h_lower_middle_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_pinky_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_pinky_R/h_lower_pinky_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_ring_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_ring_R/h_lower_ring_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_thumb_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_chest/h_upper_arm_R/h_lower_arm_R/h_hand_R/h_upper_thumb_R/h_lower_thumb_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L/h_foot_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_L/h_lower_leg_L/h_foot_L/h_toes_L
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R/h_foot_R
+        weight: 1
+      - path: human_armature/h_root/h_torso/h_upper_leg_R/h_lower_leg_R/h_foot_R/h_toes_R
+        weight: 1
+      - path: human_mesh
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -1085,20 +1096,19 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 4
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
     hasTranslationDoF: 0
