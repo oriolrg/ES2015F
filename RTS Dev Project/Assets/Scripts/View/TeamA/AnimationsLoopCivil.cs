@@ -9,7 +9,8 @@ public class AnimationsLoopCivil : MonoBehaviour
 	void Animations()
 	{
 		if (i == 1) {
-			GetComponent<Animator>().SetBool ("attack", false);
+            if (Utils.HasParameter("attack", animator))
+                GetComponent<Animator>().SetBool ("attack", false);
 			GetComponent<Animator>().SetBool ("walk", true);
 			i++;
 		} else if (i == 2) {
@@ -42,7 +43,8 @@ public class AnimationsLoopCivil : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		InvokeRepeating ("Animations", 1, 5);	
+		InvokeRepeating ("Animations", 1, 5);
+        animator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame

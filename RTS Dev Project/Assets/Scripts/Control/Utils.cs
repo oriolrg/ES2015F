@@ -10,4 +10,13 @@ public class Utils : MonoBehaviour {
 		 */
 		return (T) Enum.Parse (typeof(T), name);
 	}
+
+    public static bool HasParameter(string paramName, Animator animator)
+    {
+        foreach (AnimatorControllerParameter param in animator.parameters)
+        {
+            if (param.name == paramName) return true;
+        }
+        return false;
+    }
 }

@@ -4,12 +4,14 @@ using System.Collections;
 public class OpenAndClose : MonoBehaviour
 {
     private Animator animator;
+    private Collider collider;
     private bool open = false;
     [SerializeField] float detectionRadius;
 
     void Start ()
     {
-        animator = gameObject.GetComponentOrEnd<Animator>();    
+        animator = gameObject.GetComponentOrEnd<Animator>();
+        collider = gameObject.GetComponentOrEnd<BoxCollider>();  
 	}
 
     void FixedUpdate()
@@ -20,11 +22,14 @@ public class OpenAndClose : MonoBehaviour
         {
             open = false;
             animator.SetBool("open", open);
+            collider.enabled = true;
+
         }
         if(!open && unitsNearBy)
         {
             open = true;
             animator.SetBool("open", open);
+            collider.enabled = false;
         }
     }
 
