@@ -110,6 +110,7 @@ ModelImporter:
     7400008: stand_by
     7400010: walk
     7400012: attack
+    7400014: cultivate
     9500000: //RootNode
     13700000: herramienta
     13700002: human
