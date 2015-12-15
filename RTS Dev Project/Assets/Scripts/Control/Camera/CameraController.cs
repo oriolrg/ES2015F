@@ -45,7 +45,7 @@ public class CameraController : MonoBehaviour {
         if ( (Input.mousePosition.x >= Screen.width - maxMarginDelta && Input.mousePosition.x <= Screen.width + minMarginDelta) || (Input.GetKey(KeyCode.RightArrow)) || (Input.GetKey(KeyCode.D)) )
         {
             //Vector3 auxpos = new Vector3(transform.position.x,transform.position.y,transform.position.z);
-            n = new Vector3(transform.right.x, 0, transform.right.z);
+            n = new Vector3(transform.right.x, 0, transform.right.z).normalized;
             transform.Translate(n * speedH * Time.deltaTime, Space.World);
             movement = true;
             //Debug.Log("1pos" + auxpos);
@@ -97,7 +97,7 @@ public class CameraController : MonoBehaviour {
 
         if ((Input.mousePosition.x <= maxMarginDelta && Input.mousePosition.x >= -minMarginDelta) || (Input.GetKey(KeyCode.LeftArrow)) || (Input.GetKey(KeyCode.A)))
         {
-            n = new Vector3(transform.right.x, 0, transform.right.z);
+            n = new Vector3(transform.right.x, 0, transform.right.z).normalized;
             transform.Translate(-n * speedH * Time.deltaTime, Space.World);
             movement = true;
 
@@ -137,7 +137,7 @@ public class CameraController : MonoBehaviour {
 
         if ((Input.mousePosition.y >= Screen.height - maxMarginDelta && Input.mousePosition.y <= Screen.height + minMarginDelta) || (Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.W)))
         {
-            n = new Vector3(transform.forward.x, 0, transform.forward.z);
+            n = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
             transform.Translate(n * speedV * Time.deltaTime, Space.World);
             movement = true;
 
@@ -181,7 +181,7 @@ public class CameraController : MonoBehaviour {
         {
 
             // Move the camera down
-            n = new Vector3(transform.forward.x, 0, transform.forward.z);
+            n = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
             transform.Translate(-n * speedV * Time.deltaTime, Space.World);
             movement = true;
 
