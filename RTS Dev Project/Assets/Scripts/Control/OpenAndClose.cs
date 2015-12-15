@@ -23,6 +23,7 @@ public class OpenAndClose : MonoBehaviour
             open = false;
             animator.SetBool("open", open);
             myCollider.enabled = true;
+            CancelInvoke("toggleCollider");
 
         }
         if(!open && unitsNearBy)
@@ -44,7 +45,7 @@ public class OpenAndClose : MonoBehaviour
         {
             Identity identity = colliders[i].GetComponent<Identity>();
 
-            unitsNearBy = identity != null && !identity.unitType.isBuilding();
+            unitsNearBy = identity != null && !identity.unitType.isBuilding() && identity.civilization == GetComponent<Identity>().civilization;
             i++;
         }
 
