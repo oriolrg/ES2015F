@@ -43,6 +43,7 @@ public class healthbar : MonoBehaviour
 
         g = Instantiate(prefab);
         g.transform.SetParent(GameController.Instance.healthBarsParent.transform);
+
         g.transform.GetChild(0).transform.position = Camera.main.WorldToScreenPoint(GetComponentInChildren<auxHealth>().gameObject.transform.position);
         g1 = g.GetComponentInChildren<auxHealth>().gameObject;
 
@@ -61,7 +62,6 @@ public class healthbar : MonoBehaviour
             g1.SetActive(true);
 
             g.transform.GetChild(0).transform.position = Camera.main.WorldToScreenPoint(GetComponentInChildren<auxHealth>().gameObject.transform.position);
-
             //auxHealth aH = g.GetComponentInChildren<auxHealth>();
 
             maxXValue = g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.x;
@@ -100,16 +100,15 @@ public class healthbar : MonoBehaviour
             {
                 if (!GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().revealed)
                 {
-                    if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Hidden) ||
+                    if (g.transform.GetChild(0).transform.position.z < 0 || g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Hidden) ||
                     unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Fogged))
                     {
                         g.GetComponentInChildren<auxHealth>().gameObject.SetActive(false);
-
                     }
                 }
                 else
                 {
-                    if (g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight)
+                    if (g.transform.GetChild(0).transform.position.z < 0 || g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight)
                         g.GetComponentInChildren<auxHealth>().gameObject.SetActive(false);
                 }
 

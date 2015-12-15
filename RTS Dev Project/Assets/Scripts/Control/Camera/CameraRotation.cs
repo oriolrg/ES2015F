@@ -77,7 +77,7 @@ public class CameraRotation : MonoBehaviour {
             {
                 hitPoint = hit.point;
 
-                if (transform.position.y - hitPoint.y > 2) 
+                if (transform.position.y - hitPoint.y > 10) 
                     transform.RotateAround(hitPoint, -transform.right, speed * Time.deltaTime);
             }
         }
@@ -89,7 +89,7 @@ public class CameraRotation : MonoBehaviour {
                 hitPoint = hit.point;
                 Vector2 offset = new Vector2(transform.position.x - hitPoint.x, transform.position.z - hitPoint.z);
 
-                if (offset.magnitude > 2)
+                if (offset.magnitude > 5)
                     transform.RotateAround(hitPoint, transform.right, speed * Time.deltaTime);
             }
         }
