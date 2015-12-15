@@ -613,6 +613,15 @@ public class GameController : MonoBehaviour
     {
         if (u.tag == "Ally")
         {
+            for (int i = 0; i < 10; ++i)
+            {
+                if (troops[i].units.Contains(u))
+                {
+                    troops[i].units.Remove(u);
+                }
+            }
+
+
             if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Civilian)
             {
                 GameStatistics.addKilledUnits(Player.CPU1, 1);
