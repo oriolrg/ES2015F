@@ -81,11 +81,12 @@ public class Health : MonoBehaviour
         }
         else
         {
-            if (GetComponent<Construct>().getInConstruction() || GetComponent<Construct>().getConstruct())
+            Construct c = GetComponent<Construct>();
+            if (c.getInConstruction() || c.getConstruct())
             {
-                GetComponent<Construct>().getBuildingToConstruct().GetComponent<BuildingConstruction>().deleteUnit(gameObject);
-                GetComponent<Construct>().SetInConstruction(false);
-                GetComponent<Construct>().setConstruct(false);
+                if(c.getBuildingToConstruct() != null) c.getBuildingToConstruct().GetComponent<BuildingConstruction>().deleteUnit(gameObject);
+                c.SetInConstruction(false);
+                c.setConstruct(false);
             }
 
             Animator ani = GetComponent<Animator>();

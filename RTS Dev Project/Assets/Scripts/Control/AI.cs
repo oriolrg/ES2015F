@@ -374,10 +374,14 @@ public class AI : MonoBehaviour {
 				if (c.getInConstruction () || c.getConstruct ()) {
 			
 					GameObject build = c.getBuildingToConstruct ();
-					if (build.GetComponentOrEnd<Identity> ().unitType == u) {
-					
-						return true;
-					}
+                    if (build != null)
+                    {
+                        if (build.GetComponentOrEnd<Identity>().unitType == u)
+                        {
+
+                            return true;
+                        }
+                    }
 				}
 			}
 		}
