@@ -25,7 +25,7 @@ public class UnitMovement : MonoBehaviour {
 
 	private Vector2 currentPosition;
 	private Vector2 posTarget;
-	private float distanceToTarget;
+	public float distanceToTarget;
 
 
 	private float currentPathCount;
@@ -99,10 +99,10 @@ public class UnitMovement : MonoBehaviour {
 			Construct construct = GetComponent<Construct>(); //See if the unit has something to cunstruct
 
 			//Recalculate path
-			if (Time.time - lastRepath > repathRate && seeker.IsDone()) {
-				lastRepath = Time.time+ Random.value*repathRate*0.5f;
-				seeker.StartPath (transform.position,targetPos, OnPathComplete);
-			}
+			//if (Time.time - lastRepath > repathRate && seeker.IsDone()) {
+		    //	lastRepath = Time.time+ Random.value*repathRate*0.5f;
+			//	seeker.StartPath (transform.position,targetPos, OnPathComplete);
+			//}
 
 			if (path == null) {
 				return;
