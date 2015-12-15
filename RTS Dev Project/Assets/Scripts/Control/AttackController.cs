@@ -79,7 +79,8 @@ public class AttackController : MonoBehaviour {
 			}
 		} else {
 			CancelInvoke ("DealDamage");
-			animator.SetBool("attack",false);
+            if (Utils.HasParameter("attack",animator))
+                animator.SetBool("attack",false);
 		}
 	}
 

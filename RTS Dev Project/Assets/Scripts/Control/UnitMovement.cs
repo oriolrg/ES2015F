@@ -8,7 +8,7 @@ public class UnitMovement : MonoBehaviour {
 
 	public Transform target;
 
-	public float repathRate = 0.5f;
+	private float repathRate = 0.5f;
 	private float lastRepath = -9999;
 	private float nextWaypointDistance = 3;
 
@@ -16,14 +16,20 @@ public class UnitMovement : MonoBehaviour {
 
 	Seeker seeker;
 	Path path;
-	public int currentWaypoint;
+	private int currentWaypoint;
 	CharacterController characterController;
-public Vector3 targetPos;
+	public Vector3 targetPos;
     Animator animator;
 	AttackController attack;
 
-	public float distanceToTarget;
-	public float currentPathCount;
+
+	private Vector2 currentPosition;
+	private Vector2 posTarget;
+	private float distanceToTarget;
+
+
+	private float currentPathCount;
+
 
 	public bool hasTarget;
 
@@ -90,7 +96,7 @@ public Vector3 targetPos;
 
 		//If the unit have somewhere to go
 		if (hasTarget) {
-
+            targetPos.y = transform.position.y;
 			Construct construct = GetComponent<Construct>(); //See if the unit has something to cunstruct
 
 			//Recalculate path
@@ -102,9 +108,12 @@ public Vector3 targetPos;
 			if (path == null) {
 				return;
 			}
-			
+
+			currentPosition = new Vector2(transform.position.x,transform.position.z);
+			posTarget = new Vector2(targetPos.x,targetPos.z);
+
 			//Distance to the target from the current position
-			distanceToTarget = Vector3.Distance(transform.position,targetPos);
+			distanceToTarget = Vector2.Distance(currentPosition,posTarget);
 
 
 			//If the unit hasn't reached the target yet
