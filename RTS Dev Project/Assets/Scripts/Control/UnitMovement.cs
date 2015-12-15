@@ -96,7 +96,6 @@ public class UnitMovement : MonoBehaviour {
 
 		//If the unit have somewhere to go
 		if (hasTarget) {
-            targetPos.y = transform.position.y;
 			Construct construct = GetComponent<Construct>(); //See if the unit has something to cunstruct
 
 			//Recalculate path
@@ -122,8 +121,8 @@ public class UnitMovement : MonoBehaviour {
 				Vector3 dir = (path.vectorPath[currentWaypoint]-transform.position).normalized; //direction to move along
 
 				transform.LookAt(transform.position + new Vector3(dir.x,0f,dir.z));
-				dir *= speed;
-				characterController.SimpleMove (dir);
+				dir *= speed*Time.deltaTime;
+                characterController.Move(dir);
 
 				//If the unit has moved enough go to the next waypoint of the grid
 				if ( (transform.position-path.vectorPath[currentWaypoint]).sqrMagnitude < nextWaypointDistance*nextWaypointDistance && currentWaypoint < currentPathCount - 1) currentWaypoint++;
