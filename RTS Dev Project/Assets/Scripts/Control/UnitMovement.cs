@@ -96,7 +96,7 @@ public class UnitMovement : MonoBehaviour {
 
 		//If the unit have somewhere to go
 		if (hasTarget) {
-
+            targetPos.y = transform.position.y;
 			Construct construct = GetComponent<Construct>(); //See if the unit has something to cunstruct
 
 			//Recalculate path
