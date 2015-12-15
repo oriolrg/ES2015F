@@ -40,7 +40,6 @@ public class Health : MonoBehaviour
                         newFirePrefab.transform.SetParent(transform);
                         newFirePrefab.transform.localPosition = child.localPosition;
                         newFirePrefab.transform.localRotation = child.localRotation;
-
                     }
                 }
                 changedMesh = true;
