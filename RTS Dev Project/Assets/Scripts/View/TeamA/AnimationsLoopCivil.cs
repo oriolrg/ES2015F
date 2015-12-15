@@ -15,21 +15,25 @@ public class AnimationsLoopCivil : MonoBehaviour
 			i++;
 		} else if (i == 2) {
 			GetComponent<Animator>().SetBool ("walk", false);
-			GetComponent<Animator>().SetBool ("chop", true);
+			GetComponent<Animator>().SetBool ("attack", true);
 			i++;
 		} else if (i == 3) {
+			GetComponent<Animator>().SetBool ("attack", false);
+			GetComponent<Animator>().SetBool ("chop", true);
+			i++;
+		} else if (i == 4) {
 			GetComponent<Animator>().SetBool ("chop", false);
 			GetComponent<Animator>().SetBool ("cultivate", true);
 			i++;
-		} else if (i == 4) {
+		} else if (i == 5) {
 			GetComponent<Animator>().SetBool ("cultivate", false);
 			GetComponent<Animator>().SetBool ("cut", true);
 			i++;
-		} else if (i == 5) {
+		} else if (i == 6) {
 			GetComponent<Animator>().SetBool ("cut", false);
 			GetComponent<Animator>().SetBool ("die", true);
 			i++;
-		} else if (i == 6)
+		} else if (i == 7)
 		{
 			i = 0;
 		}
