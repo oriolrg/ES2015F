@@ -653,7 +653,7 @@ public class GameController : MonoBehaviour
                 allAllyArmy.Remove(u);
             }
         }
-        if (u.tag == "Enemy")
+        else if (u.tag == "Enemy")
         {
             if (u.gameObject.GetComponentOrEnd<Identity>().unitType == UnitType.Civilian)
             {
