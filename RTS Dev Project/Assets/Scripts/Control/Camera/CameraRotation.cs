@@ -71,5 +71,27 @@ public class CameraRotation : MonoBehaviour {
 
         }
 
+        if (Input.GetKey(KeyCode.R))
+        {
+            if (Physics.Raycast(transform.position, transform.forward, out hit))
+            {
+                hitPoint = hit.point;
+
+                if (transform.position.y - hitPoint.y > 10) 
+                    transform.RotateAround(hitPoint, -transform.right, speed * Time.deltaTime);
+            }
+        }
+
+        if (Input.GetKey(KeyCode.T))
+        {
+            if (Physics.Raycast(transform.position, transform.forward, out hit))
+            {
+                hitPoint = hit.point;
+                Vector2 offset = new Vector2(transform.position.x - hitPoint.x, transform.position.z - hitPoint.z);
+
+                if (offset.magnitude > 5)
+                    transform.RotateAround(hitPoint, transform.right, speed * Time.deltaTime);
+            }
+        }
     }
 }

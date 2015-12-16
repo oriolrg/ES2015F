@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using System.Reflection;
 using UnityEditor;
@@ -42,4 +43,4 @@ public class AstarEnumFlagDrawer : PropertyDrawer {
 		return (T) reflectionTarget;
 	}
 }
-
+#endif

@@ -7,33 +7,54 @@ public class TeamCircleProjector : MonoBehaviour {
     private Projector projector;
     private LOSEntity los;
     public LOSEntity.RevealStates revealState;
+    private bool LOSinactive = false;
+    private LOSManager losMan;
 
     // Use this for initialization
     void Start()
     {
         init();
+        losMan = GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>();
+        LOSinactive = losMan.revealed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (los == null)
+        if (LOSinactive != losMan.revealed)
         {
-            los = GetComponentInParent<LOSEntity>();
-            if (los != null)
+            LOSinactive = losMan.revealed;
+            reveal(); 
+        }
+
+        if (!LOSinactive)
+        {
+            if (los == null)
             {
-                revealState = los.RevealState;
-                newState();
+                los = GetComponentInParent<LOSEntity>();
+                if (los != null)
+                {
+                    revealState = los.RevealState;
+                    newState();
+                }
+            }
+            else
+            {
+                {
+                    if (revealState != los.RevealState)
+                    {
+                        revealState = los.RevealState;
+                        newState();
+                    }
+                }
             }
         }
-        else
-        {
-            if (revealState != los.RevealState)
-            {
-                revealState = los.RevealState;
-                newState();
-            }
-        }
+    }
+
+    private void reveal()
+    {
+        if (LOSinactive) projector.enabled = true;
+        else newState();
     }
 
     private void newState()

@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using System.Collections;
 using UnityEditor;
@@ -13,3 +14,4 @@ public class RVOSimulatorEditor : UnityEditor.Editor {
 			"Sorry for the inconvenience.", MessageType.Warning ); */
 	}
 }
+#endif

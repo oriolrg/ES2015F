@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
@@ -453,3 +454,4 @@ namespace Pathfinding {
 		}
 	}
 }
+#endif

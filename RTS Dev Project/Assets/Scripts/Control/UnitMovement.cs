@@ -8,7 +8,7 @@ public class UnitMovement : MonoBehaviour {
 
 	public Transform target;
 
-	public float repathRate = 0.5f;
+	private float repathRate = 0.5f;
 	private float lastRepath = -9999;
 	private float nextWaypointDistance = 3;
 
@@ -16,14 +16,21 @@ public class UnitMovement : MonoBehaviour {
 
 	Seeker seeker;
 	Path path;
-	public int currentWaypoint;
+	private int currentWaypoint;
 	CharacterController characterController;
-public Vector3 targetPos;
+	public Vector3 targetPos;
+    private Vector3 targetPosAux;
     Animator animator;
 	AttackController attack;
 
+
+	private Vector2 currentPosition;
+	private Vector2 posTarget;
 	public float distanceToTarget;
-	public float currentPathCount;
+
+
+	private float currentPathCount;
+
 
 	public bool hasTarget;
 
@@ -55,6 +62,7 @@ public Vector3 targetPos;
 		if ( seeker != null ) seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
         
 		targetPos = target.transform.position;
+        targetPosAux = targetPos;
 		hasTarget = true;
 
         // Cancel all animations and play walk
@@ -90,21 +98,29 @@ public Vector3 targetPos;
 
 		//If the unit have somewhere to go
 		if (hasTarget) {
-
 			Construct construct = GetComponent<Construct>(); //See if the unit has something to cunstruct
 
 			//Recalculate path
-			if (Time.time - lastRepath > repathRate && seeker.IsDone()) {
-				lastRepath = Time.time+ Random.value*repathRate*0.5f;
-				seeker.StartPath (transform.position,targetPos, OnPathComplete);
-			}
+			//if (Time.time - lastRepath > repathRate && seeker.IsDone()) {
+		    //	lastRepath = Time.time+ Random.value*repathRate*0.5f;
+			//	seeker.StartPath (transform.position,targetPos, OnPathComplete);
+			//}
 
-			if (path == null) {
+            if(targetPosAux != targetPos)
+            {
+                seeker.StartPath (transform.position,targetPos, OnPathComplete);
+                targetPosAux = targetPos;
+            }
+
+            if (path == null) {
 				return;
 			}
-			
+
+			currentPosition = new Vector2(transform.position.x,transform.position.z);
+			posTarget = new Vector2(targetPos.x,targetPos.z);
+
 			//Distance to the target from the current position
-			distanceToTarget = Vector3.Distance(transform.position,targetPos);
+			distanceToTarget = Vector2.Distance(currentPosition,posTarget);
 
 
 			//If the unit hasn't reached the target yet
@@ -113,8 +129,8 @@ public Vector3 targetPos;
 				Vector3 dir = (path.vectorPath[currentWaypoint]-transform.position).normalized; //direction to move along
 
 				transform.LookAt(transform.position + new Vector3(dir.x,0f,dir.z));
-				dir *= speed;
-				characterController.SimpleMove (dir);
+				dir *= speed*Time.deltaTime;
+                characterController.Move(dir);
 
 				//If the unit has moved enough go to the next waypoint of the grid
 				if ( (transform.position-path.vectorPath[currentWaypoint]).sqrMagnitude < nextWaypointDistance*nextWaypointDistance && currentWaypoint < currentPathCount - 1) currentWaypoint++;

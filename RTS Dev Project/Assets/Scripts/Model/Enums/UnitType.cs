@@ -23,7 +23,9 @@ public enum UnitType
     Tower,
 
     Objective,
-    Wonder 
+    Wonder,
+    Wall,
+    Door
 }
 
 public static class UnitExtensions
@@ -41,7 +43,10 @@ public static class UnitExtensions
             unit == UnitType.Windmill ||
             unit == UnitType.Carpentry ||
             unit == UnitType.Farm ||
-            unit == UnitType.Academy;
+            unit == UnitType.Academy ||
+            unit == UnitType.Tower ||
+            unit == UnitType.Door ||
+            unit == UnitType.Wall;
     }
     public static T GetComponentOrEnd<T>(this GameObject go)
     {

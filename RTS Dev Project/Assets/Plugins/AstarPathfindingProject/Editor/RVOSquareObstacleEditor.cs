@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using System.Collections;
 using UnityEditor;
@@ -13,3 +14,4 @@ public class RVOSquareObstacleEditor : Editor
 			" They will be enabled in a comming update. In the meantime you can use agents with the 'locked' field set to true as simple obstacles.", MessageType.Warning );*/
 	}
 }
+#endif

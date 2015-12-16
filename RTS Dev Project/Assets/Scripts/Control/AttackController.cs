@@ -26,7 +26,7 @@ public class AttackController : MonoBehaviour {
 		this.range = DataManager.Instance.unitDatas [identity.unitType].stats [Stat.Range];
 		this.atkDmg = DataManager.Instance.unitDatas [identity.unitType].stats [Stat.Attack];
 		um = gameObject.GetComponent<UnitMovement> ();
-        animator = GetComponent<Animator>();
+        animator = this.gameObject.GetComponent<Animator>();
 	}
 
 	public void attack(GameObject enemy){
@@ -73,11 +73,14 @@ public class AttackController : MonoBehaviour {
 			if (Vector3.Distance (enemy_last_pos, attacking_enemy.transform.position) > this.range) {
 				this.um.status = Status.running;
 				CancelInvoke ("DealDamage");
+				animator.SetBool("attack",false);
 				this.attack (attacking_enemy);
 
 			}
 		} else {
 			CancelInvoke ("DealDamage");
+            if (Utils.HasParameter("attack",animator))
+                animator.SetBool("attack",false);
 		}
 	}
 
@@ -121,6 +124,7 @@ public class AttackController : MonoBehaviour {
 		} else {
 			this.um.status = Status.attacking;
 			InvokeRepeating ("DealDamage", 1, 1);
+			animator.SetBool("attack",true);
 
 		}
 

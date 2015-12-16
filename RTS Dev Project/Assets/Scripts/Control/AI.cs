@@ -31,18 +31,20 @@ public class AI : MonoBehaviour {
 	{
 		
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian ),5));
-		tasks.Add (new Task(new Method(createBarrac), UnitType.Barracs));
+		tasks.Add (new Task(new Method(createBuilding), UnitType.Barracs));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createSoldier), UnitType.Soldier),10));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),5));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createArcher), UnitType.Archer),20));
 		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Civilian),5));
+		tasks.AddRange(Enumerable.Repeat(new Task(new Method(createCivilian), UnitType.Knight),50));
 		//tasks.Add (new Task(new Method(createWonder)));
 		
 	}
 	private void elaborateStrategyObjectives()
 	{
-		print ("WIN BY OBJECTIVES");
+		GameController.Instance.hud.updateStateAI (0, "Accio: Conquerir objectius\nPodem guanyar conquerint objectius per tant redistribuim les unitats que tenim i les enviem a conquerir." );
 		List<GameObject> civ = GameController.Instance.getAllEnemyCivilians ();
+		civ.AddRange (GameController.Instance.getAllEnemyArmy ());
 		for (int i = 0; i<civ.Count; i++) {
 			Boolean isbusy=false;
 			foreach(Objective obj in GameController.Instance.objectives) if(civ[i].GetComponent<UnitMovement>().target == obj.transform) isbusy=true;
@@ -53,8 +55,7 @@ public class AI : MonoBehaviour {
 	private void elaborateStrategyWonder()
 	{
 		if (!isCPUBuilding (UnitType.Wonder)&!tasks.Contains( new Task (new Method (createBuilding), UnitType.Wonder))) {
-			print ("WIN BY WONDER");
-			//tasks.Insert(0,new Task (new Method (createBuilding), UnitType.Wonder));
+			tasks.Insert(0,new Task (new Method (createBuilding), UnitType.Wonder));
 		}
 	}
 	void Awake()
@@ -77,16 +78,32 @@ public class AI : MonoBehaviour {
 	}
 	void Update()
 	{
-		if (GameData.cpus[0].skill==GameData.DifficultyEnum.Medium|| GameData.cpus[0].skill==GameData.DifficultyEnum.Hard) {	 
-			float evalWinObjective = evaluateWinByObjectives ();
-			float evalWinWonder = evaluateWinByWonder ();
-			if (evalWinObjective < evalWinWonder && evalWinObjective < 40){ //&&  Victory.MapControl in GameData.winConditions   
+		GameController.Instance.hud.updateCosoAI(0, GameController.Instance.getAllEnemyCivilians().Count + GameController.Instance.getAllEnemyArmy().Count);
+		GameController.Instance.hud.updateCosoAI(1, GameController.Instance.getAllEnemyBuildings().Count);
+		GameController.Instance.hud.updateResourceAI(Resource.Wood, GameController.Instance.cpuResources[Resource.Wood]);
+		GameController.Instance.hud.updateResourceAI(Resource.Food, GameController.Instance.cpuResources[Resource.Food]);
+		GameController.Instance.hud.updateResourceAI(Resource.Metal, GameController.Instance.cpuResources[Resource.Metal]);
+
+
+		if (GameData.cpus[0].skill==GameData.DifficultyEnum.Medium|| GameData.cpus[0].skill==GameData.DifficultyEnum.Hard) {	
+
+			float evalWinObjective = inf;
+			float evalWinWonder = inf;
+			if(GameData.winConditions.Contains(Victory.MapControl)){
+				evalWinObjective = evaluateWinByObjectives ();
+				GameController.Instance.hud.updateStateAI (2, evalWinObjective.ToString());
+			}
+			if(GameData.winConditions.Contains(Victory.Wonder)){
+				evalWinWonder = evaluateWinByWonder ();
+				GameController.Instance.hud.updateStateAI (1, evalWinWonder.ToString());
+			}
+			if (evalWinObjective < evalWinWonder & evalWinObjective < 50 ){ //
 				print ("Evaluacio win by objective " + evalWinObjective);
 				elaborateStrategyObjectives ();
 			}
-			else if (evalWinWonder < 50) // && Victory.Wonder in GameData.winConditions 
+			else if (evalWinWonder < 100) // && Victory.Wonder in GameData.winConditions 
 				elaborateStrategyWonder ();
-
+			
 			if(GameData.cpus[0].skill==GameData.DifficultyEnum.Hard){
 
 				bool counterAttackAnnihilationDone = false;
@@ -108,17 +125,14 @@ public class AI : MonoBehaviour {
 				tasks.RemoveAt (0);
 			}
 		}
-		//compareArmy();
-		//counterAttackAnnihilation ();
+
+	
 
 		
 	}
 
+	
 
-
-	
-	
-	
 	public GameObject getClosestTownCenter(GameObject c)
 	{ 
 		
@@ -186,11 +200,14 @@ public class AI : MonoBehaviour {
 	{
 		if (GameController.Instance.getAllEnemyTownCentres().Count > 0)
 		{
-			if(GameController.Instance.OnCreate(GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>(),UnitType.Civilian)) return true;
-			
+			if(GameController.Instance.OnCreate(GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>(),UnitType.Civilian)){
+				GameController.Instance.hud.updateStateAI (0, "Accio: Crear Civilian\nNecessitem mes guany economic." );
+				return true;
+			}
 		}
 
-		return false; 
+
+		return true; 
 	}
 	private bool createWonder(UnitType u)
 	{
@@ -198,6 +215,7 @@ public class AI : MonoBehaviour {
 		if (GameController.Instance.getAllEnemyCivilians().Count>0)
 		{
 			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>().civilization].units[UnitType.Wonder], GameController.Instance.getAllEnemyTownCentres()[0].transform.position + new Vector3(20, 0,-20), new Troop(GameController.Instance.getAllEnemyCivilians()));
+			GameController.Instance.hud.updateStateAI (0, "Accio: Crear Wonder\nPodem guanyar construint una wonder per tant s'inverteix tots els recursos en aixo." );
 			return true;
 		}
 		return false;
@@ -207,8 +225,10 @@ public class AI : MonoBehaviour {
 		if (GameController.Instance.getAllEnemyCivilians().Count > 0)
 		{
 			GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>().civilization].units[UnitType.TownCenter], GameController.Instance.getAllEnemyTownCentres()[0].transform.position + new Vector3(20, 0, 0),  new Troop((List<GameObject>)GameController.Instance.getAllEnemyCivilians().GetRange(0,1)));			
+			GameController.Instance.hud.updateStateAI (0, "Accio: Crear Town Center\n Necessitem una cua de civilians mes llarga" );
 			return true;
 		}
+
 		return false;
 	}
 	public bool createSoldier(UnitType u)
@@ -218,13 +238,17 @@ public class AI : MonoBehaviour {
 		foreach (GameObject b in buildings){
 			if(b.GetComponent<Identity>().unitType == UnitType.Barracs){
 				contructingBarrack = false;
-				if(GameController.Instance.OnCreate(b.GetComponent<Identity>(), UnitType.Soldier)) return true;
+				if(GameController.Instance.OnCreate(b.GetComponent<Identity>(), UnitType.Soldier)){
+					GameController.Instance.hud.updateStateAI (0, "Accio: Crear Soldat\nNecessitem un exercit basic per defensar-nos." );
+					return true;
+				}
 			}
 		}
 		if (! isCPUBuilding (UnitType.Barracs) & !contructingBarrack) {
 			tasks.Insert (0, new Task (new Method (createBuilding), UnitType.Barracs));
 			contructingBarrack = true;
 		}
+
 		return false;
 	}
 	
@@ -248,32 +272,76 @@ public class AI : MonoBehaviour {
 		
 		foreach (GameObject b in buildings){
 			if(b.GetComponent<Identity>().unitType == UnitType.Archery){
-				if(GameController.Instance.OnCreate(b.GetComponent<Identity>(), UnitType.Archer)) return true;
+				if(GameController.Instance.OnCreate(b.GetComponent<Identity>(), UnitType.Archer)){
+					GameController.Instance.hud.updateStateAI (0, "Accio: Crear Arquer\nNecessitem atac a distancia per tenir un exercit mes complert." );
+					return true;
+				}
 			}
 		}
 		if(! isCPUBuilding (UnitType.Archery))
 			tasks.Insert(0, new Task(new Method(createBuilding), UnitType.Archery));
+
      	return false;
      }
-
+	public bool createKnight(UnitType u)
+	{
+		
+		
+		List<GameObject> buildings = GameController.Instance.getAllEnemyBuildings();
+		
+		foreach (GameObject b in buildings){
+			if(b.GetComponent<Identity>().unitType == UnitType.Stable){
+				if(GameController.Instance.OnCreate(b.GetComponent<Identity>(), UnitType.Knight)){
+					GameController.Instance.hud.updateStateAI (0, "Accio: Crear Knight\nJa tenim prou unitats d'exercit basiques. Calen unitats avançades." );
+					return true;
+				}
+			}
+		}
+		if(! isCPUBuilding (UnitType.Archery))
+			tasks.Insert(0, new Task(new Method(createBuilding), UnitType.Stable));
+		
+		return false;
+	}
+	
 	private bool createBuilding(UnitType u)
 	{
-		GameObject civil = getIdleCivilian ();
-		if (civil != null)
-		{
-			Vector3 v = new Vector3(UnityEngine.Random.Range(-20,20), 0, UnityEngine.Random.Range(-20,20));
+
+		UnitData unitData = DataManager.Instance.unitDatas[u];
+		if (GameController.Instance.checkResources (unitData.resourceCost, "Enemy")) {
+			GameObject civil = getIdleCivilian ();
+			if (civil != null) {
+				Vector3 v = new Vector3 (UnityEngine.Random.Range (-20, 20), 0, UnityEngine.Random.Range (-20, 20));
 			
-			Vector3 position = civil.transform.position + v;
-			if(GameController.Instance.getAllEnemyTownCentres().Count > 0)
-				position = 	GameController.Instance.getAllEnemyTownCentres()[0].transform.position + v;			 
-			Vector3 constructionPoint = GameController.Instance.buildingPossible(position.x,position.z,Player.CPU1,u);
-			if(constructionPoint.magnitude!=0){
-				GameController.Instance.createBuilding(DataManager.Instance.civilizationDatas[GameController.Instance.getAllEnemyTownCentres()[0].GetComponent<Identity>().civilization].units[u], position, new Troop( new List<GameObject>(){civil}));
-				return true;
-			}
+				Vector3 position = civil.transform.position + v;
+				if (GameController.Instance.getAllEnemyTownCentres ().Count > 0)
+					position = GameController.Instance.getAllEnemyTownCentres () [0].transform.position + v;			 
+				Vector3 constructionPoint = GameController.Instance.buildingPossible (position.x, position.z, Player.CPU1, u);
+				if (constructionPoint.magnitude != 0) {
+					GameController.Instance.createBuilding (DataManager.Instance.civilizationDatas [GameController.Instance.getAllEnemyTownCentres () [0].GetComponent<Identity> ().civilization].units [u], position, new Troop (new List<GameObject> (){civil}));
+					switch(u){
+					case UnitType.TownCenter:
+						GameController.Instance.hud.updateStateAI (0, "Accio: Crear Town Center\nNecessitem una nova base per crear mes civilians i ampliar economia i velocitat de produccio." );
+						break;
+					case UnitType.Barracs:
+						GameController.Instance.hud.updateStateAI (0, "Accio: Crear Barracs\nNecessitem començar els primers passos per crear un exercit." );
+						break;
+					case UnitType.Archery:
+						GameController.Instance.hud.updateStateAI (0, "Accio: Crear Archery\nVolem millorar el nostre exercit afegint tropes mes avançades, els arquers." );
+						break;
+					case UnitType.Wonder:
+						GameController.Instance.hud.updateStateAI (0, "Accio: Crear Wonder\nPodem guanyar la partida creant una Wonder Building. Tots els recursos destinats a aixo." );
+						break;
+					case UnitType.Stable:
+						GameController.Instance.hud.updateStateAI (0, "Accio: Crear Stable\nVolem completar el nostre exercit amb caballers." );
+						break;
+
+					}
+					return true;
+				}
 				
 
 
+			}
 		}
 		return false;
 		
@@ -306,10 +374,14 @@ public class AI : MonoBehaviour {
 				if (c.getInConstruction () || c.getConstruct ()) {
 			
 					GameObject build = c.getBuildingToConstruct ();
-					if (build.GetComponentOrEnd<Identity> ().unitType == u) {
-					
-						return true;
-					}
+                    if (build != null)
+                    {
+                        if (build.GetComponentOrEnd<Identity>().unitType == u)
+                        {
+
+                            return true;
+                        }
+                    }
 				}
 			}
 		}
@@ -359,6 +431,7 @@ public class AI : MonoBehaviour {
 		
 		if(GameController.Instance.getAllEnemyArmy().Count > GameController.Instance.getAllAllyArmy().Count ){
 			attack();
+			GameController.Instance.hud.updateStateAI (0, "Accio: Atacar!\n Tenim un exercit mes gran, ataquem!." );
 		}
 		
 	}
@@ -373,6 +446,7 @@ public class AI : MonoBehaviour {
 				a.attack (GameController.Instance.getAllAllyBuildings()[0]);
 			}
 		}
+
 		
 	}
 	
@@ -433,6 +507,7 @@ public class AI : MonoBehaviour {
 				
 			}
 		}
+		GameController.Instance.hud.updateStateAI (0, "Accio: ContraAtacar!\n Ens estan atacant, ens defensem!" );
 	}
 	
 	
@@ -540,6 +615,7 @@ public class AI : MonoBehaviour {
 		} else {
 			return false;
 		}
+		GameController.Instance.hud.updateStateAI (0, "Accio: Atacar Wonder!\n L'enemic esta creant una Wonder, l'hem d'atacar abans de perdre." );
 		return true;
 		
 	}
@@ -638,6 +714,7 @@ public class AI : MonoBehaviour {
 				o.GetComponentInParent<UnitMovement> ().startMoving (target);
 			}
 		}
+		GameController.Instance.hud.updateStateAI (0, "Accio: ContraAtacar Objective!\n Ens han conquerit els objectius, s'ha de reaccionar." );
 		return true;
 
 		//miro quin objectiu està més aprop?? Mes aprop de que??

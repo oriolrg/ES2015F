@@ -35,23 +35,25 @@ public class Construct : MonoBehaviour {
             //Debug.Log("Posicio unit "+transform.position);
             //Debug.Log("Posicio building " + buildingToConstruct.transform.position);
             //Debug.Log("Distancia que ha de parar " + dist + "magnitud resta " + (transform.position - buildingToConstruct.transform.position).magnitude);
-
-            if ((transform.position - buildingToConstruct.transform.position).magnitude < dist + 1)
+            if (buildingToConstruct != null)
             {
-                
-                buildingToConstruct.GetComponent<BuildingConstruction>().startConstruction(this.gameObject);
-                
-                construct = false;
-                inConstruction = true;
-                if(usingDust == null) usingDust = Instantiate(dustPrefab, buildingToConstruct.transform.position, Quaternion.identity) as GameObject;
-
-                UnitMovement uM = gameObject.GetComponent<UnitMovement>();
-                if (uM != null)
+                if ((transform.position - buildingToConstruct.transform.position).magnitude < dist + 1)
                 {
-                    uM.hasTarget = false;
-                    Animator a = GetComponentInParent<Animator>();
-                    a.SetBool("walk", false);
-                    //uM.status = Status.idle;
+
+                    buildingToConstruct.GetComponent<BuildingConstruction>().startConstruction(this.gameObject);
+
+                    construct = false;
+                    inConstruction = true;
+                    if (usingDust == null) usingDust = Instantiate(dustPrefab, buildingToConstruct.transform.position, Quaternion.identity) as GameObject;
+
+                    UnitMovement uM = gameObject.GetComponent<UnitMovement>();
+                    if (uM != null)
+                    {
+                        uM.hasTarget = false;
+                        Animator a = GetComponentInParent<Animator>();
+                        a.SetBool("walk", false);
+                        //uM.status = Status.idle;
+                    }
                 }
             }
 

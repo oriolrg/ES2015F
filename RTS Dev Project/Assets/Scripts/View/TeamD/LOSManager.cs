@@ -71,10 +71,23 @@ public class LOSManager : MonoBehaviour {
     // the texture to be recreated
     private int previewParameterHash = 0;
     private int GenerateParameterHash() { return (Width + Height * 1024) + Scale.GetHashCode() + HighDetailTexture.GetHashCode(); }
+    //FOG OF WAR BUTTON
+    //Fog of war button
+    private bool fogOfWarEnabled;
 
+    private bool justDisabled;
+
+    private int fowCounter;
+
+    public bool revealed = false;
     void Start() {
         Terrain = GameObject.FindWithTag("Ground").GetComponent<Terrain>();
         if (Application.isPlaying) InitializeTexture();
+
+        //FOG OF WAR BUTTON
+        fogOfWarEnabled = true; //fog of war enabler and disabler
+        justDisabled = false; //fog of war enabler and disabler
+        fowCounter = 0;
 
     }
 
@@ -113,8 +126,42 @@ public class LOSManager : MonoBehaviour {
         }
         //Debug.Log("FOW Texture created, " + width + " x" + height);
     }
-
+    Material temp;
+    Terrain.MaterialType temp2;
     void Update() {
+
+        //FOG OF WAR BUTTON 
+        if (Input.GetKeyDown(KeyCode.F) || justDisabled)
+        {
+            if (!revealed)
+            {
+                temp = this.Terrain.materialTemplate;
+                temp2 = this.Terrain.materialType;
+                if (this.Terrain.materialType != Terrain.MaterialType.BuiltInStandard)
+                {
+                    this.Terrain.materialType = Terrain.MaterialType.BuiltInStandard;
+                    foreach (var entity in Entities)
+                        entity.show();
+                }
+                revealed = !revealed;
+            }
+            else
+            {
+                print("HOLA DEBUG!" + Entities.Count());
+                this.Terrain.materialTemplate = temp;//Resources.Load("Materials/Terrain", typeof(Material)) as Material;
+                this.Terrain.materialType = temp2;//Terrain.MaterialType.Custom;
+                foreach (LOSEntity g in Entities)
+                {
+                    print(g.gameObject.name);
+                    //g.RevealState = LOSEntity.RevealStates.Fogged;
+                    g.disable();
+                }
+                revealed = !revealed;
+            }
+
+            
+        }
+        //THE UPDATE GOES ON
 
 #if UNITY_EDITOR
         if (!Application.isPlaying) {
