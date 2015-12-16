@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject objectivesParent;
 	public GameObject healthBarsParent;
     public GameObject targetsParent;
+    private bool triangleFormation;
 
     [SerializeField]
 	private Troop selectedUnits;
@@ -72,6 +73,7 @@ public class GameController : MonoBehaviour
             Destroy(gameObject);
         }
 
+        triangleFormation = false;
         // Here we save our singleton instance
         Instance = this;
 
@@ -312,7 +314,29 @@ public class GameController : MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.B)) {
 			//createCubeTestingGrid();
 		}
-		if (Input.GetKeyDown (KeyCode.K)) {
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            GameObject target = Instantiate(targetPrefab, selectedUnits.units[0].transform.position, Quaternion.identity) as GameObject;
+            if (triangleFormation == true)
+            {
+                moveUnitsSquare(target);
+                triangleFormation = false;
+            } else
+            {
+                moveUnitsTriangle(target);
+                triangleFormation = true;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            GameObject target = Instantiate(targetPrefab, selectedUnits.units[0].transform.position, Quaternion.identity) as GameObject;
+            
+        }
+
+
+        if (Input.GetKeyDown (KeyCode.K)) {
 			if (selectedUnits.FocusedUnit != null)
 				selectedUnits.FocusedUnit.GetComponent<AttackController> ().attack (selectedUnits.FocusedUnit);
 		}
@@ -417,7 +441,94 @@ public class GameController : MonoBehaviour
         }
     }
 
-	public void moveUnits(GameObject target)
+
+
+    public void moveUnitsTriangle(GameObject target)
+    {
+        if (selectedUnits.units.Count == 0) return;
+        timerDeath groundTarget = target.GetComponent<timerDeath>();
+        Vector2 formationMatrixSizeTri = new Vector2((int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)), (int)(2 * Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)) - 1));
+        int numberUnit = 0;
+        if (selectedUnits.hasMovableUnits())
+        {
+            if (groundTarget != null)
+                groundTarget.setFormationMatrixTri(formationMatrixSizeTri);
+            foreach (var unit in selectedUnits.units)
+            {
+                UnitMovement script = unit.GetComponentInParent<UnitMovement>();
+                if (script != null)
+                {
+                    if (formationMatrixSizeTri.x > 1)
+                    {
+                        Vector3 newTargetPosition = Vector3.zero;
+                        Vector3 unitPosition = unit.transform.position;
+                        Vector3 targetPosition = target.transform.position;
+
+                        if (numberUnit == 0)
+                        {
+                            Vector3 direction = unitPosition - targetPosition;
+                            groundTarget.setDirection(direction);
+                        }
+
+                        numberUnit++;
+                        if (groundTarget != null)
+                            newTargetPosition = groundTarget.AddUnitMouseSelectionTri(unit);
+                        script.startMoving(target);
+                        script.targetPos = newTargetPosition;
+                    }
+                    else
+                    {
+                        if (groundTarget != null)
+                            groundTarget.AddUnit(unit);
+                        script.startMoving(target);
+                    }
+
+                }
+            }
+        }
+    }
+
+
+
+    public void moveUnitsSquare(GameObject target)
+    {
+        if (selectedUnits.units.Count == 0) return;
+        timerDeath groundTarget = target.GetComponent<timerDeath>();
+        int formationMatrixSize = (int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count));
+
+        if (selectedUnits.hasMovableUnits())
+        {
+            if (groundTarget != null)
+                groundTarget.setFormationMatrix(formationMatrixSize);
+            foreach (var unit in selectedUnits.units)
+            {
+                UnitMovement script = unit.GetComponentInParent<UnitMovement>();
+                if (script != null)
+                {
+                    //FORMATION MATRIX NO TRIANGLE
+                    if (formationMatrixSize > 1)
+                    {
+                        Vector3 newTargetPosition = Vector3.zero;
+                        if (groundTarget != null)
+                            newTargetPosition = groundTarget.AddUnitMouseSelection(unit);
+
+                        script.startMoving(target);
+                        script.targetPos = newTargetPosition;
+                    }
+                    else
+                    {
+                        if (groundTarget != null)
+                            groundTarget.AddUnit(unit);
+                        script.startMoving(target);
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    public void moveUnits(GameObject target)
 	{
         if (selectedUnits.units.Count == 0) return;
         timerDeath groundTarget = target.GetComponent<timerDeath>();
