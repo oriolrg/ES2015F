@@ -33,7 +33,6 @@ public class healthbar : MonoBehaviour
             auxMaxHealth = GetComponent<BuildingConstruction>().timer;
             maxHealth = MapValues(auxMaxHealth, 0, auxMaxHealth, GetComponent<Health>().getMaxHealth() / 10, GetComponent<Health>().getMaxHealth());
             curHealth = MapValues(auxMaxHealth - GetComponent<BuildingConstruction>().timer, 0, auxMaxHealth, GetComponent<Health>().getMaxHealth() / 10, GetComponent<Health>().getMaxHealth());
-
         }
         else
         {
@@ -49,8 +48,7 @@ public class healthbar : MonoBehaviour
 
         visualHealth = g.GetComponentInChildren<auxHealth>().i;
 
-        unitLOSEntity = gameObject.GetComponent<LOSEntity>();
-        
+        unitLOSEntity = gameObject.GetComponent<LOSEntity>();       
     }
 
     // Update is called once per frame
@@ -58,7 +56,6 @@ public class healthbar : MonoBehaviour
     {
         if (g != null)
         {
-
             g1.SetActive(true);
 
             g.transform.GetChild(0).transform.position = Camera.main.WorldToScreenPoint(GetComponentInChildren<auxHealth>().gameObject.transform.position);
@@ -70,6 +67,7 @@ public class healthbar : MonoBehaviour
 
             if (GetComponent<Identity>().unitType.isBuilding())
             {
+                if (GetComponent<Health>().dead) destroyBar();
                 //if (GetComponent<BuildingConstruction>().getPhase() == 2)
                 if (GetComponent<BuildingConstruction>().getConstructionOnGoing())
                 {
@@ -91,16 +89,11 @@ public class healthbar : MonoBehaviour
                 curHealth = GetComponent<Health>().getHealth();
             }
 
-            if (g != null)
-            {
-
-                HandleHealth();
-
             if (unitLOSEntity != null)
             {
                 if (!GameObject.FindGameObjectWithTag("Ground").GetComponent<LOSManager>().revealed)
                 {
-                    if (g.transform.GetChild(0).transform.position.z < 0 || g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Hidden) ||
+                    if (GetComponent<Health>().dead || g.transform.GetChild(0).transform.position.z < 0 || g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight || unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Hidden) ||
                     unitLOSEntity.RevealState.Equals(LOSEntity.RevealStates.Fogged))
                     {
                         g.GetComponentInChildren<auxHealth>().gameObject.SetActive(false);
@@ -108,19 +101,17 @@ public class healthbar : MonoBehaviour
                 }
                 else
                 {
-                    if (g.transform.GetChild(0).transform.position.z < 0 || g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight)
+                    if (GetComponent<Health>().dead || g.transform.GetChild(0).transform.position.z < 0 || g.GetComponentInChildren<auxHealth>().gray.rectTransform.position.y <= Screen.height * GameController.Instance.UIheight)
                         g.GetComponentInChildren<auxHealth>().gameObject.SetActive(false);
                 }
-
             }            
 
+            if (GetComponent<Health>().dead)
+            {
+                g.GetComponentInChildren<auxHealth>().gameObject.SetActive(false);
+            }
 
-               
-
-                }
-
-
-
+            HandleHealth();
         }
     }
 
@@ -128,7 +119,6 @@ public class healthbar : MonoBehaviour
 
     private void HandleHealth()
     {
-
         float currentXValue = MapValues(curHealth, 0, maxHealth, minXValue, maxXValue);
 
         visualHealth.rectTransform.position -= new Vector3(visualHealth.rectTransform.position.x - currentXValue, 0, 0);

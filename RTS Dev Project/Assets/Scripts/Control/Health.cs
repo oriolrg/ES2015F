@@ -11,7 +11,7 @@ public class Health : MonoBehaviour
 
     public GameObject destroyedPrefab;
     public bool changedMesh = false;
-    private bool dead = false;
+    public bool dead = false;
     
     void Start()
     {
@@ -69,6 +69,7 @@ public class Health : MonoBehaviour
     public void die()
     {
         dead = true;
+        GetComponent<healthbar>().destroyBar();
         GameController.Instance.removeUnit(gameObject);
 
         if (GetComponent<Identity>().unitType.isBuilding())
