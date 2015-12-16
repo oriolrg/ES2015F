@@ -94,6 +94,9 @@ public class BuildingPlacer : MonoBehaviour {
                 //enabled = false;
 
                 Destroy(this);
+
+                healthbar h = GetComponent<healthbar>();
+                if (h != null) h.destroyBar();
             }
 
 
