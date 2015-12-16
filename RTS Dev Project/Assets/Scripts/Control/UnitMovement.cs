@@ -135,13 +135,12 @@ public class UnitMovement : MonoBehaviour {
 				//If the unit has moved enough go to the next waypoint of the grid
 				if ( (transform.position-path.vectorPath[currentWaypoint]).sqrMagnitude < nextWaypointDistance*nextWaypointDistance && currentWaypoint < currentPathCount - 1) currentWaypoint++;
 			} else {
-				if(status != Status.attacking){ 
-					if (construct != null) {
-						if (!construct.getConstruct()){
-							stopUnit();
-						}
-
-					}
+				if(status != Status.attacking)
+                {
+                    if (construct == null)
+                        stopUnit();
+					if (construct != null && !construct.getConstruct()) 
+                        stopUnit();
 				}
 			}
 
