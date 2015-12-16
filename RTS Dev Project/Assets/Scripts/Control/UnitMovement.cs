@@ -19,6 +19,7 @@ public class UnitMovement : MonoBehaviour {
 	private int currentWaypoint;
 	CharacterController characterController;
 	public Vector3 targetPos;
+    private Vector3 targetPosAux;
     Animator animator;
 	AttackController attack;
 
@@ -61,6 +62,7 @@ public class UnitMovement : MonoBehaviour {
 		if ( seeker != null ) seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
         
 		targetPos = target.transform.position;
+        targetPosAux = targetPos;
 		hasTarget = true;
 
         // Cancel all animations and play walk
@@ -104,7 +106,13 @@ public class UnitMovement : MonoBehaviour {
 			//	seeker.StartPath (transform.position,targetPos, OnPathComplete);
 			//}
 
-			if (path == null) {
+            if(targetPosAux != targetPos)
+            {
+                seeker.StartPath (transform.position,targetPos, OnPathComplete);
+                targetPosAux = targetPos;
+            }
+
+            if (path == null) {
 				return;
 			}
 
