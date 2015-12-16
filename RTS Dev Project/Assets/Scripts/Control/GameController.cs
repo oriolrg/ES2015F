@@ -405,7 +405,11 @@ public class GameController : MonoBehaviour
 
                         objectives.Add(go.GetComponentOrEnd<Objective>());
                         go.transform.SetParent(objectivesParent.transform);
-
+                        updateGrid uGrid = go.GetComponent<updateGrid>();
+                        if (uGrid != null)
+                        {
+                            uGrid.isBuildingPlaced = true;
+                        }
                         done++;
                     }
                 }
@@ -417,14 +421,15 @@ public class GameController : MonoBehaviour
 	{
         if (selectedUnits.units.Count == 0) return;
         timerDeath groundTarget = target.GetComponent<timerDeath>();
-        //int formationMatrixSize = (int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)); 
-		Vector2 formationMatrixSizeTri = new Vector2((int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)),(int)(2*Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)) - 1));
+        int formationMatrixSize = (int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count));
+
+        //Vector2 formationMatrixSizeTri = new Vector2((int)Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)),(int)(2*Math.Ceiling(Math.Sqrt(selectedUnits.units.Count)) - 1));
 		int numberUnit = 0;
         if (selectedUnits.hasMovableUnits())
         {
 			if(groundTarget != null)
-           		//groundTarget.setFormationMatrix(formationMatrixSize);
-				groundTarget.setFormationMatrixTri(formationMatrixSizeTri);
+           		groundTarget.setFormationMatrix(formationMatrixSize);
+				//groundTarget.setFormationMatrixTri(formationMatrixSizeTri);
             foreach (var unit in selectedUnits.units)
             {
                 // Special case: a civilian moves towards a town center and has resources to store
@@ -465,21 +470,21 @@ public class GameController : MonoBehaviour
                         else
                         {
 							//FORMATION MATRIX NO TRIANGLE
-//                            if(formationMatrixSize > 1){
-//                                Vector3 newTargetPosition = Vector3.zero;
-//                                if( groundTarget != null )
-//                                    newTargetPosition = groundTarget.AddUnitMouseSelection(unit);
-//                                
-//                                script.startMoving(target);
-//                                script.targetPos = newTargetPosition;
-//                            } else {
-//								if(groundTarget != null)
-//									groundTarget.AddUnit(unit);
-//								
-//                                script.startMoving(target);
-//                            }
+                            if(formationMatrixSize > 1){
+                                Vector3 newTargetPosition = Vector3.zero;
+                                if( groundTarget != null )
+                                   newTargetPosition = groundTarget.AddUnitMouseSelection(unit);
+                               
+                                script.startMoving(target);
+                                script.targetPos = newTargetPosition;
+                            } else {
+								if(groundTarget != null)
+									groundTarget.AddUnit(unit);
+                                script.startMoving(target);
+                            }
 
 							//FORMATION MATRIX TRIANGLE
+                            /*
 							if(formationMatrixSizeTri.x > 1){
 								Vector3 newTargetPosition = Vector3.zero;
 								Vector3 unitPosition = unit.transform.position;
@@ -500,6 +505,7 @@ public class GameController : MonoBehaviour
 									groundTarget.AddUnit(unit);
 								script.startMoving(target);
 							}
+                            */
 						}
 					}
 				}
