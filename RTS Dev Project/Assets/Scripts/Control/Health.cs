@@ -11,6 +11,7 @@ public class Health : MonoBehaviour
 
     public GameObject destroyedPrefab;
     public bool changedMesh = false;
+    private bool dead = false;
     
     void Start()
     {
@@ -49,6 +50,7 @@ public class Health : MonoBehaviour
 
     public void loseHP(int hpLost)
     {
+        if (dead) return;
 		AI.Instance.counterattack (gameObject);
         auxHealth -= hpLost;
         health -= hpLost;
@@ -66,6 +68,7 @@ public class Health : MonoBehaviour
 
     public void die()
     {
+        dead = true;
         GameController.Instance.removeUnit(gameObject);
 
         if (GetComponent<Identity>().unitType.isBuilding())
@@ -81,13 +84,15 @@ public class Health : MonoBehaviour
         else
         {
             Construct c = GetComponent<Construct>();
-            if (c.getInConstruction() || c.getConstruct())
+            if (c != null)
             {
-                if(c.getBuildingToConstruct() != null) c.getBuildingToConstruct().GetComponent<BuildingConstruction>().deleteUnit(gameObject);
-                c.SetInConstruction(false);
-                c.setConstruct(false);
+                if (c.getInConstruction() || c.getConstruct())
+                {
+                    if (c.getBuildingToConstruct() != null) c.getBuildingToConstruct().GetComponent<BuildingConstruction>().deleteUnit(gameObject);
+                    c.SetInConstruction(false);
+                    c.setConstruct(false);
+                }
             }
-
             Animator ani = GetComponent<Animator>();
             if (ani != null)
             {
