@@ -15,7 +15,7 @@ public class GameMenuBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!endGameMenu.activeSelf && !escGameMenu.activeSelf && Input.GetKey(KeyCode.Escape)){
+		if(!endGameMenu.activeSelf && !escGameMenu.activeSelf && Input.GetKeyDown(KeyCode.Escape)){
 			escGameMenu.SetActive(true);
 		}
 			

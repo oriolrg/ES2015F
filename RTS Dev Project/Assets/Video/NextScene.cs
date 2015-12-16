@@ -15,7 +15,11 @@ public class NextScene : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//if (Input.GetKeyDown(KeyCode.KeypadEnter)){
-		if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)){
+		if (Input.GetKeyDown(KeyCode.Return) || 
+		    Input.GetKeyDown(KeyCode.KeypadEnter) || 
+			Input.GetKeyDown(KeyCode.Escape) || 
+			Input.GetKeyDown(KeyCode.Space)
+        ){
 			ToMenu();
 		}
 	}
